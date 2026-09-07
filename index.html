@@ -1,19 +1,4 @@
-
-                        <!DOCTYPE html>
-                        <html lang="en">
-                        <head>
-                            <meta charset="UTF-8">
-                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-							<style>
-								body {
-									background-color: white; /* Ensure the iframe has a white background */
-								}
-
-								
-							</style>
-                        </head>
-                        <body>
-                            <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -34,7 +19,6 @@
             --surface-color: #1a1a1f;
             --surface-elevated: #26262d;
             --accent-color: #ff3b30;
-            --accent-dim: rgba(255, 59, 48, 0.15);
             --text-primary: #ffffff;
             --text-secondary: #8e8e93;
             --success: #34c759;
@@ -150,18 +134,25 @@
 // 1. DATA MODELS & STATE
 // ==========================================
 const DEFAULT_PROGRAM = [
-    { day: 1, name: 'Hamstring Legs', exercises: [ { name: 'Standing Calf Raise', targetSets: 4, targetReps: '10-15' }, { name: 'Romanian Deadlift', targetSets: 3, targetReps: '8-10' } ] },
-    { day: 2, name: 'Chest & Back', exercises: [ { name: 'Incline DB Press', targetSets: 3, targetReps: '5-8' }, { name: 'Lat Pulldown', targetSets: 3, targetReps: '8-12' } ] },
-    { day: 3, name: 'Shoulders & Arms', exercises: [ { name: 'Cable Lateral Raise', targetSets: 4, targetReps: '12-15' }, { name: 'Preacher Curl', targetSets: 3, targetReps: '8-12' } ] },
-    { day: 4, name: 'Cardio & Abs', exercises: [ { name: 'Hanging Leg Raise', targetSets: 3, targetReps: '10-15' } ] },
-    { day: 5, name: 'Quad Legs', exercises: [ { name: 'Hack Squat', targetSets: 3, targetReps: '8-10' } ] },
-    { day: 6, name: 'Upper Body', exercises: [ { name: 'Incline DB Press', targetSets: 3, targetReps: '8-10' } ] },
+    { day: 1, name: 'Hamstring Legs', exercises: [ { name: 'Standing Calf Raise', targetSets: 4, targetReps: '10-15' }, { name: 'Seated Hamstring Leg Curl', targetSets: 3, targetReps: '8-12' }, { name: 'Romanian Deadlift', targetSets: 3, targetReps: '8-10' }, { name: 'Unilateral Leg Extension', targetSets: 3, targetReps: '10-15' }, { name: 'Bulgarian Split Squat', targetSets: 3, targetReps: '8-12' }, { name: 'Weighted Crunch', targetSets: 3, targetReps: '10-15' } ] },
+    { day: 2, name: 'Chest & Back', exercises: [ { name: 'Incline DB Press', targetSets: 3, targetReps: '5-8' }, { name: 'Pec Deck', targetSets: 3, targetReps: '10-15' }, { name: 'Flat Machine Press', targetSets: 3, targetReps: '8-12' }, { name: 'Lat Pulldown', targetSets: 3, targetReps: '8-12' }, { name: 'Chest Supported Row', targetSets: 3, targetReps: '8-12' }, { name: 'Pull-Ups', targetSets: 3, targetReps: 'AMRAP' } ] },
+    { day: 3, name: 'Shoulders & Arms', exercises: [ { name: 'Cable Lateral Raise', targetSets: 4, targetReps: '12-15' }, { name: 'Rear Delt Fly', targetSets: 3, targetReps: '12-15' }, { name: 'Preacher Curl', targetSets: 3, targetReps: '8-12' }, { name: 'Hammer Curl', targetSets: 3, targetReps: '10-12' }, { name: 'Tricep Pushdown', targetSets: 3, targetReps: '10-15' }, { name: 'Overhead Extension', targetSets: 3, targetReps: '10-15' } ] },
+    { day: 4, name: 'Cardio & Abs', exercises: [ { name: 'Hanging Leg Raise', targetSets: 3, targetReps: '10-15' }, { name: 'Incline Treadmill Walk', targetSets: 1, targetReps: '30 mins' } ] },
+    { day: 5, name: 'Quad Legs', exercises: [ { name: 'Hack Squat', targetSets: 3, targetReps: '8-10' }, { name: 'Leg Press', targetSets: 3, targetReps: '10-12' }, { name: 'Leg Extension', targetSets: 3, targetReps: '12-15' }, { name: 'Seated Leg Curl', targetSets: 3, targetReps: '10-12' }, { name: 'Standing Calf Raise', targetSets: 4, targetReps: '10-15' } ] },
+    { day: 6, name: 'Upper Body', exercises: [ { name: 'Incline DB Press', targetSets: 3, targetReps: '8-10' }, { name: 'Lat Pulldown', targetSets: 3, targetReps: '8-12' }, { name: 'Cable Lateral Raise', targetSets: 3, targetReps: '12-15' }, { name: 'Seated Curl', targetSets: 3, targetReps: '10-12' }, { name: 'Dips', targetSets: 3, targetReps: 'AMRAP' } ] },
     { day: 0, name: 'Rest', exercises: [] }
 ];
 
 const EXERCISE_DB = {
-    'Incline DB Press': { muscle: 'Chest' }, 'Lat Pulldown': { muscle: 'Back' }, 'Hack Squat': { muscle: 'Quads' },
-    'Romanian Deadlift': { muscle: 'Hamstrings' }, 'Cable Lateral Raise': { muscle: 'Shoulders' }
+    'Incline DB Press': { muscle: 'Chest' }, 'Pec Deck': { muscle: 'Chest' }, 'Flat Machine Press': { muscle: 'Chest' }, 'Dips': { muscle: 'Chest' },
+    'Lat Pulldown': { muscle: 'Back' }, 'Chest Supported Row': { muscle: 'Back' }, 'Pull-Ups': { muscle: 'Back' },
+    'Cable Lateral Raise': { muscle: 'Shoulders' }, 'Rear Delt Fly': { muscle: 'Shoulders' },
+    'Preacher Curl': { muscle: 'Biceps' }, 'Hammer Curl': { muscle: 'Biceps' }, 'Seated Curl': { muscle: 'Biceps' },
+    'Tricep Pushdown': { muscle: 'Triceps' }, 'Overhead Extension': { muscle: 'Triceps' },
+    'Hack Squat': { muscle: 'Quads' }, 'Leg Press': { muscle: 'Quads' }, 'Leg Extension': { muscle: 'Quads' }, 'Bulgarian Split Squat': { muscle: 'Quads' }, 'Unilateral Leg Extension': { muscle: 'Quads' },
+    'Romanian Deadlift': { muscle: 'Hamstrings' }, 'Seated Hamstring Leg Curl': { muscle: 'Hamstrings' }, 'Seated Leg Curl': { muscle: 'Hamstrings' },
+    'Standing Calf Raise': { muscle: 'Calves' },
+    'Weighted Crunch': { muscle: 'Abs' }, 'Hanging Leg Raise': { muscle: 'Abs' }, 'Incline Treadmill Walk': { muscle: 'Cardio' }
 };
 
 const store = {
@@ -173,8 +164,15 @@ const store = {
     },
     load() {
         const saved = localStorage.getItem('irontrack_state');
-        if (saved) this.state = JSON.parse(saved);
-        else this.save();
+        if (saved) {
+            this.state = JSON.parse(saved);
+            // Safety check in case of corrupted program state
+            if(!this.state.program || this.state.program.length === 0) {
+                this.state.program = JSON.parse(JSON.stringify(DEFAULT_PROGRAM));
+            }
+        } else {
+            this.save();
+        }
     },
     save() { localStorage.setItem('irontrack_state', JSON.stringify(this.state)); },
     addWorkout(workoutData) {
@@ -188,7 +186,7 @@ const store = {
             const w = this.state.history.workouts[i];
             const ex = w.exercises.find(e => e.name === exerciseName);
             if (ex && ex.sets.length > 0) history.push(ex.sets);
-            if (history.length >= 3) break; // Only need last 3
+            if (history.length >= 3) break; // Only need last 3 for L3 average
         }
         return history;
     }
@@ -197,11 +195,25 @@ const store = {
 const utils = {
     generateId: () => Math.random().toString(36).substr(2, 9),
     formatDate: (isoString) => new Date(isoString).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }),
-    calcVolume: (sets) => sets.filter(s => s.completed).reduce((acc, s) => acc + (s.weight * s.reps), 0),
+    calcVolume: (sets) => sets.filter(s => s.completed).reduce((acc, s) => acc + ((parseFloat(s.weight)||0) * (parseFloat(s.reps)||0)), 0),
     getDayName: (dayIndex) => ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayIndex],
     getTodayProgram: () => {
         const d = new Date().getDay();
         return store.state.program.find(p => p.day === d) || store.state.program[0];
+    },
+    getMuscleStats: () => {
+        // Calculate total kg lifted (Volume) per muscle group over the last 7 days
+        let stats = {};
+        store.state.history.workouts.slice(-7).forEach(w => {
+            w.exercises.forEach(ex => {
+                const target = EXERCISE_DB[ex.name]?.muscle || 'Other';
+                const vol = utils.calcVolume(ex.sets);
+                if (vol > 0) {
+                    stats[target] = (stats[target] || 0) + vol;
+                }
+            });
+        });
+        return stats;
     }
 };
 
@@ -223,13 +235,13 @@ const workoutEngine = {
                 
                 for (let i = 0; i < ex.targetSets; i++) {
                     // Extract previous (last session) for this specific set index
-                    let prevW = historySets[0] && historySets[0][i] ? historySets[0][i].weight : 0;
-                    let prevR = historySets[0] && historySets[0][i] ? historySets[0][i].reps : 0;
+                    let prevW = historySets[0] && historySets[0][i] ? parseFloat(historySets[0][i].weight) : 0;
+                    let prevR = historySets[0] && historySets[0][i] ? parseFloat(historySets[0][i].reps) : 0;
                     
                     // Calculate L3 Average for this specific set index
                     let sumW = 0, sumR = 0, count = 0;
                     historySets.forEach(h => {
-                        if (h[i]) { sumW += h[i].weight; sumR += h[i].reps; count++; }
+                        if (h[i]) { sumW += parseFloat(h[i].weight)||0; sumR += parseFloat(h[i].reps)||0; count++; }
                     });
                     let l3W = count ? (sumW / count).toFixed(1) : 0;
                     let l3R = count ? Math.round(sumR / count) : 0;
@@ -286,7 +298,9 @@ const workoutEngine = {
         this.activeWorkout.duration = Math.floor((this.activeWorkout.endTime - this.activeWorkout.startTime) / 60000);
         this.activeWorkout.date = new Date().toISOString();
         
+        // Remove sets that weren't ticked complete
         this.activeWorkout.exercises.forEach(ex => ex.sets = ex.sets.filter(s => s.completed));
+        // Remove exercises with no completed sets
         this.activeWorkout.exercises = this.activeWorkout.exercises.filter(ex => ex.sets.length > 0);
         
         if(this.activeWorkout.exercises.length > 0) store.addWorkout(this.activeWorkout);
@@ -375,15 +389,36 @@ const views = {
     renderHome() {
         const today = new Date();
         const prog = utils.getTodayProgram();
+        
+        // Calculate weekly stats
+        const weekWorkouts = store.state.history.workouts.filter(w => new Date(w.date) > new Date(today.getTime() - 7*24*60*60*1000));
+        const totalSets = weekWorkouts.reduce((acc, w) => acc + w.exercises.reduce((a, e) => a + e.sets.length, 0), 0);
+        const totalVol = weekWorkouts.reduce((acc, w) => acc + w.exercises.reduce((a, e) => a + utils.calcVolume(e.sets), 0), 0);
+
         let html = `
             <h1>Dashboard</h1>
             <div class="card">
-                <h3>Today</h3>
+                <h3>Today: ${utils.getDayName(today.getDay()).toUpperCase()}</h3>
                 <h2 style="font-size: 24px;">${prog.name}</h2>
                 <p class="text-muted" style="margin-bottom: 16px;">${prog.exercises.length} exercises planned.</p>
                 ${prog.exercises.length > 0 ? 
                     `<button class="btn btn-primary" onclick="workoutEngine.start(utils.getTodayProgram())"><i class="fas fa-play"></i> START WORKOUT</button>` : 
                     `<p class="text-success">Rest day. Take it easy!</p>`}
+            </div>
+
+            <div class="card">
+                <h3>Weekly Overview</h3>
+                <div class="stat-grid">
+                    <div class="stat-box"><span class="stat-val">${weekWorkouts.length}</span><span class="stat-label">Workouts</span></div>
+                    <div class="stat-box"><span class="stat-val">${totalSets}</span><span class="stat-label">Total Sets</span></div>
+                    <div class="stat-box"><span class="stat-val">${(totalVol/1000).toFixed(1)}k</span><span class="stat-label">Vol (kg)</span></div>
+                    <div class="stat-box"><span class="stat-val">${store.state.user.currentWeight}</span><span class="stat-label">Bodyweight</span></div>
+                </div>
+            </div>
+            
+            <div class="stat-grid" style="grid-template-columns: 1fr 1fr;">
+                <button class="btn" onclick="app.navigate('body')"><i class="fas fa-scale-balanced"></i> Log Weight</button>
+                <button class="btn" onclick="app.navigate('workout')"><i class="fas fa-list"></i> Program</button>
             </div>
         `;
         return html;
@@ -401,9 +436,16 @@ const views = {
         `;
 
         store.state.program.forEach(p => {
+            const isToday = p.day === new Date().getDay();
             html += `
-                <div class="card">
-                    <h2 style="margin:0">${p.name}</h2>
+                <div class="card" style="${isToday ? 'border: 2px solid var(--accent-color);' : ''}">
+                    <div class="flex-between">
+                        <div>
+                            <span class="text-muted" style="font-size:12px; text-transform:uppercase">${utils.getDayName(p.day)}</span>
+                            <h2 style="margin:0">${p.name}</h2>
+                        </div>
+                        ${isToday ? '<span class="text-accent" style="font-size:12px; font-weight:bold">TODAY</span>' : ''}
+                    </div>
                     ${p.exercises.length > 0 ? `<div style="margin-top:12px; padding-top:12px; border-top:1px solid var(--border);">
                         ${p.exercises.map(e => `<div class="text-muted" style="font-size:14px; margin-bottom:4px;">• ${e.name} (${e.targetSets}x${e.targetReps})</div>`).join('')}
                     </div>` : '<div class="text-muted" style="margin-top:8px;">Rest Day</div>'}
@@ -460,22 +502,117 @@ const views = {
         return html;
     },
 
+    renderProgress() {
+        let html = `
+            <h1>Analytics</h1>
+            <div class="card">
+                <h3>Muscle Volume (kg / 7 Days)</h3>
+                <canvas id="muscleChart"></canvas>
+            </div>
+            <div class="card">
+                <h3>Insights</h3>
+                <p class="text-muted">Consistent training detected. Volume charts analyze your total kg lifted per muscle group.</p>
+            </div>
+        `;
+        // Defer chart rendering
+        setTimeout(() => {
+            const stats = utils.getMuscleStats();
+            const ctx = document.getElementById('muscleChart');
+            if(ctx) {
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: Object.keys(stats),
+                        datasets: [{ label: 'Volume (kg)', data: Object.values(stats), backgroundColor: '#ff3b30', borderRadius: 4 }]
+                    },
+                    options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: '#333' } }, x: { grid: { display: false } } } }
+                });
+            }
+        }, 100);
+        return html;
+    },
+
+    renderBody() {
+        const u = store.state.user;
+        const bwHistory = store.state.history.bodyweight;
+        const startW = u.startWeight;
+        const goalW = u.goalWeight;
+        const curW = u.currentWeight;
+        
+        const progress = startW > goalW ? 
+            ((startW - curW) / (startW - goalW)) * 100 : 
+            ((curW - startW) / (goalW - startW)) * 100;
+            
+        let html = `
+            <h1>Body Metrics</h1>
+            <div class="card">
+                <h3>Log Today's Weight</h3>
+                <div style="display:flex; gap:12px; margin-top:12px;">
+                    <input type="number" inputmode="decimal" id="quick-bw-input" value="${curW}" style="flex:1; background:var(--surface-elevated); border:1px solid var(--border); border-radius:8px; color:white; padding:0 16px; font-size:20px; font-weight:bold;">
+                    <button class="btn btn-primary" style="width:auto;" onclick="app.logWeight()"><i class="fas fa-save"></i> SAVE</button>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Cut Progress</h3>
+                <div class="flex-between" style="margin-bottom:8px">
+                    <span>${startW} kg</span>
+                    <span class="text-accent" style="font-weight:bold">${curW} kg</span>
+                    <span>${goalW} kg</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" style="width: ${Math.max(0, Math.min(100, progress))}%"></div>
+                </div>
+                <p class="text-muted" style="margin-top:8px; text-align:center">${Math.abs((curW - goalW)).toFixed(1)} kg remaining</p>
+            </div>
+            <div class="card">
+                <h3>Bodyweight Trend</h3>
+                <canvas id="bwChart"></canvas>
+            </div>
+        `;
+        
+        setTimeout(() => {
+            const ctx = document.getElementById('bwChart');
+            if(ctx && bwHistory.length > 0) {
+                const labels = bwHistory.slice(-14).map(e => new Date(e.date).getDate() + '/' + (new Date(e.date).getMonth()+1));
+                const data = bwHistory.slice(-14).map(e => e.weight);
+                new Chart(ctx, {
+                    type: 'line',
+                    data: { labels, datasets: [{ label: 'Weight (kg)', data, borderColor: '#ff3b30', tension: 0.3, pointBackgroundColor: '#ff3b30' }] },
+                    options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { suggestedMin: goalW - 2, suggestedMax: startW + 2, grid: { color: '#333' } }, x: { grid: { display: false } } } }
+                });
+            }
+        }, 100);
+        return html;
+    },
+
     renderHistory() {
         const workouts = [...store.state.history.workouts].reverse();
         let html = `<h1>Training History</h1>`;
-        if (workouts.length === 0) html += `<p class="text-muted">No workouts logged yet.</p>`;
-        else workouts.forEach(w => {
-            const vol = w.exercises.reduce((acc, ex) => acc + utils.calcVolume(ex.sets), 0);
-            html += `
-                <div class="card">
-                    <div class="flex-between">
-                        <h3 style="margin:0; color:var(--text-primary)">${w.name}</h3>
-                        <span class="text-muted" style="font-size:12px">${utils.formatDate(w.date)}</span>
+        if (workouts.length === 0) {
+            html += `<p class="text-muted">No workouts logged yet.</p>`;
+        } else {
+            workouts.forEach(w => {
+                const vol = w.exercises.reduce((acc, ex) => acc + utils.calcVolume(ex.sets), 0);
+                const sets = w.exercises.reduce((acc, ex) => acc + ex.sets.length, 0);
+                html += `
+                    <div class="card">
+                        <div class="flex-between">
+                            <h3 style="margin:0; color:var(--text-primary)">${w.name}</h3>
+                            <span class="text-muted" style="font-size:12px">${utils.formatDate(w.date)}</span>
+                        </div>
+                        <div style="margin-top:8px; display:flex; gap:16px;" class="text-muted">
+                            <span><i class="fas fa-clock"></i> ${w.duration}m</span>
+                            <span><i class="fas fa-layer-group"></i> ${sets} sets</span>
+                            <span><i class="fas fa-weight-hanging"></i> ${(vol/1000).toFixed(1)}k kg</span>
+                        </div>
                     </div>
-                    <div style="margin-top:8px;" class="text-muted">Volume: ${(vol/1000).toFixed(1)}k kg</div>
-                </div>
-            `;
-        });
+                `;
+            });
+        }
+        
+        html += `<div style="margin-top:32px">
+            <button class="btn" style="background:var(--surface-elevated); color:var(--accent-color)" onclick="app.resetData()"><i class="fas fa-triangle-exclamation"></i> RESET ALL DATA</button>
+        </div>`;
         return html;
     }
 };
@@ -495,8 +632,22 @@ const app = {
         const c = document.getElementById('main-content');
         if(viewId==='home') c.innerHTML = views.renderHome();
         if(viewId==='workout') c.innerHTML = views.renderWorkout();
+        if(viewId==='progress') c.innerHTML = views.renderProgress();
+        if(viewId==='body') c.innerHTML = views.renderBody();
         if(viewId==='history') c.innerHTML = views.renderHistory();
         window.scrollTo(0,0);
+    },
+
+    logWeight() {
+        const input = document.getElementById('quick-bw-input');
+        if (input && input.value) { store.addBodyweight(input.value); this.navigate('body'); }
+    },
+
+    resetData() {
+        if(confirm("WARNING: This will delete all history and reset the app to factory settings (including restoring the default 6-exercise program). Are you sure?")) {
+            localStorage.removeItem('irontrack_state');
+            location.reload();
+        }
     },
 
     // Program Editor Logic
@@ -506,7 +657,12 @@ const app = {
             this.draftProgram = JSON.parse(JSON.stringify(store.state.program));
         } else {
             // Save logic
-            this.draftProgram.forEach((d, i) => d.day = i); // update day indices
+            this.draftProgram.forEach((d, i) => { 
+                d.day = i; // Ensure day index maps exactly to UI placement
+                d.exercises.forEach(e => {
+                    e.targetSets = parseInt(e.targetSets) || 1; // Sanitize input
+                });
+            }); 
             store.state.program = this.draftProgram;
             store.save();
         }
@@ -514,7 +670,7 @@ const app = {
     },
 
     addDay() {
-        this.draftProgram.push({ day: this.draftProgram.length, name: 'New Day', exercises: [] });
+        this.draftProgram.push({ day: this.draftProgram.length, name: 'New Split Day', exercises: [] });
         this.navigate('workout');
     },
     updateDay(idx, field, val) { this.draftProgram[idx][field] = val; },
@@ -526,7 +682,7 @@ const app = {
         this.navigate('workout');
     },
     deleteDay(idx) {
-        if(confirm("Delete this day?")) { this.draftProgram.splice(idx, 1); this.navigate('workout'); }
+        if(confirm("Delete this day from your split?")) { this.draftProgram.splice(idx, 1); this.navigate('workout'); }
     },
     addEx(dIdx) {
         this.draftProgram[dIdx].exercises.push({ name: 'New Exercise', targetSets: 3, targetReps: '8-12' });
@@ -549,10 +705,3 @@ window.onload = () => app.init();
 </script>
 </body>
 </html>
-
-							<script>
-                            	
-							</script>
-                        </body>
-                        </html>
-                    
