@@ -1,19 +1,4 @@
-
-                        <!DOCTYPE html>
-                        <html lang="en">
-                        <head>
-                            <meta charset="UTF-8">
-                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-							<style>
-								body {
-									background-color: white; /* Ensure the iframe has a white background */
-								}
-
-								
-							</style>
-                        </head>
-                        <body>
-                            <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -59,22 +44,8 @@
         }
 
         /* Layout */
-        #app-container {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        #main-content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px 16px;
-            padding-bottom: calc(80px + var(--safe-bottom));
-        }
+        #app-container { display: flex; flex-direction: column; height: 100%; width: 100%; max-width: 800px; margin: 0 auto; position: relative; }
+        #main-content { flex: 1; overflow-y: auto; padding: 20px 16px; padding-bottom: calc(80px + var(--safe-bottom)); }
 
         /* Typography */
         h1, h2, h3 { font-weight: 700; margin-bottom: 12px; }
@@ -85,106 +56,57 @@
         .text-accent { color: var(--accent-color); }
         .text-success { color: var(--success); }
 
-        /* Components: Cards */
-        .card {
-            background: var(--surface-color);
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 16px;
-            border: 1px solid var(--border);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
-
+        /* Cards */
+        .card { background: var(--surface-color); border-radius: 16px; padding: 16px; margin-bottom: 16px; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
         .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .stat-box { background: var(--surface-elevated); padding: 12px; border-radius: 12px; text-align: center; }
         .stat-val { font-size: 24px; font-weight: 700; display: block; }
         .stat-label { font-size: 12px; color: var(--text-secondary); text-transform: uppercase; }
 
         /* Buttons */
-        .btn {
-            background: var(--surface-elevated);
-            color: var(--text-primary);
-            border: none;
-            padding: 14px 20px;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            width: 100%;
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-            transition: transform 0.1s, opacity 0.1s;
-        }
+        .btn { background: var(--surface-elevated); color: var(--text-primary); border: none; padding: 14px 20px; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; width: 100%; display: inline-flex; justify-content: center; align-items: center; gap: 8px; transition: transform 0.1s, opacity 0.1s; }
         .btn:active { transform: scale(0.98); opacity: 0.8; }
         .btn-primary { background: var(--accent-color); color: #fff; }
+        .btn-success { background: var(--success); color: #fff; }
         .btn-sm { padding: 8px 12px; font-size: 14px; width: auto; border-radius: 8px; }
-        .btn-icon { width: 44px; height: 44px; border-radius: 22px; padding: 0; background: var(--surface-elevated); }
+        .btn-icon { width: 36px; height: 36px; border-radius: 8px; padding: 0; background: var(--surface-elevated); display:flex; justify-content:center; align-items:center; color: var(--text-primary); border: none;}
 
         /* Workout Logger Specifics */
         .exercise-card { background: var(--surface-color); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; margin-bottom: 16px; }
         .exercise-header { padding: 16px; background: var(--surface-elevated); display: flex; justify-content: space-between; align-items: center; }
         .exercise-body { padding: 12px 16px; }
         
-        .set-row { display: grid; grid-template-columns: 40px 1fr 1fr 1fr 50px; gap: 8px; align-items: center; margin-bottom: 12px; }
+        .set-wrapper { margin-bottom: 12px; }
+        .set-row { display: grid; grid-template-columns: 40px 1fr 1fr 1fr 50px; gap: 8px; align-items: center; }
         .set-number { font-size: 14px; color: var(--text-secondary); font-weight: bold; text-align: center; }
         .input-group { display: flex; background: var(--bg-color); border-radius: 8px; border: 1px solid var(--border); overflow: hidden; height: 44px; }
         .input-group input { flex: 1; background: transparent; border: none; color: white; text-align: center; font-size: 18px; font-weight: bold; width: 100%; -moz-appearance: textfield; }
-        .input-group input::-webkit-outer-spin-button, .input-group input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         .btn-check { height: 44px; border-radius: 8px; border: none; background: var(--surface-elevated); color: var(--text-secondary); font-size: 18px; cursor: pointer; }
         .btn-check.completed { background: var(--success); color: white; }
 
+        /* Program Editor */
+        .edit-input { background: var(--bg-color); border: 1px solid var(--border); color: white; padding: 8px; border-radius: 8px; width: 100%; font-size: 16px; margin-bottom: 8px;}
+        .editor-exercise-row { display:flex; gap:8px; align-items:center; background: var(--surface-elevated); padding: 8px; border-radius: 8px; margin-bottom: 8px;}
+        .editor-controls { display:flex; gap:4px; flex-direction:column; }
+        .editor-controls button { width: 32px; height: 32px; font-size: 12px; }
+
         /* Nav Bar */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(26, 26, 31, 0.95);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: space-around;
-            padding: 12px 10px calc(12px + var(--safe-bottom));
-            z-index: 1000;
-        }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(26, 26, 31, 0.95); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 12px 10px calc(12px + var(--safe-bottom)); z-index: 1000; }
         .nav-item { color: var(--text-secondary); display: flex; flex-direction: column; align-items: center; text-decoration: none; font-size: 10px; gap: 4px; cursor: pointer; flex: 1; }
         .nav-item i { font-size: 20px; }
         .nav-item.active { color: var(--accent-color); }
 
         /* Floating Rest Timer */
-        #rest-timer-overlay {
-            position: fixed; bottom: calc(80px + var(--safe-bottom)); left: 50%; transform: translateX(-50%);
-            background: var(--accent-color); color: white; padding: 12px 24px; border-radius: 30px;
-            box-shadow: 0 4px 16px rgba(255, 59, 48, 0.4); display: none; font-weight: bold; font-size: 18px;
-            align-items: center; gap: 16px; z-index: 1001; cursor: pointer;
-        }
-
-        /* Active Workout Fullscreen Overlay */
-        #active-workout-view {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg-color); z-index: 2000; display: none; flex-direction: column;
-            overflow-y: auto; padding-bottom: calc(80px + var(--safe-bottom));
-        }
+        #rest-timer-overlay { position: fixed; bottom: calc(80px + var(--safe-bottom)); left: 50%; transform: translateX(-50%); background: var(--accent-color); color: white; padding: 12px 24px; border-radius: 30px; box-shadow: 0 4px 16px rgba(255, 59, 48, 0.4); display: none; font-weight: bold; font-size: 18px; align-items: center; gap: 16px; z-index: 1001; cursor: pointer; }
+        
+        /* Active Workout Overlay */
+        #active-workout-view { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 2000; display: none; flex-direction: column; overflow-y: auto; padding-bottom: calc(80px + var(--safe-bottom)); }
         .workout-header-sticky { position: sticky; top: 0; background: rgba(11, 11, 13, 0.95); backdrop-filter: blur(10px); padding: 16px; border-bottom: 1px solid var(--border); z-index: 10; display: flex; justify-content: space-between; align-items: center; }
 
-        /* Utility Classes */
-        .hidden { display: none !important; }
         .flex-between { display: flex; justify-content: space-between; align-items: center; }
         .progress-bar-bg { background: var(--surface-elevated); height: 8px; border-radius: 4px; overflow: hidden; margin-top: 8px; }
         .progress-bar-fill { background: var(--accent-color); height: 100%; transition: width 0.3s; }
-        
         canvas { max-width: 100%; margin-top: 10px; }
-
-        @media (min-width: 768px) {
-            body { flex-direction: row; }
-            .bottom-nav { position: static; flex-direction: column; width: 80px; justify-content: flex-start; padding-top: 40px; border-right: 1px solid var(--border); border-top: none; }
-            .nav-item { margin-bottom: 30px; }
-            #app-container { flex-direction: row; max-width: 1200px; }
-            #active-workout-view { position: absolute; }
-        }
     </style>
 </head>
 <body>
@@ -201,120 +123,75 @@
     </div>
 </div>
 
-<div id="rest-timer-overlay" onclick="workoutEngine.stopRestTimer()">
-    <i class="fas fa-stopwatch"></i> <span id="rest-timer-display">00:00</span>
-</div>
-
+<div id="rest-timer-overlay" onclick="workoutEngine.stopRestTimer()"><i class="fas fa-stopwatch"></i> <span id="rest-timer-display">00:00</span></div>
 <div id="active-workout-view"></div>
 
 <script>
 /**
- * IRONTRACK OS - Single File Application
- * Architecture:
- * 1. Data Models & Initial State
- * 2. State Management (LocalStorage)
- * 3. Utility Functions
- * 4. Workout Engine (Active Logging, Logic)
- * 5. View Renderers (UI Generation)
- * 6. App Controller (Routing, Init)
+ * IRONTRACK OS - Progressive Web App
  */
 
 // ==========================================
-// 1. DATA MODELS & DEFAULT PROGRAM
+// 1. DATA MODELS & STATE
 // ==========================================
 const DEFAULT_PROGRAM = [
-    { day: 1, id: 'd1', name: 'Hamstring Legs', exercises: [ { name: 'Standing Calf Raise', targetSets: 4, targetReps: '10-15' }, { name: 'Seated Hamstring Leg Curl', targetSets: 3, targetReps: '8-12' }, { name: 'Romanian Deadlift', targetSets: 3, targetReps: '8-10' }, { name: 'Unilateral Leg Extension', targetSets: 3, targetReps: '10-15' }, { name: 'Bulgarian Split Squat', targetSets: 3, targetReps: '8-12' }, { name: 'Weighted Crunch', targetSets: 3, targetReps: '10-15' } ] },
-    { day: 2, id: 'd2', name: 'Chest & Back', exercises: [ { name: 'Incline DB Press', targetSets: 3, targetReps: '5-8' }, { name: 'Pec Deck', targetSets: 3, targetReps: '10-15' }, { name: 'Flat Machine Press', targetSets: 3, targetReps: '8-12' }, { name: 'Lat Pulldown', targetSets: 3, targetReps: '8-12' }, { name: 'Chest Supported Row', targetSets: 3, targetReps: '8-12' }, { name: 'Pull-Ups', targetSets: 3, targetReps: 'AMRAP' } ] },
-    { day: 3, id: 'd3', name: 'Shoulders & Arms', exercises: [ { name: 'Cable Lateral Raise', targetSets: 4, targetReps: '12-15' }, { name: 'Rear Delt Fly', targetSets: 3, targetReps: '12-15' }, { name: 'Preacher Curl', targetSets: 3, targetReps: '8-12' }, { name: 'Hammer Curl', targetSets: 3, targetReps: '10-12' }, { name: 'Tricep Pushdown', targetSets: 3, targetReps: '10-15' }, { name: 'Overhead Extension', targetSets: 3, targetReps: '10-15' } ] },
-    { day: 4, id: 'd4', name: 'Cardio & Abs', exercises: [ { name: 'Hanging Leg Raise', targetSets: 3, targetReps: '10-15' }, { name: 'Incline Treadmill Walk', targetSets: 1, targetReps: '30 mins' } ] },
-    { day: 5, id: 'd5', name: 'Quad Legs', exercises: [ { name: 'Hack Squat', targetSets: 3, targetReps: '8-10' }, { name: 'Leg Press', targetSets: 3, targetReps: '10-12' }, { name: 'Leg Extension', targetSets: 3, targetReps: '12-15' }, { name: 'Seated Leg Curl', targetSets: 3, targetReps: '10-12' }, { name: 'Standing Calf Raise', targetSets: 4, targetReps: '10-15' } ] },
-    { day: 6, id: 'd6', name: 'Upper Body', exercises: [ { name: 'Incline DB Press', targetSets: 3, targetReps: '8-10' }, { name: 'Lat Pulldown', targetSets: 3, targetReps: '8-12' }, { name: 'Cable Lateral Raise', targetSets: 3, targetReps: '12-15' }, { name: 'Seated Curl', targetSets: 3, targetReps: '10-12' }, { name: 'Dips', targetSets: 3, targetReps: 'AMRAP' } ] },
-    { day: 0, id: 'd0', name: 'Rest', exercises: [] }
+    { day: 1, name: 'Hamstring Legs', exercises: [ { name: 'Standing Calf Raise', targetSets: 4, targetReps: '10-15' }, { name: 'Romanian Deadlift', targetSets: 3, targetReps: '8-10' } ] },
+    { day: 2, name: 'Chest & Back', exercises: [ { name: 'Incline DB Press', targetSets: 3, targetReps: '5-8' }, { name: 'Lat Pulldown', targetSets: 3, targetReps: '8-12' } ] },
+    { day: 3, name: 'Shoulders & Arms', exercises: [ { name: 'Cable Lateral Raise', targetSets: 4, targetReps: '12-15' }, { name: 'Preacher Curl', targetSets: 3, targetReps: '8-12' } ] },
+    { day: 4, name: 'Cardio & Abs', exercises: [ { name: 'Hanging Leg Raise', targetSets: 3, targetReps: '10-15' } ] },
+    { day: 5, name: 'Quad Legs', exercises: [ { name: 'Hack Squat', targetSets: 3, targetReps: '8-10' } ] },
+    { day: 6, name: 'Upper Body', exercises: [ { name: 'Incline DB Press', targetSets: 3, targetReps: '8-10' } ] },
+    { day: 0, name: 'Rest', exercises: [] }
 ];
 
 const EXERCISE_DB = {
-    'Incline DB Press': { muscle: 'Chest' }, 'Pec Deck': { muscle: 'Chest' }, 'Flat Machine Press': { muscle: 'Chest' }, 'Dips': { muscle: 'Chest' },
-    'Lat Pulldown': { muscle: 'Back' }, 'Chest Supported Row': { muscle: 'Back' }, 'Pull-Ups': { muscle: 'Back' },
-    'Cable Lateral Raise': { muscle: 'Shoulders' }, 'Rear Delt Fly': { muscle: 'Shoulders' },
-    'Preacher Curl': { muscle: 'Biceps' }, 'Hammer Curl': { muscle: 'Biceps' }, 'Seated Curl': { muscle: 'Biceps' },
-    'Tricep Pushdown': { muscle: 'Triceps' }, 'Overhead Extension': { muscle: 'Triceps' },
-    'Hack Squat': { muscle: 'Quads' }, 'Leg Press': { muscle: 'Quads' }, 'Leg Extension': { muscle: 'Quads' }, 'Bulgarian Split Squat': { muscle: 'Quads' },
-    'Romanian Deadlift': { muscle: 'Hamstrings' }, 'Seated Hamstring Leg Curl': { muscle: 'Hamstrings' }, 'Seated Leg Curl': { muscle: 'Hamstrings' },
-    'Standing Calf Raise': { muscle: 'Calves' },
-    'Weighted Crunch': { muscle: 'Abs' }, 'Hanging Leg Raise': { muscle: 'Abs' }, 'Incline Treadmill Walk': { muscle: 'Cardio' }
+    'Incline DB Press': { muscle: 'Chest' }, 'Lat Pulldown': { muscle: 'Back' }, 'Hack Squat': { muscle: 'Quads' },
+    'Romanian Deadlift': { muscle: 'Hamstrings' }, 'Cable Lateral Raise': { muscle: 'Shoulders' }
 };
 
-const DEFAULT_STATE = {
-    user: { startWeight: 95.0, currentWeight: 94.6, goalWeight: 88.0, cutStartDate: new Date().toISOString() },
-    program: DEFAULT_PROGRAM,
-    history: { workouts: [], bodyweight: [], prs: [] },
-    settings: { theme: 'dark', units: 'kg', restTimer: 120 }
-};
-
-// ==========================================
-// 2. STATE MANAGEMENT
-// ==========================================
 const store = {
-    state: {},
+    state: {
+        user: { startWeight: 95.0, currentWeight: 94.6, goalWeight: 88.0 },
+        program: DEFAULT_PROGRAM,
+        history: { workouts: [], bodyweight: [] },
+        settings: { restTimer: 120 }
+    },
     load() {
         const saved = localStorage.getItem('irontrack_state');
-        if (saved) {
-            this.state = JSON.parse(saved);
-        } else {
-            this.state = JSON.parse(JSON.stringify(DEFAULT_STATE)); // Deep copy
-            this.state.history.bodyweight.push({ date: new Date().toISOString(), weight: 94.6 });
-            this.save();
-        }
+        if (saved) this.state = JSON.parse(saved);
+        else this.save();
     },
     save() { localStorage.setItem('irontrack_state', JSON.stringify(this.state)); },
-    getRecentPerformance(exerciseName) {
-        // Look backwards through workouts to find the last time this was performed
-        for (let i = this.state.history.workouts.length - 1; i >= 0; i--) {
-            const w = this.state.history.workouts[i];
-            const ex = w.exercises.find(e => e.name === exerciseName);
-            if (ex && ex.sets.length > 0) return ex.sets;
-        }
-        return null;
-    },
     addWorkout(workoutData) {
         this.state.history.workouts.push(workoutData);
         this.save();
     },
-    addBodyweight(weight) {
-        this.state.history.bodyweight.push({ date: new Date().toISOString(), weight: parseFloat(weight) });
-        this.state.user.currentWeight = parseFloat(weight);
-        this.save();
+    getExerciseHistorySets(exerciseName) {
+        let history = [];
+        // Loop backwards to find previous logs of this exercise
+        for (let i = this.state.history.workouts.length - 1; i >= 0; i--) {
+            const w = this.state.history.workouts[i];
+            const ex = w.exercises.find(e => e.name === exerciseName);
+            if (ex && ex.sets.length > 0) history.push(ex.sets);
+            if (history.length >= 3) break; // Only need last 3
+        }
+        return history;
     }
 };
 
-// ==========================================
-// 3. UTILITIES
-// ==========================================
 const utils = {
     generateId: () => Math.random().toString(36).substr(2, 9),
     formatDate: (isoString) => new Date(isoString).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }),
-    calc1RM: (weight, reps) => (reps > 0 && weight > 0) ? (weight * (1 + (reps / 30))).toFixed(1) : 0,
     calcVolume: (sets) => sets.filter(s => s.completed).reduce((acc, s) => acc + (s.weight * s.reps), 0),
     getDayName: (dayIndex) => ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayIndex],
-    getTodayProgram: () => store.state.program.find(p => p.day === new Date().getDay()),
-    getMuscleStats: () => {
-        // Calculate total kg lifted (Volume) per muscle group over the last 7 days
-        let stats = {};
-        store.state.history.workouts.slice(-7).forEach(w => {
-            w.exercises.forEach(ex => {
-                const target = EXERCISE_DB[ex.name]?.muscle || 'Other';
-                const vol = utils.calcVolume(ex.sets);
-                if (vol > 0) {
-                    stats[target] = (stats[target] || 0) + vol;
-                }
-            });
-        });
-        return stats;
+    getTodayProgram: () => {
+        const d = new Date().getDay();
+        return store.state.program.find(p => p.day === d) || store.state.program[0];
     }
 };
 
 // ==========================================
-// 4. WORKOUT ENGINE
+// 2. WORKOUT ENGINE
 // ==========================================
 const workoutEngine = {
     activeWorkout: null,
@@ -326,26 +203,31 @@ const workoutEngine = {
             startTime: new Date().getTime(),
             name: programDay.name,
             exercises: programDay.exercises.map(ex => {
-                const prev = store.getRecentPerformance(ex.name);
+                const historySets = store.getExerciseHistorySets(ex.name); // Array of previous set arrays
                 let startingSets = [];
-                if (prev) {
-                    startingSets = prev.map(p => ({ weight: p.weight, reps: p.reps, rir: p.rir || 2, completed: false }));
-                } else {
-                    for(let i=0; i<ex.targetSets; i++) startingSets.push({ weight: 0, reps: 0, rir: 2, completed: false });
+                
+                for (let i = 0; i < ex.targetSets; i++) {
+                    // Extract previous (last session) for this specific set index
+                    let prevW = historySets[0] && historySets[0][i] ? historySets[0][i].weight : 0;
+                    let prevR = historySets[0] && historySets[0][i] ? historySets[0][i].reps : 0;
+                    
+                    // Calculate L3 Average for this specific set index
+                    let sumW = 0, sumR = 0, count = 0;
+                    historySets.forEach(h => {
+                        if (h[i]) { sumW += h[i].weight; sumR += h[i].reps; count++; }
+                    });
+                    let l3W = count ? (sumW / count).toFixed(1) : 0;
+                    let l3R = count ? Math.round(sumR / count) : 0;
+
+                    startingSets.push({ 
+                        weight: prevW, reps: prevR, rir: 2, completed: false,
+                        prevWeight: prevW, prevReps: prevR, l3Weight: l3W, l3Reps: l3R
+                    });
                 }
                 return { name: ex.name, targetSets: ex.targetSets, targetReps: ex.targetReps, sets: startingSets };
             })
         };
         document.getElementById('active-workout-view').style.display = 'flex';
-        this.renderActiveWorkout();
-    },
-
-    updateSet(exIdx, setIdx, field, delta) {
-        let val = parseFloat(this.activeWorkout.exercises[exIdx].sets[setIdx][field]);
-        val = isNaN(val) ? 0 : val;
-        let increment = field === 'weight' ? 1.0 : 1; // 1kg or 1rep
-        let newVal = Math.max(0, val + (delta * increment));
-        this.activeWorkout.exercises[exIdx].sets[setIdx][field] = newVal;
         this.renderActiveWorkout();
     },
 
@@ -362,8 +244,8 @@ const workoutEngine = {
 
     addSet(exIdx) {
         const sets = this.activeWorkout.exercises[exIdx].sets;
-        const last = sets[sets.length-1] || { weight: 0, reps: 0, rir: 2 };
-        sets.push({ weight: last.weight, reps: last.reps, rir: last.rir, completed: false });
+        const last = sets[sets.length-1] || { weight: 0, reps: 0, rir: 2, prevWeight:0, prevReps:0, l3Weight:0, l3Reps:0 };
+        sets.push({ ...last, completed: false });
         this.renderActiveWorkout();
     },
 
@@ -373,23 +255,15 @@ const workoutEngine = {
         const overlay = document.getElementById('rest-timer-overlay');
         let remaining = seconds;
         overlay.style.display = 'flex';
-        
         this.timerInterval = setInterval(() => {
             remaining--;
-            let m = Math.floor(remaining / 60);
-            let s = remaining % 60;
+            let m = Math.floor(remaining / 60), s = remaining % 60;
             display.innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
-            if (remaining <= 0) {
-                this.stopRestTimer();
-                if(navigator.vibrate) navigator.vibrate([200, 100, 200]);
-            }
+            if (remaining <= 0) { this.stopRestTimer(); if(navigator.vibrate) navigator.vibrate([200, 100, 200]); }
         }, 1000);
     },
 
-    stopRestTimer() {
-        clearInterval(this.timerInterval);
-        document.getElementById('rest-timer-overlay').style.display = 'none';
-    },
+    stopRestTimer() { clearInterval(this.timerInterval); document.getElementById('rest-timer-overlay').style.display = 'none'; },
 
     finish() {
         if (!confirm("Finish Workout?")) return;
@@ -397,40 +271,20 @@ const workoutEngine = {
         this.activeWorkout.duration = Math.floor((this.activeWorkout.endTime - this.activeWorkout.startTime) / 60000);
         this.activeWorkout.date = new Date().toISOString();
         
-        // Filter out empty/uncompleted sets entirely to keep data clean
-        this.activeWorkout.exercises.forEach(ex => {
-            ex.sets = ex.sets.filter(s => s.completed);
-        });
-        // Filter out exercises with no sets
+        this.activeWorkout.exercises.forEach(ex => ex.sets = ex.sets.filter(s => s.completed));
         this.activeWorkout.exercises = this.activeWorkout.exercises.filter(ex => ex.sets.length > 0);
         
-        if(this.activeWorkout.exercises.length > 0) {
-            store.addWorkout(this.activeWorkout);
-            this.generateInsights(this.activeWorkout);
-        }
+        if(this.activeWorkout.exercises.length > 0) store.addWorkout(this.activeWorkout);
         
-        this.activeWorkout = null;
-        this.stopRestTimer();
+        this.activeWorkout = null; this.stopRestTimer();
         document.getElementById('active-workout-view').style.display = 'none';
         app.navigate('home');
     },
 
     cancel() {
         if (!confirm("Cancel workout? No data will be saved.")) return;
-        this.activeWorkout = null;
-        this.stopRestTimer();
+        this.activeWorkout = null; this.stopRestTimer();
         document.getElementById('active-workout-view').style.display = 'none';
-    },
-
-    generateInsights(workout) {
-        let msg = `Great job! Workout complete (${workout.duration} mins).\n\n`;
-        workout.exercises.forEach(ex => {
-            const vol = utils.calcVolume(ex.sets);
-            const maxRep = Math.max(...ex.sets.map(s => s.reps));
-            // Basic progression logic
-            if (maxRep > 10) msg += `• ${ex.name}: Hit high reps, consider increasing weight next time.\n`;
-        });
-        alert(msg);
     },
 
     renderActiveWorkout() {
@@ -439,28 +293,24 @@ const workoutEngine = {
         
         let html = `
             <div class="workout-header-sticky">
-                <div>
-                    <h2 style="margin:0">${this.activeWorkout.name}</h2>
-                    <span class="text-muted">${Math.floor((new Date().getTime() - this.activeWorkout.startTime)/60000)} min elapsed</span>
-                </div>
-                <button class="btn btn-sm btn-primary" onclick="workoutEngine.finish()">FINISH</button>
-                <button class="btn btn-sm" style="background:transparent; color:var(--accent-color)" onclick="workoutEngine.cancel()">Cancel</button>
+                <div><h2 style="margin:0">${this.activeWorkout.name}</h2></div>
+                <button class="btn btn-sm btn-success" onclick="workoutEngine.finish()"><i class="fas fa-check"></i> FINISH</button>
+                <button class="btn btn-sm btn-icon" onclick="workoutEngine.cancel()"><i class="fas fa-times"></i></button>
             </div>
             <div style="padding: 16px;">
         `;
 
         this.activeWorkout.exercises.forEach((ex, exIdx) => {
-            const prevStr = store.getRecentPerformance(ex.name) ? "Pre-filled from last session" : "Target: " + ex.targetReps;
             html += `
                 <div class="exercise-card">
                     <div class="exercise-header">
                         <div>
                             <h3 style="margin:0; color:var(--text-primary)">${ex.name}</h3>
-                            <span class="text-muted" style="font-size:12px">${prevStr}</span>
+                            <span class="text-muted" style="font-size:12px">Target: ${ex.targetReps}</span>
                         </div>
                     </div>
                     <div class="exercise-body">
-                        <div class="set-row text-muted" style="font-size:12px; margin-bottom: 4px;">
+                        <div class="set-row text-muted" style="font-size:12px; margin-bottom: 8px;">
                             <div style="text-align:center">SET</div>
                             <div style="text-align:center">KG</div>
                             <div style="text-align:center">REPS</div>
@@ -472,28 +322,30 @@ const workoutEngine = {
             ex.sets.forEach((set, setIdx) => {
                 const isComp = set.completed;
                 html += `
-                    <div class="set-row ${isComp ? 'completed-row' : ''}">
-                        <div class="set-number">${setIdx + 1}</div>
-                        
-                        <div class="input-group">
-                            <input type="number" inputmode="decimal" value="${set.weight}" onchange="workoutEngine.inputChange(${exIdx}, ${setIdx}, 'weight', this.value)" ${isComp?'disabled':''}>
+                    <div class="set-wrapper">
+                        <div class="flex-between text-muted" style="font-size: 11px; margin-bottom: 4px; padding-left: 45px; padding-right: 55px;">
+                            <span>Prev: ${set.prevWeight}×${set.prevReps}</span>
+                            <span>L3: ${set.l3Weight}×${set.l3Reps}</span>
                         </div>
-                        
-                        <div class="input-group">
-                            <input type="number" inputmode="numeric" value="${set.reps}" onchange="workoutEngine.inputChange(${exIdx}, ${setIdx}, 'reps', this.value)" ${isComp?'disabled':''}>
+                        <div class="set-row ${isComp ? 'completed-row' : ''}">
+                            <div class="set-number">${setIdx + 1}</div>
+                            <div class="input-group">
+                                <input type="number" inputmode="decimal" value="${set.weight}" onchange="workoutEngine.inputChange(${exIdx}, ${setIdx}, 'weight', this.value)" ${isComp?'disabled':''}>
+                            </div>
+                            <div class="input-group">
+                                <input type="number" inputmode="numeric" value="${set.reps}" onchange="workoutEngine.inputChange(${exIdx}, ${setIdx}, 'reps', this.value)" ${isComp?'disabled':''}>
+                            </div>
+                            <div class="input-group">
+                                <input type="number" inputmode="numeric" value="${set.rir}" max="3" onchange="workoutEngine.inputChange(${exIdx}, ${setIdx}, 'rir', this.value)" ${isComp?'disabled':''}>
+                            </div>
+                            <button class="btn-check ${isComp ? 'completed' : ''}" onclick="workoutEngine.toggleSet(${exIdx}, ${setIdx})">
+                                <i class="fas fa-check"></i>
+                            </button>
                         </div>
-
-                        <div class="input-group">
-                            <input type="number" inputmode="numeric" value="${set.rir}" max="3" onchange="workoutEngine.inputChange(${exIdx}, ${setIdx}, 'rir', this.value)" ${isComp?'disabled':''}>
-                        </div>
-
-                        <button class="btn-check ${isComp ? 'completed' : ''}" onclick="workoutEngine.toggleSet(${exIdx}, ${setIdx})">
-                            <i class="fas fa-check"></i>
-                        </button>
                     </div>
                 `;
             });
-            html += `<button class="btn btn-sm" style="margin-top:8px; width:100%" onclick="workoutEngine.addSet(${exIdx})">+ Add Set</button></div></div>`;
+            html += `<button class="btn btn-sm" style="width:100%; border:1px solid var(--border);" onclick="workoutEngine.addSet(${exIdx})">+ Add Set</button></div></div>`;
         });
         
         html += `</div>`;
@@ -502,61 +354,41 @@ const workoutEngine = {
 };
 
 // ==========================================
-// 5. VIEW RENDERERS
+// 3. UI VIEWS & ROUTING
 // ==========================================
 const views = {
     renderHome() {
         const today = new Date();
         const prog = utils.getTodayProgram();
-        
-        // Calculate weekly stats
-        const weekWorkouts = store.state.history.workouts.filter(w => new Date(w.date) > new Date(today.getTime() - 7*24*60*60*1000));
-        const totalSets = weekWorkouts.reduce((acc, w) => acc + w.exercises.reduce((a, e) => a + e.sets.length, 0), 0);
-        const totalVol = weekWorkouts.reduce((acc, w) => acc + w.exercises.reduce((a, e) => a + utils.calcVolume(e.sets), 0), 0);
-
         let html = `
             <h1>Dashboard</h1>
-            
             <div class="card">
-                <h3>Today: ${utils.getDayName(today.getDay()).toUpperCase()}</h3>
+                <h3>Today</h3>
                 <h2 style="font-size: 24px;">${prog.name}</h2>
                 <p class="text-muted" style="margin-bottom: 16px;">${prog.exercises.length} exercises planned.</p>
                 ${prog.exercises.length > 0 ? 
                     `<button class="btn btn-primary" onclick="workoutEngine.start(utils.getTodayProgram())"><i class="fas fa-play"></i> START WORKOUT</button>` : 
                     `<p class="text-success">Rest day. Take it easy!</p>`}
             </div>
-
-            <div class="card">
-                <h3>Weekly Overview</h3>
-                <div class="stat-grid">
-                    <div class="stat-box"><span class="stat-val">${weekWorkouts.length}</span><span class="stat-label">Workouts</span></div>
-                    <div class="stat-box"><span class="stat-val">${totalSets}</span><span class="stat-label">Total Sets</span></div>
-                    <div class="stat-box"><span class="stat-val">${(totalVol/1000).toFixed(1)}k</span><span class="stat-label">Vol (kg)</span></div>
-                    <div class="stat-box"><span class="stat-val">${store.state.user.currentWeight}</span><span class="stat-label">Bodyweight</span></div>
-                </div>
-            </div>
-            
-            <div class="stat-grid" style="grid-template-columns: 1fr 1fr;">
-                <button class="btn" onclick="app.navigate('body')"><i class="fas fa-scale-balanced"></i> Log Weight</button>
-                <button class="btn" onclick="app.navigate('workout')"><i class="fas fa-list"></i> Program</button>
-            </div>
         `;
         return html;
     },
 
     renderWorkout() {
-        let html = `<h1>Training Program</h1><p class="text-muted mb-4">Your default weekly split.</p>`;
+        if (app.isEditingProgram) return this.renderProgramEditor();
+
+        let html = `
+            <div class="flex-between" style="margin-bottom:16px;">
+                <h1 style="margin:0">Program</h1>
+                <button class="btn btn-sm btn-icon" onclick="app.toggleProgramEdit()"><i class="fas fa-pen"></i></button>
+            </div>
+            <p class="text-muted mb-4">Your current workout split.</p>
+        `;
+
         store.state.program.forEach(p => {
-            const isToday = p.day === new Date().getDay();
             html += `
-                <div class="card" style="${isToday ? 'border: 2px solid var(--accent-color);' : ''}">
-                    <div class="flex-between">
-                        <div>
-                            <span class="text-muted" style="font-size:12px; text-transform:uppercase">${utils.getDayName(p.day)}</span>
-                            <h2 style="margin:0">${p.name}</h2>
-                        </div>
-                        ${isToday ? '<span class="text-accent" style="font-size:12px; font-weight:bold">TODAY</span>' : ''}
-                    </div>
+                <div class="card">
+                    <h2 style="margin:0">${p.name}</h2>
                     ${p.exercises.length > 0 ? `<div style="margin-top:12px; padding-top:12px; border-top:1px solid var(--border);">
                         ${p.exercises.map(e => `<div class="text-muted" style="font-size:14px; margin-bottom:4px;">• ${e.name} (${e.targetSets}x${e.targetReps})</div>`).join('')}
                     </div>` : '<div class="text-muted" style="margin-top:8px;">Rest Day</div>'}
@@ -566,180 +398,139 @@ const views = {
         return html;
     },
 
-    renderProgress() {
+    renderProgramEditor() {
         let html = `
-            <h1>Analytics</h1>
-            <div class="card">
-                <h3>Muscle Volume (kg / 7 Days)</h3>
-                <canvas id="muscleChart"></canvas>
-            </div>
-            <div class="card">
-                <h3>Insights</h3>
-                <p class="text-muted">Consistent training detected. Keep tracking to unlock 1RM trends and auto-coach recommendations.</p>
+            <div class="flex-between" style="margin-bottom:16px; position:sticky; top:0; background:var(--bg-color); z-index:10; padding:10px 0;">
+                <h1 style="margin:0; color:var(--accent-color)">Edit Split</h1>
+                <button class="btn btn-sm btn-success" onclick="app.toggleProgramEdit()"><i class="fas fa-save"></i> SAVE</button>
             </div>
         `;
-        // Defer chart rendering
-        setTimeout(() => {
-            const stats = utils.getMuscleStats();
-            const ctx = document.getElementById('muscleChart');
-            if(ctx) {
-                new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: Object.keys(stats),
-                        datasets: [{ label: 'Volume (kg)', data: Object.values(stats), backgroundColor: '#ff3b30', borderRadius: 4 }]
-                    },
-                    options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: '#333' } }, x: { grid: { display: false } } } }
-                });
-            }
-        }, 100);
-        return html;
-    },
 
-    renderBody() {
-        const u = store.state.user;
-        const bwHistory = store.state.history.bodyweight;
-        const startW = u.startWeight;
-        const goalW = u.goalWeight;
-        const curW = u.currentWeight;
-        
-        const progress = startW > goalW ? 
-            ((startW - curW) / (startW - goalW)) * 100 : 
-            ((curW - startW) / (goalW - startW)) * 100;
+        app.draftProgram.forEach((day, dIdx) => {
+            html += `
+                <div class="card" style="border: 1px solid var(--accent-color);">
+                    <div class="flex-between" style="margin-bottom: 12px;">
+                        <input class="edit-input" style="font-size:20px; font-weight:bold; margin:0; width:60%" value="${day.name}" onchange="app.updateDay(${dIdx}, 'name', this.value)">
+                        <div class="editor-controls" style="flex-direction:row;">
+                            <button class="btn-icon" onclick="app.moveDay(${dIdx}, -1)"><i class="fas fa-arrow-up"></i></button>
+                            <button class="btn-icon" onclick="app.moveDay(${dIdx}, 1)"><i class="fas fa-arrow-down"></i></button>
+                            <button class="btn-icon text-accent" onclick="app.deleteDay(${dIdx})"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+            `;
             
-        let html = `
-            <h1>Body Metrics</h1>
-            
-            <div class="card">
-                <h3>Log Today's Weight</h3>
-                <div style="display:flex; gap:12px; margin-top:12px;">
-                    <input type="number" inputmode="decimal" id="quick-bw-input" value="${curW}" style="flex:1; background:var(--surface-elevated); border:1px solid var(--border); border-radius:8px; color:white; padding:0 16px; font-size:20px; font-weight:bold;">
-                    <button class="btn btn-primary" style="width:auto;" onclick="app.logWeight()"><i class="fas fa-save"></i> SAVE</button>
-                </div>
-            </div>
+            day.exercises.forEach((ex, eIdx) => {
+                html += `
+                    <div class="editor-exercise-row">
+                        <div style="flex:1;">
+                            <input class="edit-input" style="margin-bottom:4px;" placeholder="Exercise Name" value="${ex.name}" onchange="app.updateEx(${dIdx}, ${eIdx}, 'name', this.value)">
+                            <div style="display:flex; gap:8px;">
+                                <input type="number" class="edit-input" style="margin:0;" placeholder="Sets" value="${ex.targetSets}" onchange="app.updateEx(${dIdx}, ${eIdx}, 'targetSets', this.value)">
+                                <input class="edit-input" style="margin:0;" placeholder="Reps (e.g. 8-12)" value="${ex.targetReps}" onchange="app.updateEx(${dIdx}, ${eIdx}, 'targetReps', this.value)">
+                            </div>
+                        </div>
+                        <div class="editor-controls">
+                            <button class="btn-icon" onclick="app.moveEx(${dIdx}, ${eIdx}, -1)"><i class="fas fa-chevron-up"></i></button>
+                            <button class="btn-icon" onclick="app.moveEx(${dIdx}, ${eIdx}, 1)"><i class="fas fa-chevron-down"></i></button>
+                            <button class="btn-icon text-accent" onclick="app.deleteEx(${dIdx}, ${eIdx})"><i class="fas fa-times"></i></button>
+                        </div>
+                    </div>
+                `;
+            });
 
-            <div class="card">
-                <h3>Cut Progress</h3>
-                <div class="flex-between" style="margin-bottom:8px">
-                    <span>${startW} kg</span>
-                    <span class="text-accent" style="font-weight:bold">${curW} kg</span>
-                    <span>${goalW} kg</span>
-                </div>
-                <div class="progress-bar-bg">
-                    <div class="progress-bar-fill" style="width: ${Math.max(0, Math.min(100, progress))}%"></div>
-                </div>
-                <p class="text-muted" style="margin-top:8px; text-align:center">${Math.abs((curW - goalW)).toFixed(1)} kg remaining</p>
-            </div>
+            html += `<button class="btn btn-sm" style="margin-top:12px;" onclick="app.addEx(${dIdx})">+ Add Exercise</button></div>`;
+        });
 
-            <div class="card">
-                <h3>Bodyweight Trend</h3>
-                <canvas id="bwChart"></canvas>
-            </div>
-        `;
-        
-        setTimeout(() => {
-            const ctx = document.getElementById('bwChart');
-            if(ctx && bwHistory.length > 0) {
-                const labels = bwHistory.slice(-14).map(e => new Date(e.date).getDate() + '/' + (new Date(e.date).getMonth()+1));
-                const data = bwHistory.slice(-14).map(e => e.weight);
-                new Chart(ctx, {
-                    type: 'line',
-                    data: { labels, datasets: [{ label: 'Weight (kg)', data, borderColor: '#ff3b30', tension: 0.3, pointBackgroundColor: '#ff3b30' }] },
-                    options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { suggestedMin: goalW - 2, suggestedMax: startW + 2, grid: { color: '#333' } }, x: { grid: { display: false } } } }
-                });
-            }
-        }, 100);
-
+        html += `<button class="btn" style="margin-bottom: 30px; border:1px dashed var(--text-secondary);" onclick="app.addDay()">+ Add New Split Day</button>`;
         return html;
     },
 
     renderHistory() {
         const workouts = [...store.state.history.workouts].reverse();
         let html = `<h1>Training History</h1>`;
-        if (workouts.length === 0) {
-            html += `<p class="text-muted">No workouts logged yet. Go to Home to start one.</p>`;
-        } else {
-            workouts.forEach(w => {
-                const vol = w.exercises.reduce((acc, ex) => acc + utils.calcVolume(ex.sets), 0);
-                const sets = w.exercises.reduce((acc, ex) => acc + ex.sets.length, 0);
-                html += `
-                    <div class="card">
-                        <div class="flex-between">
-                            <h3 style="margin:0; color:var(--text-primary)">${w.name}</h3>
-                            <span class="text-muted" style="font-size:12px">${utils.formatDate(w.date)}</span>
-                        </div>
-                        <div style="margin-top:8px; display:flex; gap:16px;" class="text-muted">
-                            <span><i class="fas fa-clock"></i> ${w.duration}m</span>
-                            <span><i class="fas fa-layer-group"></i> ${sets} sets</span>
-                            <span><i class="fas fa-weight-hanging"></i> ${(vol/1000).toFixed(1)}k kg</span>
-                        </div>
+        if (workouts.length === 0) html += `<p class="text-muted">No workouts logged yet.</p>`;
+        else workouts.forEach(w => {
+            const vol = w.exercises.reduce((acc, ex) => acc + utils.calcVolume(ex.sets), 0);
+            html += `
+                <div class="card">
+                    <div class="flex-between">
+                        <h3 style="margin:0; color:var(--text-primary)">${w.name}</h3>
+                        <span class="text-muted" style="font-size:12px">${utils.formatDate(w.date)}</span>
                     </div>
-                `;
-            });
-        }
-        
-        html += `<div style="margin-top:32px">
-            <button class="btn" style="background:var(--surface-elevated); color:var(--accent-color)" onclick="app.resetData()"><i class="fas fa-triangle-exclamation"></i> RESET ALL DATA</button>
-        </div>`;
+                    <div style="margin-top:8px;" class="text-muted">Volume: ${(vol/1000).toFixed(1)}k kg</div>
+                </div>
+            `;
+        });
         return html;
     }
 };
 
-// ==========================================
-// 6. APP CONTROLLER
-// ==========================================
 const app = {
-    init() {
-        store.load();
-        Chart.defaults.color = '#8e8e93';
-        Chart.defaults.font.family = '-apple-system, sans-serif';
-        this.navigate('home');
-    },
+    isEditingProgram: false,
+    draftProgram: [],
+
+    init() { store.load(); this.navigate('home'); },
 
     navigate(viewId) {
-        // Update nav UI
         document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
         const navMap = { 'home': 0, 'workout': 1, 'progress': 2, 'body': 3, 'history': 4 };
-        document.querySelectorAll('.nav-item')[navMap[viewId]].classList.add('active');
-
-        // Render view
-        const container = document.getElementById('main-content');
-        switch(viewId) {
-            case 'home': container.innerHTML = views.renderHome(); break;
-            case 'workout': container.innerHTML = views.renderWorkout(); break;
-            case 'progress': container.innerHTML = views.renderProgress(); break;
-            case 'body': container.innerHTML = views.renderBody(); break;
-            case 'history': container.innerHTML = views.renderHistory(); break;
+        if(document.querySelectorAll('.nav-item')[navMap[viewId]]) {
+            document.querySelectorAll('.nav-item')[navMap[viewId]].classList.add('active');
         }
+        const c = document.getElementById('main-content');
+        if(viewId==='home') c.innerHTML = views.renderHome();
+        if(viewId==='workout') c.innerHTML = views.renderWorkout();
+        if(viewId==='history') c.innerHTML = views.renderHistory();
         window.scrollTo(0,0);
     },
 
-    logWeight() {
-        const input = document.getElementById('quick-bw-input');
-        if (input && input.value) {
-            store.addBodyweight(input.value);
-            this.navigate('body');
+    // Program Editor Logic
+    toggleProgramEdit() {
+        this.isEditingProgram = !this.isEditingProgram;
+        if (this.isEditingProgram) {
+            this.draftProgram = JSON.parse(JSON.stringify(store.state.program));
+        } else {
+            // Save logic
+            this.draftProgram.forEach((d, i) => d.day = i); // update day indices
+            store.state.program = this.draftProgram;
+            store.save();
         }
+        this.navigate('workout');
     },
 
-    resetData() {
-        if(confirm("WARNING: This will delete all history and reset the app to factory settings. Are you sure?")) {
-            localStorage.removeItem('irontrack_state');
-            location.reload();
-        }
+    addDay() {
+        this.draftProgram.push({ day: this.draftProgram.length, name: 'New Day', exercises: [] });
+        this.navigate('workout');
+    },
+    updateDay(idx, field, val) { this.draftProgram[idx][field] = val; },
+    moveDay(idx, dir) {
+        if(idx+dir < 0 || idx+dir >= this.draftProgram.length) return;
+        const temp = this.draftProgram[idx];
+        this.draftProgram[idx] = this.draftProgram[idx+dir];
+        this.draftProgram[idx+dir] = temp;
+        this.navigate('workout');
+    },
+    deleteDay(idx) {
+        if(confirm("Delete this day?")) { this.draftProgram.splice(idx, 1); this.navigate('workout'); }
+    },
+    addEx(dIdx) {
+        this.draftProgram[dIdx].exercises.push({ name: 'New Exercise', targetSets: 3, targetReps: '8-12' });
+        this.navigate('workout');
+    },
+    updateEx(dIdx, eIdx, field, val) { this.draftProgram[dIdx].exercises[eIdx][field] = val; },
+    moveEx(dIdx, eIdx, dir) {
+        const arr = this.draftProgram[dIdx].exercises;
+        if(eIdx+dir < 0 || eIdx+dir >= arr.length) return;
+        const temp = arr[eIdx]; arr[eIdx] = arr[eIdx+dir]; arr[eIdx+dir] = temp;
+        this.navigate('workout');
+    },
+    deleteEx(dIdx, eIdx) {
+        this.draftProgram[dIdx].exercises.splice(eIdx, 1);
+        this.navigate('workout');
     }
 };
 
-// Boot
 window.onload = () => app.init();
-
 </script>
 </body>
 </html>
-
-							<script>
-                            	
-							</script>
-                        </body>
-                        </html>
-                    
