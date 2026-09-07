@@ -32,7 +32,15 @@
         body { background-color: var(--bg-color); color: var(--text-primary); font-family: var(--font-family); line-height: 1.5; display: flex; flex-direction: column; height: 100vh; width: 100vw; overflow: hidden; }
 
         #app-container { display: flex; flex-direction: column; height: 100%; width: 100%; max-width: 800px; margin: 0 auto; position: relative; }
-        #main-content { flex: 1; overflow-y: auto; padding: 20px 16px; padding-bottom: calc(80px + var(--safe-bottom)); }
+        
+        #main-content { 
+            flex: 1; 
+            overflow-y: auto; 
+            padding-top: calc(24px + env(safe-area-inset-top, 0px));
+            padding-left: 16px;
+            padding-right: 16px;
+            padding-bottom: calc(80px + var(--safe-bottom)); 
+        }
 
         h1, h2, h3 { font-weight: 700; margin-bottom: 12px; }
         h1 { font-size: 28px; letter-spacing: -0.5px; }
@@ -90,12 +98,57 @@
         .nav-item i { font-size: 18px; }
         .nav-item.active { color: var(--accent-color); }
 
+        /* Dynamic Sticky Headers to fix iOS time overlap */
+        .page-header {
+            position: sticky;
+            top: 0;
+            background: rgba(11, 11, 13, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 10;
+            margin-top: calc(-24px - env(safe-area-inset-top, 0px));
+            margin-left: -16px;
+            margin-right: -16px;
+            margin-bottom: 16px;
+            padding-top: calc(16px + env(safe-area-inset-top, 0px));
+            padding-left: 16px;
+            padding-right: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .workout-header-sticky { 
+            position: sticky; 
+            top: 0; 
+            background: rgba(11, 11, 13, 0.95); 
+            backdrop-filter: blur(10px); 
+            -webkit-backdrop-filter: blur(10px);
+            padding-top: calc(16px + env(safe-area-inset-top, 0px));
+            padding-left: 16px;
+            padding-right: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border); 
+            z-index: 10; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+
         #rest-timer-overlay { position: fixed; bottom: calc(80px + var(--safe-bottom)); left: 50%; transform: translateX(-50%); background: var(--accent-color); color: white; padding: 12px 24px; border-radius: 30px; box-shadow: 0 4px 16px rgba(255, 59, 48, 0.4); display: none; font-weight: bold; font-size: 18px; align-items: center; gap: 16px; z-index: 1001; cursor: pointer; }
         #active-workout-view { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 2000; display: none; flex-direction: column; overflow-y: auto; padding-bottom: calc(80px + var(--safe-bottom)); }
-        #exercise-selection-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 2005; display: none; flex-direction: column; overflow-y: auto; padding: 20px 16px; padding-bottom: calc(80px + var(--safe-bottom)); }
         
-        .workout-header-sticky { position: sticky; top: 0; background: rgba(11, 11, 13, 0.95); backdrop-filter: blur(10px); padding: 16px; border-bottom: 1px solid var(--border); z-index: 10; display: flex; justify-content: space-between; align-items: center; }
-
+        #exercise-selection-modal { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: var(--bg-color); z-index: 2005; display: none; flex-direction: column; overflow-y: auto; 
+            padding-top: calc(24px + env(safe-area-inset-top, 0px));
+            padding-left: 16px;
+            padding-right: 16px;
+            padding-bottom: calc(80px + var(--safe-bottom)); 
+        }
+        
         .flex-between { display: flex; justify-content: space-between; align-items: center; }
         canvas { max-width: 100%; margin-top: 10px; }
     </style>
@@ -122,7 +175,7 @@
 const DEFAULT_PROGRAM = [
     { day: 1, name: 'Hamstring Legs', exercises: [ { name: 'Standing Calf Raise', targetSets: 4, targetReps: '10-15' }, { name: 'Seated Hamstring Leg Curl', targetSets: 3, targetReps: '8-12' }, { name: 'Romanian Deadlift', targetSets: 3, targetReps: '8-10' }, { name: 'Unilateral Leg Extension', targetSets: 3, targetReps: '10-15' }, { name: 'Bulgarian Split Squat', targetSets: 3, targetReps: '8-12' }, { name: 'Weighted Crunch', targetSets: 3, targetReps: '10-15' } ] },
     { day: 2, name: 'Chest & Back', exercises: [ { name: 'Incline DB Press', targetSets: 3, targetReps: '5-8' }, { name: 'Pec Deck', targetSets: 3, targetReps: '10-15' }, { name: 'Flat Machine Press', targetSets: 3, targetReps: '8-12' }, { name: 'Lat Pulldown', targetSets: 3, targetReps: '8-12' }, { name: 'Chest Supported Row', targetSets: 3, targetReps: '8-12' }, { name: 'Pull-Ups', targetSets: 3, targetReps: 'AMRAP' } ] },
-    { day: 3, name: 'Shoulders & Arms', exercises: [ { name: 'Cable Lateral Raise', targetSets: 4, targetReps: '12-15' }, { name: 'Rear Delt Fly', targetSets: 3, targetReps: '12-15' }, { name: 'Preacher Curl', targetSets: 3, targetReps: '8-12' }, { name: 'Hammer Curl', targetSets: 3, targetReps: '10-12' }, { name: 'Tricep Pushdown', targetSets: 3, targetReps: '10-15' }, { name: 'Overhead Extension', targetSets: 3, targetReps: '10-15' } ] },
+    { day: 3, name: 'Shoulders & Arms', exercises: [ { name: 'Cable Lateral Raise', targetSets: 4, targetReps: '12-15' }, { name: 'Rear Delt Fly', targetSets: 3, targetReps: '12-15' }, { name: 'Preacher Curl', targetSets: 3, targetReps: '8-12' }, { name: 'Hammer Curl', targetSets: 3, targetReps: '10-12' }, { name: 'Seated Curl', targetSets: 3, targetReps: '10-12' }, { name: 'Tricep Pushdown', targetSets: 3, targetReps: '10-15' }, { name: 'Overhead Extension', targetSets: 3, targetReps: '10-15' } ] },
     { day: 4, name: 'Cardio & Abs', exercises: [ { name: 'Hanging Leg Raise', targetSets: 3, targetReps: '10-15' }, { name: 'Incline Treadmill Walk', targetSets: 1, targetReps: '30 mins' } ] },
     { day: 5, name: 'Quad Legs', exercises: [ { name: 'Hack Squat', targetSets: 3, targetReps: '8-10' }, { name: 'Leg Press', targetSets: 3, targetReps: '10-12' }, { name: 'Leg Extension', targetSets: 3, targetReps: '12-15' }, { name: 'Seated Leg Curl', targetSets: 3, targetReps: '10-12' }, { name: 'Standing Calf Raise', targetSets: 4, targetReps: '10-15' } ] },
     { day: 6, name: 'Upper Body', exercises: [ { name: 'Incline DB Press', targetSets: 3, targetReps: '8-10' }, { name: 'Lat Pulldown', targetSets: 3, targetReps: '8-12' }, { name: 'Cable Lateral Raise', targetSets: 3, targetReps: '12-15' }, { name: 'Seated Curl', targetSets: 3, targetReps: '10-12' }, { name: 'Dips', targetSets: 3, targetReps: 'AMRAP' } ] },
@@ -330,7 +383,7 @@ const workoutEngine = {
         const modal = document.getElementById('exercise-selection-modal');
         let grouped = utils.getGroupedExercises();
         let html = `
-            <div class="flex-between" style="position:sticky; top:0; background:var(--bg-color); z-index:10; padding:10px 0; border-bottom:1px solid var(--border); margin-bottom:16px;">
+            <div class="page-header">
                 <button class="btn btn-sm btn-icon" onclick="document.getElementById('exercise-selection-modal').style.display='none'"><i class="fas fa-times"></i></button>
                 <h2 style="margin:0; font-size:18px;">Add Exercise</h2>
                 <div style="width:36px;"></div>
@@ -487,7 +540,6 @@ const workoutEngine = {
                 html += `<button class="btn btn-sm" style="width:100%; border:1px solid var(--border);" onclick="workoutEngine.addSet(${exIdx})">+ Add Set</button></div></div>`;
             });
 
-            // "Add Exercise" button inside active workout
             html += `
                 <div style="margin-top: 16px; padding-bottom: 32px;">
                     <button class="btn" style="background:transparent; border:1px dashed var(--accent-color); color:var(--accent-color);" onclick="workoutEngine.showAddExerciseModal()">+ Add Another Exercise</button>
@@ -534,9 +586,9 @@ const views = {
 
             <div class="card">
                 <h3>Log Bodyweight</h3>
-                <div style="display:flex; gap:12px; margin-top:12px;">
-                    <input type="number" inputmode="decimal" id="quick-bw-input" value="${store.state.user.currentWeight}" style="flex:1; background:var(--surface-elevated); border:1px solid var(--border); border-radius:8px; color:white; padding:0 16px; font-size:20px; font-weight:bold;">
-                    <button class="btn btn-success" style="width:auto;" onclick="app.logWeight()"><i class="fas fa-save"></i> SAVE</button>
+                <div style="display:flex; gap:12px; margin-top:12px; width: 100%; align-items: center;">
+                    <input type="number" inputmode="decimal" id="quick-bw-input" value="${store.state.user.currentWeight}" style="flex:1; min-width:0; background:var(--surface-elevated); border:1px solid var(--border); border-radius:8px; color:white; padding:0 16px; font-size:20px; font-weight:bold; height:48px;">
+                    <button class="btn btn-success" style="width:auto; flex-shrink:0; padding: 0 20px; height:48px;" onclick="app.logWeight()"><i class="fas fa-save"></i> SAVE</button>
                 </div>
             </div>
             
@@ -553,7 +605,7 @@ const views = {
 
     renderCustomA() {
         let html = `
-            <div class="flex-between" style="position:sticky; top:0; background:var(--bg-color); z-index:10; padding:10px 0; border-bottom:1px solid var(--border); margin-bottom:16px;">
+            <div class="page-header">
                 <button class="btn btn-sm btn-icon" onclick="app.navigate('home')"><i class="fas fa-arrow-left"></i></button>
                 <h2 style="margin:0; font-size:18px;">Pick Program Day</h2>
                 <div style="width:36px;"></div>
@@ -579,7 +631,7 @@ const views = {
         let grouped = utils.getGroupedExercises();
         
         let html = `
-            <div class="flex-between" style="position:sticky; top:0; background:var(--bg-color); z-index:10; padding:10px 0; border-bottom:1px solid var(--border); margin-bottom:16px;">
+            <div class="page-header">
                 <button class="btn btn-sm btn-icon" onclick="app.navigate('home')"><i class="fas fa-arrow-left"></i></button>
                 <h2 style="margin:0; font-size:18px;">Mix Exercises</h2>
                 <button class="btn btn-sm btn-success" onclick="app.startCustomMix()">START</button>
@@ -639,7 +691,7 @@ const views = {
 
     renderProgramEditor() {
         let html = `
-            <div class="flex-between" style="margin-bottom:16px; position:sticky; top:0; background:var(--bg-color); z-index:10; padding:10px 0;">
+            <div class="page-header">
                 <h1 style="margin:0; color:var(--accent-color)">Edit Split</h1>
                 <button class="btn btn-sm btn-success" onclick="app.toggleProgramEdit()"><i class="fas fa-save"></i> SAVE</button>
             </div>
@@ -839,7 +891,7 @@ const app = {
             document.querySelectorAll('.nav-item')[navMap[viewId]].classList.add('active');
         }
         
-        if(viewId !== 'home') this.showCustomOptions = false; // reset options when navigating away
+        if(viewId !== 'home') this.showCustomOptions = false;
 
         const c = document.getElementById('main-content');
         if(viewId==='home') c.innerHTML = views.renderHome();
