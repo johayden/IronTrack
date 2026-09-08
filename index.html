@@ -31,15 +31,16 @@
 
         body { background-color: var(--bg-color); color: var(--text-primary); font-family: var(--font-family); line-height: 1.5; display: flex; flex-direction: column; height: 100vh; width: 100vw; overflow: hidden; }
 
-        #app-container { display: flex; flex-direction: column; height: 100%; width: 100%; max-width: 800px; margin: 0 auto; position: relative; }
+        #app-container { display: flex; flex-direction: column; height: 100%; width: 100%; max-width: 800px; margin: 0 auto; position: relative; overflow: hidden; }
         
         #main-content { 
             flex: 1; 
             overflow-y: auto; 
+            -webkit-overflow-scrolling: touch;
             padding-top: calc(24px + env(safe-area-inset-top, 0px));
             padding-left: 16px;
             padding-right: 16px;
-            padding-bottom: calc(80px + var(--safe-bottom)); 
+            padding-bottom: calc(100px + var(--safe-bottom)); 
         }
 
         h1, h2, h3 { font-weight: 700; margin-bottom: 12px; }
@@ -51,12 +52,7 @@
         .text-success { color: var(--success); }
 
         .card { background: var(--surface-color); border-radius: 16px; padding: 16px; margin-bottom: 16px; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
-        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .stat-box { background: var(--surface-elevated); padding: 12px; border-radius: 12px; text-align: center; }
-        .stat-val { font-size: 24px; font-weight: 700; display: block; }
-        .stat-label { font-size: 12px; color: var(--text-secondary); text-transform: uppercase; }
-
-        /* Streak Element */
+        
         .streak-box { display: flex; align-items: center; justify-content: center; gap: 12px; background: linear-gradient(145deg, #2a1111, #1a0a0a); border: 1px solid #ff3b30; padding: 16px; border-radius: 16px; margin-bottom: 16px; }
         .streak-fire { font-size: 32px; color: #ff9500; animation: pulse 2s infinite; }
         .streak-text { font-size: 24px; font-weight: bold; margin: 0; }
@@ -71,10 +67,9 @@
 
         .input-group { display: flex; background: var(--bg-color); border-radius: 8px; border: 1px solid var(--border); overflow: hidden; height: 44px; }
         .input-group input { flex: 1; background: transparent; border: none; color: white; text-align: center; font-size: 18px; font-weight: bold; width: 100%; -moz-appearance: textfield; }
-        .edit-input { background: var(--bg-color); border: 1px solid var(--border); color: white; padding: 8px; border-radius: 8px; width: 100%; font-size: 16px; margin-bottom: 8px;}
+        .edit-input { background: var(--bg-color); border: 1px solid var(--border); color: white; padding: 8px; border-radius: 8px; width: 100%; font-size: 16px; margin-bottom: 8px; -webkit-appearance: none;}
         .inline-edit { background: var(--surface-elevated); border: 1px solid var(--border); color: white; padding: 4px; border-radius: 4px; font-size: 14px; font-weight:bold; text-align:center; width: 100%; min-width: 0; }
 
-        /* Workout Logger */
         .exercise-card { background: var(--surface-color); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; margin-bottom: 16px; }
         .exercise-header { padding: 16px; background: var(--surface-elevated); display: flex; justify-content: space-between; align-items: center; }
         .exercise-body { padding: 12px 16px; }
@@ -98,56 +93,23 @@
         .nav-item i { font-size: 18px; }
         .nav-item.active { color: var(--accent-color); }
 
-        /* Dynamic Sticky Headers to fix iOS time overlap */
         .page-header {
-            position: sticky;
-            top: 0;
-            background: rgba(11, 11, 13, 0.95);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            z-index: 10;
-            margin-top: calc(-24px - env(safe-area-inset-top, 0px));
-            margin-left: -16px;
-            margin-right: -16px;
-            margin-bottom: 16px;
-            padding-top: calc(16px + env(safe-area-inset-top, 0px));
-            padding-left: 16px;
-            padding-right: 16px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            position: sticky; top: 0; background: rgba(11, 11, 13, 0.95); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 10;
+            margin-top: calc(-24px - env(safe-area-inset-top, 0px)); margin-left: -16px; margin-right: -16px; margin-bottom: 16px;
+            padding-top: calc(16px + env(safe-area-inset-top, 0px)); padding-left: 16px; padding-right: 16px; padding-bottom: 16px;
+            border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;
         }
 
         .workout-header-sticky { 
-            position: sticky; 
-            top: 0; 
-            background: rgba(11, 11, 13, 0.95); 
-            backdrop-filter: blur(10px); 
-            -webkit-backdrop-filter: blur(10px);
-            padding-top: calc(16px + env(safe-area-inset-top, 0px));
-            padding-left: 16px;
-            padding-right: 16px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--border); 
-            z-index: 10; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
+            position: sticky; top: 0; background: rgba(11, 11, 13, 0.95); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            padding-top: calc(16px + env(safe-area-inset-top, 0px)); padding-left: 16px; padding-right: 16px; padding-bottom: 16px;
+            border-bottom: 1px solid var(--border); z-index: 10; display: flex; justify-content: space-between; align-items: center; 
         }
 
         #rest-timer-overlay { position: fixed; bottom: calc(80px + var(--safe-bottom)); left: 50%; transform: translateX(-50%); background: var(--accent-color); color: white; padding: 12px 24px; border-radius: 30px; box-shadow: 0 4px 16px rgba(255, 59, 48, 0.4); display: none; font-weight: bold; font-size: 18px; align-items: center; gap: 16px; z-index: 1001; cursor: pointer; }
-        #active-workout-view { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 2000; display: none; flex-direction: column; overflow-y: auto; padding-bottom: calc(80px + var(--safe-bottom)); }
+        #active-workout-view { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 2000; display: none; flex-direction: column; overflow-y: auto; -webkit-overflow-scrolling: touch; padding-bottom: calc(100px + var(--safe-bottom)); }
         
-        #exercise-selection-modal { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: var(--bg-color); z-index: 2005; display: none; flex-direction: column; overflow-y: auto; 
-            padding-top: calc(24px + env(safe-area-inset-top, 0px));
-            padding-left: 16px;
-            padding-right: 16px;
-            padding-bottom: calc(80px + var(--safe-bottom)); 
-        }
+        #exercise-selection-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 2005; display: none; flex-direction: column; overflow-y: auto; -webkit-overflow-scrolling: touch; padding-top: calc(24px + env(safe-area-inset-top, 0px)); padding-left: 16px; padding-right: 16px; padding-bottom: calc(100px + var(--safe-bottom)); }
         
         .flex-between { display: flex; justify-content: space-between; align-items: center; }
         canvas { max-width: 100%; margin-top: 10px; }
@@ -173,13 +135,13 @@
 
 <script>
 const DEFAULT_PROGRAM = [
+    { day: 0, name: 'Rest', exercises: [] },
     { day: 1, name: 'Hamstring Legs', exercises: [ { name: 'Standing Calf Raise', targetSets: 4, targetReps: '10-15' }, { name: 'Seated Hamstring Leg Curl', targetSets: 3, targetReps: '8-12' }, { name: 'Romanian Deadlift', targetSets: 3, targetReps: '8-10' }, { name: 'Unilateral Leg Extension', targetSets: 3, targetReps: '10-15' }, { name: 'Bulgarian Split Squat', targetSets: 3, targetReps: '8-12' }, { name: 'Weighted Crunch', targetSets: 3, targetReps: '10-15' } ] },
     { day: 2, name: 'Chest & Back', exercises: [ { name: 'Incline DB Press', targetSets: 3, targetReps: '5-8' }, { name: 'Pec Deck', targetSets: 3, targetReps: '10-15' }, { name: 'Flat Machine Press', targetSets: 3, targetReps: '8-12' }, { name: 'Lat Pulldown', targetSets: 3, targetReps: '8-12' }, { name: 'Chest Supported Row', targetSets: 3, targetReps: '8-12' }, { name: 'Pull-Ups', targetSets: 3, targetReps: 'AMRAP' } ] },
     { day: 3, name: 'Shoulders & Arms', exercises: [ { name: 'Cable Lateral Raise', targetSets: 4, targetReps: '12-15' }, { name: 'Rear Delt Fly', targetSets: 3, targetReps: '12-15' }, { name: 'Preacher Curl', targetSets: 3, targetReps: '8-12' }, { name: 'Hammer Curl', targetSets: 3, targetReps: '10-12' }, { name: 'Seated Curl', targetSets: 3, targetReps: '10-12' }, { name: 'Tricep Pushdown', targetSets: 3, targetReps: '10-15' }, { name: 'Overhead Extension', targetSets: 3, targetReps: '10-15' } ] },
     { day: 4, name: 'Cardio & Abs', exercises: [ { name: 'Hanging Leg Raise', targetSets: 3, targetReps: '10-15' }, { name: 'Incline Treadmill Walk', targetSets: 1, targetReps: '30 mins' } ] },
     { day: 5, name: 'Quad Legs', exercises: [ { name: 'Hack Squat', targetSets: 3, targetReps: '8-10' }, { name: 'Leg Press', targetSets: 3, targetReps: '10-12' }, { name: 'Leg Extension', targetSets: 3, targetReps: '12-15' }, { name: 'Seated Leg Curl', targetSets: 3, targetReps: '10-12' }, { name: 'Standing Calf Raise', targetSets: 4, targetReps: '10-15' } ] },
-    { day: 6, name: 'Upper Body', exercises: [ { name: 'Incline DB Press', targetSets: 3, targetReps: '8-10' }, { name: 'Lat Pulldown', targetSets: 3, targetReps: '8-12' }, { name: 'Cable Lateral Raise', targetSets: 3, targetReps: '12-15' }, { name: 'Seated Curl', targetSets: 3, targetReps: '10-12' }, { name: 'Dips', targetSets: 3, targetReps: 'AMRAP' } ] },
-    { day: 0, name: 'Rest', exercises: [] }
+    { day: 6, name: 'Upper Body', exercises: [ { name: 'Incline DB Press', targetSets: 3, targetReps: '8-10' }, { name: 'Lat Pulldown', targetSets: 3, targetReps: '8-12' }, { name: 'Cable Lateral Raise', targetSets: 3, targetReps: '12-15' }, { name: 'Seated Curl', targetSets: 3, targetReps: '10-12' }, { name: 'Dips', targetSets: 3, targetReps: 'AMRAP' } ] }
 ];
 
 const EXERCISE_DB = {
@@ -190,16 +152,17 @@ const EXERCISE_DB = {
     'Tricep Pushdown': { muscle: 'Triceps' }, 'Overhead Extension': { muscle: 'Triceps' },
     'Hack Squat': { muscle: 'Quads' }, 'Leg Press': { muscle: 'Quads' }, 'Leg Extension': { muscle: 'Quads' }, 'Bulgarian Split Squat': { muscle: 'Quads' }, 'Unilateral Leg Extension': { muscle: 'Quads' },
     'Romanian Deadlift': { muscle: 'Hamstrings' }, 'Seated Hamstring Leg Curl': { muscle: 'Hamstrings' }, 'Seated Leg Curl': { muscle: 'Hamstrings' },
-    'Standing Calf Raise': { muscle: 'Calves' },
-    'Weighted Crunch': { muscle: 'Abs' }, 'Hanging Leg Raise': { muscle: 'Abs' }, 'Incline Treadmill Walk': { muscle: 'Cardio' }
+    'Standing Calf Raise': { muscle: 'Calves' }, 'Weighted Crunch': { muscle: 'Abs' }, 'Hanging Leg Raise': { muscle: 'Abs' }, 'Incline Treadmill Walk': { muscle: 'Cardio' }
 };
 
+const MUSCLE_GROUPS = ['Chest', 'Back', 'Shoulders', 'Biceps', 'Triceps', 'Quads', 'Hamstrings', 'Calves', 'Abs', 'Cardio', 'Other'];
 const CHAT_COLORS = ['#ff3b30', '#ff9500', '#ffcc00', '#4cd964', '#5ac8fa', '#007aff', '#5856d6', '#af52de'];
 
 const store = {
     state: {
         user: { currentWeight: 90.0 },
-        program: DEFAULT_PROGRAM,
+        routines: [],
+        activeRoutineId: 'default_1',
         history: { workouts: [], bodyweight: [], nutrition: [] },
         settings: { restTimer: 120 }
     },
@@ -207,28 +170,29 @@ const store = {
         const saved = localStorage.getItem('irontrack_state');
         if (saved) {
             this.state = JSON.parse(saved);
-            if(!this.state.program || this.state.program.length === 0) this.state.program = JSON.parse(JSON.stringify(DEFAULT_PROGRAM));
+            // Migrate old single program users to Routine format
+            if (this.state.program && (!this.state.routines || this.state.routines.length === 0)) {
+                this.state.routines = [{ id: 'default_1', name: 'Original Split', days: this.state.program }];
+                this.state.activeRoutineId = 'default_1';
+                delete this.state.program;
+            }
+            if(!this.state.routines || this.state.routines.length === 0) {
+                this.state.routines = [{ id: 'default_1', name: 'Main Split', days: JSON.parse(JSON.stringify(DEFAULT_PROGRAM)) }];
+                this.state.activeRoutineId = 'default_1';
+            }
             if(!this.state.history.nutrition) this.state.history.nutrition = [];
-        } else { this.save(); }
+        } else { 
+            this.state.routines = [{ id: 'default_1', name: 'Main Split', days: JSON.parse(JSON.stringify(DEFAULT_PROGRAM)) }];
+            this.save(); 
+        }
     },
     save() { localStorage.setItem('irontrack_state', JSON.stringify(this.state)); },
     addWorkout(workoutData) { this.state.history.workouts.push(workoutData); this.save(); },
     addBodyweight(weight) { this.state.history.bodyweight.push({ date: new Date().toISOString(), weight: parseFloat(weight) }); this.state.user.currentWeight = parseFloat(weight); this.save(); },
     addNutrition(data) { this.state.history.nutrition.push({ date: new Date().toISOString(), ...data }); this.save(); },
-    
-    updateBodyweight(isoDate, newWeight) {
-        const entry = this.state.history.bodyweight.find(e => e.date === isoDate);
-        if(entry) { entry.weight = parseFloat(newWeight); this.state.user.currentWeight = parseFloat(newWeight); this.save(); }
-    },
-    updateNutrition(isoDate, field, val) {
-        const entry = this.state.history.nutrition.find(e => e.date === isoDate);
-        if(entry) { entry[field] = parseFloat(val) || 0; this.save(); }
-    },
-    deleteEntry(type, isoDate) {
-        this.state.history[type] = this.state.history[type].filter(e => e.date !== isoDate);
-        this.save();
-    },
-
+    updateBodyweight(isoDate, newWeight) { const entry = this.state.history.bodyweight.find(e => e.date === isoDate); if(entry) { entry.weight = parseFloat(newWeight); this.state.user.currentWeight = parseFloat(newWeight); this.save(); } },
+    updateNutrition(isoDate, field, val) { const entry = this.state.history.nutrition.find(e => e.date === isoDate); if(entry) { entry[field] = parseFloat(val) || 0; this.save(); } },
+    deleteEntry(type, isoDate) { this.state.history[type] = this.state.history[type].filter(e => e.date !== isoDate); this.save(); },
     getExerciseHistorySets(exerciseName) {
         let history = [];
         for (let i = this.state.history.workouts.length - 1; i >= 0; i--) {
@@ -246,53 +210,39 @@ const utils = {
     generateId: () => Math.random().toString(36).substr(2, 9),
     formatDate: (isoString) => new Date(isoString).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }),
     formatDateShort: (dateObj) => dateObj.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }),
-    getLocalISODate: (isoString) => {
-        const d = new Date(isoString);
-        return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-    },
-    getMonday: (dateInput) => {
-        const d = new Date(dateInput);
-        const day = d.getDay();
-        const diff = d.getDate() - day + (day === 0 ? -6 : 1);
-        return new Date(d.setDate(diff)).setHours(0,0,0,0);
-    },
+    getLocalISODate: (isoString) => { const d = new Date(isoString); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; },
+    getMonday: (dateInput) => { const d = new Date(dateInput); const day = d.getDay(); const diff = d.getDate() - day + (day === 0 ? -6 : 1); return new Date(d.setDate(diff)).setHours(0,0,0,0); },
     calcVolume: (sets) => sets.filter(s => s.completed).reduce((acc, s) => acc + ((parseFloat(s.weight)||0) * (parseFloat(s.reps)||0)), 0),
     getDayName: (dayIndex) => ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayIndex],
-    getTodayProgram: () => { const d = new Date().getDay(); return store.state.program.find(p => p.day === d) || store.state.program[0]; },
-    
-    // Calculates Consecutive Days
+    getActiveRoutine: () => store.state.routines.find(r => r.id === store.state.activeRoutineId) || store.state.routines[0],
+    getTodayProgram: () => { 
+        const d = new Date().getDay(); 
+        const active = utils.getActiveRoutine();
+        return active.days.find(p => p.day === d) || active.days[0] || {name: 'Rest', exercises: []}; 
+    },
+    getMuscle: (ex) => {
+        if(ex.muscle) return ex.muscle;
+        return (EXERCISE_DB[ex.name] && EXERCISE_DB[ex.name].muscle) ? EXERCISE_DB[ex.name].muscle : 'Other';
+    },
     calculateStreak: () => {
         const wDates = [...new Set(store.state.history.workouts.map(e => utils.getLocalISODate(e.date)))];
         const bDates = [...new Set(store.state.history.bodyweight.map(e => utils.getLocalISODate(e.date)))];
         const nDates = [...new Set(store.state.history.nutrition.map(e => utils.getLocalISODate(e.date)))];
-
-        let streak = 0;
-        let checkDate = new Date();
+        let streak = 0; let checkDate = new Date();
         const isComplete = (dStr) => wDates.includes(dStr) && bDates.includes(dStr) && nDates.includes(dStr);
-
-        let todayStr = utils.getLocalISODate(checkDate);
-        if (isComplete(todayStr)) streak++;
-        
+        if (isComplete(utils.getLocalISODate(checkDate))) streak++;
         checkDate.setDate(checkDate.getDate() - 1);
-        while(true) {
-            let checkStr = utils.getLocalISODate(checkDate);
-            if (isComplete(checkStr)) { streak++; checkDate.setDate(checkDate.getDate() - 1); } 
-            else break;
-        }
+        while(true) { if (isComplete(utils.getLocalISODate(checkDate))) { streak++; checkDate.setDate(checkDate.getDate() - 1); } else break; }
         return streak;
     },
-
     getWeeklyMuscleVolume: () => {
-        const weekly = {};
-        const muscles = new Set();
-        
+        const weekly = {}; const muscles = new Set();
         store.state.history.workouts.forEach(w => {
             if(w.isSkipped || w.isActivity) return;
             const mon = utils.getMonday(w.date);
             if(!weekly[mon]) weekly[mon] = {};
-            
             (w.exercises||[]).forEach(ex => {
-                const target = EXERCISE_DB[ex.name]?.muscle || 'Other';
+                const target = utils.getMuscle(ex);
                 muscles.add(target);
                 const vol = utils.calcVolume(ex.sets);
                 if(vol > 0) weekly[mon][target] = (weekly[mon][target] || 0) + vol;
@@ -300,25 +250,19 @@ const utils = {
         });
         return { weekly, muscles: Array.from(muscles) };
     },
-    
     getWeeklyData: (dataset) => {
         let weekly = {};
-        dataset.forEach(entry => {
-            const mon = utils.getMonday(entry.date);
-            if (!weekly[mon]) weekly[mon] = { entries: [] };
-            weekly[mon].entries.push(entry);
-        });
+        dataset.forEach(entry => { const mon = utils.getMonday(entry.date); if (!weekly[mon]) weekly[mon] = { entries: [] }; weekly[mon].entries.push(entry); });
         return weekly;
     },
-
     getGroupedExercises: () => {
         let allExercises = [];
-        store.state.program.forEach(p => p.exercises.forEach(ex => {
+        store.state.routines.forEach(r => r.days.forEach(d => d.exercises.forEach(ex => {
             if(!allExercises.find(e => e.name === ex.name)) allExercises.push(ex);
-        }));
+        })));
         let grouped = {};
         allExercises.forEach(ex => {
-            let muscle = (EXERCISE_DB[ex.name] && EXERCISE_DB[ex.name].muscle) ? EXERCISE_DB[ex.name].muscle.toUpperCase() : 'OTHER';
+            let muscle = utils.getMuscle(ex).toUpperCase();
             if(!grouped[muscle]) grouped[muscle] = [];
             grouped[muscle].push(ex);
         });
@@ -332,17 +276,13 @@ const workoutEngine = {
     
     start(programDay) {
         this.activeWorkout = {
-            id: utils.generateId(),
-            startTime: new Date().getTime(),
-            name: programDay.name,
-            isActivity: programDay.isActivity || false,
-            isRest: (programDay.exercises||[]).length === 0 && !programDay.isActivity,
+            id: utils.generateId(), startTime: new Date().getTime(), name: programDay.name,
+            isActivity: programDay.isActivity || false, isRest: (programDay.exercises||[]).length === 0 && !programDay.isActivity,
             exercises: (programDay.exercises||[]).map(ex => this.buildExerciseData(ex.name, ex.targetSets, ex.targetReps))
         };
         document.getElementById('active-workout-view').style.display = 'flex';
         this.renderActiveWorkout();
     },
-
     buildExerciseData(name, targetSets, targetReps) {
         const historySets = store.getExerciseHistorySets(name);
         let startingSets = [];
@@ -351,548 +291,241 @@ const workoutEngine = {
             let prevR = historySets[0] && historySets[0][i] ? parseFloat(historySets[0][i].reps) : 0;
             let sumW = 0, sumR = 0, count = 0;
             historySets.forEach(h => { if (h[i]) { sumW += parseFloat(h[i].weight)||0; sumR += parseFloat(h[i].reps)||0; count++; } });
-            let l3W = count ? (sumW / count).toFixed(1) : 0;
-            let l3R = count ? Math.round(sumR / count) : 0;
+            let l3W = count ? (sumW / count).toFixed(1) : 0; let l3R = count ? Math.round(sumR / count) : 0;
             startingSets.push({ weight: prevW, reps: prevR, rir: 2, completed: false, prevWeight: prevW, prevReps: prevR, l3Weight: l3W, l3Reps: l3R });
         }
         return { name: name, targetSets: targetSets, targetReps: targetReps, sets: startingSets };
     },
-
     inputChange(exIdx, setIdx, field, value) { this.activeWorkout.exercises[exIdx].sets[setIdx][field] = parseFloat(value) || 0; },
     toggleSet(exIdx, setIdx) {
-        const set = this.activeWorkout.exercises[exIdx].sets[setIdx];
-        set.completed = !set.completed;
+        const set = this.activeWorkout.exercises[exIdx].sets[setIdx]; set.completed = !set.completed;
         if (set.completed) this.startRestTimer(store.state.settings.restTimer);
         this.renderActiveWorkout();
     },
     addSet(exIdx) {
         const sets = this.activeWorkout.exercises[exIdx].sets;
         const last = sets[sets.length-1] || { weight: 0, reps: 0, rir: 2, prevWeight:0, prevReps:0, l3Weight:0, l3Reps:0 };
-        sets.push({ ...last, completed: false });
-        this.renderActiveWorkout();
+        sets.push({ ...last, completed: false }); this.renderActiveWorkout();
     },
-    
-    removeExercise(exIdx) {
-        if(confirm(`Remove ${this.activeWorkout.exercises[exIdx].name} from this workout?`)) {
-            this.activeWorkout.exercises.splice(exIdx, 1);
-            this.renderActiveWorkout();
-        }
+    removeSet(exIdx) {
+        const sets = this.activeWorkout.exercises[exIdx].sets;
+        if(sets.length > 1) { sets.pop(); this.renderActiveWorkout(); } 
+        else { alert("Cannot remove the last set. Remove the exercise completely using the X button instead."); }
     },
-
+    removeExercise(exIdx) { if(confirm(`Remove ${this.activeWorkout.exercises[exIdx].name} from this workout?`)) { this.activeWorkout.exercises.splice(exIdx, 1); this.renderActiveWorkout(); } },
     showAddExerciseModal() {
         const modal = document.getElementById('exercise-selection-modal');
         let grouped = utils.getGroupedExercises();
         let html = `
-            <div class="page-header">
-                <button class="btn btn-sm btn-icon" onclick="document.getElementById('exercise-selection-modal').style.display='none'"><i class="fas fa-times"></i></button>
-                <h2 style="margin:0; font-size:18px;">Add Exercise</h2>
-                <div style="width:36px;"></div>
-            </div>
+            <div class="page-header"><button class="btn btn-sm btn-icon" onclick="document.getElementById('exercise-selection-modal').style.display='none'"><i class="fas fa-times"></i></button><h2 style="margin:0; font-size:18px;">Add Exercise</h2><div style="width:36px;"></div></div>
             <p class="text-muted" style="margin-bottom:16px; font-size:12px;">Select an exercise to append to your active workout.</p>
         `;
-        
         Object.keys(grouped).sort().forEach(muscle => {
-            html += `<h3 style="margin-top:16px; color:var(--text-secondary); font-size:14px;">${muscle}</h3>`;
-            html += `<div style="display:flex; flex-direction:column; gap:8px;">`;
+            html += `<h3 style="margin-top:16px; color:var(--text-secondary); font-size:14px;">${muscle}</h3><div style="display:flex; flex-direction:column; gap:8px;">`;
             grouped[muscle].sort((a,b) => a.name.localeCompare(b.name)).forEach(ex => {
-                html += `
-                    <div class="data-row flex-between" style="padding:12px; background:var(--surface-color); border-radius:8px; border:1px solid var(--border); cursor:pointer;" onclick="workoutEngine.appendExercise('${ex.name}', ${ex.targetSets}, '${ex.targetReps}')">
-                        <div>
-                            <div style="font-weight:bold;">${ex.name}</div>
-                            <div class="text-muted" style="font-size:12px;">Def: ${ex.targetSets}x${ex.targetReps}</div>
-                        </div>
-                        <i class="fas fa-plus text-accent"></i>
-                    </div>
-                `;
+                html += `<div class="data-row flex-between" style="padding:12px; background:var(--surface-color); border-radius:8px; border:1px solid var(--border); cursor:pointer;" onclick="workoutEngine.appendExercise('${ex.name}', ${ex.targetSets}, '${ex.targetReps}')"><div><div style="font-weight:bold;">${ex.name}</div><div class="text-muted" style="font-size:12px;">Def: ${ex.targetSets}x${ex.targetReps}</div></div><i class="fas fa-plus text-accent"></i></div>`;
             });
             html += `</div>`;
         });
-        
-        modal.innerHTML = html;
-        modal.style.display = 'flex';
+        modal.innerHTML = html; modal.style.display = 'flex';
     },
-
-    appendExercise(name, targetSets, targetReps) {
-        this.activeWorkout.exercises.push(this.buildExerciseData(name, targetSets, targetReps));
-        document.getElementById('exercise-selection-modal').style.display='none';
-        this.renderActiveWorkout();
-    },
-
+    appendExercise(name, targetSets, targetReps) { this.activeWorkout.exercises.push(this.buildExerciseData(name, targetSets, targetReps)); document.getElementById('exercise-selection-modal').style.display='none'; this.renderActiveWorkout(); },
     startRestTimer(seconds) {
-        clearInterval(this.timerInterval);
-        const display = document.getElementById('rest-timer-display');
-        const overlay = document.getElementById('rest-timer-overlay');
-        let remaining = seconds;
-        overlay.style.display = 'flex';
-        this.timerInterval = setInterval(() => {
-            remaining--;
-            let m = Math.floor(remaining / 60), s = remaining % 60;
-            display.innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
-            if (remaining <= 0) { this.stopRestTimer(); if(navigator.vibrate) navigator.vibrate([200, 100, 200]); }
-        }, 1000);
+        clearInterval(this.timerInterval); const display = document.getElementById('rest-timer-display'); const overlay = document.getElementById('rest-timer-overlay'); let remaining = seconds; overlay.style.display = 'flex';
+        this.timerInterval = setInterval(() => { remaining--; let m = Math.floor(remaining / 60), s = remaining % 60; display.innerText = `${m}:${s < 10 ? '0' : ''}${s}`; if (remaining <= 0) { this.stopRestTimer(); if(navigator.vibrate) navigator.vibrate([200, 100, 200]); } }, 1000);
     },
     stopRestTimer() { clearInterval(this.timerInterval); document.getElementById('rest-timer-overlay').style.display = 'none'; },
-
     skipWorkout() {
         const reason = prompt(this.activeWorkout.isRest ? "Log Rest Day! (e.g. Skiing, Recovering):" : "Reason for skipping workout:");
-        if(reason !== null) {
-            const title = this.activeWorkout.isRest ? "Rest Day" : "Workout Skipped";
-            store.addWorkout({
-                id: utils.generateId(),
-                date: new Date().toISOString(),
-                name: `${title} - ${reason}`,
-                isSkipped: true,
-                duration: 0,
-                exercises: []
-            });
-            this.activeWorkout = null; this.stopRestTimer();
-            document.getElementById('active-workout-view').style.display = 'none';
-            app.navigate('home');
-        }
+        if(reason !== null) { store.addWorkout({ id: utils.generateId(), date: new Date().toISOString(), name: `${this.activeWorkout.isRest ? "Rest Day" : "Workout Skipped"} - ${reason}`, isSkipped: true, duration: 0, exercises: [] }); this.activeWorkout = null; this.stopRestTimer(); document.getElementById('active-workout-view').style.display = 'none'; app.navigate('home'); }
     },
-
     finish() {
         if (!confirm(this.activeWorkout.isActivity ? "Finish Activity Tracking?" : "Finish Workout?")) return;
-        this.activeWorkout.endTime = new Date().getTime();
-        this.activeWorkout.duration = Math.floor((this.activeWorkout.endTime - this.activeWorkout.startTime) / 60000);
-        this.activeWorkout.date = new Date().toISOString();
-        this.activeWorkout.isSkipped = false;
-        
-        if(this.activeWorkout.isActivity) {
-            store.addWorkout(this.activeWorkout);
-        } else {
-            this.activeWorkout.exercises.forEach(ex => ex.sets = ex.sets.filter(s => s.completed));
-            this.activeWorkout.exercises = this.activeWorkout.exercises.filter(ex => ex.sets.length > 0);
-            if(this.activeWorkout.exercises.length > 0) store.addWorkout(this.activeWorkout);
-        }
-        
-        this.activeWorkout = null; this.stopRestTimer();
-        document.getElementById('active-workout-view').style.display = 'none';
-        app.navigate('home');
+        this.activeWorkout.endTime = new Date().getTime(); this.activeWorkout.duration = Math.floor((this.activeWorkout.endTime - this.activeWorkout.startTime) / 60000); this.activeWorkout.date = new Date().toISOString(); this.activeWorkout.isSkipped = false;
+        if(this.activeWorkout.isActivity) { store.addWorkout(this.activeWorkout); } else { this.activeWorkout.exercises.forEach(ex => ex.sets = ex.sets.filter(s => s.completed)); this.activeWorkout.exercises = this.activeWorkout.exercises.filter(ex => ex.sets.length > 0); if(this.activeWorkout.exercises.length > 0) store.addWorkout(this.activeWorkout); }
+        this.activeWorkout = null; this.stopRestTimer(); document.getElementById('active-workout-view').style.display = 'none'; app.navigate('home');
     },
-
-    cancel() {
-        if (!confirm("Cancel workout? No data will be saved.")) return;
-        this.activeWorkout = null; this.stopRestTimer();
-        document.getElementById('active-workout-view').style.display = 'none';
-    },
-
+    cancel() { if (!confirm("Cancel workout? No data will be saved.")) return; this.activeWorkout = null; this.stopRestTimer(); document.getElementById('active-workout-view').style.display = 'none'; },
     renderActiveWorkout() {
         const container = document.getElementById('active-workout-view');
         if (!this.activeWorkout) return;
-        
-        let html = `
-            <div class="workout-header-sticky">
-                <div><h2 style="margin:0">${this.activeWorkout.name}</h2></div>
-                ${!this.activeWorkout.isRest ? `<button class="btn btn-sm btn-success" onclick="workoutEngine.finish()"><i class="fas fa-check"></i> FINISH</button>` : ''}
-                <button class="btn btn-sm btn-icon" onclick="workoutEngine.cancel()"><i class="fas fa-times"></i></button>
-            </div>
-            <div style="padding: 16px;">
-        `;
-
+        let html = `<div class="workout-header-sticky"><div><h2 style="margin:0">${this.activeWorkout.name}</h2></div>${!this.activeWorkout.isRest ? `<button class="btn btn-sm btn-success" onclick="workoutEngine.finish()"><i class="fas fa-check"></i> FINISH</button>` : ''}<button class="btn btn-sm btn-icon" onclick="workoutEngine.cancel()"><i class="fas fa-times"></i></button></div><div style="padding: 16px;">`;
         if(this.activeWorkout.isActivity) {
-            html += `
-                <div style="text-align:center; padding: 60px 20px;">
-                    <i class="fas fa-stopwatch" style="font-size:64px; color:var(--accent-color); margin-bottom:16px;"></i>
-                    <h2>Activity in Progress</h2>
-                    <p class="text-muted">The timer is running. Hit FINISH when you are done tracking this activity.</p>
-                </div>
-            `;
+            html += `<div style="text-align:center; padding: 60px 20px;"><i class="fas fa-stopwatch" style="font-size:64px; color:var(--accent-color); margin-bottom:16px;"></i><h2>Activity in Progress</h2><p class="text-muted">The timer is running. Hit FINISH when you are done tracking this activity.</p></div>`;
         } else {
-            html += `<button class="btn" style="background:var(--surface-color); border:1px dashed var(--accent-color); color:var(--accent-color); margin-bottom: 16px;" onclick="workoutEngine.skipWorkout()">
-                        <i class="fas fa-forward-step"></i> ${this.activeWorkout.isRest ? 'Log Rest Day' : 'Skip Workout'}
-                    </button>`;
-
+            html += `<button class="btn" style="background:var(--surface-color); border:1px dashed var(--accent-color); color:var(--accent-color); margin-bottom: 16px;" onclick="workoutEngine.skipWorkout()"><i class="fas fa-forward-step"></i> ${this.activeWorkout.isRest ? 'Log Rest Day' : 'Skip Workout'}</button>`;
             this.activeWorkout.exercises.forEach((ex, exIdx) => {
-                html += `
-                    <div class="exercise-card">
-                        <div class="exercise-header">
-                            <div>
-                                <h3 style="margin:0; color:var(--text-primary)">${ex.name}</h3>
-                                <span class="text-muted" style="font-size:12px">Target: ${ex.targetReps}</span>
-                            </div>
-                            <button class="btn-icon" style="color:var(--text-secondary); width:32px; height:32px; font-size:16px;" onclick="workoutEngine.removeExercise(${exIdx})">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                        <div class="exercise-body">
-                            <div class="set-row text-muted" style="font-size:12px; margin-bottom: 8px;">
-                                <div style="text-align:center">SET</div><div style="text-align:center">KG</div><div style="text-align:center">REPS</div><div style="text-align:center">RIR</div><div></div>
-                            </div>
-                `;
+                html += `<div class="exercise-card"><div class="exercise-header"><div><h3 style="margin:0; color:var(--text-primary)">${ex.name}</h3><span class="text-muted" style="font-size:12px">Target: ${ex.targetReps}</span></div><button class="btn-icon" style="color:var(--text-secondary); width:32px; height:32px; font-size:16px;" onclick="workoutEngine.removeExercise(${exIdx})"><i class="fas fa-times"></i></button></div><div class="exercise-body"><div class="set-row text-muted" style="font-size:12px; margin-bottom: 8px;"><div style="text-align:center">SET</div><div style="text-align:center">KG</div><div style="text-align:center">REPS</div><div style="text-align:center">RIR</div><div></div></div>`;
                 ex.sets.forEach((set, setIdx) => {
                     const isComp = set.completed;
-                    html += `
-                        <div class="set-wrapper">
-                            <div class="flex-between text-muted" style="font-size: 11px; margin-bottom: 4px; padding-left: 45px; padding-right: 55px;">
-                                <span>Prev: ${set.prevWeight}×${set.prevReps}</span><span>L3: ${set.l3Weight}×${set.l3Reps}</span>
-                            </div>
-                            <div class="set-row">
-                                <div class="set-number">${setIdx + 1}</div>
-                                <div class="input-group"><input type="number" inputmode="decimal" value="${set.weight}" onchange="workoutEngine.inputChange(${exIdx}, ${setIdx}, 'weight', this.value)" ${isComp?'disabled':''}></div>
-                                <div class="input-group"><input type="number" inputmode="numeric" value="${set.reps}" onchange="workoutEngine.inputChange(${exIdx}, ${setIdx}, 'reps', this.value)" ${isComp?'disabled':''}></div>
-                                <div class="input-group"><input type="number" inputmode="numeric" value="${set.rir}" max="3" onchange="workoutEngine.inputChange(${exIdx}, ${setIdx}, 'rir', this.value)" ${isComp?'disabled':''}></div>
-                                <button class="btn-check ${isComp ? 'completed' : ''}" onclick="workoutEngine.toggleSet(${exIdx}, ${setIdx})"><i class="fas fa-check"></i></button>
-                            </div>
-                        </div>
-                    `;
+                    html += `<div class="set-wrapper"><div class="flex-between text-muted" style="font-size: 11px; margin-bottom: 4px; padding-left: 45px; padding-right: 55px;"><span>Prev: ${set.prevWeight}×${set.prevReps}</span><span>L3: ${set.l3Weight}×${set.l3Reps}</span></div><div class="set-row"><div class="set-number">${setIdx + 1}</div><div class="input-group"><input type="number" inputmode="decimal" value="${set.weight}" onchange="workoutEngine.inputChange(${exIdx}, ${setIdx}, 'weight', this.value)" ${isComp?'disabled':''}></div><div class="input-group"><input type="number" inputmode="numeric" value="${set.reps}" onchange="workoutEngine.inputChange(${exIdx}, ${setIdx}, 'reps', this.value)" ${isComp?'disabled':''}></div><div class="input-group"><input type="number" inputmode="numeric" value="${set.rir}" max="3" onchange="workoutEngine.inputChange(${exIdx}, ${setIdx}, 'rir', this.value)" ${isComp?'disabled':''}></div><button class="btn-check ${isComp ? 'completed' : ''}" onclick="workoutEngine.toggleSet(${exIdx}, ${setIdx})"><i class="fas fa-check"></i></button></div></div>`;
                 });
-                html += `<button class="btn btn-sm" style="width:100%; border:1px solid var(--border);" onclick="workoutEngine.addSet(${exIdx})">+ Add Set</button></div></div>`;
+                html += `<div style="display:flex; gap:8px;"><button class="btn btn-sm" style="flex:1; border:1px solid var(--border);" onclick="workoutEngine.addSet(${exIdx})">+ Add Set</button><button class="btn btn-sm" style="flex:1; border:1px solid var(--border); color:var(--accent-color);" onclick="workoutEngine.removeSet(${exIdx})">- Remove Set</button></div></div></div>`;
             });
-
-            html += `
-                <div style="margin-top: 16px; padding-bottom: 32px;">
-                    <button class="btn" style="background:transparent; border:1px dashed var(--accent-color); color:var(--accent-color);" onclick="workoutEngine.showAddExerciseModal()">+ Add Another Exercise</button>
-                </div>
-            `;
+            html += `<div style="margin-top: 16px; padding-bottom: 32px;"><button class="btn" style="background:transparent; border:1px dashed var(--accent-color); color:var(--accent-color);" onclick="workoutEngine.showAddExerciseModal()">+ Add Another Exercise</button></div>`;
         }
-        html += `</div>`;
-        container.innerHTML = html;
+        html += `</div>`; container.innerHTML = html;
     }
 };
 
 const views = {
     renderHome() {
-        const today = new Date();
-        const prog = utils.getTodayProgram();
-        const streak = utils.calculateStreak();
-        
-        let html = `
+        const today = new Date(); const prog = utils.getTodayProgram(); const streak = utils.calculateStreak();
+        return `
             <h1>Dashboard</h1>
-
-            <div class="card">
-                <h3>Today: ${utils.getDayName(today.getDay()).toUpperCase()}</h3>
-                <h2 style="font-size: 24px;">${prog.name}</h2>
-                <p class="text-muted" style="margin-bottom: 16px;">${prog.exercises.length} exercises planned.</p>
-                <button class="btn btn-primary" onclick="workoutEngine.start(utils.getTodayProgram())"><i class="fas fa-play"></i> START WORKOUT</button>
+            <div class="card"><h3>Today: ${utils.getDayName(today.getDay()).toUpperCase()}</h3><h2 style="font-size: 24px;">${prog.name}</h2><p class="text-muted" style="margin-bottom: 16px;">${prog.exercises.length} exercises planned.</p><button class="btn btn-primary" onclick="workoutEngine.start(utils.getTodayProgram())"><i class="fas fa-play"></i> START WORKOUT</button></div>
+            <div class="card"><h3>Custom Workout</h3><p class="text-muted" style="margin-bottom: 12px; font-size:12px;">Go off-script. Pick a different day, mix exercises, or log other activities.</p>
+                ${app.showCustomOptions ? `<div style="display:flex; flex-direction:column; gap:8px;"><button class="btn" style="background:var(--surface-elevated); font-size:14px;" onclick="app.customFlow('A')">A) Choose From Program</button><button class="btn" style="background:var(--surface-elevated); font-size:14px;" onclick="app.customFlow('B')">B) Mix Custom Exercises</button><button class="btn" style="background:var(--surface-elevated); font-size:14px;" onclick="app.customFlow('C')">C) Other Activity (Cardio, Sport)</button><button class="btn btn-sm" style="margin-top:4px; background:transparent; color:var(--text-secondary);" onclick="app.toggleCustomOptions()">Cancel</button></div>` : `<button class="btn" style="background:transparent; border:1px solid var(--accent-color); color:var(--accent-color);" onclick="app.toggleCustomOptions()"><i class="fas fa-sliders"></i> CUSTOM WORKOUT</button>`}
             </div>
-
-            <div class="card">
-                <h3>Custom Workout</h3>
-                <p class="text-muted" style="margin-bottom: 12px; font-size:12px;">Go off-script. Pick a different day, mix exercises, or log other activities.</p>
-                ${app.showCustomOptions ? `
-                    <div style="display:flex; flex-direction:column; gap:8px;">
-                        <button class="btn" style="background:var(--surface-elevated); font-size:14px;" onclick="app.customFlow('A')">A) Choose From Program</button>
-                        <button class="btn" style="background:var(--surface-elevated); font-size:14px;" onclick="app.customFlow('B')">B) Mix Custom Exercises</button>
-                        <button class="btn" style="background:var(--surface-elevated); font-size:14px;" onclick="app.customFlow('C')">C) Other Activity (Cardio, Sport)</button>
-                        <button class="btn btn-sm" style="margin-top:4px; background:transparent; color:var(--text-secondary);" onclick="app.toggleCustomOptions()">Cancel</button>
-                    </div>
-                ` : `
-                    <button class="btn" style="background:transparent; border:1px solid var(--accent-color); color:var(--accent-color);" onclick="app.toggleCustomOptions()">
-                        <i class="fas fa-sliders"></i> CUSTOM WORKOUT
-                    </button>
-                `}
-            </div>
-
-            <div class="card">
-                <h3>Log Bodyweight</h3>
-                <div style="display:flex; gap:12px; margin-top:12px; width: 100%; align-items: center;">
-                    <input type="number" inputmode="decimal" id="quick-bw-input" value="${store.state.user.currentWeight}" style="flex:1; min-width:0; background:var(--surface-elevated); border:1px solid var(--border); border-radius:8px; color:white; padding:0 16px; font-size:20px; font-weight:bold; height:48px;">
-                    <button class="btn btn-success" style="width:auto; flex-shrink:0; padding: 0 20px; height:48px;" onclick="app.logWeight()"><i class="fas fa-save"></i> SAVE</button>
-                </div>
-            </div>
-            
-            <div class="streak-box">
-                <i class="fas fa-fire streak-fire"></i>
-                <div>
-                    <h2 class="streak-text">${streak} Day Streak</h2>
-                    <span class="text-muted" style="font-size:12px;">Workouts + Diet + Weight logged</span>
-                </div>
-            </div>
+            <div class="card"><h3>Log Bodyweight</h3><div style="display:flex; gap:12px; margin-top:12px; width: 100%; align-items: center;"><input type="number" inputmode="decimal" id="quick-bw-input" value="${store.state.user.currentWeight}" style="flex:1; min-width:0; background:var(--surface-elevated); border:1px solid var(--border); border-radius:8px; color:white; padding:0 16px; font-size:20px; font-weight:bold; height:48px;"><button class="btn btn-success" style="width:auto; flex-shrink:0; padding: 0 20px; height:48px;" onclick="app.logWeight()"><i class="fas fa-save"></i> SAVE</button></div></div>
+            <div class="streak-box"><i class="fas fa-fire streak-fire"></i><div><h2 class="streak-text">${streak} Day Streak</h2><span class="text-muted" style="font-size:12px;">Workouts + Diet + Weight logged</span></div></div>
         `;
-        return html;
     },
-
-    renderCustomA() {
-        let html = `
-            <div class="page-header">
-                <button class="btn btn-sm btn-icon" onclick="app.navigate('home')"><i class="fas fa-arrow-left"></i></button>
-                <h2 style="margin:0; font-size:18px;">Pick Program Day</h2>
-                <div style="width:36px;"></div>
-            </div>
-            <p class="text-muted" style="margin-bottom:16px;">Select a day to run as <b>${app.customDraftTitle}</b></p>
-            <div style="display:flex; flex-direction:column; gap:12px;">
-        `;
-        store.state.program.forEach((p, idx) => {
-            if(p.exercises.length > 0) {
-                html += `
-                    <div class="card" onclick="workoutEngine.start({ name: app.customDraftTitle, exercises: store.state.program[${idx}].exercises })" style="cursor:pointer; border:1px solid var(--accent-color);">
-                        <h3 style="margin:0; color:var(--text-primary);">${p.name}</h3>
-                        <p class="text-muted" style="font-size:12px; margin-top:4px;">${p.exercises.length} exercises</p>
-                    </div>
-                `;
-            }
-        });
-        html += `</div>`;
-        return html;
-    },
-
-    renderCustomB() {
-        let grouped = utils.getGroupedExercises();
-        
-        let html = `
-            <div class="page-header">
-                <button class="btn btn-sm btn-icon" onclick="app.navigate('home')"><i class="fas fa-arrow-left"></i></button>
-                <h2 style="margin:0; font-size:18px;">Mix Exercises</h2>
-                <button class="btn btn-sm btn-success" onclick="app.startCustomMix()">START</button>
-            </div>
-            <p class="text-muted" style="margin-bottom:16px;">Select initial exercises for <b>${app.customDraftTitle}</b></p>
-        `;
-        
-        Object.keys(grouped).sort().forEach(muscle => {
-            html += `<h3 style="margin-top:16px; color:var(--text-secondary); font-size:14px;">${muscle}</h3>`;
-            html += `<div style="display:flex; flex-direction:column; gap:8px;">`;
-            grouped[muscle].sort((a,b) => a.name.localeCompare(b.name)).forEach(ex => {
-                html += `
-                    <label class="data-row flex-between" style="padding:12px; background:var(--surface-color); border-radius:8px; border:1px solid var(--border);">
-                        <div>
-                            <div style="font-weight:bold;">${ex.name}</div>
-                            <div class="text-muted" style="font-size:12px;">Def: ${ex.targetSets}x${ex.targetReps}</div>
-                        </div>
-                        <input type="checkbox" class="cx-checkbox" value="${ex.name}" data-sets="${ex.targetSets}" data-reps="${ex.targetReps}" style="width:24px; height:24px;">
-                    </label>
-                `;
-            });
-            html += `</div>`;
-        });
-        
-        return html;
-    },
-
     renderWorkout() {
         if (app.isEditingProgram) return this.renderProgramEditor();
         let html = `
             <div class="flex-between" style="margin-bottom:16px;">
-                <h1 style="margin:0">Program</h1>
+                <select class="edit-input" style="font-size:20px; font-weight:bold; margin:0; width:auto; border:none; background:transparent; padding:0; padding-right:12px;" onchange="app.switchRoutine(this.value)">
+                    ${store.state.routines.map(r => `<option value="${r.id}" ${r.id === store.state.activeRoutineId ? 'selected' : ''} style="color:black">${r.name}</option>`).join('')}
+                </select>
                 <button class="btn btn-sm btn-icon" onclick="app.toggleProgramEdit()"><i class="fas fa-pen"></i></button>
             </div>
             <p class="text-muted mb-4">Your current workout split.</p>
         `;
-
-        store.state.program.forEach(p => {
+        const active = utils.getActiveRoutine();
+        // Render starting from Monday (Day 1) to Sunday (Day 0) for natural visual order
+        const order = [1, 2, 3, 4, 5, 6, 0];
+        order.forEach(dayIndex => {
+            const p = active.days.find(d => d.day === dayIndex) || { day: dayIndex, name: 'Rest', exercises: [] };
             const isToday = p.day === new Date().getDay();
-            html += `
-                <div class="card" style="${isToday ? 'border: 2px solid var(--accent-color);' : ''}">
-                    <div class="flex-between">
-                        <div>
-                            <span class="text-muted" style="font-size:12px; text-transform:uppercase">${utils.getDayName(p.day)}</span>
-                            <h2 style="margin:0">${p.name}</h2>
-                        </div>
-                        ${isToday ? '<span class="text-accent" style="font-size:12px; font-weight:bold">TODAY</span>' : ''}
-                    </div>
-                    ${p.exercises.length > 0 ? `<div style="margin-top:12px; padding-top:12px; border-top:1px solid var(--border);">
-                        ${p.exercises.map(e => `<div class="text-muted" style="font-size:14px; margin-bottom:4px;">• ${e.name} (${e.targetSets}x${e.targetReps})</div>`).join('')}
-                    </div>` : '<div class="text-muted" style="margin-top:8px;">Rest Day</div>'}
-                </div>
-            `;
+            html += `<div class="card" style="${isToday ? 'border: 2px solid var(--accent-color);' : ''}"><div class="flex-between"><div><span class="text-muted" style="font-size:12px; text-transform:uppercase">${utils.getDayName(p.day)}</span><h2 style="margin:0">${p.name}</h2></div>${isToday ? '<span class="text-accent" style="font-size:12px; font-weight:bold">TODAY</span>' : ''}</div>${p.exercises.length > 0 ? `<div style="margin-top:12px; padding-top:12px; border-top:1px solid var(--border);">${p.exercises.map(e => `<div class="text-muted" style="font-size:14px; margin-bottom:4px;">• ${e.name} (${e.targetSets}x${e.targetReps})</div>`).join('')}</div>` : '<div class="text-muted" style="margin-top:8px;">Rest Day</div>'}</div>`;
         });
         return html;
     },
-
     renderProgramEditor() {
         let html = `
-            <div class="page-header">
-                <h1 style="margin:0; color:var(--accent-color)">Edit Split</h1>
-                <button class="btn btn-sm btn-success" onclick="app.toggleProgramEdit()"><i class="fas fa-save"></i> SAVE</button>
+            <div class="page-header" style="flex-direction:column; align-items:flex-start; gap:12px;">
+                <div class="flex-between" style="width:100%;">
+                    <input class="edit-input" style="font-size:24px; font-weight:bold; color:var(--accent-color); border:none; background:transparent; padding:0; margin:0; width:60%;" value="${app.draftRoutine.name}" onchange="app.draftRoutine.name = this.value">
+                    <div style="display:flex; gap:8px;">
+                        <button class="btn btn-sm" onclick="app.createNewRoutine()">+ New Split</button>
+                        <button class="btn btn-sm btn-success" onclick="app.toggleProgramEdit()"><i class="fas fa-save"></i> Save</button>
+                    </div>
+                </div>
+                ${store.state.routines.length > 1 ? `<button class="btn btn-sm" style="background:transparent; border:1px solid var(--accent-color); color:var(--accent-color); width:100%;" onclick="app.deleteCurrentRoutine()"><i class="fas fa-trash"></i> Delete This Split</button>` : ''}
             </div>
+            <p class="text-muted" style="margin-bottom:16px;">Customize your 7-day schedule. Assign new exercises or edit sets/reps. Set to empty for a Rest Day.</p>
         `;
-        app.draftProgram.forEach((day, dIdx) => {
-            html += `
-                <div class="card" style="border: 1px solid var(--accent-color);">
-                    <div class="flex-between" style="margin-bottom: 12px;">
-                        <input class="edit-input" style="font-size:20px; font-weight:bold; margin:0; width:60%" value="${day.name}" onchange="app.updateDay(${dIdx}, 'name', this.value)">
-                        <div class="editor-controls" style="flex-direction:row;">
-                            <button class="btn-icon" onclick="app.moveDay(${dIdx}, -1)"><i class="fas fa-arrow-up"></i></button>
-                            <button class="btn-icon" onclick="app.moveDay(${dIdx}, 1)"><i class="fas fa-arrow-down"></i></button>
-                            <button class="btn-icon text-accent" onclick="app.deleteDay(${dIdx})"><i class="fas fa-trash"></i></button>
-                        </div>
-                    </div>
-            `;
+        
+        const order = [1, 2, 3, 4, 5, 6, 0]; // Visual Monday-Sunday mapping
+        order.forEach((dayIndex) => {
+            const dIdx = app.draftRoutine.days.findIndex(d => d.day === dayIndex);
+            if(dIdx === -1) return;
+            const day = app.draftRoutine.days[dIdx];
+            html += `<div class="card" style="border: 1px solid var(--accent-color);"><div class="flex-between" style="margin-bottom: 12px;"><div><span class="text-muted" style="font-size:12px; text-transform:uppercase">${utils.getDayName(day.day)}</span><input class="edit-input" style="font-size:20px; font-weight:bold; margin:0;" value="${day.name}" onchange="app.updateDay(${dIdx}, 'name', this.value)"></div></div>`;
             day.exercises.forEach((ex, eIdx) => {
-                html += `
-                    <div class="editor-exercise-row">
-                        <div style="flex:1;">
-                            <input class="edit-input" style="margin-bottom:4px;" placeholder="Exercise Name" value="${ex.name}" onchange="app.updateEx(${dIdx}, ${eIdx}, 'name', this.value)">
-                            <div style="display:flex; gap:8px;">
-                                <input type="number" class="edit-input" style="margin:0;" placeholder="Sets" value="${ex.targetSets}" onchange="app.updateEx(${dIdx}, ${eIdx}, 'targetSets', this.value)">
-                                <input class="edit-input" style="margin:0;" placeholder="Reps (e.g. 8-12)" value="${ex.targetReps}" onchange="app.updateEx(${dIdx}, ${eIdx}, 'targetReps', this.value)">
-                            </div>
-                        </div>
-                        <div class="editor-controls">
-                            <button class="btn-icon" onclick="app.moveEx(${dIdx}, ${eIdx}, -1)"><i class="fas fa-chevron-up"></i></button>
-                            <button class="btn-icon" onclick="app.moveEx(${dIdx}, ${eIdx}, 1)"><i class="fas fa-chevron-down"></i></button>
-                            <button class="btn-icon text-accent" onclick="app.deleteEx(${dIdx}, ${eIdx})"><i class="fas fa-times"></i></button>
-                        </div>
-                    </div>
-                `;
+                const currentMuscle = utils.getMuscle(ex);
+                html += `<div class="editor-exercise-row"><div style="flex:1;"><input class="edit-input" style="margin-bottom:4px;" placeholder="Exercise Name (e.g. Bench Press)" value="${ex.name}" onchange="app.updateEx(${dIdx}, ${eIdx}, 'name', this.value)"><div style="display:flex; gap:8px;"><input type="number" class="edit-input" style="margin:0;" placeholder="Sets" value="${ex.targetSets}" onchange="app.updateEx(${dIdx}, ${eIdx}, 'targetSets', this.value)"><input class="edit-input" style="margin:0;" placeholder="Reps (e.g. 8-12)" value="${ex.targetReps}" onchange="app.updateEx(${dIdx}, ${eIdx}, 'targetReps', this.value)"></div><select class="edit-input" style="margin-top:8px; margin-bottom:0; font-size:12px; padding:4px;" onchange="app.updateEx(${dIdx}, ${eIdx}, 'muscle', this.value)">${MUSCLE_GROUPS.map(m => `<option value="${m}" ${currentMuscle === m ? 'selected' : ''}>Muscle: ${m}</option>`).join('')}</select></div><div class="editor-controls"><button class="btn-icon" onclick="app.moveEx(${dIdx}, ${eIdx}, -1)"><i class="fas fa-chevron-up"></i></button><button class="btn-icon" onclick="app.moveEx(${dIdx}, ${eIdx}, 1)"><i class="fas fa-chevron-down"></i></button><button class="btn-icon text-accent" onclick="app.deleteEx(${dIdx}, ${eIdx})"><i class="fas fa-times"></i></button></div></div>`;
             });
             html += `<button class="btn btn-sm" style="margin-top:12px;" onclick="app.addEx(${dIdx})">+ Add Exercise</button></div>`;
         });
-        html += `<button class="btn" style="margin-bottom: 30px; border:1px dashed var(--text-secondary);" onclick="app.addDay()">+ Add New Split Day</button>`;
         return html;
     },
-
-    renderNutrition() {
-        let html = `
-            <h1>Daily Nutrition</h1>
-            <div class="card">
-                <h3>Log Today's Fuel</h3>
-                <div style="display:flex; flex-direction:column; gap:12px; margin-top:16px;">
-                    <div>
-                        <label class="text-muted" style="font-size:12px; text-transform:uppercase;">Calories Consumed</label>
-                        <input type="number" id="nut-cal" class="edit-input" style="font-size:24px; font-weight:bold; height:50px; text-align:center;" placeholder="kcal">
-                    </div>
-                    
-                    <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:12px;">
-                        <div><label class="text-muted" style="font-size:12px;">Protein (g)</label><input type="number" id="nut-pro" class="edit-input" style="text-align:center"></div>
-                        <div><label class="text-muted" style="font-size:12px;">Carbs (g)</label><input type="number" id="nut-car" class="edit-input" style="text-align:center"></div>
-                        <div><label class="text-muted" style="font-size:12px;">Fats (g)</label><input type="number" id="nut-fat" class="edit-input" style="text-align:center"></div>
-                    </div>
-
-                    <div style="margin-top:8px;">
-                        <label class="text-muted" style="font-size:12px; text-transform:uppercase;">Active Calories Burned</label>
-                        <input type="number" id="nut-burn" class="edit-input" style="text-align:center" placeholder="kcal (optional)">
-                    </div>
-
-                    <button class="btn btn-success" style="margin-top:12px;" onclick="app.logNutrition()"><i class="fas fa-save"></i> SAVE MACROS</button>
-                </div>
-            </div>
-            <p class="text-muted" style="text-align:center; font-size:12px;">Saving this completes your daily tracker requirements for the streak counter.</p>
-        `;
+    renderCustomA() {
+        let html = `<div class="page-header"><button class="btn btn-sm btn-icon" onclick="app.navigate('home')"><i class="fas fa-arrow-left"></i></button><h2 style="margin:0; font-size:18px;">Pick Program Day</h2><div style="width:36px;"></div></div><p class="text-muted" style="margin-bottom:16px;">Select a day to run as <b>${app.customDraftTitle}</b></p><div style="display:flex; flex-direction:column; gap:12px;">`;
+        utils.getActiveRoutine().days.forEach((p, idx) => { if(p.exercises.length > 0) { html += `<div class="card" onclick="workoutEngine.start({ name: app.customDraftTitle, exercises: utils.getActiveRoutine().days[${idx}].exercises })" style="cursor:pointer; border:1px solid var(--accent-color);"><h3 style="margin:0; color:var(--text-primary);">${p.name}</h3><p class="text-muted" style="font-size:12px; margin-top:4px;">${p.exercises.length} exercises</p></div>`; } });
+        html += `</div>`; return html;
+    },
+    renderCustomB() {
+        let grouped = utils.getGroupedExercises();
+        let html = `<div class="page-header"><button class="btn btn-sm btn-icon" onclick="app.navigate('home')"><i class="fas fa-arrow-left"></i></button><h2 style="margin:0; font-size:18px;">Mix Exercises</h2><button class="btn btn-sm btn-success" onclick="app.startCustomMix()">START</button></div><p class="text-muted" style="margin-bottom:16px;">Select initial exercises for <b>${app.customDraftTitle}</b></p>`;
+        Object.keys(grouped).sort().forEach(muscle => {
+            html += `<h3 style="margin-top:16px; color:var(--text-secondary); font-size:14px;">${muscle}</h3><div style="display:flex; flex-direction:column; gap:8px;">`;
+            grouped[muscle].sort((a,b) => a.name.localeCompare(b.name)).forEach(ex => {
+                html += `<label class="data-row flex-between" style="padding:12px; background:var(--surface-color); border-radius:8px; border:1px solid var(--border);"><div><div style="font-weight:bold;">${ex.name}</div><div class="text-muted" style="font-size:12px;">Def: ${ex.targetSets}x${ex.targetReps}</div></div><input type="checkbox" class="cx-checkbox" value="${ex.name}" data-sets="${ex.targetSets}" data-reps="${ex.targetReps}" style="width:24px; height:24px;"></label>`;
+            });
+            html += `</div>`;
+        });
         return html;
     },
-
+    renderNutrition() { return `<h1>Daily Nutrition</h1><div class="card"><h3>Log Today's Fuel</h3><div style="display:flex; flex-direction:column; gap:12px; margin-top:16px;"><div><label class="text-muted" style="font-size:12px; text-transform:uppercase;">Calories Consumed</label><input type="number" id="nut-cal" class="edit-input" style="font-size:24px; font-weight:bold; height:50px; text-align:center;" placeholder="kcal"></div><div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:12px;"><div><label class="text-muted" style="font-size:12px;">Protein (g)</label><input type="number" id="nut-pro" class="edit-input" style="text-align:center"></div><div><label class="text-muted" style="font-size:12px;">Carbs (g)</label><input type="number" id="nut-car" class="edit-input" style="text-align:center"></div><div><label class="text-muted" style="font-size:12px;">Fats (g)</label><input type="number" id="nut-fat" class="edit-input" style="text-align:center"></div></div><div style="margin-top:8px;"><label class="text-muted" style="font-size:12px; text-transform:uppercase;">Active Calories Burned</label><input type="number" id="nut-burn" class="edit-input" style="text-align:center" placeholder="kcal (optional)"></div><button class="btn btn-success" style="margin-top:12px;" onclick="app.logNutrition()"><i class="fas fa-save"></i> SAVE MACROS</button></div></div><p class="text-muted" style="text-align:center; font-size:12px;">Saving this completes your daily tracker requirements for the streak counter.</p>`; },
     renderProgress() {
-        let html = `
-            <h1>Analytics</h1>
-
-            <div class="card">
-                <h3>Weekly Average Bodyweight</h3>
-                <p class="text-muted" style="font-size:12px; margin-bottom:8px;">Smoothed trend grouped by week</p>
-                <canvas id="bwTimeChart"></canvas>
-            </div>
-
-            <div class="card">
-                <h3>Muscle Volume Over Time</h3>
-                <p class="text-muted" style="font-size:12px; margin-bottom:8px;">Weekly average kg lifted per muscle group</p>
-                <canvas id="muscleTimeChart"></canvas>
-            </div>
-        `;
-        
+        let html = `<h1>Analytics</h1><div class="card"><h3>Weekly Average Bodyweight</h3><p class="text-muted" style="font-size:12px; margin-bottom:8px;">Smoothed trend grouped by week</p><canvas id="bwTimeChart"></canvas></div><div class="card"><h3>Muscle Volume Over Time</h3><p class="text-muted" style="font-size:12px; margin-bottom:8px;">Weekly average kg lifted per muscle group</p><canvas id="muscleTimeChart"></canvas></div>`;
         setTimeout(() => {
-            const bwData = utils.getWeeklyData(store.state.history.bodyweight);
-            const bwWeeks = Object.keys(bwData).sort();
-            const bwLabels = bwWeeks.map(w => utils.formatDateShort(new Date(parseInt(w))));
-            const bwAverages = bwWeeks.map(w => {
-                const entries = bwData[w].entries;
-                const sum = entries.reduce((acc, e) => acc + (parseFloat(e.weight) || 0), 0);
-                return sum / entries.length;
-            });
-
-            const bwCtx = document.getElementById('bwTimeChart');
-            if(bwCtx && bwLabels.length > 0) {
-                new Chart(bwCtx, {
-                    type: 'line',
-                    data: { labels: bwLabels, datasets: [{ label: 'Avg Weight (kg)', data: bwAverages, borderColor: '#ff9500', backgroundColor: '#ff9500', tension: 0.3, borderWidth: 2 }] },
-                    options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { grid: { color: '#333' } }, x: { grid: { display: false } } } }
-                });
-            }
-
-            const musData = utils.getWeeklyMuscleVolume();
-            const musWeeks = Object.keys(musData.weekly).sort();
-            const musLabels = musWeeks.map(w => utils.formatDateShort(new Date(parseInt(w))));
-            const musDatasets = musData.muscles.map((muscle, i) => {
-                return { label: muscle, data: musWeeks.map(w => musData.weekly[w][muscle] || 0), borderColor: CHAT_COLORS[i % CHAT_COLORS.length], backgroundColor: CHAT_COLORS[i % CHAT_COLORS.length], tension: 0.3, borderWidth: 2 };
-            });
-
-            const musCtx = document.getElementById('muscleTimeChart');
-            if(musCtx && musLabels.length > 0) {
-                new Chart(musCtx, {
-                    type: 'line',
-                    data: { labels: musLabels, datasets: musDatasets },
-                    options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { color: '#8e8e93', boxWidth: 12 } } }, scales: { y: { grid: { color: '#333' } }, x: { grid: { display: false } } } }
-                });
-            }
+            const bwData = utils.getWeeklyData(store.state.history.bodyweight); const bwWeeks = Object.keys(bwData).sort(); const bwLabels = bwWeeks.map(w => utils.formatDateShort(new Date(parseInt(w)))); const bwAverages = bwWeeks.map(w => { const entries = bwData[w].entries; const sum = entries.reduce((acc, e) => acc + (parseFloat(e.weight) || 0), 0); return sum / entries.length; });
+            const bwCtx = document.getElementById('bwTimeChart'); if(bwCtx && bwLabels.length > 0) { new Chart(bwCtx, { type: 'line', data: { labels: bwLabels, datasets: [{ label: 'Avg Weight (kg)', data: bwAverages, borderColor: '#ff9500', backgroundColor: '#ff9500', tension: 0.3, borderWidth: 2 }] }, options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { grid: { color: '#333' } }, x: { grid: { display: false } } } } }); }
+            const musData = utils.getWeeklyMuscleVolume(); const musWeeks = Object.keys(musData.weekly).sort(); const musLabels = musWeeks.map(w => utils.formatDateShort(new Date(parseInt(w)))); const musDatasets = musData.muscles.map((muscle, i) => { return { label: muscle, data: musWeeks.map(w => musData.weekly[w][muscle] || 0), borderColor: CHAT_COLORS[i % CHAT_COLORS.length], backgroundColor: CHAT_COLORS[i % CHAT_COLORS.length], tension: 0.3, borderWidth: 2 }; });
+            const musCtx = document.getElementById('muscleTimeChart'); if(musCtx && musLabels.length > 0) { new Chart(musCtx, { type: 'line', data: { labels: musLabels, datasets: musDatasets }, options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { color: '#8e8e93', boxWidth: 12 } } }, scales: { y: { grid: { color: '#333' } }, x: { grid: { display: false } } } } }); }
         }, 100);
-
         return html;
     },
-
     renderData() {
         let html = `<h1>Data Management</h1>`;
-
         html += `<button class="btn" style="margin-bottom:16px;" onclick="app.toggleDataTab('training')"><i class="fas fa-dumbbell"></i> Training History</button>`;
         if (app.activeDataTab === 'training') {
             const workouts = [...store.state.history.workouts].reverse();
             if (workouts.length === 0) html += `<p class="text-muted" style="margin-bottom:16px;">No workouts logged yet.</p>`;
             workouts.forEach(w => {
-                if(w.isSkipped) {
-                    html += `<div class="card" style="border-left: 4px solid var(--warning); padding: 12px 16px;"><div class="flex-between"><h3 style="margin:0; color:var(--text-primary)">${w.name}</h3><span class="text-muted" style="font-size:12px">${utils.formatDate(w.date)}</span></div></div>`;
-                } else if (w.isActivity) {
-                    html += `<div class="card" style="border-left: 4px solid var(--success); padding: 12px 16px;"><div class="flex-between"><h3 style="margin:0; color:var(--text-primary)">${w.name}</h3><span class="text-muted" style="font-size:12px">${utils.formatDate(w.date)}</span></div><div style="margin-top:8px; display:flex; gap:16px;" class="text-muted"><span><i class="fas fa-clock"></i> ${w.duration}m</span><span><i class="fas fa-bolt"></i> Activity</span></div></div>`;
-                } else {
-                    const vol = (w.exercises||[]).reduce((acc, ex) => acc + utils.calcVolume(ex.sets), 0);
-                    const sets = (w.exercises||[]).reduce((acc, ex) => acc + ex.sets.length, 0);
-                    html += `<div class="card"><div class="flex-between"><h3 style="margin:0; color:var(--text-primary)">${w.name}</h3><span class="text-muted" style="font-size:12px">${utils.formatDate(w.date)}</span></div><div style="margin-top:8px; display:flex; gap:16px;" class="text-muted"><span><i class="fas fa-clock"></i> ${w.duration}m</span><span><i class="fas fa-layer-group"></i> ${sets} sets</span><span><i class="fas fa-weight-hanging"></i> ${(vol/1000).toFixed(1)}k kg</span></div></div>`;
-                }
+                if(w.isSkipped) { html += `<div class="card" style="border-left: 4px solid var(--warning); padding: 12px 16px;"><div class="flex-between"><h3 style="margin:0; color:var(--text-primary)">${w.name}</h3><span class="text-muted" style="font-size:12px">${utils.formatDate(w.date)}</span></div></div>`; } 
+                else if (w.isActivity) { html += `<div class="card" style="border-left: 4px solid var(--success); padding: 12px 16px;"><div class="flex-between"><h3 style="margin:0; color:var(--text-primary)">${w.name}</h3><span class="text-muted" style="font-size:12px">${utils.formatDate(w.date)}</span></div><div style="margin-top:8px; display:flex; gap:16px;" class="text-muted"><span><i class="fas fa-clock"></i> ${w.duration}m</span><span><i class="fas fa-bolt"></i> Activity</span></div></div>`; } 
+                else { const vol = (w.exercises||[]).reduce((acc, ex) => acc + utils.calcVolume(ex.sets), 0); const sets = (w.exercises||[]).reduce((acc, ex) => acc + ex.sets.length, 0); html += `<div class="card"><div class="flex-between"><h3 style="margin:0; color:var(--text-primary)">${w.name}</h3><span class="text-muted" style="font-size:12px">${utils.formatDate(w.date)}</span></div><div style="margin-top:8px; display:flex; gap:16px;" class="text-muted"><span><i class="fas fa-clock"></i> ${w.duration}m</span><span><i class="fas fa-layer-group"></i> ${sets} sets</span><span><i class="fas fa-weight-hanging"></i> ${(vol/1000).toFixed(1)}k kg</span></div></div>`; }
             });
         }
-
         html += `<button class="btn" style="margin-bottom:16px;" onclick="app.toggleDataTab('bodyweight')"><i class="fas fa-weight-scale"></i> Bodyweight History</button>`;
         if (app.activeDataTab === 'bodyweight') {
-            const weeklyBW = utils.getWeeklyData(store.state.history.bodyweight);
-            const sortedWeeks = Object.keys(weeklyBW).sort((a,b) => b - a);
+            const weeklyBW = utils.getWeeklyData(store.state.history.bodyweight); const sortedWeeks = Object.keys(weeklyBW).sort((a,b) => b - a);
             if (sortedWeeks.length === 0) html += `<p class="text-muted" style="margin-bottom:16px;">No bodyweight data logged.</p>`;
             sortedWeeks.forEach(mon => {
                 html += `<div class="card"><h3 style="margin-bottom:12px;">Week of ${utils.formatDateShort(new Date(parseInt(mon)))}</h3>`;
                 const entries = weeklyBW[mon].entries.sort((a,b) => new Date(b.date) - new Date(a.date));
-                entries.forEach(entry => {
-                    const d = new Date(entry.date);
-                    html += `<div class="data-row flex-between"><span class="text-muted" style="width: 80px; font-size:12px;">${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getDay()]} ${utils.formatDateShort(d)}</span><div style="display:flex; gap:8px; align-items:center;"><input type="number" inputmode="decimal" class="inline-edit" style="width:60px; font-size:16px;" value="${entry.weight}" onchange="app.editEntry('bodyweight', '${entry.date}', 'weight', this.value)"><span class="text-muted">kg</span></div><button class="btn-icon" style="color:var(--accent-color); width:30px; height:30px;" onclick="app.deleteEntry('bodyweight', '${entry.date}')"><i class="fas fa-trash"></i></button></div>`;
-                });
+                entries.forEach(entry => { const d = new Date(entry.date); html += `<div class="data-row flex-between"><span class="text-muted" style="width: 80px; font-size:12px;">${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getDay()]} ${utils.formatDateShort(d)}</span><div style="display:flex; gap:8px; align-items:center;"><input type="number" inputmode="decimal" class="inline-edit" style="width:60px; font-size:16px;" value="${entry.weight}" onchange="app.editEntry('bodyweight', '${entry.date}', 'weight', this.value)"><span class="text-muted">kg</span></div><button class="btn-icon" style="color:var(--accent-color); width:30px; height:30px;" onclick="app.deleteEntry('bodyweight', '${entry.date}')"><i class="fas fa-trash"></i></button></div>`; });
                 html += `</div>`;
             });
         }
-
         html += `<button class="btn" style="margin-bottom:16px;" onclick="app.toggleDataTab('nutrition')"><i class="fas fa-apple-whole"></i> Nutrition History</button>`;
         if (app.activeDataTab === 'nutrition') {
-            const weeklyNut = utils.getWeeklyData(store.state.history.nutrition);
-            const sortedWeeks = Object.keys(weeklyNut).sort((a,b) => b - a);
+            const weeklyNut = utils.getWeeklyData(store.state.history.nutrition); const sortedWeeks = Object.keys(weeklyNut).sort((a,b) => b - a);
             if (sortedWeeks.length === 0) html += `<p class="text-muted" style="margin-bottom:16px;">No nutrition data logged.</p>`;
             sortedWeeks.forEach(mon => {
                 html += `<div class="card" style="padding:12px;"><h3 style="margin-bottom:8px;">Week of ${utils.formatDateShort(new Date(parseInt(mon)))}</h3><div class="nut-grid text-muted" style="border-bottom:1px solid var(--border); padding-bottom:4px; margin-bottom:4px;"><div class="nut-label">Date</div><div class="nut-label">Kcal</div><div class="nut-label">Pro</div><div class="nut-label">Car</div><div class="nut-label">Fat</div><div></div></div>`;
                 const entries = weeklyNut[mon].entries.sort((a,b) => new Date(b.date) - new Date(a.date));
-                entries.forEach(entry => {
-                    const d = new Date(entry.date);
-                    html += `<div class="nut-grid data-row" style="padding: 6px 0;"><span class="text-muted" style="font-size:11px;">${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getDay()]} ${d.getDate()}</span><input type="number" class="inline-edit" value="${entry.cal||0}" onchange="app.editEntry('nutrition', '${entry.date}', 'cal', this.value)"><input type="number" class="inline-edit" value="${entry.pro||0}" onchange="app.editEntry('nutrition', '${entry.date}', 'pro', this.value)"><input type="number" class="inline-edit" value="${entry.car||0}" onchange="app.editEntry('nutrition', '${entry.date}', 'car', this.value)"><input type="number" class="inline-edit" value="${entry.fat||0}" onchange="app.editEntry('nutrition', '${entry.date}', 'fat', this.value)"><button class="btn-icon" style="color:var(--accent-color); width:24px; height:24px; font-size:12px;" onclick="app.deleteEntry('nutrition', '${entry.date}')"><i class="fas fa-trash"></i></button></div>`;
-                });
+                entries.forEach(entry => { const d = new Date(entry.date); html += `<div class="nut-grid data-row" style="padding: 6px 0;"><span class="text-muted" style="font-size:11px;">${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getDay()]} ${d.getDate()}</span><input type="number" class="inline-edit" value="${entry.cal||0}" onchange="app.editEntry('nutrition', '${entry.date}', 'cal', this.value)"><input type="number" class="inline-edit" value="${entry.pro||0}" onchange="app.editEntry('nutrition', '${entry.date}', 'pro', this.value)"><input type="number" class="inline-edit" value="${entry.car||0}" onchange="app.editEntry('nutrition', '${entry.date}', 'car', this.value)"><input type="number" class="inline-edit" value="${entry.fat||0}" onchange="app.editEntry('nutrition', '${entry.date}', 'fat', this.value)"><button class="btn-icon" style="color:var(--accent-color); width:24px; height:24px; font-size:12px;" onclick="app.deleteEntry('nutrition', '${entry.date}')"><i class="fas fa-trash"></i></button></div>`; });
                 html += `</div>`;
             });
         }
-
-        html += `<div style="margin-top:40px; padding-top:20px; border-top:1px solid var(--border);"><button class="btn" style="background:transparent; border:1px solid var(--accent-color); color:var(--accent-color);" onclick="app.resetData()"><i class="fas fa-triangle-exclamation"></i> FACTORY RESET APP</button></div>`;
+        
+        // Export & Import Backup Feature
+        html += `
+            <div style="margin-top:40px; padding-top:20px; border-top:1px solid var(--border);">
+                <h3 style="margin-bottom: 12px;">Backups</h3>
+                <p class="text-muted" style="font-size:12px; margin-bottom:12px;">Save your data to your phone's Files to prevent losing it if your browser cache is cleared.</p>
+                <div style="display:flex; gap:12px; margin-bottom:24px;">
+                    <button class="btn btn-success" style="flex:1;" onclick="app.exportData()"><i class="fas fa-download"></i> Export Data</button>
+                    <label class="btn" style="flex:1; background:var(--surface-elevated); margin:0; cursor:pointer;">
+                        <i class="fas fa-upload"></i> Import
+                        <input type="file" accept=".json" style="display:none;" onchange="app.importData(event)">
+                    </label>
+                </div>
+                <button class="btn" style="background:transparent; border:1px solid var(--accent-color); color:var(--accent-color);" onclick="app.resetData()"><i class="fas fa-triangle-exclamation"></i> FACTORY RESET APP</button>
+            </div>
+        `;
         return html;
     }
 };
 
 const app = {
     isEditingProgram: false,
-    draftProgram: [],
+    draftRoutine: null,
     activeDataTab: null,
     customDraftTitle: '',
     showCustomOptions: false,
 
     init() { store.load(); this.navigate('home'); },
-
     navigate(viewId) {
         document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
         const navMap = { 'home': 0, 'workout': 1, 'progress': 2, 'nutrition': 3, 'data': 4 };
-        if(document.querySelectorAll('.nav-item')[navMap[viewId]]) {
-            document.querySelectorAll('.nav-item')[navMap[viewId]].classList.add('active');
-        }
-        
+        if(document.querySelectorAll('.nav-item')[navMap[viewId]]) document.querySelectorAll('.nav-item')[navMap[viewId]].classList.add('active');
         if(viewId !== 'home') this.showCustomOptions = false;
-
         const c = document.getElementById('main-content');
         if(viewId==='home') c.innerHTML = views.renderHome();
         else if(viewId==='workout') c.innerHTML = views.renderWorkout();
@@ -903,108 +536,102 @@ const app = {
         else if(viewId==='custom-b') c.innerHTML = views.renderCustomB();
         window.scrollTo(0,0);
     },
-
-    toggleCustomOptions() {
-        this.showCustomOptions = !this.showCustomOptions;
-        this.navigate('home');
-    },
-
+    toggleCustomOptions() { this.showCustomOptions = !this.showCustomOptions; this.navigate('home'); },
     customFlow(type) {
-        const defaultTitle = type === 'C' ? "Skiing / Netball" : "Custom Session";
-        const title = prompt("Enter Title for Custom Workout:", defaultTitle);
+        const title = prompt("Enter Title for Custom Workout:", type === 'C' ? "Skiing / Netball" : "Custom Session");
         if(!title) return; 
-
-        this.customDraftTitle = "Custom Workout - " + title;
-        this.showCustomOptions = false;
-
-        if (type === 'A') { this.navigate('custom-a'); } 
-        else if (type === 'B') { this.navigate('custom-b'); } 
-        else if (type === 'C') { workoutEngine.start({ name: this.customDraftTitle, exercises: [], isActivity: true }); }
+        this.customDraftTitle = "Custom Workout - " + title; this.showCustomOptions = false;
+        if (type === 'A') { this.navigate('custom-a'); } else if (type === 'B') { this.navigate('custom-b'); } else if (type === 'C') { workoutEngine.start({ name: this.customDraftTitle, exercises: [], isActivity: true }); }
     },
-
     startCustomMix() {
         const checkboxes = document.querySelectorAll('.cx-checkbox:checked');
         if(checkboxes.length === 0) { alert("Please select at least one exercise."); return; }
-        
-        let exercises = [];
-        checkboxes.forEach(cb => { exercises.push({ name: cb.value, targetSets: parseInt(cb.getAttribute('data-sets')), targetReps: cb.getAttribute('data-reps') }); });
+        let exercises = []; checkboxes.forEach(cb => { exercises.push({ name: cb.value, targetSets: parseInt(cb.getAttribute('data-sets')), targetReps: cb.getAttribute('data-reps') }); });
         workoutEngine.start({ name: this.customDraftTitle, exercises: exercises });
     },
-
-    logWeight() {
-        const input = document.getElementById('quick-bw-input');
-        if (input && input.value) { 
-            store.addBodyweight(input.value); 
-            input.value = store.state.user.currentWeight;
-            alert("Bodyweight logged! 🔥");
-            this.navigate('home');
-        }
+    logWeight() { const input = document.getElementById('quick-bw-input'); if (input && input.value) { store.addBodyweight(input.value); input.value = store.state.user.currentWeight; alert("Bodyweight logged! 🔥"); this.navigate('home'); } },
+    logNutrition() { const cal = document.getElementById('nut-cal').value; const pro = document.getElementById('nut-pro').value; const car = document.getElementById('nut-car').value; const fat = document.getElementById('nut-fat').value; const burn = document.getElementById('nut-burn').value; if(!cal) { alert("Please enter at least your calories consumed."); return; } store.addNutrition({ cal, pro, car, fat, burn }); alert("Nutrition logged! 🔥"); this.navigate('home'); },
+    editEntry(type, date, field, val) { if(type === 'bodyweight') store.updateBodyweight(date, val); else if (type === 'nutrition') store.updateNutrition(date, field, val); this.navigate('data'); },
+    deleteEntry(type, date) { if(confirm("Delete this entry forever?")) { store.deleteEntry(type, date); this.navigate('data'); } },
+    toggleDataTab(tabName) { this.activeDataTab = (this.activeDataTab === tabName) ? null : tabName; this.navigate('data'); },
+    resetData() { if(confirm("WARNING: This will delete all history and reset the app. Are you sure?")) { localStorage.removeItem('irontrack_state'); location.reload(); } },
+    
+    // Backup Functions
+    exportData() {
+        const dataStr = JSON.stringify(store.state, null, 2);
+        const blob = new Blob([dataStr], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `IronTrack_Backup_${utils.getLocalISODate(new Date())}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+    },
+    importData(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                const importedState = JSON.parse(e.target.result);
+                if (importedState && importedState.history) {
+                    store.state = importedState;
+                    store.save();
+                    alert("Data imported successfully! 🚀");
+                    location.reload(); 
+                } else { alert("Invalid backup file."); }
+            } catch (error) { alert("Error reading file. Make sure it's a valid IronTrack backup."); }
+        };
+        reader.readAsText(file);
     },
 
-    logNutrition() {
-        const cal = document.getElementById('nut-cal').value;
-        const pro = document.getElementById('nut-pro').value;
-        const car = document.getElementById('nut-car').value;
-        const fat = document.getElementById('nut-fat').value;
-        const burn = document.getElementById('nut-burn').value;
-
-        if(!cal) { alert("Please enter at least your calories consumed."); return; }
-
-        store.addNutrition({ cal, pro, car, fat, burn });
-        alert("Nutrition logged! 🔥");
-        this.navigate('home'); 
+    // Program Editing and Routines
+    switchRoutine(routineId) { store.state.activeRoutineId = routineId; store.save(); this.navigate('workout'); },
+    createNewRoutine() {
+        const name = prompt("Enter name for new routine (e.g. Push/Pull/Legs):", "New Split");
+        if (!name) return;
+        const newRoutine = {
+            id: utils.generateId(), name: name,
+            days: [ { day: 1, name: 'Monday', exercises: [] }, { day: 2, name: 'Tuesday', exercises: [] }, { day: 3, name: 'Wednesday', exercises: [] }, { day: 4, name: 'Thursday', exercises: [] }, { day: 5, name: 'Friday', exercises: [] }, { day: 6, name: 'Saturday', exercises: [] }, { day: 0, name: 'Sunday', exercises: [] } ]
+        };
+        store.state.routines.push(newRoutine);
+        store.state.activeRoutineId = newRoutine.id;
+        if (this.isEditingProgram) { this.draftRoutine = JSON.parse(JSON.stringify(newRoutine)); } else { store.save(); }
+        this.navigate('workout');
     },
-
-    editEntry(type, date, field, val) {
-        if(type === 'bodyweight') store.updateBodyweight(date, val);
-        else if (type === 'nutrition') store.updateNutrition(date, field, val);
-        this.navigate('data');
-    },
-
-    deleteEntry(type, date) {
-        if(confirm("Delete this entry forever?")) { store.deleteEntry(type, date); this.navigate('data'); }
-    },
-
-    toggleDataTab(tabName) {
-        this.activeDataTab = (this.activeDataTab === tabName) ? null : tabName;
-        this.navigate('data');
-    },
-
-    resetData() {
-        if(confirm("WARNING: This will delete all history and reset the app. Are you sure?")) {
-            localStorage.removeItem('irontrack_state');
-            location.reload();
-        }
-    },
-
-    toggleProgramEdit() {
-        this.isEditingProgram = !this.isEditingProgram;
-        if (this.isEditingProgram) {
-            this.draftProgram = JSON.parse(JSON.stringify(store.state.program));
-        } else {
-            this.draftProgram.forEach((d, i) => { d.day = i; d.exercises.forEach(e => e.targetSets = parseInt(e.targetSets)||1); }); 
-            store.state.program = this.draftProgram;
+    deleteCurrentRoutine() {
+        if(store.state.routines.length <= 1) { alert("You must have at least one routine."); return; }
+        if(confirm("Delete this routine permanently?")) {
+            store.state.routines = store.state.routines.filter(r => r.id !== this.draftRoutine.id);
+            store.state.activeRoutineId = store.state.routines[0].id;
+            this.isEditingProgram = false;
             store.save();
+            this.navigate('workout');
         }
+    },
+    toggleProgramEdit() {
+        if (this.isEditingProgram) {
+            this.draftRoutine.days.forEach(d => d.exercises.forEach(e => { e.targetSets = parseInt(e.targetSets)||1; })); 
+            const idx = store.state.routines.findIndex(r => r.id === this.draftRoutine.id);
+            if(idx > -1) store.state.routines[idx] = this.draftRoutine;
+            store.save();
+        } else {
+            const active = utils.getActiveRoutine();
+            this.draftRoutine = JSON.parse(JSON.stringify(active));
+        }
+        this.isEditingProgram = !this.isEditingProgram;
         this.navigate('workout');
     },
-    addDay() { this.draftProgram.push({ day: this.draftProgram.length, name: 'New Split Day', exercises: [] }); this.navigate('workout'); },
-    updateDay(idx, field, val) { this.draftProgram[idx][field] = val; },
-    moveDay(idx, dir) {
-        if(idx+dir < 0 || idx+dir >= this.draftProgram.length) return;
-        const temp = this.draftProgram[idx]; this.draftProgram[idx] = this.draftProgram[idx+dir]; this.draftProgram[idx+dir] = temp;
-        this.navigate('workout');
-    },
-    deleteDay(idx) { if(confirm("Delete this day?")) { this.draftProgram.splice(idx, 1); this.navigate('workout'); } },
-    addEx(dIdx) { this.draftProgram[dIdx].exercises.push({ name: 'New Exercise', targetSets: 3, targetReps: '8-12' }); this.navigate('workout'); },
-    updateEx(dIdx, eIdx, field, val) { this.draftProgram[dIdx].exercises[eIdx][field] = val; },
+    updateDay(dIdx, field, val) { this.draftRoutine.days[dIdx][field] = val; },
+    addEx(dIdx) { this.draftRoutine.days[dIdx].exercises.push({ name: 'New Exercise', targetSets: 3, targetReps: '8-12', muscle: 'Other' }); this.navigate('workout'); },
+    updateEx(dIdx, eIdx, field, val) { this.draftRoutine.days[dIdx].exercises[eIdx][field] = val; },
     moveEx(dIdx, eIdx, dir) {
-        const arr = this.draftProgram[dIdx].exercises;
+        const arr = this.draftRoutine.days[dIdx].exercises;
         if(eIdx+dir < 0 || eIdx+dir >= arr.length) return;
         const temp = arr[eIdx]; arr[eIdx] = arr[eIdx+dir]; arr[eIdx+dir] = temp;
         this.navigate('workout');
     },
-    deleteEx(dIdx, eIdx) { this.draftProgram[dIdx].exercises.splice(eIdx, 1); this.navigate('workout'); }
+    deleteEx(dIdx, eIdx) { this.draftRoutine.days[dIdx].exercises.splice(eIdx, 1); this.navigate('workout'); }
 };
 
 window.onload = () => app.init();
