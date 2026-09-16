@@ -87,17 +87,17 @@
 <script>
 const DEFAULT_PROGRAM = [
     { day: 0, workouts: [] },
-    { day: 1, workouts: [{ id: 'w1', name: 'Hamstring Legs', exercises: [ { name: 'Standing Calf Raise', targetSets: 4, targetReps: '10-15' }, { name: 'Seated Hamstring Leg Curl', targetSets: 3, targetReps: '8-12' }, { name: 'Romanian Deadlift', targetSets: 3, targetReps: '8-10' }, { name: 'Unilateral Leg Extension', targetSets: 3, targetReps: '10-15' }, { name: 'Bulgarian Split Squat', targetSets: 3, targetReps: '8-12' }, { name: 'Weighted Crunch', targetSets: 3, targetReps: '10-15' } ] }] },
-    { day: 2, workouts: [{ id: 'w2', name: 'Chest & Back', exercises: [ { name: 'Incline DB Press', targetSets: 3, targetReps: '5-8' }, { name: 'Pec Deck', targetSets: 3, targetReps: '10-15' }, { name: 'Flat Machine Press', targetSets: 3, targetReps: '8-12' }, { name: 'Lat Pulldown', targetSets: 3, targetReps: '8-12' }, { name: 'Chest Supported Row', targetSets: 3, targetReps: '8-12' }, { name: 'Pull-Ups', targetSets: 3, targetReps: 'AMRAP' } ] }] },
+    { day: 1, workouts: [{ id: 'w1', name: 'Hamstring Legs', exercises: [ { name: 'Squat', targetSets: 3, targetReps: '5-8' }, { name: 'Standing Calf Raise', targetSets: 4, targetReps: '10-15' }, { name: 'Seated Hamstring Leg Curl', targetSets: 3, targetReps: '8-12' }, { name: 'Romanian Deadlift', targetSets: 3, targetReps: '8-10' }, { name: 'Unilateral Leg Extension', targetSets: 3, targetReps: '10-15' }, { name: 'Bulgarian Split Squat', targetSets: 3, targetReps: '8-12' }, { name: 'Weighted Crunch', targetSets: 3, targetReps: '10-15' } ] }] },
+    { day: 2, workouts: [{ id: 'w2', name: 'Chest & Back', exercises: [ { name: 'Bench Press', targetSets: 3, targetReps: '5-8' }, { name: 'Deadlift', targetSets: 3, targetReps: '5-8' }, { name: 'Incline DB Press', targetSets: 3, targetReps: '8-12' }, { name: 'Pec Deck', targetSets: 3, targetReps: '10-15' }, { name: 'Lat Pulldown', targetSets: 3, targetReps: '8-12' }, { name: 'Chest Supported Row', targetSets: 3, targetReps: '8-12' }, { name: 'Pull-Ups', targetSets: 3, targetReps: 'AMRAP' } ] }] },
     { day: 3, workouts: [{ id: 'w3', name: 'Shoulders & Arms', exercises: [ { name: 'Cable Lateral Raise', targetSets: 4, targetReps: '12-15' }, { name: 'Rear Delt Fly', targetSets: 3, targetReps: '12-15' }, { name: 'Preacher Curl', targetSets: 3, targetReps: '8-12' }, { name: 'Hammer Curl', targetSets: 3, targetReps: '10-12' }, { name: 'Seated Curl', targetSets: 3, targetReps: '10-12' }, { name: 'Tricep Pushdown', targetSets: 3, targetReps: '10-15' }, { name: 'Overhead Extension', targetSets: 3, targetReps: '10-15' } ] }] },
-    { day: 4, workouts: [{ id: 'w4', name: 'Cardio & Abs', exercises: [ { name: 'Hanging Leg Raise', targetSets: 3, targetReps: '10-15' }, { name: 'Incline Treadmill Walk', targetSets: 1, targetReps: '30 mins' } ] }] },
+    { day: 4, workouts: [{ id: 'w4', name: 'Morning Cardio', isActivity: true, exercises: [] }] },
     { day: 5, workouts: [{ id: 'w5', name: 'Quad Legs', exercises: [ { name: 'Hack Squat', targetSets: 3, targetReps: '8-10' }, { name: 'Leg Press', targetSets: 3, targetReps: '10-12' }, { name: 'Leg Extension', targetSets: 3, targetReps: '12-15' }, { name: 'Seated Leg Curl', targetSets: 3, targetReps: '10-12' }, { name: 'Standing Calf Raise', targetSets: 4, targetReps: '10-15' } ] }] },
-    { day: 6, workouts: [{ id: 'w6', name: 'Upper Body', exercises: [ { name: 'Incline DB Press', targetSets: 3, targetReps: '8-10' }, { name: 'Lat Pulldown', targetSets: 3, targetReps: '8-12' }, { name: 'Cable Lateral Raise', targetSets: 3, targetReps: '12-15' }, { name: 'Seated Curl', targetSets: 3, targetReps: '10-12' }, { name: 'Dips', targetSets: 3, targetReps: 'AMRAP' } ] }] }
+    { day: 6, workouts: [{ id: 'w6', name: 'Upper Body', exercises: [ { name: 'Bench Press', targetSets: 3, targetReps: '8-10' }, { name: 'Incline DB Press', targetSets: 3, targetReps: '8-10' }, { name: 'Lat Pulldown', targetSets: 3, targetReps: '8-12' }, { name: 'Cable Lateral Raise', targetSets: 3, targetReps: '12-15' }, { name: 'Seated Curl', targetSets: 3, targetReps: '10-12' }, { name: 'Dips', targetSets: 3, targetReps: 'AMRAP' } ] }] }
 ];
 
-const EXERCISE_DB = { 'Incline DB Press': { muscle: 'Chest' }, 'Pec Deck': { muscle: 'Chest' }, 'Flat Machine Press': { muscle: 'Chest' }, 'Dips': { muscle: 'Chest' }, 'Lat Pulldown': { muscle: 'Back' }, 'Chest Supported Row': { muscle: 'Back' }, 'Pull-Ups': { muscle: 'Back' }, 'Cable Lateral Raise': { muscle: 'Shoulders' }, 'Rear Delt Fly': { muscle: 'Shoulders' }, 'Preacher Curl': { muscle: 'Biceps' }, 'Hammer Curl': { muscle: 'Biceps' }, 'Seated Curl': { muscle: 'Biceps' }, 'Tricep Pushdown': { muscle: 'Triceps' }, 'Overhead Extension': { muscle: 'Triceps' }, 'Hack Squat': { muscle: 'Quads' }, 'Leg Press': { muscle: 'Quads' }, 'Leg Extension': { muscle: 'Quads' }, 'Bulgarian Split Squat': { muscle: 'Quads' }, 'Unilateral Leg Extension': { muscle: 'Quads' }, 'Romanian Deadlift': { muscle: 'Hamstrings' }, 'Seated Hamstring Leg Curl': { muscle: 'Hamstrings' }, 'Seated Leg Curl': { muscle: 'Hamstrings' }, 'Standing Calf Raise': { muscle: 'Calves' }, 'Weighted Crunch': { muscle: 'Abs' }, 'Hanging Leg Raise': { muscle: 'Abs' }, 'Incline Treadmill Walk': { muscle: 'Cardio' } };
+const EXERCISE_DB = { 'Bench Press': { muscle: 'Chest' }, 'Squat': { muscle: 'Quads' }, 'Deadlift': { muscle: 'Back' }, 'Incline DB Press': { muscle: 'Chest' }, 'Pec Deck': { muscle: 'Chest' }, 'Flat Machine Press': { muscle: 'Chest' }, 'Dips': { muscle: 'Chest' }, 'Lat Pulldown': { muscle: 'Back' }, 'Chest Supported Row': { muscle: 'Back' }, 'Pull-Ups': { muscle: 'Back' }, 'Cable Lateral Raise': { muscle: 'Shoulders' }, 'Rear Delt Fly': { muscle: 'Shoulders' }, 'Preacher Curl': { muscle: 'Biceps' }, 'Hammer Curl': { muscle: 'Biceps' }, 'Seated Curl': { muscle: 'Biceps' }, 'Tricep Pushdown': { muscle: 'Triceps' }, 'Overhead Extension': { muscle: 'Triceps' }, 'Hack Squat': { muscle: 'Quads' }, 'Leg Press': { muscle: 'Quads' }, 'Leg Extension': { muscle: 'Quads' }, 'Bulgarian Split Squat': { muscle: 'Quads' }, 'Unilateral Leg Extension': { muscle: 'Quads' }, 'Romanian Deadlift': { muscle: 'Hamstrings' }, 'Seated Hamstring Leg Curl': { muscle: 'Hamstrings' }, 'Seated Leg Curl': { muscle: 'Hamstrings' }, 'Standing Calf Raise': { muscle: 'Calves' }, 'Weighted Crunch': { muscle: 'Abs' }, 'Hanging Leg Raise': { muscle: 'Abs' }, 'Incline Treadmill Walk': { muscle: 'Cardio' } };
 const MUSCLE_GROUPS = ['Chest', 'Back', 'Shoulders', 'Biceps', 'Triceps', 'Quads', 'Hamstrings', 'Calves', 'Abs', 'Cardio', 'Other'];
-const CHAT_COLORS = ['#ff3b30', '#ff9500', '#ffcc00', '#4cd964', '#5ac8fa', '#007aff', '#5856d6', '#af52de'];
+const CHAT_COLORS = ['#007aff', '#34c759', '#ff9500', '#af52de', '#ff3b30', '#5ac8fa', '#ffcc00', '#5856d6'];
 
 const store = {
     state: { user: { currentWeight: 90.0 }, routines: [], activeRoutineId: 'default_1', history: { workouts: [], bodyweight: [], nutrition: [], challengeLogs: {} }, prs: { Bench: 0, Squat: 0, Deadlift: 0 }, settings: { restTimer: 120 }, variations: {}, challenge: { isActive: false, title: '', startDate: '', endDate: '', goals: [] } },
@@ -165,7 +165,7 @@ const utils = {
 
             (w.exercises||[]).forEach(ex => {
                 let n = ex.name.toLowerCase();
-                let isBench = n.includes('bench') && !n.includes('incline') && !n.includes('db') && !n.includes('dumbbell');
+                let isBench = n.includes('bench press') && !n.includes('dumbbell') && !n.includes('db');
                 let isSquat = n.includes('squat') && !n.includes('split') && !n.includes('hack') && !n.includes('goblet');
                 let isDeadlift = n.includes('deadlift') && !n.includes('romanian') && !n.includes('rdl') && !n.includes('stiff');
 
@@ -173,29 +173,15 @@ const utils = {
                     let maxE1RM = 0;
                     ex.sets.forEach(s => {
                         if (s.completed && s.weight > 0 && s.reps > 0) {
+                            // Standard Epley 1RM Formula (Weight * (1 + Reps/30))
                             let e1rm = s.weight * (1 + s.reps / 30);
                             if (e1rm > maxE1RM) maxE1RM = e1rm;
                         }
                     });
                     
-                    if (maxE1RM > 0) {
-                        let targetMuscle = isBench ? 'Chest' : isSquat ? 'Quads' : 'Back';
-                        let trailingWeeklyVol = 0;
-                        store.state.history.workouts.forEach(pw => {
-                            if(pw.isSkipped || pw.isActivity) return;
-                            let daysDiff = (new Date(w.date) - new Date(pw.date)) / (1000*60*60*24);
-                            if (daysDiff >= 0 && daysDiff <= 7) {
-                                (pw.exercises||[]).forEach(pex => { if(utils.getMuscle(pex) === targetMuscle) trailingWeeklyVol += utils.calcVolume(pex.sets); });
-                            }
-                        });
-                        
-                        let volMod = 1 + (trailingWeeklyVol / 300000); 
-                        let finalE1RM = maxE1RM * volMod;
-
-                        if (isBench && finalE1RM > sessionBench) sessionBench = finalE1RM;
-                        if (isSquat && finalE1RM > sessionSquat) sessionSquat = finalE1RM;
-                        if (isDeadlift && finalE1RM > sessionDeadlift) sessionDeadlift = finalE1RM;
-                    }
+                    if (isBench && maxE1RM > sessionBench) sessionBench = maxE1RM;
+                    if (isSquat && maxE1RM > sessionSquat) sessionSquat = maxE1RM;
+                    if (isDeadlift && maxE1RM > sessionDeadlift) sessionDeadlift = maxE1RM;
                 }
             });
 
@@ -475,7 +461,6 @@ const views = {
     renderProgramEditor() {
         let html = `<div class="page-header" style="flex-direction:column; align-items:flex-start; gap:12px;"><div class="flex-between" style="width:100%;"><input class="edit-input" style="font-size:24px !important; font-weight:bold; color:var(--accent-color); border:none; background:transparent; padding:0; margin:0; flex:1; min-width:0;" value="${app.draftRoutine.name}" onchange="app.draftRoutine.name = this.value"><div style="display:flex; gap:8px; flex-shrink:0;"><button class="btn btn-sm btn-success" onclick="app.saveProgramEdit()"><i class="fas fa-save"></i> Save</button></div></div>${store.state.routines.length > 1 ? `<button class="btn btn-sm" style="background:transparent; border:1px solid var(--accent-color); color:var(--accent-color); width:100%;" onclick="app.deleteCurrentRoutine()"><i class="fas fa-trash"></i> Delete This Split</button>` : ''}</div><p class="text-muted" style="margin-bottom:16px; font-size:12px;">Customize your schedule. Add workouts or import templates via the "+ Add Workout" dropdowns.</p>`;
         
-        // Find all uniquely named workouts for the dropdowns
         let allSavedWorkoutsMap = {};
         store.state.routines.forEach(r => r.days.forEach(d => d.workouts.forEach(w => {
             if(!allSavedWorkoutsMap[w.name]) { allSavedWorkoutsMap[w.name] = w; }
@@ -504,7 +489,8 @@ const views = {
                         const currentMuscle = utils.getMuscle(ex); 
                         html += `<div class="editor-exercise-row" style="background: var(--bg-color); border: 1px solid var(--border);"><div style="flex:1;"><input class="edit-input" style="font-size:16px !important; margin-bottom:4px;" placeholder="Exercise Name" value="${ex.name}" onchange="app.updateEx(${dIdx}, ${wIdx}, ${eIdx}, 'name', this.value)"><div style="display:flex; gap:8px;"><input type="number" class="edit-input" style="font-size:16px !important; margin:0;" placeholder="Sets" value="${ex.targetSets}" onchange="app.updateEx(${dIdx}, ${wIdx}, ${eIdx}, 'targetSets', this.value)"><input class="edit-input" style="font-size:16px !important; margin:0;" placeholder="Reps (e.g. 8-12)" value="${ex.targetReps}" onchange="app.updateEx(${dIdx}, ${wIdx}, ${eIdx}, 'targetReps', this.value)"></div><select class="edit-input" style="font-size:16px !important; margin-top:8px; margin-bottom:0; padding:4px;" onchange="app.updateEx(${dIdx}, ${wIdx}, ${eIdx}, 'muscle', this.value)">${MUSCLE_GROUPS.map(m => `<option value="${m}" ${currentMuscle === m ? 'selected' : ''}>Muscle: ${m}</option>`).join('')}</select></div><div class="editor-controls"><button class="btn-icon" onclick="app.moveEx(${dIdx}, ${wIdx}, ${eIdx}, -1)"><i class="fas fa-chevron-up"></i></button><button class="btn-icon" onclick="app.moveEx(${dIdx}, ${wIdx}, ${eIdx}, 1)"><i class="fas fa-chevron-down"></i></button><button class="btn-icon text-accent" onclick="app.deleteEx(${dIdx}, ${wIdx}, ${eIdx})"><i class="fas fa-times"></i></button></div></div>`; 
                     });
-                    html += `<button class="btn btn-sm" style="margin-top:8px; width:100%; border:1px dashed var(--border); background:transparent;" onclick="app.addEx(${dIdx}, ${wIdx})">+ Add Exercise</button></div>`;
+                    if (!w.isActivity) html += `<button class="btn btn-sm" style="margin-top:8px; width:100%; border:1px dashed var(--border); background:transparent;" onclick="app.addEx(${dIdx}, ${wIdx})">+ Add Exercise</button>`;
+                    html += `</div>`;
                 });
             } html += `</div>`; 
         }); return html;
@@ -515,35 +501,48 @@ const views = {
     renderProgress() { 
         let html = `<h1>Analytics</h1>
         
-        <div class="card" style="background: linear-gradient(145deg, #1a0a0a, #2a1111); border: 1px solid var(--accent-color);">
+        <div class="card" style="background: linear-gradient(145deg, #1a0a0a, #2a1111); border: 1px solid var(--accent-color); box-shadow: 0 4px 16px rgba(255, 59, 48, 0.15);">
             <h2 style="margin:0; color:var(--accent-color); font-style:italic; margin-bottom: 16px;"><i class="fas fa-bolt"></i> PR ZONE</h2>
             
-            <div style="background:var(--surface-color); padding: 12px; border-radius: 12px; margin-bottom: 16px;">
+            <div style="background:var(--surface-color); padding: 12px; border-radius: 12px; margin-bottom: 16px; border: 1px solid rgba(255, 59, 48, 0.3);">
                 <h3 style="font-size:14px; margin:0;"><i class="fas fa-chart-line text-accent"></i> Estimated PR's (e1RM)</h3>
-                <p class="text-muted" style="font-size:11px; margin-top:4px;">Calculated using session max sets adjusted heavily by relevant trailing 7-day muscle volume.</p>
+                <p class="text-muted" style="font-size:11px; margin-top:4px;">Uses the standard Epley formula (1RM = Weight × (1 + Reps/30)) dynamically applied to your best sets per session.</p>
                 <canvas id="e1rmChart" style="margin-top:12px;"></canvas>
             </div>
 
             <h3 style="font-size:14px; margin:0;"><i class="fas fa-trophy text-accent"></i> Recorded PR's</h3>
             <p class="text-muted" style="font-size:11px; margin-top:4px; margin-bottom: 12px;">Tap a box to log or update your all-time actual PR.</p>
             <div style="display:flex; gap:8px;">
-                <div class="streak-box" style="flex:1; flex-direction:column; padding:12px; margin:0; border-color:#007aff;" onclick="app.editPR('Bench')">
+                <div class="streak-box" style="flex:1; flex-direction:column; padding:12px; margin:0; border-color:#007aff; background: rgba(0, 122, 255, 0.1);" onclick="app.editPR('Bench')">
                     <span class="text-muted" style="font-size:12px; text-transform:uppercase;">Bench</span>
                     <span style="font-size:22px; font-weight:bold; color:white;">${store.state.prs.Bench || 0}<span style="font-size:12px; color:var(--text-secondary);">kg</span></span>
                 </div>
-                <div class="streak-box" style="flex:1; flex-direction:column; padding:12px; margin:0; border-color:#ff3b30;" onclick="app.editPR('Squat')">
+                <div class="streak-box" style="flex:1; flex-direction:column; padding:12px; margin:0; border-color:#ff3b30; background: rgba(255, 59, 48, 0.1);" onclick="app.editPR('Squat')">
                     <span class="text-muted" style="font-size:12px; text-transform:uppercase;">Squat</span>
                     <span style="font-size:22px; font-weight:bold; color:white;">${store.state.prs.Squat || 0}<span style="font-size:12px; color:var(--text-secondary);">kg</span></span>
                 </div>
-                <div class="streak-box" style="flex:1; flex-direction:column; padding:12px; margin:0; border-color:#34c759;" onclick="app.editPR('Deadlift')">
+                <div class="streak-box" style="flex:1; flex-direction:column; padding:12px; margin:0; border-color:#34c759; background: rgba(52, 199, 89, 0.1);" onclick="app.editPR('Deadlift')">
                     <span class="text-muted" style="font-size:12px; text-transform:uppercase;">Deadlift</span>
                     <span style="font-size:22px; font-weight:bold; color:white;">${store.state.prs.Deadlift || 0}<span style="font-size:12px; color:var(--text-secondary);">kg</span></span>
                 </div>
             </div>
         </div>
         
-        <div class="card"><h3>Weekly Average Bodyweight</h3><canvas id="bwTimeChart"></canvas></div>
-        <div class="card"><h3>Session Muscle Volume</h3><p class="text-muted" style="font-size:12px; margin-bottom:8px;">kg lifted per muscle group (by exact session)</p><canvas id="muscleTimeChart"></canvas></div>`; 
+        <div class="card" style="background: linear-gradient(145deg, #1a1205, #2a1b0a); border: 1px solid #ff9500; box-shadow: 0 4px 16px rgba(255, 149, 0, 0.15);">
+            <h2 style="margin:0; color:#ff9500; font-style:italic; margin-bottom: 8px;"><i class="fas fa-weight-scale"></i> BODYWEIGHT</h2>
+            <p class="text-muted" style="font-size:11px; margin-bottom:12px;">Weekly average weight to accurately track bulks/cuts.</p>
+            <div style="background:var(--surface-color); padding: 12px; border-radius: 12px; border: 1px solid rgba(255, 149, 0, 0.3);">
+                <canvas id="bwTimeChart"></canvas>
+            </div>
+        </div>
+
+        <div class="card" style="background: linear-gradient(145deg, #05101a, #0a182a); border: 1px solid #007aff; box-shadow: 0 4px 16px rgba(0, 122, 255, 0.15);">
+            <h2 style="margin:0; color:#007aff; font-style:italic; margin-bottom: 8px;"><i class="fas fa-layer-group"></i> MUSCLE VOLUME</h2>
+            <p class="text-muted" style="font-size:11px; margin-bottom:12px;">Total kg lifted per muscle group during each exact session.</p>
+            <div style="background:var(--surface-color); padding: 12px; border-radius: 12px; border: 1px solid rgba(0, 122, 255, 0.3);">
+                <canvas id="muscleTimeChart"></canvas>
+            </div>
+        </div>`; 
         
         setTimeout(() => { 
             const e1rmCtx = document.getElementById('e1rmChart');
