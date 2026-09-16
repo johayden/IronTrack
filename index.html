@@ -28,6 +28,12 @@
         .streak-fire { font-size: 32px; color: #ff9500; animation: pulse 2s infinite; } .streak-text { font-size: 24px; font-weight: bold; margin: 0; }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
 
+        .objective-row { display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--surface-color); border: 1px solid var(--border); border-radius: 12px; transition: all 0.2s; cursor: pointer; margin-bottom: 8px; }
+        .objective-row:active { transform: scale(0.98); }
+        .objective-row.completed { border-color: var(--success); background: rgba(52, 199, 89, 0.05); }
+        .check-circle { width: 28px; height: 28px; flex-shrink: 0; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 14px; color: transparent; transition: all 0.3s; }
+        .objective-row.completed .check-circle { background: var(--success); border-color: var(--success); color: white; }
+
         .progress-bg { background: var(--surface-elevated); height: 12px; border-radius: 6px; overflow: hidden; margin-top: 8px; } .progress-fill { background: var(--accent-color); height: 100%; transition: width 0.3s ease-out; }
 
         .btn { background: var(--surface-elevated); color: var(--text-primary); border: none; padding: 14px 20px; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; width: 100%; display: inline-flex; justify-content: center; align-items: center; gap: 8px; transition: transform 0.1s, opacity 0.1s; }
@@ -284,10 +290,121 @@ const workoutEngine = {
 
 const views = {
     renderHome() {
-        const today = new Date(); const prog = utils.getTodayProgram(); let streakUI = '';
-        if (store.state.challenge && store.state.challenge.isActive) { const stats = utils.getChallengeStats(); streakUI = `<div class="streak-box" onclick="app.navigate('challenge')"><i class="fas fa-fire streak-fire"></i><div><h2 class="streak-text">${stats.streak} Day Streak</h2><span class="text-muted" style="font-size:12px;">${stats.title} (Day ${stats.dayCurrent}/${stats.dayTotal})</span></div></div>`; } else { const streak = utils.calculateStreak(); streakUI = `<div class="streak-box" onclick="app.navigate('challenge')"><i class="fas fa-fire streak-fire"></i><div><h2 class="streak-text">${streak} Day Streak</h2><span class="text-muted" style="font-size:12px;">Tap to track a Goal / Challenge!</span></div></div>`; }
-        let workoutsHtml = ''; if (prog.workouts.length > 0) { workoutsHtml = prog.workouts.map(w => `<p class="text-muted" style="margin-bottom: 4px; font-size: 14px;">• ${w.name} (${w.exercises.length} ex)</p>`).join(''); } else { workoutsHtml = `<p class="text-muted" style="margin-bottom: 16px;">Rest Day / No scheduled workouts</p>`; }
-        return `<h1>Dashboard</h1><div class="card"><h3>Today: ${utils.getDayName(today.getDay()).toUpperCase()}</h3>${prog.workouts.length > 0 ? `<h2 style="font-size: 24px;">${prog.workouts.length} Workout(s) Scheduled</h2>` : `<h2 style="font-size: 24px;">Rest Day</h2>`}<div style="margin-bottom: 16px; margin-top: 8px; border-left: 2px solid var(--accent-color); padding-left: 12px;">${workoutsHtml}</div><button class="btn btn-primary" onclick="app.showStartOptions()"><i class="fas fa-play"></i> START WORKOUT</button></div><div class="card"><h3>Log Bodyweight</h3><div style="display:flex; gap:12px; margin-top:12px; width: 100%; align-items: center;"><input type="number" inputmode="decimal" id="quick-bw-input" value="${store.state.user.currentWeight}" style="flex:1; min-width:0; background:var(--surface-elevated); border:1px solid var(--border); border-radius:8px; color:white; padding:0 16px; font-size:20px; font-weight:bold; height:48px;"><button class="btn btn-success" style="width:auto; flex-shrink:0; padding: 0 20px; height:48px;" onclick="app.logWeight()"><i class="fas fa-save"></i> SAVE</button></div></div>${streakUI}`;
+        const todayStr = utils.getLocalISODate(new Date());
+        const today = new Date();
+        const prog = utils.getTodayProgram();
+        
+        const bwEntry = store.state.history.bodyweight.find(w => utils.getLocalISODate(w.date) === todayStr);
+        const bwLogged = !!bwEntry;
+        const todayWorkoutsLogged = store.state.history.workouts.filter(w => utils.getLocalISODate(w.date) === todayStr && !w.isSkipped);
+        
+        let allWorkoutsCompleted = true;
+        let trainingHtml = '';
+
+        if (prog.workouts.length === 0) {
+            let loggedRest = store.state.history.workouts.find(w => utils.getLocalISODate(w.date) === todayStr && w.isSkipped);
+            if (!loggedRest) allWorkoutsCompleted = false;
+            
+            trainingHtml += `<div class="objective-row ${loggedRest ? 'completed' : ''}" onclick="${!loggedRest ? 'app.logRestDay()' : ''}">
+                <div class="check-circle"><i class="fas fa-check"></i></div>
+                <div style="flex:1;">
+                    <div style="font-weight:bold; color:${loggedRest ? 'var(--text-primary)' : 'white'};">Rest Day</div>
+                    <div class="text-muted" style="font-size:12px;">${loggedRest ? 'Rest correctly logged' : 'Tap to log Rest Day'}</div>
+                </div>
+            </div>`;
+        } else {
+            prog.workouts.forEach((w, i) => {
+                let isDone = todayWorkoutsLogged.some(logged => logged.name.includes(w.name));
+                if (!isDone) allWorkoutsCompleted = false;
+                
+                trainingHtml += `<div class="objective-row ${isDone ? 'completed' : ''}" onclick="app.startScheduledWorkout(${i})">
+                    <div class="check-circle"><i class="fas fa-check"></i></div>
+                    <div style="flex:1;">
+                        <div style="font-weight:bold; color:${isDone ? 'var(--text-primary)' : 'white'};">${w.name}</div>
+                        <div class="text-muted" style="font-size:12px;">${w.isActivity ? 'Cardio / Activity' : `${w.exercises.length} exercises`}</div>
+                    </div>
+                    ${!isDone ? `<i class="fas fa-play text-accent"></i>` : ''}
+                </div>`;
+            });
+        }
+
+        let streakSafe = false;
+        let streakTitle = "Daily Goals";
+        let streakSubtitle = "Log everything to keep streak";
+        if (store.state.challenge && store.state.challenge.isActive) {
+            streakSafe = utils.checkDaySuccess(todayStr);
+            streakTitle = store.state.challenge.title;
+            streakSubtitle = streakSafe ? "All goals met today!" : "Pending daily goals...";
+        } else {
+            const wDates = [...new Set(store.state.history.workouts.map(e => utils.getLocalISODate(e.date)))]; 
+            const bDates = [...new Set(store.state.history.bodyweight.map(e => utils.getLocalISODate(e.date)))]; 
+            const nDates = [...new Set(store.state.history.nutrition.map(e => utils.getLocalISODate(e.date)))];
+            streakSafe = wDates.includes(todayStr) && bDates.includes(todayStr) && nDates.includes(todayStr);
+            streakTitle = "Trifecta Streak";
+            streakSubtitle = streakSafe ? "Workout, BW & Nutrition tracked!" : "Track Workout, BW & Nutrition";
+        }
+        
+        let isPerfectDay = bwLogged && streakSafe && allWorkoutsCompleted;
+        
+        let html = `<h1>Dashboard</h1>
+        <div class="card" style="padding:0; overflow:hidden; border: 1px solid ${isPerfectDay ? 'var(--success)' : 'var(--border)'}; box-shadow: ${isPerfectDay ? '0 0 16px rgba(52, 199, 89, 0.2)' : '0 4px 12px rgba(0,0,0,0.2)'}; transition: all 0.3s;">
+            <div style="padding: 16px; background: ${isPerfectDay ? 'rgba(52, 199, 89, 0.1)' : 'var(--surface-elevated)'}; border-bottom: 1px solid ${isPerfectDay ? 'rgba(52, 199, 89, 0.2)' : 'var(--border)'}; display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <h2 style="margin:0; font-size:18px; color:${isPerfectDay ? 'var(--success)' : 'white'};">Today's Action Plan</h2>
+                    <p class="text-muted" style="font-size:12px; margin-top:4px;">${utils.getDayName(today.getDay())}, ${utils.formatDateShort(today)}</p>
+                </div>
+                ${isPerfectDay ? `<div style="background:var(--success); color:white; padding: 4px 8px; border-radius: 8px; font-size: 12px; font-weight:bold; letter-spacing:1px;"><i class="fas fa-star"></i> PERFECT</div>` : ''}
+            </div>
+            
+            <div style="padding: 16px; display:flex; flex-direction:column; gap:16px;">
+                
+                <div>
+                    <div class="flex-between" style="margin-bottom:8px;">
+                        <h3 style="font-size:12px; text-transform:uppercase; color:var(--text-secondary); margin:0;">Training</h3>
+                        <button class="btn-icon" style="width:24px; height:24px; font-size:12px; color:var(--accent-color);" onclick="app.showStartOptions()"><i class="fas fa-plus"></i></button>
+                    </div>
+                    ${trainingHtml}
+                </div>
+
+                <div>
+                    <h3 style="font-size:12px; text-transform:uppercase; color:var(--text-secondary); margin-bottom:8px;">Vitals</h3>
+                    <div class="objective-row ${bwLogged ? 'completed' : ''}" onclick="!${bwLogged} ? document.getElementById('quick-bw-input').focus() : app.navigate('data')">
+                        <div class="check-circle"><i class="fas fa-check"></i></div>
+                        <div style="flex:1;">
+                            <div style="font-weight:bold; color:${bwLogged ? 'var(--text-primary)' : 'white'}">Bodyweight</div>
+                            ${bwLogged ? `<div class="text-muted" style="font-size:12px;">Logged: ${bwEntry.weight} kg</div>` : `<div class="text-muted" style="font-size:12px;">Tap to log weight</div>`}
+                        </div>
+                        ${!bwLogged ? `<div style="display:flex; gap:8px;" onclick="event.stopPropagation()"><input type="number" inputmode="decimal" id="quick-bw-input" value="${store.state.user.currentWeight}" style="width:70px; background:var(--surface-elevated); border:1px solid var(--border); border-radius:8px; color:white; text-align:center; font-weight:bold;"><button class="btn btn-sm btn-success" onclick="app.logWeight(); event.stopPropagation();">Save</button></div>` : ''}
+                    </div>
+                </div>
+
+                <div>
+                    <h3 style="font-size:12px; text-transform:uppercase; color:var(--text-secondary); margin-bottom:8px;">Goals</h3>
+                    <div class="objective-row ${streakSafe ? 'completed' : ''}" onclick="app.navigate('challenge')">
+                        <div class="check-circle"><i class="fas fa-check"></i></div>
+                        <div style="flex:1;">
+                            <div style="font-weight:bold; color:${streakSafe ? 'var(--text-primary)' : 'white'};">${streakTitle}</div>
+                            <div class="text-muted" style="font-size:12px;">${streakSubtitle}</div>
+                        </div>
+                        <i class="fas fa-chevron-right text-muted" style="font-size:12px;"></i>
+                    </div>
+                </div>
+
+            </div>
+        </div>`;
+
+        const streakStats = utils.getChallengeStats();
+        const streakCount = store.state.challenge && store.state.challenge.isActive ? streakStats.streak : utils.calculateStreak();
+        
+        html += `<div class="streak-box" onclick="app.navigate('challenge')" style="margin-top:16px;">
+            <i class="fas fa-fire streak-fire"></i>
+            <div>
+                <h2 class="streak-text">${streakCount} Day Streak</h2>
+                <span class="text-muted" style="font-size:12px;">${store.state.challenge && store.state.challenge.isActive ? `${streakStats.title} (Day ${streakStats.dayCurrent}/${streakStats.dayTotal})` : 'Keep the momentum going!'}</span>
+            </div>
+        </div>`;
+        
+        return html;
     },
     renderChallenge() {
         const c = store.state.challenge;
@@ -351,19 +468,38 @@ const views = {
         order.forEach(dayIndex => {
             const d = r.days.find(x => x.day === dayIndex) || { day: dayIndex, workouts: [] }; const isToday = d.day === new Date().getDay() && isActive;
             html += `<div class="card" style="${isToday ? 'border: 2px solid var(--accent-color);' : ''}"><div class="flex-between" style="margin-bottom:8px;"><span class="text-muted" style="font-size:12px; text-transform:uppercase">${utils.getDayName(d.day)}</span>${isToday ? '<span class="text-accent" style="font-size:12px; font-weight:bold">TODAY</span>' : ''}</div>`;
-            if (d.workouts.length === 0) { html += `<div class="text-muted">Rest Day</div>`; } else { d.workouts.forEach(w => { html += `<div style="margin-top:8px; padding-top:8px; border-top:1px solid var(--border);"><h4 style="margin-bottom:4px;">${w.name}</h4>${w.exercises.map(e => `<div class="text-muted" style="font-size:14px; margin-bottom:2px;">• ${e.name} (${e.targetSets}x${e.targetReps})</div>`).join('')}</div>`; }); }
+            if (d.workouts.length === 0) { html += `<div class="text-muted">Rest Day</div>`; } else { d.workouts.forEach(w => { html += `<div style="margin-top:8px; padding-top:8px; border-top:1px solid var(--border);"><div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;"><h4 style="margin:0;">${w.name}</h4>${w.isActivity ? `<span class="text-accent" style="font-size:10px; border:1px solid var(--accent-color); padding:2px 4px; border-radius:4px;">ACTIVITY</span>` : ''}</div>${w.exercises.map(e => `<div class="text-muted" style="font-size:14px; margin-bottom:2px;">• ${e.name} (${e.targetSets}x${e.targetReps})</div>`).join('')}</div>`; }); }
             html += `</div>`;
         }); return html;
     },
     renderProgramEditor() {
-        let html = `<div class="page-header" style="flex-direction:column; align-items:flex-start; gap:12px;"><div class="flex-between" style="width:100%;"><input class="edit-input" style="font-size:24px !important; font-weight:bold; color:var(--accent-color); border:none; background:transparent; padding:0; margin:0; flex:1; min-width:0;" value="${app.draftRoutine.name}" onchange="app.draftRoutine.name = this.value"><div style="display:flex; gap:8px; flex-shrink:0;"><button class="btn btn-sm btn-success" onclick="app.saveProgramEdit()"><i class="fas fa-save"></i> Save</button></div></div>${store.state.routines.length > 1 ? `<button class="btn btn-sm" style="background:transparent; border:1px solid var(--accent-color); color:var(--accent-color); width:100%;" onclick="app.deleteCurrentRoutine()"><i class="fas fa-trash"></i> Delete This Split</button>` : ''}</div><p class="text-muted" style="margin-bottom:16px; font-size:12px;">Customize your schedule. You can add multiple distinct workouts to a single day.</p>`;
+        let html = `<div class="page-header" style="flex-direction:column; align-items:flex-start; gap:12px;"><div class="flex-between" style="width:100%;"><input class="edit-input" style="font-size:24px !important; font-weight:bold; color:var(--accent-color); border:none; background:transparent; padding:0; margin:0; flex:1; min-width:0;" value="${app.draftRoutine.name}" onchange="app.draftRoutine.name = this.value"><div style="display:flex; gap:8px; flex-shrink:0;"><button class="btn btn-sm btn-success" onclick="app.saveProgramEdit()"><i class="fas fa-save"></i> Save</button></div></div>${store.state.routines.length > 1 ? `<button class="btn btn-sm" style="background:transparent; border:1px solid var(--accent-color); color:var(--accent-color); width:100%;" onclick="app.deleteCurrentRoutine()"><i class="fas fa-trash"></i> Delete This Split</button>` : ''}</div><p class="text-muted" style="margin-bottom:16px; font-size:12px;">Customize your schedule. Add workouts or import templates via the "+ Add Workout" dropdowns.</p>`;
+        
+        // Find all uniquely named workouts for the dropdowns
+        let allSavedWorkoutsMap = {};
+        store.state.routines.forEach(r => r.days.forEach(d => d.workouts.forEach(w => {
+            if(!allSavedWorkoutsMap[w.name]) { allSavedWorkoutsMap[w.name] = w; }
+        })));
+        let uniqueWorkouts = Object.values(allSavedWorkoutsMap);
+
         const order = [1, 2, 3, 4, 5, 6, 0];
         order.forEach((dayIndex) => { 
             const dIdx = app.draftRoutine.days.findIndex(d => d.day === dayIndex); if(dIdx === -1) return; const day = app.draftRoutine.days[dIdx]; 
-            html += `<div class="card" style="border: 1px solid var(--accent-color); padding: 12px;"><div class="flex-between" style="margin-bottom: 12px;"><span class="text-muted" style="font-size:12px; text-transform:uppercase; font-weight:bold;">${utils.getDayName(day.day)}</span><button class="btn-icon" style="color:var(--accent-color); width:28px; height:28px;" onclick="app.addWorkoutToDay(${dIdx})"><i class="fas fa-plus"></i></button></div>`;
+            
+            let addWorkoutDropdown = `<div style="position:relative; display:inline-block;"><select class="edit-input" style="padding: 4px 12px; font-size: 12px !important; margin: 0; background: var(--accent-color); border: none; font-weight: bold; color:white; border-radius:12px; width:auto; text-align:center;" onchange="app.addWorkoutToDay(${dIdx}, this.value); this.value='';">
+                <option value="" disabled selected>+ ADD WORKOUT</option>
+                <option value="blank">📝 Blank Workout</option>
+                <option value="activity">🏃‍♂️ Cardio / Activity</option>
+                <optgroup label="Import Saved Workout">
+                    ${uniqueWorkouts.map(w => `<option value="${w.id}">${w.name}</option>`).join('')}
+                </optgroup>
+            </select></div>`;
+
+            html += `<div class="card" style="border: 1px solid var(--accent-color); padding: 12px;"><div class="flex-between" style="margin-bottom: 12px;"><span class="text-muted" style="font-size:12px; text-transform:uppercase; font-weight:bold;">${utils.getDayName(day.day)}</span>${addWorkoutDropdown}</div>`;
+            
             if (day.workouts.length === 0) { html += `<div class="text-muted" style="font-size:14px; margin-bottom:8px;">Rest Day</div>`; } else {
                 day.workouts.forEach((w, wIdx) => {
-                    html += `<div style="background: var(--surface-elevated); border-radius: 8px; padding: 12px; margin-bottom: 12px;"><div class="flex-between" style="margin-bottom:8px;"><input class="edit-input" style="font-size:16px !important; font-weight:bold; margin:0; padding:4px 8px;" value="${w.name}" onchange="app.updateWorkoutName(${dIdx}, ${wIdx}, this.value)" placeholder="Workout Name"><button class="btn-icon text-accent" style="width:28px; height:28px; flex-shrink:0; margin-left:8px;" onclick="app.removeWorkoutFromDay(${dIdx}, ${wIdx})"><i class="fas fa-trash"></i></button></div>`;
+                    html += `<div style="background: var(--surface-elevated); border-radius: 8px; padding: 12px; margin-bottom: 12px;"><div class="flex-between" style="margin-bottom:8px;"><div style="display:flex; align-items:center; flex:1;"><input class="edit-input" style="font-size:16px !important; font-weight:bold; margin:0; padding:4px 8px; flex:1;" value="${w.name}" onchange="app.updateWorkoutName(${dIdx}, ${wIdx}, this.value)" placeholder="Workout Name">${w.isActivity ? `<span class="text-accent" style="font-size:10px; margin-left:8px; border:1px solid var(--accent-color); padding:2px 4px; border-radius:4px;">ACTIVITY</span>` : ''}</div><button class="btn-icon text-accent" style="width:28px; height:28px; flex-shrink:0; margin-left:8px;" onclick="app.removeWorkoutFromDay(${dIdx}, ${wIdx})"><i class="fas fa-trash"></i></button></div>`;
                     w.exercises.forEach((ex, eIdx) => { 
                         const currentMuscle = utils.getMuscle(ex); 
                         html += `<div class="editor-exercise-row" style="background: var(--bg-color); border: 1px solid var(--border);"><div style="flex:1;"><input class="edit-input" style="font-size:16px !important; margin-bottom:4px;" placeholder="Exercise Name" value="${ex.name}" onchange="app.updateEx(${dIdx}, ${wIdx}, ${eIdx}, 'name', this.value)"><div style="display:flex; gap:8px;"><input type="number" class="edit-input" style="font-size:16px !important; margin:0;" placeholder="Sets" value="${ex.targetSets}" onchange="app.updateEx(${dIdx}, ${wIdx}, ${eIdx}, 'targetSets', this.value)"><input class="edit-input" style="font-size:16px !important; margin:0;" placeholder="Reps (e.g. 8-12)" value="${ex.targetReps}" onchange="app.updateEx(${dIdx}, ${wIdx}, ${eIdx}, 'targetReps', this.value)"></div><select class="edit-input" style="font-size:16px !important; margin-top:8px; margin-bottom:0; padding:4px;" onchange="app.updateEx(${dIdx}, ${wIdx}, ${eIdx}, 'muscle', this.value)">${MUSCLE_GROUPS.map(m => `<option value="${m}" ${currentMuscle === m ? 'selected' : ''}>Muscle: ${m}</option>`).join('')}</select></div><div class="editor-controls"><button class="btn-icon" onclick="app.moveEx(${dIdx}, ${wIdx}, ${eIdx}, -1)"><i class="fas fa-chevron-up"></i></button><button class="btn-icon" onclick="app.moveEx(${dIdx}, ${wIdx}, ${eIdx}, 1)"><i class="fas fa-chevron-down"></i></button><button class="btn-icon text-accent" onclick="app.deleteEx(${dIdx}, ${wIdx}, ${eIdx})"><i class="fas fa-times"></i></button></div></div>`; 
@@ -410,7 +546,6 @@ const views = {
         <div class="card"><h3>Session Muscle Volume</h3><p class="text-muted" style="font-size:12px; margin-bottom:8px;">kg lifted per muscle group (by exact session)</p><canvas id="muscleTimeChart"></canvas></div>`; 
         
         setTimeout(() => { 
-            // e1RM Chart
             const e1rmCtx = document.getElementById('e1rmChart');
             if(e1rmCtx) {
                 const e1Data = utils.getE1RMHistory(); let allTs = new Set();
@@ -418,21 +553,11 @@ const views = {
                 let sortedTs = Array.from(allTs).sort((a,b)=>a-b);
                 let e1Labels = sortedTs.map(ts => utils.formatDateShort(new Date(ts)));
                 let mapData = (arr) => sortedTs.map(ts => { let match = arr.find(x => x.ts === ts); return match ? match.e1rm.toFixed(1) : null; });
-                new Chart(e1rmCtx, {
-                    type: 'line',
-                    data: { labels: e1Labels, datasets: [
-                        { label: 'Bench', data: mapData(e1Data.bench), borderColor: '#007aff', backgroundColor: '#007aff', tension: 0.3, borderWidth: 2, spanGaps: true },
-                        { label: 'Squat', data: mapData(e1Data.squat), borderColor: '#ff3b30', backgroundColor: '#ff3b30', tension: 0.3, borderWidth: 2, spanGaps: true },
-                        { label: 'Deadlift', data: mapData(e1Data.deadlift), borderColor: '#34c759', backgroundColor: '#34c759', tension: 0.3, borderWidth: 2, spanGaps: true }
-                    ]},
-                    options: { responsive: true, plugins: { legend: { position: 'top', labels: { color: '#8e8e93', boxWidth: 12 } } }, scales: { y: { grid: { color: '#333' } }, x: { grid: { display: false } } } }
-                });
+                new Chart(e1rmCtx, { type: 'line', data: { labels: e1Labels, datasets: [ { label: 'Bench', data: mapData(e1Data.bench), borderColor: '#007aff', backgroundColor: '#007aff', tension: 0.3, borderWidth: 2, spanGaps: true }, { label: 'Squat', data: mapData(e1Data.squat), borderColor: '#ff3b30', backgroundColor: '#ff3b30', tension: 0.3, borderWidth: 2, spanGaps: true }, { label: 'Deadlift', data: mapData(e1Data.deadlift), borderColor: '#34c759', backgroundColor: '#34c759', tension: 0.3, borderWidth: 2, spanGaps: true } ]}, options: { responsive: true, plugins: { legend: { position: 'top', labels: { color: '#8e8e93', boxWidth: 12 } } }, scales: { y: { grid: { color: '#333' } }, x: { grid: { display: false } } } } });
             }
 
-            // Bodyweight
             const bwData = utils.getWeeklyData(store.state.history.bodyweight); const bwWeeks = Object.keys(bwData).sort(); const bwLabels = bwWeeks.map(w => utils.formatDateShort(new Date(parseInt(w)))); const bwAverages = bwWeeks.map(w => { const entries = bwData[w].entries; const sum = entries.reduce((acc, e) => acc + (parseFloat(e.weight) || 0), 0); return sum / entries.length; }); const bwCtx = document.getElementById('bwTimeChart'); if(bwCtx && bwLabels.length > 0) { new Chart(bwCtx, { type: 'line', data: { labels: bwLabels, datasets: [{ label: 'Avg Weight (kg)', data: bwAverages, borderColor: '#ff9500', backgroundColor: '#ff9500', tension: 0.3, borderWidth: 2 }] }, options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { grid: { color: '#333' } }, x: { grid: { display: false } } } } }); } 
             
-            // Muscle Volume (Session Based)
             const musData = utils.getSessionMuscleVolume(); const musKeys = Object.keys(musData.sessions).sort((a,b) => a - b); const musLabels = musKeys.map(k => musData.sessions[k].label); const musDatasets = musData.muscles.map((muscle, i) => { return { label: muscle, data: musKeys.map(k => musData.sessions[k].vols[muscle] || null), borderColor: CHAT_COLORS[i % CHAT_COLORS.length], backgroundColor: CHAT_COLORS[i % CHAT_COLORS.length], tension: 0.3, borderWidth: 2, spanGaps: true }; }); const musCtx = document.getElementById('muscleTimeChart'); if(musCtx && musLabels.length > 0) { new Chart(musCtx, { type: 'line', data: { labels: musLabels, datasets: musDatasets }, options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { color: '#8e8e93', boxWidth: 12 } } }, scales: { y: { grid: { color: '#333' } }, x: { grid: { display: false } } } } }); } 
         }, 100); 
         return html; 
@@ -455,7 +580,7 @@ const app = {
     showStartOptions() {
         const prog = utils.getTodayProgram(); const modal = document.getElementById('start-workout-modal');
         let html = `<div class="page-header"><button class="btn btn-sm btn-icon" onclick="document.getElementById('start-workout-modal').style.display='none'"><i class="fas fa-times"></i></button><h2 style="margin:0; font-size:18px;">Start Session</h2><div style="width:36px;"></div></div><div style="padding: 16px;">`;
-        if (prog.workouts.length > 0) { html += `<h3 style="margin-bottom:12px; color:var(--text-secondary); font-size:14px; text-transform:uppercase;">Scheduled Today</h3>`; prog.workouts.forEach((w, i) => { html += `<div class="card" style="border: 2px solid var(--accent-color); cursor:pointer;" onclick="app.startScheduledWorkout(${i})"><div class="flex-between"><h3 style="margin:0;">${w.name}</h3><i class="fas fa-play text-accent"></i></div><p class="text-muted" style="margin-top:4px; font-size:12px;">${w.exercises.length} exercises</p></div>`; }); } else { html += `<div class="card" style="border: 2px dashed var(--border); cursor:pointer; text-align:center; padding: 24px;" onclick="app.logRestDay()"><h4 style="margin:0;">No Workouts Scheduled</h4><p class="text-muted" style="margin-top:4px; font-size:12px;">Tap here to log a Rest Day, or choose a custom activity below.</p></div>`; }
+        if (prog.workouts.length > 0) { html += `<h3 style="margin-bottom:12px; color:var(--text-secondary); font-size:14px; text-transform:uppercase;">Scheduled Today</h3>`; prog.workouts.forEach((w, i) => { html += `<div class="card" style="border: 2px solid var(--accent-color); cursor:pointer;" onclick="app.startScheduledWorkout(${i})"><div class="flex-between"><h3 style="margin:0;">${w.name}</h3><i class="fas fa-play text-accent"></i></div><p class="text-muted" style="margin-top:4px; font-size:12px;">${w.isActivity ? 'Cardio / Activity' : `${w.exercises.length} exercises`}</p></div>`; }); } else { html += `<div class="card" style="border: 2px dashed var(--border); cursor:pointer; text-align:center; padding: 24px;" onclick="app.logRestDay()"><h4 style="margin:0;">No Workouts Scheduled</h4><p class="text-muted" style="margin-top:4px; font-size:12px;">Tap here to log a Rest Day, or choose a custom activity below.</p></div>`; }
         html += `<h3 style="margin-top:24px; margin-bottom:12px; color:var(--text-secondary); font-size:14px; text-transform:uppercase;">Custom Workouts</h3><div style="display:flex; flex-direction:column; gap:12px;"><button class="btn" style="background:var(--surface-elevated); font-size:16px; justify-content:flex-start; padding: 16px;" onclick="app.customFlow('A')"><i class="fas fa-list text-accent" style="margin-right:12px; width:20px;"></i> A) Choose From Program</button><button class="btn" style="background:var(--surface-elevated); font-size:16px; justify-content:flex-start; padding: 16px;" onclick="app.customFlow('B')"><i class="fas fa-shuffle text-accent" style="margin-right:12px; width:20px;"></i> B) Mix Custom Exercises</button><button class="btn" style="background:var(--surface-elevated); font-size:16px; justify-content:flex-start; padding: 16px;" onclick="app.customFlow('C')"><i class="fas fa-person-running text-accent" style="margin-right:12px; width:20px;"></i> C) Other Activity (Cardio, Sport)</button></div></div>`;
         modal.innerHTML = html; modal.style.display = 'flex';
     },
@@ -463,13 +588,31 @@ const app = {
     logRestDay() { document.getElementById('start-workout-modal').style.display = 'none'; const reason = prompt("Log Rest Day! (e.g. Skiing, Recovering):", "Rest"); if(reason !== null) { store.addWorkout({ id: utils.generateId(), date: new Date().toISOString(), name: `Rest Day - ${reason}`, isSkipped: true, duration: 0, exercises: [] }); app.navigate('home'); } },
     customFlow(type) { document.getElementById('start-workout-modal').style.display = 'none'; const title = prompt("Enter Title for Custom Workout:", type === 'C' ? "Skiing / Netball" : "Custom Session"); if(!title) return; this.customDraftTitle = "Custom Workout - " + title; if (type === 'A') { this.navigate('custom-a'); } else if (type === 'B') { this.navigate('custom-b'); } else if (type === 'C') { workoutEngine.start({ name: this.customDraftTitle, exercises: [], isActivity: true }); } },
     startCustomMix() { const checkboxes = document.querySelectorAll('.cx-checkbox:checked'); if(checkboxes.length === 0) { alert("Please select at least one exercise."); return; } let exercises = []; checkboxes.forEach(cb => { exercises.push({ name: cb.value, targetSets: parseInt(cb.getAttribute('data-sets')), targetReps: cb.getAttribute('data-reps') }); }); workoutEngine.start({ name: this.customDraftTitle, exercises: exercises }); },
-    logWeight() { const input = document.getElementById('quick-bw-input'); if (input && input.value) { store.addBodyweight(input.value); input.value = store.state.user.currentWeight; alert("Bodyweight logged! 🔥"); this.navigate('home'); } },
+    logWeight() { const input = document.getElementById('quick-bw-input'); if (input && input.value) { store.addBodyweight(input.value); input.value = store.state.user.currentWeight; this.navigate('home'); } },
     logNutrition() { const cal = document.getElementById('nut-cal').value; const pro = document.getElementById('nut-pro').value; const car = document.getElementById('nut-car').value; const fat = document.getElementById('nut-fat').value; const burn = document.getElementById('nut-burn').value; if(!cal) { alert("Please enter at least your calories consumed."); return; } store.addNutrition({ cal, pro, car, fat, burn }); alert("Nutrition logged! 🔥"); this.navigate('home'); },
     editEntry(type, date, field, val) { if(type === 'bodyweight') store.updateBodyweight(date, val); else if (type === 'nutrition') store.updateNutrition(date, field, val); this.navigate('data'); }, deleteEntry(type, date) { if(confirm("Delete this entry forever?")) { store.deleteEntry(type, date); this.navigate('data'); } }, toggleDataTab(tabName) { this.activeDataTab = (this.activeDataTab === tabName) ? null : tabName; this.navigate('data'); }, resetData() { if(confirm("WARNING: This will delete all history and reset the app. Are you sure?")) { localStorage.removeItem('irontrack_state'); location.reload(); } },
     exportData() { const dataStr = JSON.stringify(store.state, null, 2); const blob = new Blob([dataStr], { type: "application/json" }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `IronTrack_Backup_${utils.getLocalISODate(new Date())}.json`; a.click(); URL.revokeObjectURL(url); }, importData(event) { const file = event.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = (e) => { try { const importedState = JSON.parse(e.target.result); if (importedState && importedState.history) { store.state = store.migrate(importedState); store.save(); alert("Data imported successfully! 🚀"); location.reload(); } else { alert("Invalid backup file."); } } catch (error) { alert("Error reading file. Make sure it's a valid IronTrack backup."); } }; reader.readAsText(file); },
     viewRoutine(id) { this.viewingRoutineId = id; this.isEditingProgram = false; this.navigate('workout-detail'); }, setRoutineActive(id) { store.state.activeRoutineId = id; store.save(); this.navigate('workout-detail'); }, createNewRoutine() { const name = prompt("Enter name for new split:", "New Split"); if (!name) return; const newRoutine = { id: utils.generateId(), name: name, days: [1,2,3,4,5,6,0].map(d => ({ day: d, workouts: [] })) }; store.state.routines.push(newRoutine); store.state.activeRoutineId = newRoutine.id; store.save(); this.viewRoutine(newRoutine.id); }, deleteCurrentRoutine() { if(store.state.routines.length <= 1) { alert("You must have at least one routine."); return; } if(confirm("Delete this routine permanently?")) { store.state.routines = store.state.routines.filter(r => r.id !== this.draftRoutine.id); store.state.activeRoutineId = store.state.routines[0].id; this.isEditingProgram = false; store.save(); this.navigate('workout'); } },
     toggleProgramEdit() { const r = store.state.routines.find(x => x.id === this.viewingRoutineId); this.draftRoutine = JSON.parse(JSON.stringify(r)); this.isEditingProgram = true; this.navigate('workout-detail'); }, saveProgramEdit() { this.draftRoutine.days.forEach(d => d.workouts.forEach(w => w.exercises.forEach(e => { e.targetSets = parseInt(e.targetSets)||1; }))); const idx = store.state.routines.findIndex(r => r.id === this.draftRoutine.id); if(idx > -1) store.state.routines[idx] = this.draftRoutine; store.save(); this.isEditingProgram = false; this.navigate('workout-detail'); },
-    addWorkoutToDay(dIdx) { this.draftRoutine.days[dIdx].workouts.push({ id: utils.generateId(), name: 'New Workout', exercises: [] }); this.navigate('workout-detail'); }, removeWorkoutFromDay(dIdx, wIdx) { if(confirm("Remove this workout?")) { this.draftRoutine.days[dIdx].workouts.splice(wIdx, 1); this.navigate('workout-detail'); } }, updateWorkoutName(dIdx, wIdx, val) { this.draftRoutine.days[dIdx].workouts[wIdx].name = val; }, addEx(dIdx, wIdx) { this.draftRoutine.days[dIdx].workouts[wIdx].exercises.push({ name: 'New Exercise', targetSets: 3, targetReps: '8-12', muscle: 'Other' }); this.navigate('workout-detail'); }, updateEx(dIdx, wIdx, eIdx, field, val) { this.draftRoutine.days[dIdx].workouts[wIdx].exercises[eIdx][field] = val; }, moveEx(dIdx, wIdx, eIdx, dir) { const arr = this.draftRoutine.days[dIdx].workouts[wIdx].exercises; if(eIdx+dir < 0 || eIdx+dir >= arr.length) return; const temp = arr[eIdx]; arr[eIdx] = arr[eIdx+dir]; arr[eIdx+dir] = temp; this.navigate('workout-detail'); }, deleteEx(dIdx, wIdx, eIdx) { this.draftRoutine.days[dIdx].workouts[wIdx].exercises.splice(eIdx, 1); this.navigate('workout-detail'); },
+    addWorkoutToDay(dIdx, templateId) {
+        if (!templateId) return;
+        let newWorkout = { id: utils.generateId(), name: 'New Workout', exercises: [] };
+        if (templateId === 'activity') {
+            newWorkout.name = 'Morning Cardio';
+            newWorkout.isActivity = true;
+        } else if (templateId !== 'blank') {
+            let found = null;
+            store.state.routines.forEach(r => r.days.forEach(d => d.workouts.forEach(w => { if(w.id === templateId) found = w; })));
+            if (found) {
+                newWorkout.name = found.name;
+                newWorkout.isActivity = found.isActivity || false;
+                newWorkout.exercises = JSON.parse(JSON.stringify(found.exercises));
+            }
+        }
+        this.draftRoutine.days[dIdx].workouts.push(newWorkout);
+        this.navigate('workout-detail');
+    },
+    removeWorkoutFromDay(dIdx, wIdx) { if(confirm("Remove this workout?")) { this.draftRoutine.days[dIdx].workouts.splice(wIdx, 1); this.navigate('workout-detail'); } }, updateWorkoutName(dIdx, wIdx, val) { this.draftRoutine.days[dIdx].workouts[wIdx].name = val; }, addEx(dIdx, wIdx) { this.draftRoutine.days[dIdx].workouts[wIdx].exercises.push({ name: 'New Exercise', targetSets: 3, targetReps: '8-12', muscle: 'Other' }); this.navigate('workout-detail'); }, updateEx(dIdx, wIdx, eIdx, field, val) { this.draftRoutine.days[dIdx].workouts[wIdx].exercises[eIdx][field] = val; }, moveEx(dIdx, wIdx, eIdx, dir) { const arr = this.draftRoutine.days[dIdx].workouts[wIdx].exercises; if(eIdx+dir < 0 || eIdx+dir >= arr.length) return; const temp = arr[eIdx]; arr[eIdx] = arr[eIdx+dir]; arr[eIdx+dir] = temp; this.navigate('workout-detail'); }, deleteEx(dIdx, wIdx, eIdx) { this.draftRoutine.days[dIdx].workouts[wIdx].exercises.splice(eIdx, 1); this.navigate('workout-detail'); },
     editChallenge() { const c = store.state.challenge; if (c && c.isActive) { this.draftChallenge = JSON.parse(JSON.stringify(c)); } else { const start = utils.getLocalISODate(new Date()); const endD = new Date(); endD.setDate(endD.getDate() + 74); const end = utils.getLocalISODate(endD); this.draftChallenge = { isActive: true, title: '', startDate: start, endDate: end, goals: [] }; } this.navigate('challenge-edit'); }, addChallengeGoal(type) { let g = { id: utils.generateId(), type, createdAt: utils.getLocalISODate(new Date()) }; if (type === 'workout') g.count = 1; if (type === 'nutrition') { g.targetType = 'none'; g.calories = 2500; } if (type === 'water') g.target = '1 Gallon'; if (type === 'reading') g.target = '10 Pages'; if (type === 'custom') g.title = 'New Goal'; this.draftChallenge.goals.push(g); this.navigate('challenge-edit'); }, removeChallengeGoal(idx) { this.draftChallenge.goals.splice(idx, 1); this.navigate('challenge-edit'); }, saveChallenge() { if (!this.draftChallenge.title) { alert("Please enter a challenge title."); return; } if (this.draftChallenge.goals.length === 0) { alert("Please add at least one goal."); return; } store.state.challenge = this.draftChallenge; store.save(); this.navigate('challenge'); }, endChallenge() { if(confirm("End/Delete this challenge?")) { store.state.challenge = { isActive: false, title: '', startDate: '', endDate: '', goals: [] }; store.save(); this.navigate('challenge'); } }, toggleManualGoal(goalId, dateStr) { if (!store.state.history.challengeLogs) store.state.history.challengeLogs = {}; if (!store.state.history.challengeLogs[dateStr]) store.state.history.challengeLogs[dateStr] = {}; store.state.history.challengeLogs[dateStr][goalId] = !store.state.history.challengeLogs[dateStr][goalId]; store.save(); this.navigate('challenge'); },
     editPR(lift) { let val = prompt(`Enter your All-Time Recorded PR for ${lift} (kg):`, store.state.prs[lift] || 0); if (val !== null) { store.state.prs[lift] = parseFloat(val) || 0; store.save(); this.navigate('progress'); } }
 };
