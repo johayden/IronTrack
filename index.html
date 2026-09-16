@@ -12,10 +12,86 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        :root { --bg-color: #0b0b0d; --surface-color: #1a1a1f; --surface-elevated: #26262d; --accent-color: #ff3b30; --accent-dim: rgba(255, 59, 48, 0.15); --text-primary: #ffffff; --text-secondary: #8e8e93; --success: #34c759; --warning: #ff9500; --border: #333336; --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; --safe-bottom: env(safe-area-inset-bottom, 20px); --safe-top: env(safe-area-inset-top, 24px); }
+        /* BASIC THEME (DEFAULT) */
+        :root, [data-theme="basic"] { 
+            --bg-color: #0b0b0d; --surface-color: #1a1a1f; --surface-elevated: #26262d; 
+            --accent-color: #ff3b30; --accent-dim: rgba(255, 59, 48, 0.15); 
+            --text-primary: #ffffff; --text-secondary: #8e8e93; 
+            --success: #34c759; --success-dim: rgba(52, 199, 89, 0.15);
+            --warning: #ff9500; --warning-dim: rgba(255, 149, 0, 0.15);
+            --info: #007aff; --info-dim: rgba(0, 122, 255, 0.15);
+            --border: #333336; 
+            --streak-bg1: #2a1111; --streak-bg2: #1a0a0a;
+            --pr-bg1: #1a0a0a; --pr-bg2: #2a1111;
+            --bw-bg1: #1a1205; --bw-bg2: #2a1b0a;
+            --vol-bg1: #05101a; --vol-bg2: #0a182a;
+            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            --safe-bottom: env(safe-area-inset-bottom, 20px); --safe-top: env(safe-area-inset-top, 24px); 
+        }
+
+        /* CYBERPUNK THEME */
+        [data-theme="cyberpunk"] {
+            --bg-color: #05010f; --surface-color: #100326; --surface-elevated: #1c0a3d;
+            --accent-color: #f03eeb; --accent-dim: rgba(240, 62, 235, 0.15);
+            --text-primary: #e0faff; --text-secondary: #8572a6;
+            --success: #00ffcc; --success-dim: rgba(0, 255, 204, 0.15);
+            --warning: #ffcc00; --warning-dim: rgba(255, 204, 0, 0.15);
+            --info: #00a2ff; --info-dim: rgba(0, 162, 255, 0.15);
+            --border: #361766;
+            --streak-bg1: #290a38; --streak-bg2: #160221;
+            --pr-bg1: #160221; --pr-bg2: #290a38;
+            --bw-bg1: #1a1500; --bw-bg2: #2b2200;
+            --vol-bg1: #060221; --vol-bg2: #11053b;
+        }
+
+        /* MIDNIGHT THEME */
+        [data-theme="midnight"] {
+            --bg-color: #020617; --surface-color: #0f172a; --surface-elevated: #1e293b;
+            --accent-color: #38bdf8; --accent-dim: rgba(56, 189, 248, 0.15);
+            --text-primary: #f8fafc; --text-secondary: #94a3b8;
+            --success: #10b981; --success-dim: rgba(16, 185, 129, 0.15);
+            --warning: #f59e0b; --warning-dim: rgba(245, 158, 11, 0.15);
+            --info: #6366f1; --info-dim: rgba(99, 102, 241, 0.15);
+            --border: #334155;
+            --streak-bg1: #0b1a38; --streak-bg2: #020a17;
+            --pr-bg1: #020a17; --pr-bg2: #0b1a38;
+            --bw-bg1: #171002; --bw-bg2: #261b07;
+            --vol-bg1: #070c24; --vol-bg2: #111b3d;
+        }
+
+        /* TACTICAL THEME */
+        [data-theme="tactical"] {
+            --bg-color: #0a0c0a; --surface-color: #131713; --surface-elevated: #1e241e;
+            --accent-color: #84cc16; --accent-dim: rgba(132, 204, 22, 0.15);
+            --text-primary: #f4fcf4; --text-secondary: #899c89;
+            --success: #10b981; --success-dim: rgba(16, 185, 129, 0.15);
+            --warning: #eab308; --warning-dim: rgba(234, 179, 8, 0.15);
+            --info: #0ea5e9; --info-dim: rgba(14, 165, 233, 0.15);
+            --border: #2c362c;
+            --streak-bg1: #1a291a; --streak-bg2: #0c140c;
+            --pr-bg1: #0c140c; --pr-bg2: #1a291a;
+            --bw-bg1: #1c180b; --bw-bg2: #2e2612;
+            --vol-bg1: #081114; --vol-bg2: #102129;
+        }
+
+        /* IRON THEME (MONO) */
+        [data-theme="iron"] {
+            --bg-color: #000000; --surface-color: #111111; --surface-elevated: #222222;
+            --accent-color: #ffffff; --accent-dim: rgba(255, 255, 255, 0.15);
+            --text-primary: #ffffff; --text-secondary: #888888;
+            --success: #aaaaaa; --success-dim: rgba(170, 170, 170, 0.15);
+            --warning: #dddddd; --warning-dim: rgba(221, 221, 221, 0.15);
+            --info: #cccccc; --info-dim: rgba(204, 204, 204, 0.15);
+            --border: #333333;
+            --streak-bg1: #222222; --streak-bg2: #000000;
+            --pr-bg1: #000000; --pr-bg2: #1a1a1a;
+            --bw-bg1: #050505; --bw-bg2: #1a1a1a;
+            --vol-bg1: #050505; --vol-bg2: #151515;
+        }
+
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         
-        body { background-color: var(--bg-color); color: var(--text-primary); font-family: var(--font-family); line-height: 1.5; position: fixed; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; overflow: hidden; width: 100vw; }
+        body { background-color: var(--bg-color); color: var(--text-primary); font-family: var(--font-family); line-height: 1.5; position: fixed; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; overflow: hidden; width: 100vw; transition: background-color 0.4s ease, color 0.4s ease; }
         #app-container { display: flex; flex-direction: column; height: 100%; width: 100%; max-width: 800px; margin: 0 auto; position: relative; overflow: hidden; }
         #main-content { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding-left: 16px; padding-right: 16px; padding-bottom: calc(100px + var(--safe-bottom)); }
 
@@ -23,44 +99,44 @@
         h1 { font-size: 28px; letter-spacing: -0.5px; margin-top: calc(24px + var(--safe-top)); } h2 { font-size: 20px; color: var(--text-primary); } h3 { font-size: 16px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
         .text-muted { color: var(--text-secondary); font-size: 14px; } .text-accent { color: var(--accent-color); } .text-success { color: var(--success); }
 
-        .card { background: var(--surface-color); border-radius: 16px; padding: 16px; margin-bottom: 16px; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
-        .streak-box { display: flex; align-items: center; justify-content: center; gap: 12px; background: linear-gradient(145deg, #2a1111, #1a0a0a); border: 1px solid #ff3b30; padding: 16px; border-radius: 16px; margin-bottom: 16px; cursor: pointer; transition: transform 0.1s;} .streak-box:active { transform: scale(0.98); }
-        .streak-fire { font-size: 32px; color: #ff9500; animation: pulse 2s infinite; } .streak-text { font-size: 24px; font-weight: bold; margin: 0; }
+        .card { background: var(--surface-color); border-radius: 16px; padding: 16px; margin-bottom: 16px; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.2); transition: background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease; }
+        .streak-box { display: flex; align-items: center; justify-content: center; gap: 12px; background: linear-gradient(145deg, var(--streak-bg1), var(--streak-bg2)); border: 1px solid var(--accent-color); padding: 16px; border-radius: 16px; margin-bottom: 16px; cursor: pointer; transition: transform 0.1s, border-color 0.4s ease; box-shadow: 0 4px 16px var(--accent-dim);} .streak-box:active { transform: scale(0.98); }
+        .streak-fire { font-size: 32px; color: var(--warning); animation: pulse 2s infinite; } .streak-text { font-size: 24px; font-weight: bold; margin: 0; color:var(--text-primary); }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
 
-        .objective-row { display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--surface-color); border: 1px solid var(--border); border-radius: 12px; transition: all 0.2s; cursor: pointer; margin-bottom: 8px; }
+        .objective-row { display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--surface-color); border: 1px solid var(--border); border-radius: 12px; transition: all 0.3s; cursor: pointer; margin-bottom: 8px; }
         .objective-row:active { transform: scale(0.98); }
-        .objective-row.completed { border-color: var(--success); background: rgba(52, 199, 89, 0.05); }
+        .objective-row.completed { border-color: var(--success); background: var(--success-dim); }
         .check-circle { width: 28px; height: 28px; flex-shrink: 0; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 14px; color: transparent; transition: all 0.3s; }
-        .objective-row.completed .check-circle { background: var(--success); border-color: var(--success); color: white; }
+        .objective-row.completed .check-circle { background: var(--success); border-color: var(--success); color: var(--bg-color); }
 
-        .progress-bg { background: var(--surface-elevated); height: 12px; border-radius: 6px; overflow: hidden; margin-top: 8px; } .progress-fill { background: var(--accent-color); height: 100%; transition: width 0.3s ease-out; }
+        .progress-bg { background: var(--surface-elevated); height: 12px; border-radius: 6px; overflow: hidden; margin-top: 8px; } .progress-fill { background: var(--accent-color); height: 100%; transition: width 0.3s ease-out, background-color 0.4s ease; }
 
-        .btn { background: var(--surface-elevated); color: var(--text-primary); border: none; padding: 14px 20px; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; width: 100%; display: inline-flex; justify-content: center; align-items: center; gap: 8px; transition: transform 0.1s, opacity 0.1s; }
-        .btn:active { transform: scale(0.98); opacity: 0.8; } .btn-primary { background: var(--accent-color); color: #fff; } .btn-success { background: var(--success); color: #fff; }
+        .btn { background: var(--surface-elevated); color: var(--text-primary); border: none; padding: 14px 20px; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; width: 100%; display: inline-flex; justify-content: center; align-items: center; gap: 8px; transition: transform 0.1s, opacity 0.1s, background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease; }
+        .btn:active { transform: scale(0.98); opacity: 0.8; } .btn-primary { background: var(--accent-color); color: var(--bg-color); } .btn-success { background: var(--success); color: var(--bg-color); }
         .btn-sm { padding: 8px 12px; font-size: 14px; width: auto; border-radius: 8px; } .btn-icon { width: 36px; height: 36px; border-radius: 8px; padding: 0; background: var(--surface-elevated); display:flex; justify-content:center; align-items:center; color: var(--text-primary); border: none;}
 
-        .input-group { display: flex; background: var(--bg-color); border-radius: 8px; border: 1px solid var(--border); overflow: hidden; height: 44px; }
-        .input-group input { flex: 1; background: transparent; border: none; color: white; text-align: center; font-size: 18px; font-weight: bold; width: 100%; -moz-appearance: textfield; min-width:0; }
-        .edit-input { background: var(--bg-color); border: 1px solid var(--border); color: white; padding: 8px; border-radius: 8px; width: 100%; font-size: 16px !important; margin-bottom: 8px; -webkit-appearance: none; min-width:0; }
-        .inline-edit { background: var(--surface-elevated); border: 1px solid var(--border); color: white; padding: 4px; border-radius: 4px; font-size: 16px !important; font-weight:bold; text-align:center; width: 100%; min-width: 0; }
+        .input-group { display: flex; background: var(--bg-color); border-radius: 8px; border: 1px solid var(--border); overflow: hidden; height: 44px; transition: background-color 0.4s ease, border-color 0.4s ease; }
+        .input-group input { flex: 1; background: transparent; border: none; color: var(--text-primary); text-align: center; font-size: 18px; font-weight: bold; width: 100%; -moz-appearance: textfield; min-width:0; }
+        .edit-input { background: var(--bg-color); border: 1px solid var(--border); color: var(--text-primary); padding: 8px; border-radius: 8px; width: 100%; font-size: 16px !important; margin-bottom: 8px; -webkit-appearance: none; min-width:0; transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease; }
+        .inline-edit { background: var(--surface-elevated); border: 1px solid var(--border); color: var(--text-primary); padding: 4px; border-radius: 4px; font-size: 16px !important; font-weight:bold; text-align:center; width: 100%; min-width: 0; transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease; }
 
-        .exercise-card { background: var(--surface-color); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; margin-bottom: 16px; } .exercise-header { padding: 16px; background: var(--surface-elevated); display: flex; justify-content: space-between; align-items: flex-start; } .exercise-body { padding: 12px 16px; } .set-wrapper { margin-bottom: 12px; }
+        .exercise-card { background: var(--surface-color); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; margin-bottom: 16px; transition: border-color 0.4s ease, background-color 0.4s ease; } .exercise-header { padding: 16px; background: var(--surface-elevated); display: flex; justify-content: space-between; align-items: flex-start; transition: background-color 0.4s ease; } .exercise-body { padding: 12px 16px; } .set-wrapper { margin-bottom: 12px; }
         .set-row { display: grid; grid-template-columns: 40px 1fr 1fr 1fr 50px; gap: 8px; align-items: center; } .set-number { font-size: 14px; color: var(--text-secondary); font-weight: bold; text-align: center; }
-        .btn-check { height: 44px; border-radius: 8px; border: none; background: var(--surface-elevated); color: var(--text-secondary); font-size: 18px; cursor: pointer; } .btn-check.completed { background: var(--success); color: white; }
-        .editor-exercise-row { display:flex; gap:8px; align-items:center; background: var(--surface-elevated); padding: 8px; border-radius: 8px; margin-bottom: 8px;} .editor-controls { display:flex; gap:4px; flex-direction:column; } .editor-controls button { width: 32px; height: 32px; font-size: 12px; }
-        .data-row { padding: 12px 0; border-bottom: 1px solid var(--border); } .data-row:last-child { border-bottom: none; }
+        .btn-check { height: 44px; border-radius: 8px; border: none; background: var(--surface-elevated); color: var(--text-secondary); font-size: 18px; cursor: pointer; transition: background-color 0.4s ease, color 0.4s ease; } .btn-check.completed { background: var(--success); color: var(--bg-color); }
+        .editor-exercise-row { display:flex; gap:8px; align-items:center; background: var(--surface-elevated); padding: 8px; border-radius: 8px; margin-bottom: 8px; transition: background-color 0.4s ease;} .editor-controls { display:flex; gap:4px; flex-direction:column; } .editor-controls button { width: 32px; height: 32px; font-size: 12px; }
+        .data-row { padding: 12px 0; border-bottom: 1px solid var(--border); transition: border-color 0.4s ease; } .data-row:last-child { border-bottom: none; }
         .nut-grid { display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr 1fr 30px; gap: 6px; align-items: center; margin-top: 8px; } .nut-label { font-size: 10px; color: var(--text-secondary); text-align: center; text-transform: uppercase; }
 
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(26, 26, 31, 0.95); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 12px 6px calc(12px + var(--safe-bottom)); z-index: 1000; }
-        .nav-item { color: var(--text-secondary); display: flex; flex-direction: column; align-items: center; text-decoration: none; font-size: 10px; gap: 4px; cursor: pointer; flex: 1; } .nav-item i { font-size: 18px; } .nav-item.active { color: var(--accent-color); }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg-color); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 12px 6px calc(12px + var(--safe-bottom)); z-index: 1000; transition: background-color 0.4s ease, border-color 0.4s ease; opacity: 0.95; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+        .nav-item { color: var(--text-secondary); display: flex; flex-direction: column; align-items: center; text-decoration: none; font-size: 10px; gap: 4px; cursor: pointer; flex: 1; transition: color 0.3s ease;} .nav-item i { font-size: 18px; } .nav-item.active { color: var(--accent-color); }
 
-        .page-header { position: sticky; top: 0; background: rgba(11, 11, 13, 0.95); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 10; margin-left: -16px; margin-right: -16px; margin-bottom: 16px; padding-top: calc(16px + var(--safe-top)); padding-left: 16px; padding-right: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-        .workout-header-sticky { position: sticky; top: 0; background: rgba(11, 11, 13, 0.95); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); padding-top: calc(16px + var(--safe-top)); padding-left: 16px; padding-right: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border); z-index: 10; display: flex; justify-content: space-between; align-items: center; }
+        .page-header { position: sticky; top: 0; background: var(--bg-color); opacity: 0.95; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 10; margin-left: -16px; margin-right: -16px; margin-bottom: 16px; padding-top: calc(16px + var(--safe-top)); padding-left: 16px; padding-right: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; transition: background-color 0.4s ease, border-color 0.4s ease; }
+        .workout-header-sticky { position: sticky; top: 0; background: var(--bg-color); opacity: 0.95; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); padding-top: calc(16px + var(--safe-top)); padding-left: 16px; padding-right: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border); z-index: 10; display: flex; justify-content: space-between; align-items: center; transition: background-color 0.4s ease, border-color 0.4s ease; }
         
-        #rest-timer-overlay { position: fixed; bottom: calc(80px + var(--safe-bottom)); left: 50%; transform: translateX(-50%); background: var(--accent-color); color: white; padding: 12px 24px; border-radius: 30px; box-shadow: 0 4px 16px rgba(255, 59, 48, 0.4); display: none; font-weight: bold; font-size: 18px; align-items: center; gap: 16px; z-index: 1001; cursor: pointer; }
-        #active-workout-view { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 2000; display: none; flex-direction: column; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding-bottom: calc(100px + var(--safe-bottom)); }
-        #exercise-selection-modal, #start-workout-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 2005; display: none; flex-direction: column; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding-bottom: calc(100px + var(--safe-bottom)); }
+        #rest-timer-overlay { position: fixed; bottom: calc(80px + var(--safe-bottom)); left: 50%; transform: translateX(-50%); background: var(--accent-color); color: var(--bg-color); padding: 12px 24px; border-radius: 30px; box-shadow: 0 4px 16px var(--accent-dim); display: none; font-weight: bold; font-size: 18px; align-items: center; gap: 16px; z-index: 1001; cursor: pointer; transition: background-color 0.4s ease; }
+        #active-workout-view { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 2000; display: none; flex-direction: column; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding-bottom: calc(100px + var(--safe-bottom)); transition: background-color 0.4s ease; }
+        #exercise-selection-modal, #start-workout-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 2005; display: none; flex-direction: column; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding-bottom: calc(100px + var(--safe-bottom)); transition: background-color 0.4s ease; }
         
         .flex-between { display: flex; justify-content: space-between; align-items: center; }
         canvas { max-width: 100%; margin-top: 10px; }
@@ -97,11 +173,12 @@ const DEFAULT_PROGRAM = [
 
 const EXERCISE_DB = { 'Bench Press': { muscle: 'Chest' }, 'Squat': { muscle: 'Quads' }, 'Deadlift': { muscle: 'Back' }, 'Incline DB Press': { muscle: 'Chest' }, 'Pec Deck': { muscle: 'Chest' }, 'Flat Machine Press': { muscle: 'Chest' }, 'Dips': { muscle: 'Chest' }, 'Lat Pulldown': { muscle: 'Back' }, 'Chest Supported Row': { muscle: 'Back' }, 'Pull-Ups': { muscle: 'Back' }, 'Cable Lateral Raise': { muscle: 'Shoulders' }, 'Rear Delt Fly': { muscle: 'Shoulders' }, 'Preacher Curl': { muscle: 'Biceps' }, 'Hammer Curl': { muscle: 'Biceps' }, 'Seated Curl': { muscle: 'Biceps' }, 'Tricep Pushdown': { muscle: 'Triceps' }, 'Overhead Extension': { muscle: 'Triceps' }, 'Hack Squat': { muscle: 'Quads' }, 'Leg Press': { muscle: 'Quads' }, 'Leg Extension': { muscle: 'Quads' }, 'Bulgarian Split Squat': { muscle: 'Quads' }, 'Unilateral Leg Extension': { muscle: 'Quads' }, 'Romanian Deadlift': { muscle: 'Hamstrings' }, 'Seated Hamstring Leg Curl': { muscle: 'Hamstrings' }, 'Seated Leg Curl': { muscle: 'Hamstrings' }, 'Standing Calf Raise': { muscle: 'Calves' }, 'Weighted Crunch': { muscle: 'Abs' }, 'Hanging Leg Raise': { muscle: 'Abs' }, 'Incline Treadmill Walk': { muscle: 'Cardio' } };
 const MUSCLE_GROUPS = ['Chest', 'Back', 'Shoulders', 'Biceps', 'Triceps', 'Quads', 'Hamstrings', 'Calves', 'Abs', 'Cardio', 'Other'];
-const CHAT_COLORS = ['#007aff', '#34c759', '#ff9500', '#af52de', '#ff3b30', '#5ac8fa', '#ffcc00', '#5856d6'];
 
 const store = {
-    state: { user: { currentWeight: 90.0 }, routines: [], activeRoutineId: 'default_1', history: { workouts: [], bodyweight: [], nutrition: [], challengeLogs: {} }, prs: { Bench: 0, Squat: 0, Deadlift: 0 }, settings: { restTimer: 120 }, variations: {}, challenge: { isActive: false, title: '', startDate: '', endDate: '', goals: [] } },
+    state: { user: { currentWeight: 90.0 }, routines: [], activeRoutineId: 'default_1', history: { workouts: [], bodyweight: [], nutrition: [], challengeLogs: {} }, prs: { Bench: 0, Squat: 0, Deadlift: 0 }, settings: { restTimer: 120, theme: 'basic' }, variations: {}, challenge: { isActive: false, title: '', startDate: '', endDate: '', goals: [] } },
     migrate(state) {
+        if(!state.settings) state.settings = { restTimer: 120, theme: 'basic' };
+        if(!state.settings.theme) state.settings.theme = 'basic';
         if(!state.routines) return state;
         state.routines.forEach(r => { r.days.forEach(d => { if (!d.workouts) { d.workouts = (d.exercises && d.exercises.length > 0) ? [{ id: utils.generateId(), name: d.name || 'Workout', exercises: d.exercises }] : []; delete d.exercises; delete d.name; } }); });
         if(!state.prs) state.prs = { Bench: 0, Squat: 0, Deadlift: 0 };
@@ -173,7 +250,6 @@ const utils = {
                     let maxE1RM = 0;
                     ex.sets.forEach(s => {
                         if (s.completed && s.weight > 0 && s.reps > 0) {
-                            // Standard Epley 1RM Formula (Weight * (1 + Reps/30))
                             let e1rm = s.weight * (1 + s.reps / 30);
                             if (e1rm > maxE1RM) maxE1RM = e1rm;
                         }
@@ -224,6 +300,10 @@ const utils = {
         let dayCurrent = Math.round((today - start) / (1000*60*60*24)) + 1;
         if (dayCurrent < 1) dayCurrent = 0; if (dayCurrent > dayTotal) dayCurrent = dayTotal;
         return { title: c.title, dayCurrent, dayTotal, streak: utils.calculateStreak() };
+    },
+    getCssVar: (varName, defaultHex) => {
+        const val = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+        return val ? val : defaultHex;
     }
 };
 
@@ -294,7 +374,7 @@ const views = {
             trainingHtml += `<div class="objective-row ${loggedRest ? 'completed' : ''}" onclick="${!loggedRest ? 'app.logRestDay()' : ''}">
                 <div class="check-circle"><i class="fas fa-check"></i></div>
                 <div style="flex:1;">
-                    <div style="font-weight:bold; color:${loggedRest ? 'var(--text-primary)' : 'white'};">Rest Day</div>
+                    <div style="font-weight:bold; color:${loggedRest ? 'var(--text-primary)' : 'var(--text-primary)'};">Rest Day</div>
                     <div class="text-muted" style="font-size:12px;">${loggedRest ? 'Rest correctly logged' : 'Tap to log Rest Day'}</div>
                 </div>
             </div>`;
@@ -306,7 +386,7 @@ const views = {
                 trainingHtml += `<div class="objective-row ${isDone ? 'completed' : ''}" onclick="app.startScheduledWorkout(${i})">
                     <div class="check-circle"><i class="fas fa-check"></i></div>
                     <div style="flex:1;">
-                        <div style="font-weight:bold; color:${isDone ? 'var(--text-primary)' : 'white'};">${w.name}</div>
+                        <div style="font-weight:bold; color:${isDone ? 'var(--text-primary)' : 'var(--text-primary)'};">${w.name}</div>
                         <div class="text-muted" style="font-size:12px;">${w.isActivity ? 'Cardio / Activity' : `${w.exercises.length} exercises`}</div>
                     </div>
                     ${!isDone ? `<i class="fas fa-play text-accent"></i>` : ''}
@@ -333,13 +413,13 @@ const views = {
         let isPerfectDay = bwLogged && streakSafe && allWorkoutsCompleted;
         
         let html = `<h1>Dashboard</h1>
-        <div class="card" style="padding:0; overflow:hidden; border: 1px solid ${isPerfectDay ? 'var(--success)' : 'var(--border)'}; box-shadow: ${isPerfectDay ? '0 0 16px rgba(52, 199, 89, 0.2)' : '0 4px 12px rgba(0,0,0,0.2)'}; transition: all 0.3s;">
-            <div style="padding: 16px; background: ${isPerfectDay ? 'rgba(52, 199, 89, 0.1)' : 'var(--surface-elevated)'}; border-bottom: 1px solid ${isPerfectDay ? 'rgba(52, 199, 89, 0.2)' : 'var(--border)'}; display:flex; justify-content:space-between; align-items:center;">
+        <div class="card" style="padding:0; overflow:hidden; border: 1px solid ${isPerfectDay ? 'var(--success)' : 'var(--border)'}; box-shadow: ${isPerfectDay ? '0 0 16px var(--success-dim)' : '0 4px 12px rgba(0,0,0,0.2)'};">
+            <div style="padding: 16px; background: ${isPerfectDay ? 'var(--success-dim)' : 'var(--surface-elevated)'}; border-bottom: 1px solid ${isPerfectDay ? 'var(--success-dim)' : 'var(--border)'}; display:flex; justify-content:space-between; align-items:center;">
                 <div>
-                    <h2 style="margin:0; font-size:18px; color:${isPerfectDay ? 'var(--success)' : 'white'};">Today's Action Plan</h2>
+                    <h2 style="margin:0; font-size:18px; color:${isPerfectDay ? 'var(--success)' : 'var(--text-primary)'};">Today's Action Plan</h2>
                     <p class="text-muted" style="font-size:12px; margin-top:4px;">${utils.getDayName(today.getDay())}, ${utils.formatDateShort(today)}</p>
                 </div>
-                ${isPerfectDay ? `<div style="background:var(--success); color:white; padding: 4px 8px; border-radius: 8px; font-size: 12px; font-weight:bold; letter-spacing:1px;"><i class="fas fa-star"></i> PERFECT</div>` : ''}
+                ${isPerfectDay ? `<div style="background:var(--success); color:var(--bg-color); padding: 4px 8px; border-radius: 8px; font-size: 12px; font-weight:bold; letter-spacing:1px;"><i class="fas fa-star"></i> PERFECT</div>` : ''}
             </div>
             
             <div style="padding: 16px; display:flex; flex-direction:column; gap:16px;">
@@ -357,10 +437,10 @@ const views = {
                     <div class="objective-row ${bwLogged ? 'completed' : ''}" onclick="!${bwLogged} ? document.getElementById('quick-bw-input').focus() : app.navigate('data')">
                         <div class="check-circle"><i class="fas fa-check"></i></div>
                         <div style="flex:1;">
-                            <div style="font-weight:bold; color:${bwLogged ? 'var(--text-primary)' : 'white'}">Bodyweight</div>
+                            <div style="font-weight:bold; color:${bwLogged ? 'var(--text-primary)' : 'var(--text-primary)'}">Bodyweight</div>
                             ${bwLogged ? `<div class="text-muted" style="font-size:12px;">Logged: ${bwEntry.weight} kg</div>` : `<div class="text-muted" style="font-size:12px;">Tap to log weight</div>`}
                         </div>
-                        ${!bwLogged ? `<div style="display:flex; gap:8px;" onclick="event.stopPropagation()"><input type="number" inputmode="decimal" id="quick-bw-input" value="${store.state.user.currentWeight}" style="width:70px; background:var(--surface-elevated); border:1px solid var(--border); border-radius:8px; color:white; text-align:center; font-weight:bold;"><button class="btn btn-sm btn-success" onclick="app.logWeight(); event.stopPropagation();">Save</button></div>` : ''}
+                        ${!bwLogged ? `<div style="display:flex; gap:8px;" onclick="event.stopPropagation()"><input type="number" inputmode="decimal" id="quick-bw-input" value="${store.state.user.currentWeight}" style="width:70px; background:var(--surface-elevated); border:1px solid var(--border); border-radius:8px; color:var(--text-primary); text-align:center; font-weight:bold;"><button class="btn btn-sm btn-success" onclick="app.logWeight(); event.stopPropagation();">Save</button></div>` : ''}
                     </div>
                 </div>
 
@@ -369,7 +449,7 @@ const views = {
                     <div class="objective-row ${streakSafe ? 'completed' : ''}" onclick="app.navigate('challenge')">
                         <div class="check-circle"><i class="fas fa-check"></i></div>
                         <div style="flex:1;">
-                            <div style="font-weight:bold; color:${streakSafe ? 'var(--text-primary)' : 'white'};">${streakTitle}</div>
+                            <div style="font-weight:bold; color:${streakSafe ? 'var(--text-primary)' : 'var(--text-primary)'};">${streakTitle}</div>
                             <div class="text-muted" style="font-size:12px;">${streakSubtitle}</div>
                         </div>
                         <i class="fas fa-chevron-right text-muted" style="font-size:12px;"></i>
@@ -383,7 +463,7 @@ const views = {
         const streakCount = store.state.challenge && store.state.challenge.isActive ? streakStats.streak : utils.calculateStreak();
         
         html += `<div class="streak-box" onclick="app.navigate('challenge')" style="margin-top:16px;">
-            <i class="fas fa-fire streak-fire"></i>
+            <i class="fas fa-fire streak-fire" style="color:var(--warning)"></i>
             <div>
                 <h2 class="streak-text">${streakCount} Day Streak</h2>
                 <span class="text-muted" style="font-size:12px;">${store.state.challenge && store.state.challenge.isActive ? `${streakStats.title} (Day ${streakStats.dayCurrent}/${streakStats.dayTotal})` : 'Keep the momentum going!'}</span>
@@ -413,9 +493,9 @@ const views = {
                 label = g.type === 'custom' ? (g.title || 'Custom Goal') : `${g.type === 'water' ? 'Drink' : 'Read'} ${g.target || 'Goal'}`;
             }
             let rowStyle = isManual ? `cursor:pointer; background: ${met ? 'var(--accent-dim)' : 'var(--surface-elevated)'}; padding: 12px; border-radius: 12px; border: 1px solid ${met ? 'var(--accent-color)' : 'transparent'}; transition: all 0.2s;` : `padding: 12px 0; border-bottom: 1px solid var(--border);`;
-            html += `<div style="display:flex; align-items:center; gap:12px; ${rowStyle}" ${isManual ? `onclick="app.toggleManualGoal('${g.id}', '${todayStr}')"` : ''}><div class="btn-check ${met ? 'completed' : ''}" style="width:32px; height:32px; display:flex; align-items:center; justify-content:center; border-radius:16px; border:2px solid ${met ? 'var(--success)' : 'var(--border)'}; font-size:14px; background:${met ? 'var(--success)' : 'transparent'}; flex-shrink:0;"><i class="fas fa-check" style="color:${met ? 'white' : 'transparent'};"></i></div><div style="display:flex; flex-direction:column; min-width:0; flex:1;"><span style="font-size:14px; color:${met ? 'var(--text-primary)' : 'var(--text-secondary)'}; font-weight:${met ? 'bold' : 'normal'}; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${label}</span>${isManual ? `<span style="font-size:10px; color:var(--text-secondary);">${met ? 'Tap to unmark' : 'Tap to complete manually'}</span>` : ''}</div></div>`;
+            html += `<div style="display:flex; align-items:center; gap:12px; ${rowStyle}" ${isManual ? `onclick="app.toggleManualGoal('${g.id}', '${todayStr}')"` : ''}><div class="btn-check ${met ? 'completed' : ''}" style="width:32px; height:32px; display:flex; align-items:center; justify-content:center; border-radius:16px; border:2px solid ${met ? 'var(--success)' : 'var(--border)'}; font-size:14px; background:${met ? 'var(--success)' : 'transparent'}; flex-shrink:0;"><i class="fas fa-check" style="color:${met ? 'var(--bg-color)' : 'transparent'};"></i></div><div style="display:flex; flex-direction:column; min-width:0; flex:1;"><span style="font-size:14px; color:${met ? 'var(--text-primary)' : 'var(--text-secondary)'}; font-weight:${met ? 'bold' : 'normal'}; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${label}</span>${isManual ? `<span style="font-size:10px; color:var(--text-secondary);">${met ? 'Tap to unmark' : 'Tap to complete manually'}</span>` : ''}</div></div>`;
         });
-        html += `</div>`; if (utils.checkDaySuccess(todayStr)) html += `<div class="streak-box" style="cursor:default;"><i class="fas fa-fire streak-fire"></i><div><h2 class="streak-text">Today Complete!</h2><span class="text-muted" style="font-size:12px;">Streak preserved. Great job.</span></div></div>`; return html;
+        html += `</div>`; if (utils.checkDaySuccess(todayStr)) html += `<div class="streak-box" style="cursor:default;"><i class="fas fa-fire streak-fire" style="color:var(--warning)"></i><div><h2 class="streak-text">Today Complete!</h2><span class="text-muted" style="font-size:12px;">Streak preserved. Great job.</span></div></div>`; return html;
     },
     renderChallengeEditor() {
         let c = app.draftChallenge;
@@ -471,7 +551,7 @@ const views = {
         order.forEach((dayIndex) => { 
             const dIdx = app.draftRoutine.days.findIndex(d => d.day === dayIndex); if(dIdx === -1) return; const day = app.draftRoutine.days[dIdx]; 
             
-            let addWorkoutDropdown = `<div style="position:relative; display:inline-block;"><select class="edit-input" style="padding: 4px 12px; font-size: 12px !important; margin: 0; background: var(--accent-color); border: none; font-weight: bold; color:white; border-radius:12px; width:auto; text-align:center;" onchange="app.addWorkoutToDay(${dIdx}, this.value); this.value='';">
+            let addWorkoutDropdown = `<div style="position:relative; display:inline-block;"><select class="edit-input" style="padding: 4px 12px; font-size: 12px !important; margin: 0; background: var(--accent-color); border: none; font-weight: bold; color:var(--bg-color); border-radius:12px; width:auto; text-align:center;" onchange="app.addWorkoutToDay(${dIdx}, this.value); this.value='';">
                 <option value="" disabled selected>+ ADD WORKOUT</option>
                 <option value="blank">📝 Blank Workout</option>
                 <option value="activity">🏃‍♂️ Cardio / Activity</option>
@@ -501,10 +581,10 @@ const views = {
     renderProgress() { 
         let html = `<h1>Analytics</h1>
         
-        <div class="card" style="background: linear-gradient(145deg, #1a0a0a, #2a1111); border: 1px solid var(--accent-color); box-shadow: 0 4px 16px rgba(255, 59, 48, 0.15);">
+        <div class="card" style="background: linear-gradient(145deg, var(--pr-bg1), var(--pr-bg2)); border: 1px solid var(--accent-color); box-shadow: 0 4px 16px var(--accent-dim);">
             <h2 style="margin:0; color:var(--accent-color); font-style:italic; margin-bottom: 16px;"><i class="fas fa-bolt"></i> PR ZONE</h2>
             
-            <div style="background:var(--surface-color); padding: 12px; border-radius: 12px; margin-bottom: 16px; border: 1px solid rgba(255, 59, 48, 0.3);">
+            <div style="background:var(--surface-color); padding: 12px; border-radius: 12px; margin-bottom: 16px; border: 1px solid var(--accent-dim);">
                 <h3 style="font-size:14px; margin:0;"><i class="fas fa-chart-line text-accent"></i> Estimated PR's (e1RM)</h3>
                 <p class="text-muted" style="font-size:11px; margin-top:4px;">Uses the standard Epley formula (1RM = Weight × (1 + Reps/30)) dynamically applied to your best sets per session.</p>
                 <canvas id="e1rmChart" style="margin-top:12px;"></canvas>
@@ -513,38 +593,45 @@ const views = {
             <h3 style="font-size:14px; margin:0;"><i class="fas fa-trophy text-accent"></i> Recorded PR's</h3>
             <p class="text-muted" style="font-size:11px; margin-top:4px; margin-bottom: 12px;">Tap a box to log or update your all-time actual PR.</p>
             <div style="display:flex; gap:8px;">
-                <div class="streak-box" style="flex:1; flex-direction:column; padding:12px; margin:0; border-color:#007aff; background: rgba(0, 122, 255, 0.1);" onclick="app.editPR('Bench')">
+                <div class="streak-box" style="flex:1; flex-direction:column; padding:12px; margin:0; border-color:var(--info); background: var(--info-dim);" onclick="app.editPR('Bench')">
                     <span class="text-muted" style="font-size:12px; text-transform:uppercase;">Bench</span>
-                    <span style="font-size:22px; font-weight:bold; color:white;">${store.state.prs.Bench || 0}<span style="font-size:12px; color:var(--text-secondary);">kg</span></span>
+                    <span style="font-size:22px; font-weight:bold; color:var(--text-primary);">${store.state.prs.Bench || 0}<span style="font-size:12px; color:var(--text-secondary);">kg</span></span>
                 </div>
-                <div class="streak-box" style="flex:1; flex-direction:column; padding:12px; margin:0; border-color:#ff3b30; background: rgba(255, 59, 48, 0.1);" onclick="app.editPR('Squat')">
+                <div class="streak-box" style="flex:1; flex-direction:column; padding:12px; margin:0; border-color:var(--accent-color); background: var(--accent-dim);" onclick="app.editPR('Squat')">
                     <span class="text-muted" style="font-size:12px; text-transform:uppercase;">Squat</span>
-                    <span style="font-size:22px; font-weight:bold; color:white;">${store.state.prs.Squat || 0}<span style="font-size:12px; color:var(--text-secondary);">kg</span></span>
+                    <span style="font-size:22px; font-weight:bold; color:var(--text-primary);">${store.state.prs.Squat || 0}<span style="font-size:12px; color:var(--text-secondary);">kg</span></span>
                 </div>
-                <div class="streak-box" style="flex:1; flex-direction:column; padding:12px; margin:0; border-color:#34c759; background: rgba(52, 199, 89, 0.1);" onclick="app.editPR('Deadlift')">
+                <div class="streak-box" style="flex:1; flex-direction:column; padding:12px; margin:0; border-color:var(--success); background: var(--success-dim);" onclick="app.editPR('Deadlift')">
                     <span class="text-muted" style="font-size:12px; text-transform:uppercase;">Deadlift</span>
-                    <span style="font-size:22px; font-weight:bold; color:white;">${store.state.prs.Deadlift || 0}<span style="font-size:12px; color:var(--text-secondary);">kg</span></span>
+                    <span style="font-size:22px; font-weight:bold; color:var(--text-primary);">${store.state.prs.Deadlift || 0}<span style="font-size:12px; color:var(--text-secondary);">kg</span></span>
                 </div>
             </div>
         </div>
         
-        <div class="card" style="background: linear-gradient(145deg, #1a1205, #2a1b0a); border: 1px solid #ff9500; box-shadow: 0 4px 16px rgba(255, 149, 0, 0.15);">
-            <h2 style="margin:0; color:#ff9500; font-style:italic; margin-bottom: 8px;"><i class="fas fa-weight-scale"></i> BODYWEIGHT</h2>
+        <div class="card" style="background: linear-gradient(145deg, var(--bw-bg1), var(--bw-bg2)); border: 1px solid var(--warning); box-shadow: 0 4px 16px var(--warning-dim);">
+            <h2 style="margin:0; color:var(--warning); font-style:italic; margin-bottom: 8px;"><i class="fas fa-weight-scale"></i> BODYWEIGHT</h2>
             <p class="text-muted" style="font-size:11px; margin-bottom:12px;">Weekly average weight to accurately track bulks/cuts.</p>
-            <div style="background:var(--surface-color); padding: 12px; border-radius: 12px; border: 1px solid rgba(255, 149, 0, 0.3);">
+            <div style="background:var(--surface-color); padding: 12px; border-radius: 12px; border: 1px solid var(--warning-dim);">
                 <canvas id="bwTimeChart"></canvas>
             </div>
         </div>
 
-        <div class="card" style="background: linear-gradient(145deg, #05101a, #0a182a); border: 1px solid #007aff; box-shadow: 0 4px 16px rgba(0, 122, 255, 0.15);">
-            <h2 style="margin:0; color:#007aff; font-style:italic; margin-bottom: 8px;"><i class="fas fa-layer-group"></i> MUSCLE VOLUME</h2>
+        <div class="card" style="background: linear-gradient(145deg, var(--vol-bg1), var(--vol-bg2)); border: 1px solid var(--info); box-shadow: 0 4px 16px var(--info-dim);">
+            <h2 style="margin:0; color:var(--info); font-style:italic; margin-bottom: 8px;"><i class="fas fa-layer-group"></i> MUSCLE VOLUME</h2>
             <p class="text-muted" style="font-size:11px; margin-bottom:12px;">Total kg lifted per muscle group during each exact session.</p>
-            <div style="background:var(--surface-color); padding: 12px; border-radius: 12px; border: 1px solid rgba(0, 122, 255, 0.3);">
+            <div style="background:var(--surface-color); padding: 12px; border-radius: 12px; border: 1px solid var(--info-dim);">
                 <canvas id="muscleTimeChart"></canvas>
             </div>
         </div>`; 
         
         setTimeout(() => { 
+            const colorAccent = utils.getCssVar('--accent-color', '#ff3b30');
+            const colorSuccess = utils.getCssVar('--success', '#34c759');
+            const colorWarning = utils.getCssVar('--warning', '#ff9500');
+            const colorInfo = utils.getCssVar('--info', '#007aff');
+            const colorTextSec = utils.getCssVar('--text-secondary', '#8e8e93');
+            const colorGrid = utils.getCssVar('--border', '#333336');
+
             const e1rmCtx = document.getElementById('e1rmChart');
             if(e1rmCtx) {
                 const e1Data = utils.getE1RMHistory(); let allTs = new Set();
@@ -552,12 +639,14 @@ const views = {
                 let sortedTs = Array.from(allTs).sort((a,b)=>a-b);
                 let e1Labels = sortedTs.map(ts => utils.formatDateShort(new Date(ts)));
                 let mapData = (arr) => sortedTs.map(ts => { let match = arr.find(x => x.ts === ts); return match ? match.e1rm.toFixed(1) : null; });
-                new Chart(e1rmCtx, { type: 'line', data: { labels: e1Labels, datasets: [ { label: 'Bench', data: mapData(e1Data.bench), borderColor: '#007aff', backgroundColor: '#007aff', tension: 0.3, borderWidth: 2, spanGaps: true }, { label: 'Squat', data: mapData(e1Data.squat), borderColor: '#ff3b30', backgroundColor: '#ff3b30', tension: 0.3, borderWidth: 2, spanGaps: true }, { label: 'Deadlift', data: mapData(e1Data.deadlift), borderColor: '#34c759', backgroundColor: '#34c759', tension: 0.3, borderWidth: 2, spanGaps: true } ]}, options: { responsive: true, plugins: { legend: { position: 'top', labels: { color: '#8e8e93', boxWidth: 12 } } }, scales: { y: { grid: { color: '#333' } }, x: { grid: { display: false } } } } });
+                new Chart(e1rmCtx, { type: 'line', data: { labels: e1Labels, datasets: [ { label: 'Bench', data: mapData(e1Data.bench), borderColor: colorInfo, backgroundColor: colorInfo, tension: 0.3, borderWidth: 2, spanGaps: true }, { label: 'Squat', data: mapData(e1Data.squat), borderColor: colorAccent, backgroundColor: colorAccent, tension: 0.3, borderWidth: 2, spanGaps: true }, { label: 'Deadlift', data: mapData(e1Data.deadlift), borderColor: colorSuccess, backgroundColor: colorSuccess, tension: 0.3, borderWidth: 2, spanGaps: true } ]}, options: { responsive: true, plugins: { legend: { position: 'top', labels: { color: colorTextSec, boxWidth: 12 } } }, scales: { y: { grid: { color: colorGrid } }, x: { grid: { display: false } } } } });
             }
 
-            const bwData = utils.getWeeklyData(store.state.history.bodyweight); const bwWeeks = Object.keys(bwData).sort(); const bwLabels = bwWeeks.map(w => utils.formatDateShort(new Date(parseInt(w)))); const bwAverages = bwWeeks.map(w => { const entries = bwData[w].entries; const sum = entries.reduce((acc, e) => acc + (parseFloat(e.weight) || 0), 0); return sum / entries.length; }); const bwCtx = document.getElementById('bwTimeChart'); if(bwCtx && bwLabels.length > 0) { new Chart(bwCtx, { type: 'line', data: { labels: bwLabels, datasets: [{ label: 'Avg Weight (kg)', data: bwAverages, borderColor: '#ff9500', backgroundColor: '#ff9500', tension: 0.3, borderWidth: 2 }] }, options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { grid: { color: '#333' } }, x: { grid: { display: false } } } } }); } 
+            const bwData = utils.getWeeklyData(store.state.history.bodyweight); const bwWeeks = Object.keys(bwData).sort(); const bwLabels = bwWeeks.map(w => utils.formatDateShort(new Date(parseInt(w)))); const bwAverages = bwWeeks.map(w => { const entries = bwData[w].entries; const sum = entries.reduce((acc, e) => acc + (parseFloat(e.weight) || 0), 0); return sum / entries.length; }); const bwCtx = document.getElementById('bwTimeChart'); if(bwCtx && bwLabels.length > 0) { new Chart(bwCtx, { type: 'line', data: { labels: bwLabels, datasets: [{ label: 'Avg Weight (kg)', data: bwAverages, borderColor: colorWarning, backgroundColor: colorWarning, tension: 0.3, borderWidth: 2 }] }, options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { grid: { color: colorGrid } }, x: { grid: { display: false } } } } }); } 
             
-            const musData = utils.getSessionMuscleVolume(); const musKeys = Object.keys(musData.sessions).sort((a,b) => a - b); const musLabels = musKeys.map(k => musData.sessions[k].label); const musDatasets = musData.muscles.map((muscle, i) => { return { label: muscle, data: musKeys.map(k => musData.sessions[k].vols[muscle] || null), borderColor: CHAT_COLORS[i % CHAT_COLORS.length], backgroundColor: CHAT_COLORS[i % CHAT_COLORS.length], tension: 0.3, borderWidth: 2, spanGaps: true }; }); const musCtx = document.getElementById('muscleTimeChart'); if(musCtx && musLabels.length > 0) { new Chart(musCtx, { type: 'line', data: { labels: musLabels, datasets: musDatasets }, options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { color: '#8e8e93', boxWidth: 12 } } }, scales: { y: { grid: { color: '#333' } }, x: { grid: { display: false } } } } }); } 
+            const musData = utils.getSessionMuscleVolume(); const musKeys = Object.keys(musData.sessions).sort((a,b) => a - b); const musLabels = musKeys.map(k => musData.sessions[k].label); 
+            const CHAT_COLORS = [colorAccent, colorInfo, colorSuccess, colorWarning, utils.getCssVar('--text-primary', '#fff'), '#af52de', '#5ac8fa'];
+            const musDatasets = musData.muscles.map((muscle, i) => { return { label: muscle, data: musKeys.map(k => musData.sessions[k].vols[muscle] || null), borderColor: CHAT_COLORS[i % CHAT_COLORS.length], backgroundColor: CHAT_COLORS[i % CHAT_COLORS.length], tension: 0.3, borderWidth: 2, spanGaps: true }; }); const musCtx = document.getElementById('muscleTimeChart'); if(musCtx && musLabels.length > 0) { new Chart(musCtx, { type: 'line', data: { labels: musLabels, datasets: musDatasets }, options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { color: colorTextSec, boxWidth: 12 } } }, scales: { y: { grid: { color: colorGrid } }, x: { grid: { display: false } } } } }); } 
         }, 100); 
         return html; 
     },
@@ -568,14 +657,29 @@ const views = {
         if (app.activeDataTab === 'bodyweight') { const weeklyBW = utils.getWeeklyData(store.state.history.bodyweight); const sortedWeeks = Object.keys(weeklyBW).sort((a,b) => b - a); if (sortedWeeks.length === 0) html += `<p class="text-muted" style="margin-bottom:16px;">No bodyweight data logged.</p>`; sortedWeeks.forEach(mon => { html += `<div class="card"><h3 style="margin-bottom:12px;">Week of ${utils.formatDateShort(new Date(parseInt(mon)))}</h3>`; const entries = weeklyBW[mon].entries.sort((a,b) => new Date(b.date) - new Date(a.date)); entries.forEach(entry => { const d = new Date(entry.date); html += `<div class="data-row flex-between"><span class="text-muted" style="width: 80px; font-size:12px;">${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getDay()]} ${utils.formatDateShort(d)}</span><div style="display:flex; gap:8px; align-items:center;"><input type="number" inputmode="decimal" class="inline-edit" style="width:60px; font-size:16px !important;" value="${entry.weight}" onchange="app.editEntry('bodyweight', '${entry.date}', 'weight', this.value)"><span class="text-muted">kg</span></div><button class="btn-icon" style="color:var(--accent-color); width:30px; height:30px;" onclick="app.deleteEntry('bodyweight', '${entry.date}')"><i class="fas fa-trash"></i></button></div>`; }); html += `</div>`; }); }
         html += `<button class="btn" style="margin-bottom:16px;" onclick="app.toggleDataTab('nutrition')"><i class="fas fa-apple-whole"></i> Nutrition History</button>`;
         if (app.activeDataTab === 'nutrition') { const weeklyNut = utils.getWeeklyData(store.state.history.nutrition); const sortedWeeks = Object.keys(weeklyNut).sort((a,b) => b - a); if (sortedWeeks.length === 0) html += `<p class="text-muted" style="margin-bottom:16px;">No nutrition data logged.</p>`; sortedWeeks.forEach(mon => { html += `<div class="card" style="padding:12px;"><h3 style="margin-bottom:8px;">Week of ${utils.formatDateShort(new Date(parseInt(mon)))}</h3><div class="nut-grid text-muted" style="border-bottom:1px solid var(--border); padding-bottom:4px; margin-bottom:4px;"><div class="nut-label">Date</div><div class="nut-label">Kcal</div><div class="nut-label">Pro</div><div class="nut-label">Car</div><div class="nut-label">Fat</div><div></div></div>`; const entries = weeklyNut[mon].entries.sort((a,b) => new Date(b.date) - new Date(a.date)); entries.forEach(entry => { const d = new Date(entry.date); html += `<div class="nut-grid data-row" style="padding: 6px 0;"><span class="text-muted" style="font-size:11px;">${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getDay()]} ${d.getDate()}</span><input type="number" class="inline-edit" value="${entry.cal||0}" onchange="app.editEntry('nutrition', '${entry.date}', 'cal', this.value)"><input type="number" class="inline-edit" value="${entry.pro||0}" onchange="app.editEntry('nutrition', '${entry.date}', 'pro', this.value)"><input type="number" class="inline-edit" value="${entry.car||0}" onchange="app.editEntry('nutrition', '${entry.date}', 'car', this.value)"><input type="number" class="inline-edit" value="${entry.fat||0}" onchange="app.editEntry('nutrition', '${entry.date}', 'fat', this.value)"><button class="btn-icon" style="color:var(--accent-color); width:24px; height:24px; font-size:12px;" onclick="app.deleteEntry('nutrition', '${entry.date}')"><i class="fas fa-trash"></i></button></div>`; }); html += `</div>`; }); }
+        
+        let t = store.state.settings.theme;
+        html += `<div style="margin-top:40px; padding-top:20px; border-top:1px solid var(--border);">
+            <h3 style="margin-bottom: 12px;"><i class="fas fa-palette"></i> App Theme</h3>
+            <p class="text-muted" style="font-size:12px; margin-bottom:16px;">Customize your experience. Progress charts will dynamically adapt.</p>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+                <button class="btn ${t==='basic'?'btn-primary':''}" style="${t!=='basic'?'background:var(--surface-elevated)':''}" onclick="app.setTheme('basic')">🔴 Basic</button>
+                <button class="btn ${t==='cyberpunk'?'btn-primary':''}" style="${t!=='cyberpunk'?'background:var(--surface-elevated)':''}" onclick="app.setTheme('cyberpunk')">👾 Cyberpunk</button>
+                <button class="btn ${t==='midnight'?'btn-primary':''}" style="${t!=='midnight'?'background:var(--surface-elevated)':''}" onclick="app.setTheme('midnight')">🌌 Midnight</button>
+                <button class="btn ${t==='tactical'?'btn-primary':''}" style="${t!=='tactical'?'background:var(--surface-elevated)':''}" onclick="app.setTheme('tactical')">🌲 Tactical</button>
+                <button class="btn ${t==='iron'?'btn-primary':''}" style="grid-column: span 2; ${t!=='iron'?'background:var(--surface-elevated)':''}" onclick="app.setTheme('iron')">⛓️ Iron (Monochrome)</button>
+            </div>
+        </div>`;
+
         html += `<div style="margin-top:40px; padding-top:20px; border-top:1px solid var(--border);"><h3 style="margin-bottom: 12px;">Backups</h3><p class="text-muted" style="font-size:12px; margin-bottom:12px;">Save your data to your phone's Files to prevent losing it if your browser cache is cleared.</p><div style="display:flex; gap:12px; margin-bottom:24px;"><button class="btn btn-success" style="flex:1;" onclick="app.exportData()"><i class="fas fa-download"></i> Export Data</button><label class="btn" style="flex:1; background:var(--surface-elevated); margin:0; cursor:pointer;"><i class="fas fa-upload"></i> Import<input type="file" accept=".json" style="display:none;" onchange="app.importData(event)"></label></div><button class="btn" style="background:transparent; border:1px solid var(--accent-color); color:var(--accent-color);" onclick="app.resetData()"><i class="fas fa-triangle-exclamation"></i> FACTORY RESET APP</button></div>`; return html;
     }
 };
 
 const app = {
-    isEditingProgram: false, viewingRoutineId: null, draftRoutine: null, activeDataTab: null, customDraftTitle: '', draftChallenge: null,
-    init() { store.load(); this.navigate('home'); },
-    navigate(viewId) { document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active')); const navMap = { 'home': 0, 'workout': 1, 'workout-detail': 1, 'progress': 2, 'nutrition': 3, 'data': 4 }; if(navMap[viewId] !== undefined) document.querySelectorAll('.nav-item')[navMap[viewId]].classList.add('active'); const c = document.getElementById('main-content'); if(viewId==='home') c.innerHTML = views.renderHome(); else if(viewId==='workout') c.innerHTML = views.renderWorkoutList(); else if(viewId==='workout-detail') c.innerHTML = views.renderWorkoutDetail(); else if(viewId==='nutrition') c.innerHTML = views.renderNutrition(); else if(viewId==='progress') c.innerHTML = views.renderProgress(); else if(viewId==='data') c.innerHTML = views.renderData(); else if(viewId==='custom-a') c.innerHTML = views.renderCustomA(); else if(viewId==='custom-b') c.innerHTML = views.renderCustomB(); else if(viewId==='challenge') c.innerHTML = views.renderChallenge(); else if(viewId==='challenge-edit') c.innerHTML = views.renderChallengeEditor(); window.scrollTo(0,0); },
+    isEditingProgram: false, viewingRoutineId: null, draftRoutine: null, activeDataTab: null, customDraftTitle: '', draftChallenge: null, currentView: 'home',
+    init() { store.load(); this.setTheme(store.state.settings.theme, false); this.navigate('home'); },
+    navigate(viewId) { this.currentView = viewId; document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active')); const navMap = { 'home': 0, 'workout': 1, 'workout-detail': 1, 'progress': 2, 'nutrition': 3, 'data': 4 }; if(navMap[viewId] !== undefined) document.querySelectorAll('.nav-item')[navMap[viewId]].classList.add('active'); const c = document.getElementById('main-content'); if(viewId==='home') c.innerHTML = views.renderHome(); else if(viewId==='workout') c.innerHTML = views.renderWorkoutList(); else if(viewId==='workout-detail') c.innerHTML = views.renderWorkoutDetail(); else if(viewId==='nutrition') c.innerHTML = views.renderNutrition(); else if(viewId==='progress') c.innerHTML = views.renderProgress(); else if(viewId==='data') c.innerHTML = views.renderData(); else if(viewId==='custom-a') c.innerHTML = views.renderCustomA(); else if(viewId==='custom-b') c.innerHTML = views.renderCustomB(); else if(viewId==='challenge') c.innerHTML = views.renderChallenge(); else if(viewId==='challenge-edit') c.innerHTML = views.renderChallengeEditor(); window.scrollTo(0,0); },
+    setTheme(themeName, render = true) { store.state.settings.theme = themeName; store.save(); document.documentElement.setAttribute('data-theme', themeName); if(render) { this.navigate(this.currentView); } },
     showStartOptions() {
         const prog = utils.getTodayProgram(); const modal = document.getElementById('start-workout-modal');
         let html = `<div class="page-header"><button class="btn btn-sm btn-icon" onclick="document.getElementById('start-workout-modal').style.display='none'"><i class="fas fa-times"></i></button><h2 style="margin:0; font-size:18px;">Start Session</h2><div style="width:36px;"></div></div><div style="padding: 16px;">`;
