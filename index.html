@@ -427,10 +427,13 @@ const views = {
                         ${!isTrainingDone ? `<i class="fas fa-play" style="color:var(--pending)"></i>` : ''}
                     </div>
                     `}
-                    <div class="objective-row ${cardioLogged ? 'completed' : ''}" onclick="!${cardioLogged} ? null : ''">
+                    <div class="objective-row ${cardioLogged ? 'completed' : ''}" onclick="app.toggleCardio('${todayStr}')">
                         <div class="check-circle"><i class="fas fa-check"></i></div>
-                        <div style="flex:1;"><div style="font-weight:bold;">Daily Cardio ${app.sym('activity')}</div>${cardioLogged ? `<div class="text-muted" style="font-size:12px;">Logged: ${cardioEntry.intensity} Intensity</div>` : `<div class="text-muted" style="font-size:12px;">Tap to select intensity</div>`}</div>
-                        ${!cardioLogged ? `<div onclick="event.stopPropagation()"><select class="edit-input" style="width:100px; margin:0; font-size:14px !important; padding:4px;" onchange="app.logCardio(this.value, '${todayStr}')"><option value="" disabled selected>Select...</option><option value="Light">Light</option><option value="High">High</option></select></div>` : `<button class="btn-icon" style="background:transparent; color:var(--text-secondary);" onclick="app.removeCardio('${todayStr}'); event.stopPropagation();"><i class="fas fa-times"></i></button>`}
+                        <div style="flex:1;">
+                            <div style="font-weight:bold;">Daily Cardio ${app.sym('activity')}</div>
+                            <div class="text-muted" style="font-size:12px;">${cardioLogged ? 'Logged' : 'Tap to mark complete'}</div>
+                        </div>
+                        ${!cardioLogged ? `<i class="fas fa-plus" style="color:var(--text-secondary)"></i>` : ''}
                     </div>
                 </div>
                 <div><h3 style="font-size:12px; margin-bottom:8px;">Vitals</h3>
@@ -644,8 +647,12 @@ const app = {
     logWeight() { const input = document.getElementById('quick-bw-input'); if (input && input.value) { store.addBodyweight(input.value); input.value = store.state.user.currentWeight; this.navigate('home'); } },
     logNutrition() { const cal = document.getElementById('nut-cal').value; const pro = document.getElementById('nut-pro').value; const car = document.getElementById('nut-car').value; const fat = document.getElementById('nut-fat').value; if(!cal) { alert("Please enter at least your calories."); return; } store.addNutrition({ cal, pro, car, fat }); alert(`Nutrition logged! ${app.sym('success')}`); this.navigate('home'); },
     
-    logCardio(intensity, dateStr) { store.state.history.cardio.push({ date: dateStr + 'T12:00:00Z', intensity }); store.save(); this.navigate('home'); },
-    removeCardio(dateStr) { store.state.history.cardio = store.state.history.cardio.filter(c => utils.getLocalISODate(c.date) !== dateStr); store.save(); this.navigate('home'); },
+    toggleCardio(dateStr) { 
+        const existingIdx = store.state.history.cardio.findIndex(c => utils.getLocalISODate(c.date) === dateStr);
+        if (existingIdx >= 0) store.state.history.cardio.splice(existingIdx, 1);
+        else store.state.history.cardio.push({ date: dateStr + 'T12:00:00Z', intensity: 'Completed' });
+        store.save(); this.navigate('home');
+    },
     
     addPastBodyweight() { const d = document.getElementById('past-bw-date').value; const w = document.getElementById('past-bw-val').value; if(!d || !w) return; store.addBodyweight(w, d + 'T12:00:00Z'); this.navigate('data'); },
     addPastNutrition() { const d = document.getElementById('past-nut-date').value; const cal = document.getElementById('past-nut-cal').value; const pro = document.getElementById('past-nut-pro').value; const car = document.getElementById('past-nut-car').value; const fat = document.getElementById('past-nut-fat').value; if(!d || !cal) return; store.addNutrition({ cal, pro, car, fat }, d + 'T12:00:00Z'); this.navigate('data'); },
@@ -663,7 +670,7 @@ const app = {
     
     changeChallengeDay(dir) { this.challengeOffset += dir; if(this.challengeOffset > 0) this.challengeOffset = 0; this.navigate('challenge'); },
     toggleGoal(goalId, dateStr, type) { 
-        if (type === 'cardio') { const existingIdx = store.state.history.cardio.findIndex(c => utils.getLocalISODate(c.date) === dateStr); if(existingIdx >= 0) store.state.history.cardio.splice(existingIdx, 1); else store.state.history.cardio.push({ date: dateStr + 'T12:00:00Z', intensity: 'High' }); } 
+        if (type === 'cardio') { const existingIdx = store.state.history.cardio.findIndex(c => utils.getLocalISODate(c.date) === dateStr); if(existingIdx >= 0) store.state.history.cardio.splice(existingIdx, 1); else store.state.history.cardio.push({ date: dateStr + 'T12:00:00Z', intensity: 'Completed' }); } 
         else { if (!store.state.history.challengeLogs) store.state.history.challengeLogs = {}; if (!store.state.history.challengeLogs[dateStr]) store.state.history.challengeLogs[dateStr] = {}; store.state.history.challengeLogs[dateStr][goalId] = !store.state.history.challengeLogs[dateStr][goalId]; } 
         store.save(); this.navigate('challenge'); 
     },
