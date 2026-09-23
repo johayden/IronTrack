@@ -219,9 +219,10 @@ const THEME_MAP = {
 };
 
 const store = {
-    state: { user: { currentWeight: 90.0 }, routines: [], activeRoutineId: 'default_1', history: { workouts: [], bodyweight: [], nutrition: [], cardio: [], challengeLogs: {} }, prs: { Bench: 0, Squat: 0, Deadlift: 0 }, settings: { restTimer: 120, theme: 'tactical' }, variations: {}, challenge: { isActive: false, title: '', startDate: '', endDate: '', goals: [] }, activeSession: null },
+    state: { user: { currentWeight: 90.0 }, routines: [], activeRoutineId: 'default_1', history: { workouts: [], bodyweight: [], nutrition: [], cardio: [], challengeLogs: {} }, prs: { Bench: 0, Squat: 0, Deadlift: 0 }, settings: { restTimer: 120, theme: 'tactical', chartRange: '90' }, variations: {}, challenge: { isActive: false, title: '', startDate: '', endDate: '', goals: [] }, activeSession: null },
     migrate(state) {
-        if(!state.settings) state.settings = { restTimer: 120, theme: 'tactical' };
+        if(!state.settings) state.settings = { restTimer: 120, theme: 'tactical', chartRange: '90' };
+        if(!state.settings.chartRange) state.settings.chartRange = '90';
         if(!state.history.cardio) state.history.cardio = [];
         if(!state.prs) state.prs = { Bench: 0, Squat: 0, Deadlift: 0 };
         if(state.activeSession === undefined) state.activeSession = null;
@@ -268,20 +269,20 @@ const utils = {
     getTodayProgram: () => { const d = new Date().getDay(); const active = utils.getActiveRoutine(); return active.days.find(p => p.day === d) || { day: d, workouts: [] }; },
     getMuscle: (ex) => { if(ex.muscle && ex.muscle !== 'Other') return ex.muscle; return (EXERCISE_DB[ex.name] && EXERCISE_DB[ex.name].muscle) ? EXERCISE_DB[ex.name].muscle : 'Other'; },
     getWeeklyData: (dataset) => { let weekly = {}; dataset.forEach(entry => { const mon = utils.getMonday(entry.date); if (!weekly[mon]) weekly[mon] = { entries: [] }; weekly[mon].entries.push(entry); }); return weekly; },
-    getSessionMuscleVolume: () => {
-        const sessions = {};
+    getWeeklyMuscleVolume: () => {
+        const weeks = {};
         store.state.history.workouts.forEach(w => {
             if(w.isSkipped || w.isActivity) return;
-            const timestamp = new Date(w.date).getTime();
-            if(!sessions[timestamp]) sessions[timestamp] = { label: utils.formatDateShort(new Date(w.date)), vols: {} };
+            const mon = utils.getMonday(w.date);
+            if(!weeks[mon]) weeks[mon] = { label: utils.formatDateShort(new Date(mon)), vols: {}, ts: mon };
             (w.exercises||[]).forEach(ex => {
                 const target = utils.getMuscle(ex);
                 if (HYPERTROPHY_GROUPS.includes(target)) {
                     const vol = utils.calcVolume(ex.sets);
-                    if(vol > 0) sessions[timestamp].vols[target] = (sessions[timestamp].vols[target] || 0) + vol;
+                    if(vol > 0) weeks[mon].vols[target] = (weeks[mon].vols[target] || 0) + vol;
                 }
             });
-        }); return { sessions, muscles: HYPERTROPHY_GROUPS };
+        }); return { weeks: Object.values(weeks).sort((a,b)=>a.ts-b.ts), muscles: HYPERTROPHY_GROUPS };
     },
     getE1RMHistory: () => {
         let history = { bench: [], squat: [], deadlift: [] };
@@ -632,61 +633,114 @@ const views = {
     },
     renderCustomB() { let grouped = utils.getGroupedExercises(); let html = `<div class="page-header"><button class="btn btn-sm btn-icon" onclick="app.navigate('home')"><i class="fas fa-arrow-left"></i></button><h2 style="margin:0; font-size:18px;">Mix Exercises</h2><button class="btn btn-sm btn-success" onclick="app.startCustomMix()">START</button></div>`; Object.keys(grouped).sort().forEach(muscle => { html += `<h3 style="margin-top:16px; color:var(--text-secondary); font-size:14px;">${muscle}</h3><div style="display:flex; flex-direction:column; gap:8px;">`; grouped[muscle].sort((a,b) => a.name.localeCompare(b.name)).forEach(ex => { html += `<label class="data-row flex-between" style="padding:12px; background:var(--surface-color); border-radius:8px; border:1px solid var(--border);"><div><div style="font-weight:bold;">${ex.name}</div><div class="text-muted" style="font-size:12px;">Def: ${ex.targetSets}x${ex.targetReps}</div></div><input type="checkbox" class="cx-checkbox" value="${ex.name}" data-sets="${ex.targetSets}" data-reps="${ex.targetReps}" style="width:24px; height:24px;"></label>`; }); html += `</div>`; }); return html; },
     renderNutrition() { return `<h1>${app.sym('nutrition') || ''} Daily Nutrition</h1><div class="card"><h3>Log Today's Fuel</h3><div style="display:flex; flex-direction:column; gap:12px; margin-top:16px;"><div><label class="text-muted" style="font-size:12px;">Calories Consumed</label><input type="number" id="nut-cal" class="edit-input" style="font-size:24px !important; font-weight:bold; height:50px; text-align:center;" placeholder="kcal"></div><div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:12px;"><div><label class="text-muted" style="font-size:12px;">Protein (g)</label><input type="number" id="nut-pro" class="edit-input" style="text-align:center"></div><div><label class="text-muted" style="font-size:12px;">Carbs (g)</label><input type="number" id="nut-car" class="edit-input" style="text-align:center"></div><div><label class="text-muted" style="font-size:12px;">Fats (g)</label><input type="number" id="nut-fat" class="edit-input" style="text-align:center"></div></div><button class="btn btn-success" style="margin-top:12px;" onclick="app.logNutrition()"><i class="fas fa-save"></i> SAVE MACROS</button></div></div>`; },
+    
     renderProgress() { 
-        // Build weekly set counters
+        // Build weekly set counters & overload metrics
         let weekSets = { Chest:0, Back:0, Triceps:0, Biceps:0, Shoulders:0, Quads:0, Hamstrings:0 };
-        const mon = utils.getMonday(new Date());
+        let thisWeekVol = 0; let lastWeekVol = 0;
+        let thisWeekRirSum = 0; let thisWeekRirCount = 0;
+
+        const d = new Date(); const mon = utils.getMonday(d);
+        const lastMon = mon - (7 * 86400000);
+
         store.state.history.workouts.forEach(w => {
-            if (new Date(w.date) >= mon && !w.isSkipped && !w.isActivity) {
-                (w.exercises||[]).forEach(ex => {
-                    const m = utils.getMuscle(ex);
-                    if (weekSets[m] !== undefined) {
-                        weekSets[m] += ex.sets.filter(s => s.completed).length;
-                    }
-                });
-            }
+            if (w.isSkipped || w.isActivity) return;
+            const wMon = utils.getMonday(new Date(w.date));
+            const isThisWeek = wMon === mon;
+            const isLastWeek = wMon === lastMon;
+
+            (w.exercises||[]).forEach(ex => {
+                const m = utils.getMuscle(ex);
+                let exVol = utils.calcVolume(ex.sets);
+                
+                if (isThisWeek) {
+                    if (weekSets[m] !== undefined) weekSets[m] += ex.sets.filter(s => s.completed).length;
+                    thisWeekVol += exVol;
+                    ex.sets.forEach(s => { if(s.completed && HYPERTROPHY_GROUPS.includes(m)) { thisWeekRirSum += (s.rir||0); thisWeekRirCount++; } });
+                } else if (isLastWeek) {
+                    lastWeekVol += exVol;
+                }
+            });
         });
         
-        let hyperHtml = `<div class="card" style="background:var(--surface-color); border:1px solid var(--info-dim);"><h3 style="margin:0; font-size:14px; margin-bottom:12px;"><i class="fas fa-bullseye text-info"></i> Weekly Hypertrophy Sets</h3><p class="text-muted" style="font-size:11px; margin-bottom:12px;">Science recommends hitting 10 - 20 hard sets per muscle group each week to maximize muscle growth.</p><div style="display:flex; flex-direction:column; gap:8px;">`;
+        let avgRir = thisWeekRirCount > 0 ? (thisWeekRirSum / thisWeekRirCount).toFixed(1) : '-';
+        let volDiff = lastWeekVol > 0 ? Math.round(((thisWeekVol - lastWeekVol) / lastWeekVol) * 100) : 0;
+        let volDiffStr = lastWeekVol === 0 ? "No data last week" : volDiff >= 0 ? `↑ ${volDiff}% vs last week` : `↓ ${Math.abs(volDiff)}% vs last week`;
+        let volDiffColor = lastWeekVol === 0 ? "var(--text-secondary)" : volDiff >= 0 ? "var(--success)" : "var(--pending)";
+
+        // HTML Layout
+        let html = `<div class="page-header" style="flex-direction:row;"><h2 style="margin:0; font-size:18px;">${app.sym('analytics') || ''} Analytics</h2><select id="chart-time-filter" class="edit-input" style="width: auto; padding: 4px 8px; font-size: 12px !important; margin:0;" onchange="app.renderCharts()"><option value="30" ${store.state.settings.chartRange=='30'?'selected':''}>Last 30 Days</option><option value="90" ${store.state.settings.chartRange=='90'?'selected':''}>Last 3 Months</option><option value="180" ${store.state.settings.chartRange=='180'?'selected':''}>Last 6 Months</option><option value="365" ${store.state.settings.chartRange=='365'?'selected':''}>Last Year</option><option value="all" ${store.state.settings.chartRange=='all'?'selected':''}>All Time</option></select></div>`;
+
+        // Hypertrophy Sets Panel
+        let hyperHtml = `<div class="card" style="background:var(--surface-color); border:1px solid var(--info-dim);"><h3 style="margin:0; font-size:14px; margin-bottom:12px;"><i class="fas fa-bullseye text-info"></i> Weekly Hypertrophy Target</h3><p class="text-muted" style="font-size:11px; margin-bottom:12px;">Science recommends hitting 10 - 20 hard sets per muscle group each week to maximize muscle growth.</p><div style="display:flex; flex-direction:column; gap:8px;">`;
         HYPERTROPHY_GROUPS.forEach(m => {
             let sets = weekSets[m] || 0;
             let pct = (sets / 20) * 100; if (pct > 100) pct = 100;
             let color = sets >= 10 ? 'var(--success)' : 'var(--info)';
-            hyperHtml += `<div class="flex-between" style="font-size:12px; margin-bottom:2px;"><span style="font-weight:bold;">${m}</span><span class="text-muted">${sets} / 10-20</span></div><div class="progress-bg" style="height:6px; margin:0;"><div class="progress-fill" style="width:${pct}%; background:${color};"></div></div>`;
+            hyperHtml += `<div class="flex-between" style="font-size:12px; margin-bottom:2px;"><span style="font-weight:bold;">${m}</span><span class="text-muted">${sets} / 10-20 sets</span></div><div class="progress-bg" style="height:6px; margin:0;"><div class="progress-fill" style="width:${pct}%; background:${color};"></div></div>`;
         });
         hyperHtml += `</div></div>`;
 
-        let html = `<h1>${app.sym('analytics') || ''} Analytics</h1><div class="card" style="background: linear-gradient(145deg, var(--pr-bg1), var(--pr-bg2)); border-color: var(--accent-color); box-shadow: 0 4px 16px var(--accent-dim);"><h2 style="margin:0; color:var(--accent-color); font-style:italic; margin-bottom: 16px;">${app.sym('pr')} PR ZONE</h2><div style="background:var(--surface-color); padding: 12px; border-radius: calc(var(--card-radius) - 4px); margin-bottom: 16px; border: 1px solid var(--accent-dim);"><h3 style="font-size:14px; margin:0;"><i class="fas fa-chart-line text-accent"></i> Estimated PR's (e1RM)</h3><p class="text-muted" style="font-size:11px; margin-top:4px;">Uses the Epley formula dynamically applied to your best sets.</p><canvas id="e1rmChart" style="margin-top:12px;"></canvas></div><h3 style="font-size:14px; margin:0;">${app.sym('success')} Recorded PR's</h3><div style="display:flex; gap:8px; margin-top:12px;"><div class="streak-box" style="flex:1; flex-direction:column; padding:12px; margin:0; border-color:var(--info); background: var(--info-dim);" onclick="app.editPR('Bench')"><span class="text-muted" style="font-size:12px; text-transform:uppercase;">Bench</span><span style="font-size:22px; font-weight:bold; color:var(--text-primary);">${store.state.prs.Bench || 0}<span style="font-size:12px; color:var(--text-secondary);">kg</span></span></div><div class="streak-box" style="flex:1; flex-direction:column; padding:12px; margin:0; border-color:var(--accent-color); background: var(--accent-dim);" onclick="app.editPR('Squat')"><span class="text-muted" style="font-size:12px; text-transform:uppercase;">Squat</span><span style="font-size:22px; font-weight:bold; color:var(--text-primary);">${store.state.prs.Squat || 0}<span style="font-size:12px; color:var(--text-secondary);">kg</span></span></div><div class="streak-box" style="flex:1; flex-direction:column; padding:12px; margin:0; border-color:var(--success); background: var(--success-dim);" onclick="app.editPR('Deadlift')"><span class="text-muted" style="font-size:12px; text-transform:uppercase;">Deadlift</span><span style="font-size:22px; font-weight:bold; color:var(--text-primary);">${store.state.prs.Deadlift || 0}<span style="font-size:12px; color:var(--text-secondary);">kg</span></span></div></div></div><div class="card" style="background: linear-gradient(145deg, var(--bw-bg1), var(--bw-bg2)); border-color: var(--warning); box-shadow: 0 4px 16px var(--warning-dim);"><h2 style="margin:0; color:var(--warning); font-style:italic; margin-bottom: 8px;">${app.sym('bw')} BODYWEIGHT</h2><div style="background:var(--surface-color); padding: 12px; border-radius: calc(var(--card-radius) - 4px); border: 1px solid var(--warning-dim);"><canvas id="bwTimeChart"></canvas></div></div>${hyperHtml}<div class="card" style="background: linear-gradient(145deg, var(--vol-bg1), var(--vol-bg2)); border-color: var(--info); box-shadow: 0 4px 16px var(--info-dim);"><h2 style="margin:0; color:var(--info); font-style:italic; margin-bottom: 8px;">${app.sym('vol')} MUSCLE VOLUME</h2><div style="background:var(--surface-color); padding: 12px; border-radius: calc(var(--card-radius) - 4px); border: 1px solid var(--info-dim);"><canvas id="muscleTimeChart"></canvas></div></div>`; 
+        // Hypertrophy Stats Panel
+        let qualityHtml = `<div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:16px;">
+            <div class="streak-box" style="flex-direction:column; padding:12px; margin:0; cursor:default; align-items:flex-start;">
+                <span class="text-muted" style="font-size:11px;">Weekly Vol Load</span>
+                <span style="font-weight:bold; font-size:18px; color:var(--text-primary); margin:4px 0;">${thisWeekVol >= 1000 ? (thisWeekVol/1000).toFixed(1)+'k' : thisWeekVol} <span style="font-size:12px; color:var(--text-secondary);">kg</span></span>
+                <span style="font-size:10px; font-weight:bold; color:${volDiffColor};">${volDiffStr}</span>
+            </div>
+            <div class="streak-box" style="flex-direction:column; padding:12px; margin:0; cursor:default; align-items:flex-start;">
+                <span class="text-muted" style="font-size:11px;">Avg Intensity (RIR)</span>
+                <span style="font-weight:bold; font-size:18px; color:var(--text-primary); margin:4px 0;">${avgRir} <span style="font-size:12px; color:var(--text-secondary);">reps in reserve</span></span>
+                <span style="font-size:10px; font-weight:bold; color:var(--info);">Science Target: 1-3</span>
+            </div>
+        </div>`;
+
+        html += qualityHtml + hyperHtml;
+        html += `<div class="card" style="background: linear-gradient(145deg, var(--pr-bg1), var(--pr-bg2)); border-color: var(--accent-color); box-shadow: 0 4px 16px var(--accent-dim);"><h2 style="margin:0; color:var(--accent-color); font-style:italic; margin-bottom: 16px;">${app.sym('pr')} PR ZONE</h2><div style="background:var(--surface-color); padding: 12px; border-radius: calc(var(--card-radius) - 4px); margin-bottom: 16px; border: 1px solid var(--accent-dim);"><h3 style="font-size:14px; margin:0;"><i class="fas fa-chart-line text-accent"></i> Estimated PR's (e1RM)</h3><p class="text-muted" style="font-size:11px; margin-top:4px;">Uses the Epley formula dynamically applied to your best sets.</p><canvas id="e1rmChart" style="margin-top:12px;"></canvas></div><h3 style="font-size:14px; margin:0;">${app.sym('success')} Recorded PR's</h3><div style="display:flex; gap:8px; margin-top:12px;"><div class="streak-box" style="flex:1; flex-direction:column; padding:12px; margin:0; border-color:var(--info); background: var(--info-dim);" onclick="app.editPR('Bench')"><span class="text-muted" style="font-size:12px; text-transform:uppercase;">Bench</span><span style="font-size:22px; font-weight:bold; color:var(--text-primary);">${store.state.prs.Bench || 0}<span style="font-size:12px; color:var(--text-secondary);">kg</span></span></div><div class="streak-box" style="flex:1; flex-direction:column; padding:12px; margin:0; border-color:var(--accent-color); background: var(--accent-dim);" onclick="app.editPR('Squat')"><span class="text-muted" style="font-size:12px; text-transform:uppercase;">Squat</span><span style="font-size:22px; font-weight:bold; color:var(--text-primary);">${store.state.prs.Squat || 0}<span style="font-size:12px; color:var(--text-secondary);">kg</span></span></div><div class="streak-box" style="flex:1; flex-direction:column; padding:12px; margin:0; border-color:var(--success); background: var(--success-dim);" onclick="app.editPR('Deadlift')"><span class="text-muted" style="font-size:12px; text-transform:uppercase;">Deadlift</span><span style="font-size:22px; font-weight:bold; color:var(--text-primary);">${store.state.prs.Deadlift || 0}<span style="font-size:12px; color:var(--text-secondary);">kg</span></span></div></div></div><div class="card" style="background: linear-gradient(145deg, var(--bw-bg1), var(--bw-bg2)); border-color: var(--warning); box-shadow: 0 4px 16px var(--warning-dim);"><h2 style="margin:0; color:var(--warning); font-style:italic; margin-bottom: 8px;">${app.sym('bw')} BODYWEIGHT</h2><div style="background:var(--surface-color); padding: 12px; border-radius: calc(var(--card-radius) - 4px); border: 1px solid var(--warning-dim);"><canvas id="bwTimeChart"></canvas></div></div><div class="card" style="background: linear-gradient(145deg, var(--vol-bg1), var(--vol-bg2)); border-color: var(--info); box-shadow: 0 4px 16px var(--info-dim);"><h2 style="margin:0; color:var(--info); font-style:italic; margin-bottom: 8px;">${app.sym('vol')} MUSCLE VOLUME</h2><div style="background:var(--surface-color); padding: 12px; border-radius: calc(var(--card-radius) - 4px); border: 1px solid var(--info-dim);"><canvas id="muscleTimeChart"></canvas></div></div>`; 
         
-        setTimeout(() => { 
-            const colorAccent = utils.getCssVar('--accent-color', '#ff3b30'); const colorSuccess = utils.getCssVar('--success', '#34c759'); const colorWarning = utils.getCssVar('--warning', '#ff9500'); const colorInfo = utils.getCssVar('--info', '#007aff'); const colorTextSec = utils.getCssVar('--text-secondary', '#8e8e93'); const colorGrid = utils.getCssVar('--border', '#333336'); const ff = utils.getCssVar('--font-family', 'sans-serif');
-            
-            const e1rmCtx = document.getElementById('e1rmChart');
-            if(e1rmCtx) {
-                if(window.e1rmChartInst) window.e1rmChartInst.destroy();
-                const e1Data = utils.getE1RMHistory(); let allTs = new Set(); [...e1Data.bench, ...e1Data.squat, ...e1Data.deadlift].forEach(x => allTs.add(x.ts)); let sortedTs = Array.from(allTs).sort((a,b)=>a-b); let e1Labels = sortedTs.map(ts => utils.formatDateShort(new Date(ts))); let mapData = (arr) => sortedTs.map(ts => { let match = arr.find(x => x.ts === ts); return match ? match.e1rm.toFixed(1) : null; });
-                window.e1rmChartInst = new Chart(e1rmCtx, { type: 'line', data: { labels: e1Labels, datasets: [ { label: 'Bench', data: mapData(e1Data.bench), borderColor: colorInfo, backgroundColor: colorInfo, tension: 0.3, borderWidth: 2, spanGaps: true }, { label: 'Squat', data: mapData(e1Data.squat), borderColor: colorAccent, backgroundColor: colorAccent, tension: 0.3, borderWidth: 2, spanGaps: true }, { label: 'Deadlift', data: mapData(e1Data.deadlift), borderColor: colorSuccess, backgroundColor: colorSuccess, tension: 0.3, borderWidth: 2, spanGaps: true } ]}, options: { responsive: true, plugins: { legend: { position: 'top', labels: { color: colorTextSec, boxWidth: 12, font: {family: ff} } } }, scales: { y: { grid: { color: colorGrid }, ticks: {font: {family: ff}, color: colorTextSec} }, x: { grid: { display: false }, ticks: {font: {family: ff}, color: colorTextSec} } } } });
-            }
-            
-            const bwCtx = document.getElementById('bwTimeChart'); 
-            if(bwCtx) {
-                if(window.bwChartInst) window.bwChartInst.destroy();
-                const bwData = utils.getWeeklyData(store.state.history.bodyweight); const bwWeeks = Object.keys(bwData).sort(); const bwLabels = bwWeeks.map(w => utils.formatDateShort(new Date(parseInt(w)))); const bwAverages = bwWeeks.map(w => { const entries = bwData[w].entries; const sum = entries.reduce((acc, e) => acc + (parseFloat(e.weight) || 0), 0); return sum / entries.length; }); 
-                if (bwLabels.length > 0) {
-                    window.bwChartInst = new Chart(bwCtx, { type: 'line', data: { labels: bwLabels, datasets: [{ label: 'Avg Weight (kg)', data: bwAverages, borderColor: colorWarning, backgroundColor: colorWarning, tension: 0.3, borderWidth: 2 }] }, options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { grid: { color: colorGrid }, ticks: {font: {family: ff}, color: colorTextSec} }, x: { grid: { display: false }, ticks: {font: {family: ff}, color: colorTextSec} } } } }); 
-                }
-            } 
-            
-            const musCtx = document.getElementById('muscleTimeChart'); 
-            if(musCtx) {
-                if(window.musChartInst) window.musChartInst.destroy();
-                const musData = utils.getSessionMuscleVolume(); const musKeys = Object.keys(musData.sessions).sort((a,b) => a - b); const musLabels = musKeys.map(k => musData.sessions[k].label); const CHAT_COLORS = [colorAccent, colorInfo, colorSuccess, colorWarning, utils.getCssVar('--text-primary', '#fff'), '#af52de', '#5ac8fa']; const musDatasets = musData.muscles.map((muscle, i) => { return { label: muscle, data: musKeys.map(k => musData.sessions[k].vols[muscle] || null), borderColor: CHAT_COLORS[i % CHAT_COLORS.length], backgroundColor: CHAT_COLORS[i % CHAT_COLORS.length], tension: 0.3, borderWidth: 2, spanGaps: true }; }); 
-                if (musLabels.length > 0) {
-                    window.musChartInst = new Chart(musCtx, { type: 'line', data: { labels: musLabels, datasets: musDatasets }, options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { color: colorTextSec, boxWidth: 12, font: {family: ff} } } }, scales: { y: { grid: { color: colorGrid }, ticks: {font: {family: ff}, color: colorTextSec} }, x: { grid: { display: false }, ticks: {font: {family: ff}, color: colorTextSec} } } } }); 
-                }
-            } 
-        }, 100); return html; 
+        setTimeout(() => { app.renderCharts(); }, 100); 
+        return html; 
     },
+
+    renderCharts() {
+        const filterVal = document.getElementById('chart-time-filter') ? document.getElementById('chart-time-filter').value : (store.state.settings.chartRange || '90');
+        store.state.settings.chartRange = filterVal; store.save();
+        
+        const now = new Date().getTime();
+        let cutoff = 0;
+        if (filterVal !== 'all') { cutoff = now - (parseInt(filterVal) * 86400000); }
+
+        const colorAccent = utils.getCssVar('--accent-color', '#ff3b30'); const colorSuccess = utils.getCssVar('--success', '#34c759'); const colorWarning = utils.getCssVar('--warning', '#ff9500'); const colorInfo = utils.getCssVar('--info', '#007aff'); const colorTextSec = utils.getCssVar('--text-secondary', '#8e8e93'); const colorGrid = utils.getCssVar('--border', '#333336'); const ff = utils.getCssVar('--font-family', 'sans-serif');
+        
+        // e1RM Chart
+        const e1rmCtx = document.getElementById('e1rmChart');
+        if(e1rmCtx) {
+            if(window.e1rmChartInst) window.e1rmChartInst.destroy();
+            const e1Data = utils.getE1RMHistory(); let allTs = new Set(); [...e1Data.bench, ...e1Data.squat, ...e1Data.deadlift].forEach(x => { if(x.ts >= cutoff) allTs.add(x.ts); }); let sortedTs = Array.from(allTs).sort((a,b)=>a-b); let e1Labels = sortedTs.map(ts => utils.formatDateShort(new Date(ts))); let mapData = (arr) => sortedTs.map(ts => { let match = arr.find(x => x.ts === ts); return match ? match.e1rm.toFixed(1) : null; });
+            window.e1rmChartInst = new Chart(e1rmCtx, { type: 'line', data: { labels: e1Labels, datasets: [ { label: 'Bench', data: mapData(e1Data.bench), borderColor: colorInfo, backgroundColor: colorInfo, tension: 0.3, borderWidth: 2, spanGaps: true }, { label: 'Squat', data: mapData(e1Data.squat), borderColor: colorAccent, backgroundColor: colorAccent, tension: 0.3, borderWidth: 2, spanGaps: true }, { label: 'Deadlift', data: mapData(e1Data.deadlift), borderColor: colorSuccess, backgroundColor: colorSuccess, tension: 0.3, borderWidth: 2, spanGaps: true } ]}, options: { responsive: true, plugins: { legend: { position: 'top', labels: { color: colorTextSec, boxWidth: 12, font: {family: ff} } } }, scales: { y: { grid: { color: colorGrid }, ticks: {font: {family: ff}, color: colorTextSec} }, x: { grid: { display: false }, ticks: {font: {family: ff}, color: colorTextSec} } } } });
+        }
+        
+        // BW Chart
+        const bwCtx = document.getElementById('bwTimeChart'); 
+        if(bwCtx) {
+            if(window.bwChartInst) window.bwChartInst.destroy();
+            const bwData = utils.getWeeklyData(store.state.history.bodyweight); let bwWeeks = Object.keys(bwData).map(Number).filter(ts => ts >= cutoff).sort((a,b)=>a-b); const bwLabels = bwWeeks.map(w => utils.formatDateShort(new Date(w))); const bwAverages = bwWeeks.map(w => { const entries = bwData[w].entries; const sum = entries.reduce((acc, e) => acc + (parseFloat(e.weight) || 0), 0); return sum / entries.length; }); 
+            if (bwLabels.length > 0) {
+                window.bwChartInst = new Chart(bwCtx, { type: 'line', data: { labels: bwLabels, datasets: [{ label: 'Avg Weight (kg)', data: bwAverages, borderColor: colorWarning, backgroundColor: colorWarning, tension: 0.3, borderWidth: 2 }] }, options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { grid: { color: colorGrid }, ticks: {font: {family: ff}, color: colorTextSec} }, x: { grid: { display: false }, ticks: {font: {family: ff}, color: colorTextSec} } } } }); 
+            }
+        } 
+        
+        // Muscle Volume Chart (Now Weekly!)
+        const musCtx = document.getElementById('muscleTimeChart'); 
+        if(musCtx) {
+            if(window.musChartInst) window.musChartInst.destroy();
+            const musData = utils.getWeeklyMuscleVolume(); const filteredWeeks = musData.weeks.filter(w => w.ts >= cutoff); const musLabels = filteredWeeks.map(w => w.label); const CHAT_COLORS = [colorAccent, colorInfo, colorSuccess, colorWarning, utils.getCssVar('--text-primary', '#fff'), '#af52de', '#5ac8fa']; const musDatasets = musData.muscles.map((muscle, i) => { return { label: muscle, data: filteredWeeks.map(w => w.vols[muscle] || null), borderColor: CHAT_COLORS[i % CHAT_COLORS.length], backgroundColor: CHAT_COLORS[i % CHAT_COLORS.length], tension: 0.3, borderWidth: 2, spanGaps: true }; }); 
+            if (musLabels.length > 0) {
+                window.musChartInst = new Chart(musCtx, { type: 'line', data: { labels: musLabels, datasets: musDatasets }, options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { color: colorTextSec, boxWidth: 12, font: {family: ff} } } }, scales: { y: { grid: { color: colorGrid }, ticks: {font: {family: ff}, color: colorTextSec} }, x: { grid: { display: false }, ticks: {font: {family: ff}, color: colorTextSec} } } } }); 
+            }
+        }
+    },
+
     renderData() {
         let html = `<h1>${app.sym('data') || ''} Data Management</h1><button class="btn" style="margin-bottom:16px;" onclick="app.toggleDataTab('training')"><i class="fas fa-dumbbell"></i> Training History</button>`;
         if (app.activeDataTab === 'training') { 
@@ -731,6 +785,7 @@ const app = {
     },
     navigate(viewId) { this.currentView = viewId; this.renderNav(); const c = document.getElementById('main-content'); if(viewId==='home') { this.challengeOffset = 0; c.innerHTML = views.renderHome(); } else if(viewId==='workout') c.innerHTML = views.renderWorkoutList(); else if(viewId==='workout-detail') c.innerHTML = views.renderWorkoutDetail(); else if(viewId==='nutrition') c.innerHTML = views.renderNutrition(); else if(viewId==='progress') c.innerHTML = views.renderProgress(); else if(viewId==='data') c.innerHTML = views.renderData(); else if(viewId==='custom-b') c.innerHTML = views.renderCustomB(); else if(viewId==='challenge') c.innerHTML = views.renderChallenge(); else if(viewId==='challenge-edit') c.innerHTML = views.renderChallengeEditor(); else if(viewId==='workout-edit') c.innerHTML = views.renderPastWorkoutEditor(); window.scrollTo(0,0); },
     setTheme(themeName, render = true) { store.state.settings.theme = themeName; store.save(); document.documentElement.setAttribute('data-theme', themeName); if(render) { this.navigate(this.currentView); } },
+    renderCharts() { views.renderCharts(); },
     
     showStartOptions() {
         const activeRoutine = utils.getActiveRoutine(); const modal = document.getElementById('start-workout-modal'); let workoutsHtml = '';
