@@ -20,7 +20,7 @@
             --success: #34c759; --success-dim: rgba(52, 199, 89, 0.15); --success-glow: 0 0 15px rgba(52, 199, 89, 0.2);
             --pending: #ff453a; --pending-dim: rgba(255, 69, 58, 0.05);
             --warning: #ff9500; --warning-dim: rgba(255, 149, 0, 0.15);
-            --info: #007aff; --info-dim: rgba(0, 122, 255, 0.15);
+            --info: #007aff; --info-dim: rgba(0, 122, 255, 0.15); --info-glow: 0 0 15px rgba(0, 122, 255, 0.3);
             --border: #333336; 
             --streak-bg1: #2a1111; --streak-bg2: #1a0a0a;
             --pr-bg1: #1a0a0a; --pr-bg2: #2a1111;
@@ -40,7 +40,7 @@
             --success: #00ffcc; --success-dim: rgba(0, 255, 204, 0.15); --success-glow: 0 0 20px rgba(0, 255, 204, 0.3);
             --pending: #ff0055; --pending-dim: rgba(255, 0, 85, 0.1);
             --warning: #ffcc00; --warning-dim: rgba(255, 204, 0, 0.15);
-            --info: #00a2ff; --info-dim: rgba(0, 162, 255, 0.15);
+            --info: #00a2ff; --info-dim: rgba(0, 162, 255, 0.15); --info-glow: 0 0 20px rgba(0, 162, 255, 0.4);
             --border: #361766;
             --streak-bg1: #290a38; --streak-bg2: #160221; --pr-bg1: #160221; --pr-bg2: #290a38;
             --bw-bg1: #1a1500; --bw-bg2: #2b2200; --vol-bg1: #060221; --vol-bg2: #11053b;
@@ -58,7 +58,7 @@
             --success: #10b981; --success-dim: rgba(16, 185, 129, 0.15); --success-glow: 0 0 20px rgba(16, 185, 129, 0.3);
             --pending: #f43f5e; --pending-dim: rgba(244, 63, 94, 0.1);
             --warning: #f59e0b; --warning-dim: rgba(245, 158, 11, 0.15);
-            --info: #6366f1; --info-dim: rgba(99, 102, 241, 0.15);
+            --info: #6366f1; --info-dim: rgba(99, 102, 241, 0.15); --info-glow: 0 0 20px rgba(99, 102, 241, 0.3);
             --border: rgba(255,255,255,0.05);
             --streak-bg1: rgba(11, 26, 56, 0.8); --streak-bg2: rgba(2, 10, 23, 0.8);
             --pr-bg1: rgba(2, 10, 23, 0.8); --pr-bg2: rgba(11, 26, 56, 0.8);
@@ -70,7 +70,7 @@
         }
         [data-theme="midnight"] .card, [data-theme="midnight"] .streak-box, [data-theme="midnight"] .objective-row { backdrop-filter: blur(16px); box-shadow: inset 0 1px 1px rgba(255,255,255,0.1), 0 8px 32px rgba(0,0,0,0.4); }
 
-        /* TACTICAL THEME (THE GOLD STANDARD) */
+        /* TACTICAL THEME */
         [data-theme="tactical"] {
             --bg-color: #0a0c0a; 
             --surface-color: rgba(19, 23, 19, 0.85); 
@@ -80,7 +80,7 @@
             --success: #10b981; --success-dim: rgba(16, 185, 129, 0.2); --success-glow: 0 0 25px rgba(16, 185, 129, 0.4);
             --pending: #ef4444; --pending-dim: rgba(239, 68, 68, 0.15);
             --warning: #eab308; --warning-dim: rgba(234, 179, 8, 0.15);
-            --info: #0ea5e9; --info-dim: rgba(14, 165, 233, 0.15);
+            --info: #0ea5e9; --info-dim: rgba(14, 165, 233, 0.15); --info-glow: 0 0 20px rgba(14, 165, 233, 0.3);
             --border: #2c362c;
             --streak-bg1: rgba(26, 41, 26, 0.9); --streak-bg2: rgba(12, 20, 12, 0.9); 
             --pr-bg1: rgba(12, 20, 12, 0.9); --pr-bg2: rgba(26, 41, 26, 0.9);
@@ -101,7 +101,7 @@
             --success: #aaaaaa; --success-dim: rgba(170, 170, 170, 0.15); --success-glow: 0 0 15px rgba(255, 255, 255, 0.2);
             --pending: #666666; --pending-dim: rgba(255, 255, 255, 0.05);
             --warning: #dddddd; --warning-dim: rgba(221, 221, 221, 0.15);
-            --info: #cccccc; --info-dim: rgba(204, 204, 204, 0.15);
+            --info: #cccccc; --info-dim: rgba(204, 204, 204, 0.15); --info-glow: 0 0 15px rgba(204, 204, 204, 0.3);
             --border: #444444;
             --streak-bg1: #222222; --streak-bg2: #000000; --pr-bg1: #000000; --pr-bg2: #1a1a1a;
             --bw-bg1: #050505; --bw-bg2: #1a1a1a; --vol-bg1: #050505; --vol-bg2: #151515;
@@ -116,11 +116,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         
         body { 
-            background: var(--app-backdrop); 
-            background-color: var(--bg-color); 
-            background-size: cover; 
-            background-position: center; 
-            background-attachment: fixed;
+            background: var(--app-backdrop); background-color: var(--bg-color); background-size: cover; background-position: center; background-attachment: fixed;
             color: var(--text-primary); font-family: var(--font-family); line-height: 1.5; 
             position: fixed; top: 0; left: 0; right: 0; bottom: 0; 
             display: flex; flex-direction: column; overflow: hidden; width: 100vw; 
@@ -143,18 +139,13 @@
         .streak-fire { font-size: 32px; color: var(--warning); animation: pulse 2s infinite; } .streak-text { font-size: 24px; font-weight: bold; margin: 0; color:var(--text-primary); }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
 
-        .objective-row { 
-            display: flex; align-items: center; gap: 12px; padding: 12px; 
-            background: var(--pending-dim); 
-            border: 2px solid var(--pending); 
-            border-radius: calc(var(--card-radius) - 4px); 
-            transition: all 0.3s; cursor: pointer; margin-bottom: 8px; 
-        }
+        .objective-row { display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--pending-dim); border: 2px solid var(--pending); border-radius: calc(var(--card-radius) - 4px); transition: all 0.3s; cursor: pointer; margin-bottom: 8px; }
         .objective-row:active { transform: scale(0.98); }
         .check-circle { width: 28px; height: 28px; flex-shrink: 0; border-radius: 50%; border: 2px solid var(--pending); display: flex; align-items: center; justify-content: center; font-size: 14px; color: transparent; transition: all 0.3s; }
-        
         .objective-row.completed { border-color: var(--success); background: var(--success-dim); }
         .objective-row.completed .check-circle { background: var(--success); border-color: var(--success); color: var(--bg-color); }
+        .objective-row.resume-pulse { animation: resumePulse 2s infinite; }
+        @keyframes resumePulse { 0% { box-shadow: 0 0 0 0 rgba(0, 122, 255, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(0, 122, 255, 0); } 100% { box-shadow: 0 0 0 0 rgba(0, 122, 255, 0); } }
 
         .progress-bg { background: var(--surface-elevated); height: 12px; border-radius: 6px; overflow: hidden; margin-top: 8px; } .progress-fill { background: var(--accent-color); height: 100%; transition: width 0.3s ease-out, background-color 0.4s ease; }
 
@@ -206,7 +197,7 @@ const DEFAULT_PROGRAM = [
     { day: 1, workouts: [{ id: 'w1', name: 'Hamstring Legs', exercises: [ { name: 'Squat', targetSets: 3, targetReps: '5-8' }, { name: 'Standing Calf Raise', targetSets: 4, targetReps: '10-15' }, { name: 'Seated Hamstring Leg Curl', targetSets: 3, targetReps: '8-12' }, { name: 'Romanian Deadlift', targetSets: 3, targetReps: '8-10' }, { name: 'Unilateral Leg Extension', targetSets: 3, targetReps: '10-15' }, { name: 'Bulgarian Split Squat', targetSets: 3, targetReps: '8-12' }, { name: 'Weighted Crunch', targetSets: 3, targetReps: '10-15' } ] }] },
     { day: 2, workouts: [{ id: 'w2', name: 'Chest & Back', exercises: [ { name: 'Bench Press', targetSets: 3, targetReps: '5-8' }, { name: 'Deadlift', targetSets: 3, targetReps: '5-8' }, { name: 'Incline DB Press', targetSets: 3, targetReps: '8-12' }, { name: 'Pec Deck', targetSets: 3, targetReps: '10-15' }, { name: 'Lat Pulldown', targetSets: 3, targetReps: '8-12' }, { name: 'Chest Supported Row', targetSets: 3, targetReps: '8-12' }, { name: 'Pull-Ups', targetSets: 3, targetReps: 'AMRAP' } ] }] },
     { day: 3, workouts: [{ id: 'w3', name: 'Shoulders & Arms', exercises: [ { name: 'Cable Lateral Raise', targetSets: 4, targetReps: '12-15' }, { name: 'Rear Delt Fly', targetSets: 3, targetReps: '12-15' }, { name: 'Preacher Curl', targetSets: 3, targetReps: '8-12' }, { name: 'Hammer Curl', targetSets: 3, targetReps: '10-12' }, { name: 'Seated Curl', targetSets: 3, targetReps: '10-12' }, { name: 'Tricep Pushdown', targetSets: 3, targetReps: '10-15' }, { name: 'Overhead Extension', targetSets: 3, targetReps: '10-15' } ] }] },
-    { day: 4, workouts: [{ id: 'w4', name: 'Morning Cardio', isActivity: true, exercises: [] }] },
+    { day: 4, workouts: [] }, 
     { day: 5, workouts: [{ id: 'w5', name: 'Quad Legs', exercises: [ { name: 'Hack Squat', targetSets: 3, targetReps: '8-10' }, { name: 'Leg Press', targetSets: 3, targetReps: '10-12' }, { name: 'Leg Extension', targetSets: 3, targetReps: '12-15' }, { name: 'Seated Leg Curl', targetSets: 3, targetReps: '10-12' }, { name: 'Standing Calf Raise', targetSets: 4, targetReps: '10-15' } ] }] },
     { day: 6, workouts: [{ id: 'w6', name: 'Upper Body', exercises: [ { name: 'Bench Press', targetSets: 3, targetReps: '8-10' }, { name: 'Incline DB Press', targetSets: 3, targetReps: '8-10' }, { name: 'Lat Pulldown', targetSets: 3, targetReps: '8-12' }, { name: 'Cable Lateral Raise', targetSets: 3, targetReps: '12-15' }, { name: 'Seated Curl', targetSets: 3, targetReps: '10-12' }, { name: 'Dips', targetSets: 3, targetReps: 'AMRAP' } ] }] }
 ];
@@ -215,56 +206,34 @@ const EXERCISE_DB = { 'Bench Press': { muscle: 'Chest' }, 'Squat': { muscle: 'Qu
 const MUSCLE_GROUPS = ['Chest', 'Back', 'Shoulders', 'Biceps', 'Triceps', 'Quads', 'Hamstrings', 'Calves', 'Abs', 'Cardio', 'Other'];
 
 const THEME_MAP = {
-    basic: {
-        nav: ['fa-home', 'fa-dumbbell', 'fa-chart-line', 'fa-apple-whole', 'fa-database'],
-        symbols: { streak: '🔥', pr: '🏆', bw: '⚖️', vol: '📊', rest: '🛋️', workout: '💪', success: '⭐', activity: '🏃‍♂️', cardGoal: '🎯', analytics: '📈', nutrition: '🍎', data: '🗄️' }
-    },
-    cyberpunk: {
-        nav: ['fa-city', 'fa-robot', 'fa-network-wired', 'fa-capsules', 'fa-microchip'],
-        symbols: { streak: '⚡', pr: '👾', bw: '🔋', vol: '💾', rest: '🔌', workout: '🦾', success: '💎', activity: '🏍️', cardGoal: '💠', analytics: '📡', nutrition: '🧪', data: '🖥️' }
-    },
-    midnight: {
-        nav: ['fa-moon', 'fa-meteor', 'fa-compass', 'fa-leaf', 'fa-book-journal-whills'],
-        symbols: { streak: '💫', pr: '🌌', bw: '🌊', vol: '🧊', rest: '🧘‍♂️', workout: '🐺', success: '✨', activity: '🌬️', cardGoal: '🔮', analytics: '🔭', nutrition: '🫐', data: '📜' }
-    },
-    tactical: {
-        nav: ['fa-campground', 'fa-person-rifle', 'fa-satellite-dish', 'fa-drumstick-bite', 'fa-box-archive'],
-        symbols: { streak: '🦅', pr: '🎖️', bw: '⚖️', vol: '📦', rest: '⛺', workout: '⚔️', success: '🏅', activity: '🚁', cardGoal: '🎯', analytics: '🛰️', nutrition: '🥩', data: '💾' }
-    },
-    iron: {
-        nav: ['fa-warehouse', 'fa-hammer', 'fa-chart-bar', 'fa-bone', 'fa-archive'],
-        symbols: { streak: '⛓️', pr: '⚙️', bw: '🪨', vol: '🕋', rest: '⬛', workout: '💀', success: '🏆', activity: '⛓️‍💥', cardGoal: '🏴', analytics: '📉', nutrition: '🍖', data: '🗃️' }
-    }
+    basic: { nav: ['fa-home', 'fa-dumbbell', 'fa-chart-line', 'fa-apple-whole', 'fa-database'], symbols: { streak: '🔥', pr: '🏆', bw: '⚖️', vol: '📊', rest: '🛋️', workout: '💪', success: '⭐', activity: '🏃‍♂️', cardGoal: '🎯', analytics: '📈', nutrition: '🍎', data: '🗄️' } },
+    cyberpunk: { nav: ['fa-city', 'fa-robot', 'fa-network-wired', 'fa-capsules', 'fa-microchip'], symbols: { streak: '⚡', pr: '👾', bw: '🔋', vol: '💾', rest: '🔌', workout: '🦾', success: '💎', activity: '🏍️', cardGoal: '💠', analytics: '📡', nutrition: '🧪', data: '🖥️' } },
+    midnight: { nav: ['fa-moon', 'fa-meteor', 'fa-compass', 'fa-leaf', 'fa-book-journal-whills'], symbols: { streak: '💫', pr: '🌌', bw: '🌊', vol: '🧊', rest: '🧘‍♂️', workout: '🐺', success: '✨', activity: '🌬️', cardGoal: '🔮', analytics: '🔭', nutrition: '🫐', data: '📜' } },
+    tactical: { nav: ['fa-campground', 'fa-person-rifle', 'fa-satellite-dish', 'fa-drumstick-bite', 'fa-box-archive'], symbols: { streak: '🦅', pr: '🎖️', bw: '⚖️', vol: '📦', rest: '⛺', workout: '⚔️', success: '🏅', activity: '🚁', cardGoal: '🎯', analytics: '🛰️', nutrition: '🥩', data: '💾' } },
+    iron: { nav: ['fa-warehouse', 'fa-hammer', 'fa-chart-bar', 'fa-bone', 'fa-archive'], symbols: { streak: '⛓️', pr: '⚙️', bw: '🪨', vol: '🕋', rest: '⬛', workout: '💀', success: '🏆', activity: '⛓️‍💥', cardGoal: '🏴', analytics: '📉', nutrition: '🍖', data: '🗃️' } }
 };
 
 const store = {
-    state: { user: { currentWeight: 90.0 }, routines: [], activeRoutineId: 'default_1', history: { workouts: [], bodyweight: [], nutrition: [], challengeLogs: {} }, prs: { Bench: 0, Squat: 0, Deadlift: 0 }, settings: { restTimer: 120, theme: 'tactical' }, variations: {}, challenge: { isActive: false, title: '', startDate: '', endDate: '', goals: [] } },
+    state: { user: { currentWeight: 90.0 }, routines: [], activeRoutineId: 'default_1', history: { workouts: [], bodyweight: [], nutrition: [], cardio: [], challengeLogs: {} }, prs: { Bench: 0, Squat: 0, Deadlift: 0 }, settings: { restTimer: 120, theme: 'tactical' }, variations: {}, challenge: { isActive: false, title: '', startDate: '', endDate: '', goals: [] }, activeSession: null },
     migrate(state) {
         if(!state.settings) state.settings = { restTimer: 120, theme: 'tactical' };
-        if(!state.settings.theme) state.settings.theme = 'tactical';
-        if(!state.routines) return state;
-        state.routines.forEach(r => { r.days.forEach(d => { if (!d.workouts) { d.workouts = (d.exercises && d.exercises.length > 0) ? [{ id: utils.generateId(), name: d.name || 'Workout', exercises: d.exercises }] : []; delete d.exercises; delete d.name; } }); });
+        if(!state.history.cardio) state.history.cardio = [];
         if(!state.prs) state.prs = { Bench: 0, Squat: 0, Deadlift: 0 };
+        if(state.activeSession === undefined) state.activeSession = null;
         return state;
     },
     load() {
         const saved = localStorage.getItem('irontrack_state');
-        if (saved) {
-            this.state = this.migrate(JSON.parse(saved));
-            if (!this.state.routines || this.state.routines.length === 0) { this.state.routines = [{ id: 'default_1', name: 'Main Split', days: JSON.parse(JSON.stringify(DEFAULT_PROGRAM)) }]; this.state.activeRoutineId = 'default_1'; }
-            if(!this.state.history.nutrition) this.state.history.nutrition = []; if(!this.state.history.challengeLogs) this.state.history.challengeLogs = {};
-            if(!this.state.variations) this.state.variations = {}; if(!this.state.challenge) this.state.challenge = { isActive: false, title: '', startDate: '', endDate: '', goals: [] };
-        } else { this.state.routines = [{ id: 'default_1', name: 'Main Split', days: JSON.parse(JSON.stringify(DEFAULT_PROGRAM)) }]; this.save(); }
+        if (saved) { this.state = this.migrate(JSON.parse(saved)); } 
+        else { this.state.routines = [{ id: 'default_1', name: 'Main Split', days: JSON.parse(JSON.stringify(DEFAULT_PROGRAM)) }]; this.save(); }
     },
     save() { localStorage.setItem('irontrack_state', JSON.stringify(this.state)); },
     addWorkout(workoutData) { this.state.history.workouts.push(workoutData); this.save(); },
-    addBodyweight(weight) { this.state.history.bodyweight.push({ date: new Date().toISOString(), weight: parseFloat(weight) }); this.state.user.currentWeight = parseFloat(weight); this.save(); },
-    addNutrition(data) { this.state.history.nutrition.push({ date: new Date().toISOString(), ...data }); this.save(); },
+    addBodyweight(weight, isoStr = null) { this.state.history.bodyweight.push({ date: isoStr || new Date().toISOString(), weight: parseFloat(weight) }); this.state.user.currentWeight = parseFloat(weight); this.save(); },
+    addNutrition(data, isoStr = null) { this.state.history.nutrition.push({ date: isoStr || new Date().toISOString(), ...data }); this.save(); },
     updateBodyweight(isoDate, newWeight) { const entry = this.state.history.bodyweight.find(e => e.date === isoDate); if(entry) { entry.weight = parseFloat(newWeight); this.state.user.currentWeight = parseFloat(newWeight); this.save(); } },
     updateNutrition(isoDate, field, val) { const entry = this.state.history.nutrition.find(e => e.date === isoDate); if(entry) { entry[field] = parseFloat(val) || 0; this.save(); } },
     deleteEntry(type, isoDate) { this.state.history[type] = this.state.history[type].filter(e => e.date !== isoDate); this.save(); },
-    
-    // Returns full past exercise objects so we can access .notes
     getExerciseHistory(exerciseName, variationStr = '') {
         let history = [];
         for (let i = this.state.history.workouts.length - 1; i >= 0; i--) { 
@@ -273,8 +242,7 @@ const store = {
             const ex = (w.exercises||[]).find(e => e.name === exerciseName && (e.variation || '') === variationStr); 
             if (ex && ex.sets.length > 0) history.push(ex); 
             if (history.length >= 3) break; 
-        } 
-        return history;
+        } return history;
     }
 };
 
@@ -309,13 +277,11 @@ const utils = {
             if (w.isSkipped || w.isActivity) return;
             let dateStr = utils.formatDateShort(new Date(w.date));
             let sessionBench = 0, sessionSquat = 0, sessionDeadlift = 0;
-
             (w.exercises||[]).forEach(ex => {
                 let n = ex.name.toLowerCase();
                 let isBench = n.includes('bench press') && !n.includes('dumbbell') && !n.includes('db');
                 let isSquat = n.includes('squat') && !n.includes('split') && !n.includes('hack') && !n.includes('goblet');
                 let isDeadlift = n.includes('deadlift') && !n.includes('romanian') && !n.includes('rdl') && !n.includes('stiff');
-
                 if (isBench || isSquat || isDeadlift) {
                     let maxE1RM = 0;
                     ex.sets.forEach(s => { if (s.completed && s.weight > 0 && s.reps > 0) { let e1rm = s.weight * (1 + s.reps / 30); if (e1rm > maxE1RM) maxE1RM = e1rm; } });
@@ -333,50 +299,31 @@ const utils = {
     },
     checkDaySuccess: (dStr) => {
         const c = store.state.challenge; if (!c || !c.isActive || c.goals.length === 0) return false;
-        
-        // Helper to check if today was a scheduled rest day
-        const parts = dStr.split('-'); 
-        const dObj = new Date(parts[0], parts[1]-1, parts[2]);
-        const dayIndex = dObj.getDay();
-        const active = utils.getActiveRoutine();
-        const prog = active.days.find(x => x.day === dayIndex);
-        const isRest = !prog || prog.workouts.length === 0;
+        const parts = dStr.split('-'); const dObj = new Date(parts[0], parts[1]-1, parts[2]); const dayIndex = dObj.getDay();
+        const active = utils.getActiveRoutine(); const prog = active.days.find(x => x.day === dayIndex); const isRest = !prog || prog.workouts.length === 0;
 
         for (let g of c.goals) {
             if (g.createdAt && dStr < g.createdAt) continue; 
             if (['water', 'reading', 'custom'].includes(g.type)) { if (!store.state.history.challengeLogs || !store.state.history.challengeLogs[dStr] || !store.state.history.challengeLogs[dStr][g.id]) return false; }
-            else if (g.type === 'workout') { 
-                const count = store.state.history.workouts.filter(w => utils.getLocalISODate(w.date) === dStr && !w.isSkipped).length; 
-                // Flexible challenge handling: Auto-tick rest days
-                if (count < (g.count || 1) && !isRest) return false; 
-            }
+            else if (g.type === 'workout') { const count = store.state.history.workouts.filter(w => utils.getLocalISODate(w.date) === dStr && !w.isSkipped && !w.isActivity).length; if (count < (g.count || 1) && !isRest) return false; }
             else if (g.type === 'weight') { const hasW = store.state.history.bodyweight.some(w => utils.getLocalISODate(w.date) === dStr); if (!hasW) return false; }
             else if (g.type === 'nutrition') { const nut = store.state.history.nutrition.find(n => utils.getLocalISODate(n.date) === dStr); if (!nut) return false; if (g.targetType === 'min' && nut.cal < g.calories) return false; if (g.targetType === 'max' && nut.cal > g.calories) return false; }
+            else if (g.type === 'cardio') { const hasC = store.state.history.cardio.some(c => utils.getLocalISODate(c.date) === dStr); if (!hasC) return false; }
         } return true;
     },
     calculateStreak: () => {
         let streak = 0; let d = new Date();
         if (store.state.challenge && store.state.challenge.isActive) {
             const start = new Date(store.state.challenge.startDate + 'T00:00:00');
-            if (utils.checkDaySuccess(utils.getLocalISODate(d))) streak++;
-            d.setDate(d.getDate() - 1);
+            if (utils.checkDaySuccess(utils.getLocalISODate(d))) streak++; d.setDate(d.getDate() - 1);
             while(d >= start) { if (utils.checkDaySuccess(utils.getLocalISODate(d))) { streak++; d.setDate(d.getDate() - 1); } else break; }
         } else {
             const wDates = [...new Set(store.state.history.workouts.map(e => utils.getLocalISODate(e.date)))]; const bDates = [...new Set(store.state.history.bodyweight.map(e => utils.getLocalISODate(e.date)))]; const nDates = [...new Set(store.state.history.nutrition.map(e => utils.getLocalISODate(e.date)))];
-            
             const isComplete = (dStr) => {
-                const parts = dStr.split('-');
-                const dObj = new Date(parts[0], parts[1]-1, parts[2]);
-                const dayIndex = dObj.getDay();
-                const active = utils.getActiveRoutine();
-                const prog = active.days.find(x => x.day === dayIndex);
-                const isRest = !prog || prog.workouts.length === 0;
-                
-                // Allow explicit log OR auto rest-day pass
-                const hasW = wDates.includes(dStr) || isRest;
-                return hasW && bDates.includes(dStr) && nDates.includes(dStr);
+                const parts = dStr.split('-'); const dObj = new Date(parts[0], parts[1]-1, parts[2]); const dayIndex = dObj.getDay();
+                const active = utils.getActiveRoutine(); const prog = active.days.find(x => x.day === dayIndex); const isRest = !prog || prog.workouts.length === 0;
+                return (wDates.includes(dStr) || isRest) && bDates.includes(dStr) && nDates.includes(dStr);
             };
-
             if (isComplete(utils.getLocalISODate(d))) streak++; d.setDate(d.getDate() - 1);
             while(true) { if (isComplete(utils.getLocalISODate(d))) { streak++; d.setDate(d.getDate() - 1); } else break; }
         } return streak;
@@ -384,8 +331,7 @@ const utils = {
     getChallengeStats: () => {
         const c = store.state.challenge; if (!c || !c.isActive) return null;
         const start = new Date(c.startDate + 'T00:00:00'); const end = new Date(c.endDate + 'T00:00:00'); const today = new Date(); today.setHours(0,0,0,0);
-        let dayTotal = Math.round((end - start) / (1000*60*60*24)) + 1;
-        let dayCurrent = Math.round((today - start) / (1000*60*60*24)) + 1;
+        let dayTotal = Math.round((end - start) / (1000*60*60*24)) + 1; let dayCurrent = Math.round((today - start) / (1000*60*60*24)) + 1;
         if (dayCurrent < 1) dayCurrent = 0; if (dayCurrent > dayTotal) dayCurrent = dayTotal;
         return { title: c.title, dayCurrent, dayTotal, streak: utils.calculateStreak() };
     },
@@ -395,140 +341,102 @@ const utils = {
 
 const workoutEngine = {
     activeWorkout: null, timerInterval: null,
+    sync() { store.state.activeSession = this.activeWorkout; store.save(); },
     start(workoutObj) { 
-        this.activeWorkout = { 
-            id: utils.generateId(), 
-            startTime: new Date().getTime(), 
-            name: workoutObj.name, 
-            isActivity: workoutObj.isActivity || false, 
-            isRest: (workoutObj.exercises||[]).length === 0 && !workoutObj.isActivity, 
-            exercises: (workoutObj.exercises||[]).map(ex => this.buildExerciseData(ex.name, ex.targetSets, ex.targetReps)) 
-        }; 
-        document.getElementById('active-workout-view').style.display = 'flex'; 
-        this.renderActiveWorkout(); 
+        this.activeWorkout = { id: utils.generateId(), startTime: new Date().getTime(), name: workoutObj.name, isActivity: workoutObj.isActivity || false, isRest: (workoutObj.exercises||[]).length === 0 && !workoutObj.isActivity, exercises: (workoutObj.exercises||[]).map(ex => this.buildExerciseData(ex.name, ex.targetSets, ex.targetReps)) }; 
+        this.sync();
+        document.getElementById('active-workout-view').style.display = 'flex'; this.renderActiveWorkout(); 
+    },
+    resume() {
+        if (!store.state.activeSession) return;
+        this.activeWorkout = store.state.activeSession;
+        document.getElementById('active-workout-view').style.display = 'flex'; this.renderActiveWorkout();
     },
     buildExerciseData(name, targetSets, targetReps, variation = '') {
-        const pastEx = store.getExerciseHistory(name, variation);
-        const historySets = pastEx.map(ex => ex.sets);
-        let prevNotes = pastEx[0] && pastEx[0].notes ? pastEx[0].notes : '';
-        let startingSets = [];
-        
+        const pastEx = store.getExerciseHistory(name, variation); const historySets = pastEx.map(ex => ex.sets); let prevNotes = pastEx[0] && pastEx[0].notes ? pastEx[0].notes : ''; let startingSets = [];
         for (let i = 0; i < targetSets; i++) {
-            let prevW = historySets[0] && historySets[0][i] ? parseFloat(historySets[0][i].weight) : 0; 
-            let prevR = historySets[0] && historySets[0][i] ? parseFloat(historySets[0][i].reps) : 0; 
-            let sumW = 0, sumR = 0, count = 0;
-            historySets.forEach(h => { if (h[i]) { sumW += parseFloat(h[i].weight)||0; sumR += parseFloat(h[i].reps)||0; count++; } });
+            let prevW = historySets[0] && historySets[0][i] ? parseFloat(historySets[0][i].weight) : 0; let prevR = historySets[0] && historySets[0][i] ? parseFloat(historySets[0][i].reps) : 0; 
+            let sumW = 0, sumR = 0, count = 0; historySets.forEach(h => { if (h[i]) { sumW += parseFloat(h[i].weight)||0; sumR += parseFloat(h[i].reps)||0; count++; } });
             let l3W = count ? (sumW / count).toFixed(1) : 0; let l3R = count ? Math.round(sumR / count) : 0;
             startingSets.push({ weight: prevW, reps: prevR, rir: 2, completed: false, prevWeight: prevW, prevReps: prevR, l3Weight: l3W, l3Reps: l3R });
         } return { name: name, variation: variation, targetSets: targetSets, targetReps: targetReps, sets: startingSets, notes: prevNotes };
     },
     changeVariation(exIdx, val) {
         const ex = this.activeWorkout.exercises[exIdx];
-        if (val === '__NEW__') { const newVar = prompt(`Enter new variation for ${ex.name} (e.g. EZ Bar, Dumbbell):`); if (!newVar) { this.renderActiveWorkout(); return; } if (!store.state.variations[ex.name]) store.state.variations[ex.name] = []; if (!store.state.variations[ex.name].includes(newVar)) { store.state.variations[ex.name].push(newVar); store.save(); } val = newVar; }
-        
-        ex.variation = val; 
-        const pastEx = store.getExerciseHistory(ex.name, val);
-        const historySets = pastEx.map(e => e.sets);
-        ex.notes = pastEx[0] && pastEx[0].notes ? pastEx[0].notes : '';
-
-        ex.sets.forEach((set, i) => {
-            let prevW = historySets[0] && historySets[0][i] ? parseFloat(historySets[0][i].weight) : 0; 
-            let prevR = historySets[0] && historySets[0][i] ? parseFloat(historySets[0][i].reps) : 0; 
-            let sumW = 0, sumR = 0, count = 0;
-            historySets.forEach(h => { if (h[i]) { sumW += parseFloat(h[i].weight)||0; sumR += parseFloat(h[i].reps)||0; count++; } });
-            set.prevWeight = prevW; set.prevReps = prevR; set.l3Weight = count ? (sumW / count).toFixed(1) : 0; set.l3Reps = count ? Math.round(sumR / count) : 0;
-        }); this.renderActiveWorkout();
+        if (val === '__NEW__') { const newVar = prompt(`Enter new variation for ${ex.name}:`); if (!newVar) { this.renderActiveWorkout(); return; } if (!store.state.variations[ex.name]) store.state.variations[ex.name] = []; if (!store.state.variations[ex.name].includes(newVar)) { store.state.variations[ex.name].push(newVar); store.save(); } val = newVar; }
+        ex.variation = val; const pastEx = store.getExerciseHistory(ex.name, val); const historySets = pastEx.map(e => e.sets); ex.notes = pastEx[0] && pastEx[0].notes ? pastEx[0].notes : '';
+        ex.sets.forEach((set, i) => { let prevW = historySets[0] && historySets[0][i] ? parseFloat(historySets[0][i].weight) : 0; let prevR = historySets[0] && historySets[0][i] ? parseFloat(historySets[0][i].reps) : 0; let sumW = 0, sumR = 0, count = 0; historySets.forEach(h => { if (h[i]) { sumW += parseFloat(h[i].weight)||0; sumR += parseFloat(h[i].reps)||0; count++; } }); set.prevWeight = prevW; set.prevReps = prevR; set.l3Weight = count ? (sumW / count).toFixed(1) : 0; set.l3Reps = count ? Math.round(sumR / count) : 0; }); 
+        this.sync(); this.renderActiveWorkout();
     },
-    inputChange(exIdx, setIdx, field, value) { this.activeWorkout.exercises[exIdx].sets[setIdx][field] = parseFloat(value) || 0; }, 
-    updateNotes(exIdx, val) { this.activeWorkout.exercises[exIdx].notes = val; },
-    toggleSet(exIdx, setIdx) { const set = this.activeWorkout.exercises[exIdx].sets[setIdx]; set.completed = !set.completed; if (set.completed) this.startRestTimer(store.state.settings.restTimer); this.renderActiveWorkout(); },
-    addSet(exIdx) { const sets = this.activeWorkout.exercises[exIdx].sets; const last = sets[sets.length-1] || { weight: 0, reps: 0, rir: 2, prevWeight:0, prevReps:0, l3Weight:0, l3Reps:0 }; sets.push({ ...last, completed: false }); this.renderActiveWorkout(); }, removeSet(exIdx) { const sets = this.activeWorkout.exercises[exIdx].sets; if(sets.length > 1) { sets.pop(); this.renderActiveWorkout(); } else { alert("Cannot remove the last set."); } },
-    removeExercise(exIdx) { if(confirm(`Remove ${this.activeWorkout.exercises[exIdx].name} from this workout?`)) { this.activeWorkout.exercises.splice(exIdx, 1); this.renderActiveWorkout(); } },
-    showAddExerciseModal() { const modal = document.getElementById('exercise-selection-modal'); let grouped = utils.getGroupedExercises(); let html = `<div class="page-header"><button class="btn btn-sm btn-icon" onclick="document.getElementById('exercise-selection-modal').style.display='none'"><i class="fas fa-times"></i></button><h2 style="margin:0; font-size:18px;">Add Exercise</h2><div style="width:36px;"></div></div><p class="text-muted" style="margin-bottom:16px; font-size:12px;">Select an exercise to append to your active workout.</p>`; Object.keys(grouped).sort().forEach(muscle => { html += `<h3 style="margin-top:16px; color:var(--text-secondary); font-size:14px;">${muscle}</h3><div style="display:flex; flex-direction:column; gap:8px;">`; grouped[muscle].sort((a,b) => a.name.localeCompare(b.name)).forEach(ex => { html += `<div class="data-row flex-between" style="padding:12px; background:var(--surface-color); border-radius:8px; border:1px solid var(--border); cursor:pointer;" onclick="workoutEngine.appendExercise('${ex.name}', ${ex.targetSets}, '${ex.targetReps}')"><div><div style="font-weight:bold;">${ex.name}</div><div class="text-muted" style="font-size:12px;">Def: ${ex.targetSets}x${ex.targetReps}</div></div><i class="fas fa-plus text-accent"></i></div>`; }); html += `</div>`; }); modal.innerHTML = html; modal.style.display = 'flex'; },
-    appendExercise(name, targetSets, targetReps) { this.activeWorkout.exercises.push(this.buildExerciseData(name, targetSets, targetReps)); document.getElementById('exercise-selection-modal').style.display='none'; this.renderActiveWorkout(); },
-    startRestTimer(seconds) { clearInterval(this.timerInterval); const display = document.getElementById('rest-timer-display'); const overlay = document.getElementById('rest-timer-overlay'); let remaining = seconds; overlay.style.display = 'flex'; this.timerInterval = setInterval(() => { remaining--; let m = Math.floor(remaining / 60), s = remaining % 60; display.innerText = `${m}:${s < 10 ? '0' : ''}${s}`; if (remaining <= 0) { this.stopRestTimer(); if(navigator.vibrate) navigator.vibrate([200, 100, 200]); } }, 1000); },
-    stopRestTimer() { clearInterval(this.timerInterval); document.getElementById('rest-timer-overlay').style.display = 'none'; },
-    skipWorkout() { const sym = app.sym('rest'); const reason = prompt(this.activeWorkout.isRest ? `Log Rest Day! ${sym} (e.g. Skiing, Recovering):` : "Reason for skipping workout:"); if(reason !== null) { store.addWorkout({ id: utils.generateId(), date: new Date().toISOString(), name: `${this.activeWorkout.isRest ? "Rest Day" : "Workout Skipped"} - ${reason}`, isSkipped: true, duration: 0, exercises: [] }); this.activeWorkout = null; this.stopRestTimer(); document.getElementById('active-workout-view').style.display = 'none'; app.navigate('home'); } },
-    finish() { if (!confirm(this.activeWorkout.isActivity ? "Finish Activity Tracking?" : "Finish Workout?")) return; this.activeWorkout.endTime = new Date().getTime(); this.activeWorkout.duration = Math.floor((this.activeWorkout.endTime - this.activeWorkout.startTime) / 60000); this.activeWorkout.date = new Date().toISOString(); this.activeWorkout.isSkipped = false; if(this.activeWorkout.isActivity) { store.addWorkout(this.activeWorkout); } else { this.activeWorkout.exercises.forEach(ex => ex.sets = ex.sets.filter(s => s.completed)); this.activeWorkout.exercises = this.activeWorkout.exercises.filter(ex => ex.sets.length > 0); if(this.activeWorkout.exercises.length > 0) store.addWorkout(this.activeWorkout); } this.activeWorkout = null; this.stopRestTimer(); document.getElementById('active-workout-view').style.display = 'none'; app.navigate('home'); },
-    cancel() { if (!confirm("Cancel workout? No data will be saved.")) return; this.activeWorkout = null; this.stopRestTimer(); document.getElementById('active-workout-view').style.display = 'none'; },
+    inputChange(exIdx, setIdx, field, value) { this.activeWorkout.exercises[exIdx].sets[setIdx][field] = parseFloat(value) || 0; this.sync(); }, updateNotes(exIdx, val) { this.activeWorkout.exercises[exIdx].notes = val; this.sync(); }, toggleSet(exIdx, setIdx) { const set = this.activeWorkout.exercises[exIdx].sets[setIdx]; set.completed = !set.completed; if (set.completed) this.startRestTimer(store.state.settings.restTimer); this.sync(); this.renderActiveWorkout(); }, addSet(exIdx) { const sets = this.activeWorkout.exercises[exIdx].sets; const last = sets[sets.length-1] || { weight: 0, reps: 0, rir: 2, prevWeight:0, prevReps:0, l3Weight:0, l3Reps:0 }; sets.push({ ...last, completed: false }); this.sync(); this.renderActiveWorkout(); }, removeSet(exIdx) { const sets = this.activeWorkout.exercises[exIdx].sets; if(sets.length > 1) { sets.pop(); this.sync(); this.renderActiveWorkout(); } else { alert("Cannot remove the last set."); } }, removeExercise(exIdx) { if(confirm(`Remove ${this.activeWorkout.exercises[exIdx].name}?`)) { this.activeWorkout.exercises.splice(exIdx, 1); this.sync(); this.renderActiveWorkout(); } },
+    showAddExerciseModal() { const modal = document.getElementById('exercise-selection-modal'); let grouped = utils.getGroupedExercises(); let html = `<div class="page-header"><button class="btn btn-sm btn-icon" onclick="document.getElementById('exercise-selection-modal').style.display='none'"><i class="fas fa-times"></i></button><h2 style="margin:0; font-size:18px;">Add Exercise</h2><div style="width:36px;"></div></div><p class="text-muted" style="margin-bottom:16px; font-size:12px;">Select an exercise to append to your active workout.</p>`; Object.keys(grouped).sort().forEach(muscle => { html += `<h3 style="margin-top:16px; color:var(--text-secondary); font-size:14px;">${muscle}</h3><div style="display:flex; flex-direction:column; gap:8px;">`; grouped[muscle].sort((a,b) => a.name.localeCompare(b.name)).forEach(ex => { html += `<div class="data-row flex-between" style="padding:12px; background:var(--surface-color); border-radius:8px; border:1px solid var(--border); cursor:pointer;" onclick="workoutEngine.appendExercise('${ex.name}', ${ex.targetSets}, '${ex.targetReps}')"><div><div style="font-weight:bold;">${ex.name}</div><div class="text-muted" style="font-size:12px;">Def: ${ex.targetSets}x${ex.targetReps}</div></div><i class="fas fa-plus text-accent"></i></div>`; }); html += `</div>`; }); modal.innerHTML = html; modal.style.display = 'flex'; }, appendExercise(name, targetSets, targetReps) { this.activeWorkout.exercises.push(this.buildExerciseData(name, targetSets, targetReps)); this.sync(); document.getElementById('exercise-selection-modal').style.display='none'; this.renderActiveWorkout(); },
+    startRestTimer(seconds) { clearInterval(this.timerInterval); const display = document.getElementById('rest-timer-display'); const overlay = document.getElementById('rest-timer-overlay'); let remaining = seconds; overlay.style.display = 'flex'; this.timerInterval = setInterval(() => { remaining--; let m = Math.floor(remaining / 60), s = remaining % 60; display.innerText = `${m}:${s < 10 ? '0' : ''}${s}`; if (remaining <= 0) { this.stopRestTimer(); if(navigator.vibrate) navigator.vibrate([200, 100, 200]); } }, 1000); }, stopRestTimer() { clearInterval(this.timerInterval); document.getElementById('rest-timer-overlay').style.display = 'none'; },
+    skipWorkout() { const sym = app.sym('rest'); const reason = prompt(this.activeWorkout.isRest ? `Log Rest Day! ${sym} (e.g. Skiing, Recovering):` : "Reason for skipping workout:"); if(reason !== null) { store.addWorkout({ id: utils.generateId(), date: new Date().toISOString(), name: `${this.activeWorkout.isRest ? "Rest Day" : "Workout Skipped"} - ${reason}`, isSkipped: true, duration: 0, exercises: [] }); store.state.activeSession = null; store.save(); this.activeWorkout = null; this.stopRestTimer(); document.getElementById('active-workout-view').style.display = 'none'; app.navigate('home'); } },
+    finish() { if (!confirm(this.activeWorkout.isActivity ? "Finish Activity Tracking?" : "Finish Workout?")) return; this.activeWorkout.endTime = new Date().getTime(); this.activeWorkout.duration = Math.floor((this.activeWorkout.endTime - this.activeWorkout.startTime) / 60000); this.activeWorkout.date = new Date().toISOString(); this.activeWorkout.isSkipped = false; if(this.activeWorkout.isActivity) { store.addWorkout(this.activeWorkout); } else { this.activeWorkout.exercises.forEach(ex => ex.sets = ex.sets.filter(s => s.completed)); this.activeWorkout.exercises = this.activeWorkout.exercises.filter(ex => ex.sets.length > 0); if(this.activeWorkout.exercises.length > 0) store.addWorkout(this.activeWorkout); } store.state.activeSession = null; store.save(); this.activeWorkout = null; this.stopRestTimer(); document.getElementById('active-workout-view').style.display = 'none'; app.navigate('home'); },
+    minimize() { document.getElementById('active-workout-view').style.display = 'none'; app.navigate(app.currentView); },
+    discard(skipConfirm = false) { if (!skipConfirm && !confirm("Discard workout? All progress will be lost.")) return; store.state.activeSession = null; store.save(); this.activeWorkout = null; this.stopRestTimer(); document.getElementById('active-workout-view').style.display = 'none'; app.navigate(app.currentView); },
     renderActiveWorkout() {
         const container = document.getElementById('active-workout-view'); if (!this.activeWorkout) return;
-        let html = `<div class="workout-header-sticky"><div><h2 style="margin:0; font-size:18px;">${this.activeWorkout.name}</h2></div>${!this.activeWorkout.isRest ? `<button class="btn btn-sm btn-success" onclick="workoutEngine.finish()"><i class="fas fa-check"></i> FINISH</button>` : ''}<button class="btn btn-sm btn-icon" onclick="workoutEngine.cancel()"><i class="fas fa-times"></i></button></div><div style="padding: 16px;">`;
-        if(this.activeWorkout.isActivity) { html += `<div style="text-align:center; padding: 60px 20px;"><div style="font-size:64px; margin-bottom:16px;">${app.sym('activity')}</div><h2>Activity in Progress</h2><p class="text-muted">The timer is running. Hit FINISH when you are done tracking this activity.</p></div>`; } else {
+        let html = `<div class="workout-header-sticky"><div><h2 style="margin:0; font-size:18px;">${this.activeWorkout.name}</h2></div>${!this.activeWorkout.isRest ? `<button class="btn btn-sm btn-success" onclick="workoutEngine.finish()"><i class="fas fa-check"></i> FINISH</button>` : ''}<button class="btn btn-sm btn-icon" onclick="workoutEngine.minimize()"><i class="fas fa-chevron-down"></i></button></div><div style="padding: 16px;">`;
+        if(this.activeWorkout.isActivity) { html += `<div style="text-align:center; padding: 60px 20px;"><div style="font-size:64px; margin-bottom:16px;">${app.sym('activity')}</div><h2>Activity in Progress</h2><p class="text-muted">Timer is running. Hit FINISH when done.</p></div>`; } else {
             html += `<button class="btn" style="background:var(--surface-color); border:1px dashed var(--accent-color); color:var(--accent-color); margin-bottom: 16px;" onclick="workoutEngine.skipWorkout()"><i class="fas fa-forward-step"></i> ${this.activeWorkout.isRest ? `Log Rest Day ${app.sym('rest')}` : 'Skip Workout'}</button>`;
             this.activeWorkout.exercises.forEach((ex, exIdx) => {
                 const varList = store.state.variations[ex.name] || [];
-                html += `<div class="exercise-card"><div class="exercise-header"><div><h3 style="margin:0; color:var(--text-primary)">${ex.name}</h3><select class="edit-input" style="padding: 2px 8px; font-size: 16px !important; margin-top: 4px; margin-bottom: 0; width: auto; background: var(--bg-color); border: 1px solid var(--border);" onchange="workoutEngine.changeVariation(${exIdx}, this.value)"><option value="">Standard</option>${varList.map(v => `<option value="${v}" ${ex.variation === v ? 'selected' : ''}>${v}</option>`).join('')}<option value="__NEW__">+ New Variation</option></select></div><div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;"><button class="btn-icon" style="color:var(--text-secondary); width:32px; height:32px; font-size:16px;" onclick="workoutEngine.removeExercise(${exIdx})"><i class="fas fa-times"></i></button><span class="text-muted" style="font-size:12px">Tgt: ${ex.targetReps}</span></div></div>`;
-                
-                // --- EXERCISE NOTES FIELD ---
-                html += `<div style="padding: 0 16px;"><input type="text" class="edit-input" style="font-size:14px !important; margin-top:8px; margin-bottom:0px; width:100%; color:var(--warning);" placeholder="Notes (e.g. UP 2.5kg, seat setting)" value="${ex.notes || ''}" onchange="workoutEngine.updateNotes(${exIdx}, this.value)"></div>`;
-
-                html += `<div class="exercise-body"><div class="set-row text-muted" style="font-size:12px; margin-bottom: 8px;"><div style="text-align:center">SET</div><div style="text-align:center">KG</div><div style="text-align:center">REPS</div><div style="text-align:center">RIR</div><div></div></div>`;
-                ex.sets.forEach((set, setIdx) => { const isComp = set.completed; html += `<div class="set-wrapper"><div class="flex-between text-muted" style="font-size: 11px; margin-bottom: 4px; padding-left: 45px; padding-right: 55px;"><span>Prev: ${set.prevWeight}×${set.prevReps}</span><span>L3: ${set.l3Weight}×${set.l3Reps}</span></div><div class="set-row"><div class="set-number">${setIdx + 1}</div><div class="input-group"><input type="number" inputmode="decimal" value="${set.weight}" onchange="workoutEngine.inputChange(${exIdx}, ${setIdx}, 'weight', this.value)" ${isComp?'disabled':''}></div><div class="input-group"><input type="number" inputmode="numeric" value="${set.reps}" onchange="workoutEngine.inputChange(${exIdx}, ${setIdx}, 'reps', this.value)" ${isComp?'disabled':''}></div><div class="input-group"><input type="number" inputmode="numeric" value="${set.rir}" max="3" onchange="workoutEngine.inputChange(${exIdx}, ${setIdx}, 'rir', this.value)" ${isComp?'disabled':''}></div><button class="btn-check ${isComp ? 'completed' : ''}" onclick="workoutEngine.toggleSet(${exIdx}, ${setIdx})"><i class="fas fa-check"></i></button></div></div>`; });
-                html += `<div style="display:flex; gap:8px;"><button class="btn btn-sm" style="flex:1; border:1px solid var(--border);" onclick="workoutEngine.addSet(${exIdx})">+ Add Set</button><button class="btn btn-sm" style="flex:1; border:1px solid var(--border); color:var(--accent-color);" onclick="workoutEngine.removeSet(${exIdx})">- Remove Set</button></div></div></div>`;
-            }); html += `<div style="margin-top: 16px; padding-bottom: 32px;"><button class="btn" style="background:transparent; border:1px dashed var(--accent-color); color:var(--accent-color);" onclick="workoutEngine.showAddExerciseModal()">+ Add Another Exercise</button></div>`;
+                html += `<div class="exercise-card"><div class="exercise-header"><div><h3 style="margin:0; color:var(--text-primary)">${ex.name}</h3><select class="edit-input" style="padding: 2px 8px; font-size: 16px !important; margin-top: 4px; margin-bottom: 0; width: auto; background: var(--bg-color); border: 1px solid var(--border);" onchange="workoutEngine.changeVariation(${exIdx}, this.value)"><option value="">Standard</option>${varList.map(v => `<option value="${v}" ${ex.variation === v ? 'selected' : ''}>${v}</option>`).join('')}<option value="__NEW__">+ New Variation</option></select></div><div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;"><button class="btn-icon" style="color:var(--text-secondary); width:32px; height:32px; font-size:16px;" onclick="workoutEngine.removeExercise(${exIdx})"><i class="fas fa-times"></i></button><span class="text-muted" style="font-size:12px">Tgt: ${ex.targetReps}</span></div></div><div style="padding: 0 16px;"><input type="text" class="edit-input" style="font-size:14px !important; margin-top:8px; margin-bottom:0px; width:100%; color:var(--warning);" placeholder="Notes (e.g. UP 2.5kg, seat setting)" value="${ex.notes || ''}" onchange="workoutEngine.updateNotes(${exIdx}, this.value)"></div><div class="exercise-body"><div class="set-row text-muted" style="font-size:12px; margin-bottom: 8px;"><div style="text-align:center">SET</div><div style="text-align:center">KG</div><div style="text-align:center">REPS</div><div style="text-align:center">RIR</div><div></div></div>`;
+                ex.sets.forEach((set, setIdx) => { const isComp = set.completed; html += `<div class="set-wrapper"><div class="flex-between text-muted" style="font-size: 11px; margin-bottom: 4px; padding-left: 45px; padding-right: 55px;"><span>Prev: ${set.prevWeight}×${set.prevReps}</span><span>L3: ${set.l3Weight}×${set.l3Reps}</span></div><div class="set-row"><div class="set-number">${setIdx + 1}</div><div class="input-group"><input type="number" inputmode="decimal" value="${set.weight}" onchange="workoutEngine.inputChange(${exIdx}, ${setIdx}, 'weight', this.value)" ${isComp?'disabled':''}></div><div class="input-group"><input type="number" inputmode="numeric" value="${set.reps}" onchange="workoutEngine.inputChange(${exIdx}, ${setIdx}, 'reps', this.value)" ${isComp?'disabled':''}></div><div class="input-group"><input type="number" inputmode="numeric" value="${set.rir}" max="3" onchange="workoutEngine.inputChange(${exIdx}, ${setIdx}, 'rir', this.value)" ${isComp?'disabled':''}></div><button class="btn-check ${isComp ? 'completed' : ''}" onclick="workoutEngine.toggleSet(${exIdx}, ${setIdx})"><i class="fas fa-check"></i></button></div></div>`; }); html += `<div style="display:flex; gap:8px;"><button class="btn btn-sm" style="flex:1; border:1px solid var(--border);" onclick="workoutEngine.addSet(${exIdx})">+ Add Set</button><button class="btn btn-sm" style="flex:1; border:1px solid var(--border); color:var(--accent-color);" onclick="workoutEngine.removeSet(${exIdx})">- Remove Set</button></div></div></div>`;
+            }); html += `<div style="margin-top: 16px; padding-bottom: 32px;"><button class="btn" style="background:transparent; border:1px dashed var(--accent-color); color:var(--accent-color);" onclick="workoutEngine.showAddExerciseModal()">+ Add Another Exercise</button><button class="btn" style="background:transparent; border:1px dashed var(--pending); color:var(--pending); width:100%; margin-top:16px;" onclick="workoutEngine.discard()"><i class="fas fa-trash"></i> Discard Workout Data</button></div>`;
         } html += `</div>`; container.innerHTML = html;
     }
 };
 
 const views = {
     renderHome() {
-        const todayStr = utils.getLocalISODate(new Date()); 
-        const today = new Date(); 
-        const prog = utils.getTodayProgram();
-        const bwEntry = store.state.history.bodyweight.find(w => utils.getLocalISODate(w.date) === todayStr); 
-        const bwLogged = !!bwEntry;
+        const todayStr = utils.getLocalISODate(new Date()); const today = new Date(); const prog = utils.getTodayProgram();
+        const bwEntry = store.state.history.bodyweight.find(w => utils.getLocalISODate(w.date) === todayStr); const bwLogged = !!bwEntry;
+        const cardioEntry = store.state.history.cardio.find(c => utils.getLocalISODate(c.date) === todayStr); const cardioLogged = !!cardioEntry;
         
-        // Flexible Any-Workout Logic
-        const todayWorkoutsLogged = store.state.history.workouts.filter(w => utils.getLocalISODate(w.date) === todayStr && !w.isSkipped);
+        const todayWorkoutsLogged = store.state.history.workouts.filter(w => utils.getLocalISODate(w.date) === todayStr && !w.isSkipped && !w.isActivity);
         const todayRestLogged = store.state.history.workouts.filter(w => utils.getLocalISODate(w.date) === todayStr && w.isSkipped);
         
-        let isScheduledRest = prog.workouts.length === 0;
-        let isTrainingDone = todayWorkoutsLogged.length > 0 || todayRestLogged.length > 0 || isScheduledRest;
-        
-        let trainingText = '';
-        if (todayWorkoutsLogged.length > 0) {
-            trainingText = `${todayWorkoutsLogged.length} Session(s) Completed`;
-        } else if (todayRestLogged.length > 0) {
-            trainingText = `Rest Day Logged`;
-        } else if (isScheduledRest) {
-            trainingText = `Scheduled Rest Day - Auto Ticked`;
-        } else {
-            trainingText = `Tap to select a workout or rest`;
-        }
+        let isScheduledRest = prog.workouts.length === 0; let isTrainingDone = todayWorkoutsLogged.length > 0 || todayRestLogged.length > 0 || isScheduledRest;
+        let trainingText = isScheduledRest ? `Scheduled Rest Day - Auto Ticked` : `Tap to select a workout or rest`;
+        if (todayWorkoutsLogged.length > 0) trainingText = `${todayWorkoutsLogged.length} Session(s) Completed`; else if (todayRestLogged.length > 0) trainingText = `Rest Day Logged`;
+
+        let isWorkoutActive = !!store.state.activeSession;
 
         let html = `<h1>Dashboard</h1>
-        <div class="card" style="padding:0; overflow:hidden; border-color: ${isTrainingDone && bwLogged ? 'var(--success)' : 'var(--border)'}; box-shadow: ${isTrainingDone && bwLogged ? 'var(--success-glow)' : '0 4px 12px rgba(0,0,0,0.2)'};">
-            <div style="padding: 16px; background: ${isTrainingDone && bwLogged ? 'var(--success-dim)' : 'var(--surface-elevated)'}; border-bottom: 1px solid ${isTrainingDone && bwLogged ? 'var(--success-dim)' : 'var(--border)'}; display:flex; justify-content:space-between; align-items:center; transition: all 0.4s ease;">
-                <div>
-                    <h2 style="margin:0; font-size:18px; color:${isTrainingDone && bwLogged ? 'var(--success)' : 'var(--text-primary)'};">Today's Action Plan</h2>
-                    <p class="text-muted" style="font-size:12px; margin-top:4px;">${utils.getDayName(today.getDay())}, ${utils.formatDateShort(today)}</p>
-                </div>
-                ${isTrainingDone && bwLogged ? `<div style="background:var(--success); color:var(--bg-color); padding: 4px 8px; border-radius: 8px; font-size: 12px; font-weight:bold; letter-spacing:1px;">${app.sym('success')} PERFECT</div>` : ''}
+        <div class="card" style="padding:0; overflow:hidden; border-color: ${isTrainingDone && bwLogged && cardioLogged && !isWorkoutActive ? 'var(--success)' : 'var(--border)'}; box-shadow: ${isTrainingDone && bwLogged && cardioLogged && !isWorkoutActive ? 'var(--success-glow)' : '0 4px 12px rgba(0,0,0,0.2)'};">
+            <div style="padding: 16px; background: ${isTrainingDone && bwLogged && cardioLogged && !isWorkoutActive ? 'var(--success-dim)' : 'var(--surface-elevated)'}; border-bottom: 1px solid ${isTrainingDone && bwLogged && cardioLogged && !isWorkoutActive ? 'var(--success-dim)' : 'var(--border)'}; display:flex; justify-content:space-between; align-items:center; transition: all 0.4s ease;">
+                <div><h2 style="margin:0; font-size:18px; color:${isTrainingDone && bwLogged && cardioLogged && !isWorkoutActive ? 'var(--success)' : 'var(--text-primary)'};">Today's Action Plan</h2><p class="text-muted" style="font-size:12px; margin-top:4px;">${utils.getDayName(today.getDay())}, ${utils.formatDateShort(today)}</p></div>
+                ${isTrainingDone && bwLogged && cardioLogged && !isWorkoutActive ? `<div style="background:var(--success); color:var(--bg-color); padding: 4px 8px; border-radius: 8px; font-size: 12px; font-weight:bold; letter-spacing:1px;">${app.sym('success')} PERFECT</div>` : ''}
             </div>
-            
             <div style="padding: 16px; display:flex; flex-direction:column; gap:16px;">
-                <div>
-                    <div class="flex-between" style="margin-bottom:8px;">
-                        <h3 style="font-size:12px; margin:0;">Training</h3>
-                    </div>
-                    <div class="objective-row ${isTrainingDone ? 'completed' : ''}" onclick="app.showStartOptions()">
-                        <div class="check-circle"><i class="fas fa-check"></i></div>
+                <div><div class="flex-between" style="margin-bottom:8px;"><h3 style="font-size:12px; margin:0;">Training</h3></div>
+                    ${isWorkoutActive ? `
+                    <div class="objective-row resume-pulse" style="border-color:var(--info); background:var(--info-dim);" onclick="workoutEngine.resume()">
+                        <div class="check-circle" style="border-color:var(--info); color:var(--info); background:transparent;"><i class="fas fa-spinner fa-spin"></i></div>
                         <div style="flex:1;">
-                            <div style="font-weight:bold;">Daily Session ${app.sym('workout')}</div>
-                            <div class="text-muted" style="font-size:12px;">${trainingText}</div>
+                            <div style="font-weight:bold; color:var(--info);">Resume Workout</div>
+                            <div class="text-muted" style="font-size:12px;">${store.state.activeSession.name} in progress...</div>
                         </div>
+                        <i class="fas fa-chevron-right" style="color:var(--info)"></i>
+                    </div>
+                    ` : `
+                    <div class="objective-row ${isTrainingDone ? 'completed' : ''}" onclick="app.showStartOptions()">
+                        <div class="check-circle"><i class="fas fa-check"></i></div><div style="flex:1;"><div style="font-weight:bold;">Daily Session ${app.sym('workout')}</div><div class="text-muted" style="font-size:12px;">${trainingText}</div></div>
                         ${!isTrainingDone ? `<i class="fas fa-play" style="color:var(--pending)"></i>` : ''}
                     </div>
+                    `}
+                    <div class="objective-row ${cardioLogged ? 'completed' : ''}" onclick="!${cardioLogged} ? null : ''">
+                        <div class="check-circle"><i class="fas fa-check"></i></div>
+                        <div style="flex:1;"><div style="font-weight:bold;">Daily Cardio ${app.sym('activity')}</div>${cardioLogged ? `<div class="text-muted" style="font-size:12px;">Logged: ${cardioEntry.intensity} Intensity</div>` : `<div class="text-muted" style="font-size:12px;">Tap to select intensity</div>`}</div>
+                        ${!cardioLogged ? `<div onclick="event.stopPropagation()"><select class="edit-input" style="width:100px; margin:0; font-size:14px !important; padding:4px;" onchange="app.logCardio(this.value, '${todayStr}')"><option value="" disabled selected>Select...</option><option value="Light">Light</option><option value="High">High</option></select></div>` : `<button class="btn-icon" style="background:transparent; color:var(--text-secondary);" onclick="app.removeCardio('${todayStr}'); event.stopPropagation();"><i class="fas fa-times"></i></button>`}
+                    </div>
                 </div>
-                <div>
-                    <h3 style="font-size:12px; margin-bottom:8px;">Vitals</h3>
+                <div><h3 style="font-size:12px; margin-bottom:8px;">Vitals</h3>
                     <div class="objective-row ${bwLogged ? 'completed' : ''}" onclick="!${bwLogged} ? document.getElementById('quick-bw-input').focus() : app.navigate('data')">
                         <div class="check-circle"><i class="fas fa-check"></i></div>
-                        <div style="flex:1;">
-                            <div style="font-weight:bold;">Bodyweight ${app.sym('bw')}</div>
-                            ${bwLogged ? `<div class="text-muted" style="font-size:12px;">Logged: ${bwEntry.weight} kg</div>` : `<div class="text-muted" style="font-size:12px;">Tap to log weight</div>`}
-                        </div>
+                        <div style="flex:1;"><div style="font-weight:bold;">Bodyweight ${app.sym('bw')}</div>${bwLogged ? `<div class="text-muted" style="font-size:12px;">Logged: ${bwEntry.weight} kg</div>` : `<div class="text-muted" style="font-size:12px;">Tap to log weight</div>`}</div>
                         ${!bwLogged ? `<div style="display:flex; gap:8px;" onclick="event.stopPropagation()"><input type="number" inputmode="decimal" id="quick-bw-input" value="${store.state.user.currentWeight}" style="width:70px; background:var(--surface-elevated); border:1px solid var(--border); border-radius:8px; color:var(--text-primary); text-align:center; font-weight:bold;"><button class="btn btn-sm btn-success" onclick="app.logWeight(); event.stopPropagation();">Save</button></div>` : ''}
                     </div>
                 </div>
@@ -536,57 +444,50 @@ const views = {
         </div>`;
 
         let streakSafe = false; let streakTitle = "Daily Goals"; let streakSubtitle = "Log everything to keep streak";
-        if (store.state.challenge && store.state.challenge.isActive) {
-            streakSafe = utils.checkDaySuccess(todayStr); streakTitle = store.state.challenge.title; streakSubtitle = streakSafe ? "All goals met today!" : "Pending daily goals...";
-        } else {
+        if (store.state.challenge && store.state.challenge.isActive) { streakSafe = utils.checkDaySuccess(todayStr); } 
+        else {
             const wDates = [...new Set(store.state.history.workouts.map(e => utils.getLocalISODate(e.date)))]; const bDates = [...new Set(store.state.history.bodyweight.map(e => utils.getLocalISODate(e.date)))]; const nDates = [...new Set(store.state.history.nutrition.map(e => utils.getLocalISODate(e.date)))];
             streakSafe = (wDates.includes(todayStr) || isScheduledRest) && bDates.includes(todayStr) && nDates.includes(todayStr); 
-            streakTitle = "Trifecta Streak"; streakSubtitle = streakSafe ? "Workout, BW & Nutrition tracked!" : "Track Workout, BW & Nutrition";
         }
-
         const streakStats = utils.getChallengeStats(); const streakCount = store.state.challenge && store.state.challenge.isActive ? streakStats.streak : utils.calculateStreak();
         
         html += `<div class="streak-box ${streakSafe ? 'streak-completed' : ''}" onclick="app.navigate('challenge')" style="margin-top:16px;">
-            <div class="streak-fire">${app.sym('streak')}</div>
-            <div>
-                <h2 class="streak-text">${streakCount} Day Streak</h2>
-                <span class="text-muted" style="font-size:12px; ${streakSafe ? 'color:var(--text-primary)' : ''}">${store.state.challenge && store.state.challenge.isActive ? `${streakStats.title} (Day ${streakStats.dayCurrent}/${streakStats.dayTotal})` : 'Keep the momentum going!'}</span>
-            </div>
+            <div class="streak-fire">${app.sym('streak')}</div><div><h2 class="streak-text">${streakCount} Day Streak</h2><span class="text-muted" style="font-size:12px; ${streakSafe ? 'color:var(--text-primary)' : ''}">${store.state.challenge && store.state.challenge.isActive ? `${streakStats.title} (Day ${streakStats.dayCurrent}/${streakStats.dayTotal})` : 'Keep the momentum going!'}</span></div>
         </div>`; return html;
     },
     renderChallenge() {
         const c = store.state.challenge;
         if (!c || !c.isActive) { return `<div class="page-header"><button class="btn btn-sm btn-icon" onclick="app.navigate('home')"><i class="fas fa-arrow-left"></i></button><h2 style="margin:0; font-size:18px;">Goals & Challenges</h2><div style="width:36px;"></div></div><div class="card" style="text-align:center; padding:40px 20px;"><div style="font-size:48px; margin-bottom:16px;">${app.sym('cardGoal')}</div><h2>Set a New Goal</h2><p class="text-muted" style="margin-bottom:24px; font-size:14px;">Track your progress through a specific stage (like Bulking, 75 Hard, or Marathon prep) by setting specific daily streak requirements.</p><button class="btn btn-primary" onclick="app.editChallenge()"><i class="fas fa-plus"></i> Create Challenge</button></div>`; }
-        const stats = utils.getChallengeStats(); let pct = (stats.dayTotal > 0) ? (stats.dayCurrent / stats.dayTotal) * 100 : 0; if (pct > 100) pct = 100;
+        const start = new Date(c.startDate + 'T00:00:00'); const end = new Date(c.endDate + 'T00:00:00'); 
+        let viewDate = new Date(); if (app.challengeOffset) viewDate.setDate(viewDate.getDate() + app.challengeOffset); viewDate.setHours(0,0,0,0);
+        let viewDateStr = utils.getLocalISODate(viewDate);
+        let dayTotal = Math.round((end - start) / (1000*60*60*24)) + 1;
+        let dayCurrentTarget = Math.round((viewDate - start) / (1000*60*60*24)) + 1;
+        let dayCurrentReal = Math.round((new Date().setHours(0,0,0,0) - start) / (1000*60*60*24)) + 1;
+        let pct = (dayTotal > 0) ? (dayCurrentReal / dayTotal) * 100 : 0; if (pct > 100) pct = 100;
+
         let html = `<div class="page-header"><button class="btn btn-sm btn-icon" onclick="app.navigate('home')"><i class="fas fa-arrow-left"></i></button><h2 style="margin:0; font-size:18px;">Active Challenge</h2><button class="btn btn-sm btn-icon" onclick="app.editChallenge()"><i class="fas fa-pen"></i></button></div>`;
-        html += `<div class="card"><h2 style="font-size:24px; color:var(--accent-color);">${c.title}</h2><div class="flex-between text-muted" style="font-size:12px; margin-bottom:12px;"><span>${utils.formatDateShort(new Date(c.startDate))} - ${utils.formatDateShort(new Date(c.endDate))}</span></div><div class="progress-bg"><div class="progress-fill" style="width:${pct}%"></div></div>`;
-        html += `<div style="text-align:center; margin-top:24px; margin-bottom:8px;"><div style="font-size: 72px; font-weight: 900; line-height: 1; letter-spacing: -2px;">${stats.dayCurrent}<span style="color:var(--text-secondary); font-size: 40px; letter-spacing: 0;">/${stats.dayTotal}</span></div><div class="text-accent" style="font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-top: 8px;">Days Completed</div></div></div>`;
-        html += `<h3>Today's Progress</h3><div class="card" style="display:flex; flex-direction:column; gap:12px;">`;
-        const todayStr = utils.getLocalISODate(new Date());
+        html += `<div class="card"><h2 style="font-size:24px; color:var(--accent-color);">${c.title}</h2><div class="flex-between" style="font-size:12px; margin-bottom:12px;"><span class="text-muted">${utils.formatDateShort(new Date(c.startDate))} - ${utils.formatDateShort(new Date(c.endDate))}</span></div><div class="progress-bg"><div class="progress-fill" style="width:${pct}%"></div></div>`;
+        html += `<div style="display:flex; justify-content:center; align-items:center; gap:20px; margin-top:24px; margin-bottom:8px;"><button class="btn-icon" style="width:44px; height:44px; font-size:20px;" onclick="app.changeChallengeDay(-1)"><i class="fas fa-chevron-left"></i></button><div style="text-align:center; min-width:140px;"><div style="font-size: 60px; font-weight: 900; line-height: 1; letter-spacing: -2px;">${dayCurrentTarget}<span style="color:var(--text-secondary); font-size: 32px; letter-spacing: 0;">/${dayTotal}</span></div><div class="text-accent" style="font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-top: 8px;">Day ${dayCurrentTarget} ${app.challengeOffset < 0 ? '(Past)' : ''}</div></div><button class="btn-icon" style="width:44px; height:44px; font-size:20px; ${app.challengeOffset >= 0 ? 'opacity:0.2' : ''}" onclick="app.changeChallengeDay(1)" ${app.challengeOffset >= 0 ? 'disabled' : ''}><i class="fas fa-chevron-right"></i></button></div></div>`;
         
-        const prog = utils.getTodayProgram();
-        const isRest = prog.workouts.length === 0;
+        html += `<h3>Checklist for Day ${dayCurrentTarget}</h3><div class="card" style="display:flex; flex-direction:column; gap:12px;">`;
+        const prog = utils.getTodayProgram(); const isRest = prog.workouts.length === 0;
 
         c.goals.forEach(g => {
             let met = false; let label = ''; let isManual = false;
-            if (g.type === 'workout') { const count = store.state.history.workouts.filter(w => utils.getLocalISODate(w.date) === todayStr && !w.isSkipped).length; met = count >= (g.count||1) || isRest; label = `Complete ${g.count||1} Workout(s) (${count}/${g.count||1})`; }
-            else if (g.type === 'weight') { met = store.state.history.bodyweight.some(w => utils.getLocalISODate(w.date) === todayStr); label = `Log Bodyweight`; }
-            else if (g.type === 'nutrition') {
-                const nut = store.state.history.nutrition.find(n => utils.getLocalISODate(n.date) === todayStr); met = !!nut; label = `Track Nutrition`;
-                if (g.targetType === 'min') { met = nut && nut.cal >= g.calories; label += ` (Min ${g.calories} kcal) - Cals: ${nut?nut.cal:0}`; } else if (g.targetType === 'max') { met = nut && nut.cal <= g.calories; label += ` (Max ${g.calories} kcal) - Cals: ${nut?nut.cal:0}`; }
-            } else {
-                isManual = true; met = store.state.history.challengeLogs && store.state.history.challengeLogs[todayStr] && store.state.history.challengeLogs[todayStr][g.id];
-                label = g.type === 'custom' ? (g.title || 'Custom Goal') : `${g.type === 'water' ? 'Drink' : 'Read'} ${g.target || 'Goal'}`;
-            }
+            if (g.type === 'workout') { const count = store.state.history.workouts.filter(w => utils.getLocalISODate(w.date) === viewDateStr && !w.isSkipped && !w.isActivity).length; met = count >= (g.count||1) || isRest; label = `Complete ${g.count||1} Strength Session(s)`; }
+            else if (g.type === 'weight') { met = store.state.history.bodyweight.some(w => utils.getLocalISODate(w.date) === viewDateStr); label = `Log Bodyweight`; }
+            else if (g.type === 'nutrition') { const nut = store.state.history.nutrition.find(n => utils.getLocalISODate(n.date) === viewDateStr); met = !!nut; label = `Track Nutrition`; if (g.targetType === 'min') { met = nut && nut.cal >= g.calories; label += ` (Min ${g.calories} kcal)`; } else if (g.targetType === 'max') { met = nut && nut.cal <= g.calories; label += ` (Max ${g.calories} kcal)`; } } 
+            else if (g.type === 'cardio') { met = store.state.history.cardio.some(c => utils.getLocalISODate(c.date) === viewDateStr); label = `Daily Cardio`; isManual = true; }
+            else { isManual = true; met = store.state.history.challengeLogs && store.state.history.challengeLogs[viewDateStr] && store.state.history.challengeLogs[viewDateStr][g.id]; label = g.type === 'custom' ? (g.title || 'Custom Goal') : `${g.type === 'water' ? 'Drink' : 'Read'} ${g.target || 'Goal'}`; }
+            
             let rowStyle = isManual ? `cursor:pointer; background: ${met ? 'var(--success-dim)' : 'var(--pending-dim)'}; padding: 12px; border-radius: 12px; border: 1px solid ${met ? 'var(--success)' : 'var(--pending)'}; transition: all 0.2s;` : `padding: 12px 0; border-bottom: 1px solid var(--border);`;
-            html += `<div style="display:flex; align-items:center; gap:12px; ${rowStyle}" ${isManual ? `onclick="app.toggleManualGoal('${g.id}', '${todayStr}')"` : ''}><div class="btn-check ${met ? 'completed' : ''}" style="width:32px; height:32px; display:flex; align-items:center; justify-content:center; border-radius:16px; border:2px solid ${met ? 'var(--success)' : 'var(--pending)'}; font-size:14px; background:${met ? 'var(--success)' : 'transparent'}; flex-shrink:0;"><i class="fas fa-check" style="color:${met ? 'var(--bg-color)' : 'transparent'};"></i></div><div style="display:flex; flex-direction:column; min-width:0; flex:1;"><span style="font-size:14px; color:${met ? 'var(--text-primary)' : 'var(--text-secondary)'}; font-weight:${met ? 'bold' : 'normal'}; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${label}</span>${isManual ? `<span style="font-size:10px; color:var(--text-secondary);">${met ? 'Tap to unmark' : 'Tap to complete manually'}</span>` : ''}</div></div>`;
+            html += `<div style="display:flex; align-items:center; gap:12px; ${rowStyle}" ${isManual ? `onclick="app.toggleGoal('${g.id}', '${viewDateStr}', '${g.type}')"` : ''}><div class="btn-check ${met ? 'completed' : ''}" style="width:32px; height:32px; display:flex; align-items:center; justify-content:center; border-radius:16px; border:2px solid ${met ? 'var(--success)' : 'var(--pending)'}; font-size:14px; background:${met ? 'var(--success)' : 'transparent'}; flex-shrink:0;"><i class="fas fa-check" style="color:${met ? 'var(--bg-color)' : 'transparent'};"></i></div><div style="display:flex; flex-direction:column; min-width:0; flex:1;"><span style="font-size:14px; color:${met ? 'var(--text-primary)' : 'var(--text-secondary)'}; font-weight:${met ? 'bold' : 'normal'}; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${label}</span>${isManual ? `<span style="font-size:10px; color:var(--text-secondary);">${met ? 'Tap to unmark' : 'Tap to toggle entry'}</span>` : ''}</div></div>`;
         });
         html += `</div>`; 
         
-        let isStreakSafe = utils.checkDaySuccess(todayStr);
-        if (isStreakSafe) {
-            html += `<div class="streak-box streak-completed" style="cursor:default;"><div class="streak-fire">${app.sym('streak')}</div><div><h2 class="streak-text">Today Complete!</h2><span class="text-muted" style="font-size:12px; color:var(--text-primary);">Streak preserved. Great job.</span></div></div>`; 
-        }
+        let isStreakSafe = utils.checkDaySuccess(viewDateStr);
+        if (isStreakSafe) { html += `<div class="streak-box streak-completed" style="cursor:default;"><div class="streak-fire">${app.sym('streak')}</div><div><h2 class="streak-text">Day Complete!</h2><span class="text-muted" style="font-size:12px; color:var(--text-primary);">All checkmarks logged.</span></div></div>`; }
         return html;
     },
     renderChallengeEditor() {
@@ -596,26 +497,21 @@ const views = {
         html += `<h3>Goals List</h3><p class="text-muted" style="font-size:12px; margin-bottom:12px;">Select what needs to be tracked daily for your streak to continue.</p>`;
         c.goals.forEach((g, i) => {
             if (!g.id) g.id = utils.generateId(); if (!g.createdAt) g.createdAt = utils.getLocalISODate(new Date());
-            let titleStr = g.type === 'workout' ? 'Complete Workout(s)' : g.type === 'weight' ? 'Log Bodyweight' : g.type === 'nutrition' ? 'Track Nutrition' : g.type === 'water' ? 'Drink Water' : g.type === 'reading' ? 'Reading / Learning' : 'Custom Goal';
+            let titleStr = g.type === 'workout' ? 'Complete Session(s)' : g.type === 'cardio' ? 'Daily Cardio' : g.type === 'weight' ? 'Log Bodyweight' : g.type === 'nutrition' ? 'Track Nutrition' : g.type === 'water' ? 'Drink Water' : g.type === 'reading' ? 'Reading / Learning' : 'Custom Goal';
             html += `<div class="card" style="border:1px solid var(--border); padding:12px;"><div class="flex-between" style="margin-bottom:8px;"><h4 style="margin:0; font-size:14px; color:var(--text-primary)">${titleStr}</h4><button class="btn-icon text-accent" style="width:24px; height:24px; font-size:12px;" onclick="app.removeChallengeGoal(${i})"><i class="fas fa-times"></i></button></div>`;
-            if (g.type === 'workout') { html += `<div style="display:flex; align-items:center; gap:8px;"><label class="text-muted" style="font-size:12px;">Daily Workouts Required:</label><input type="number" class="edit-input" style="width:60px; margin:0;" value="${g.count||1}" onchange="app.draftChallenge.goals[${i}].count=parseInt(this.value)"></div>`; }
+            if (g.type === 'workout') { html += `<div style="display:flex; align-items:center; gap:8px;"><label class="text-muted" style="font-size:12px;">Daily Sessions Required:</label><input type="number" class="edit-input" style="width:60px; margin:0;" value="${g.count||1}" onchange="app.draftChallenge.goals[${i}].count=parseInt(this.value)"></div>`; }
             else if (g.type === 'nutrition') { html += `<div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;"><select class="edit-input" style="margin:0; flex:1; min-width:120px;" onchange="app.draftChallenge.goals[${i}].targetType=this.value; app.navigate('challenge-edit');"><option value="none" ${g.targetType==='none'?'selected':''}>Just Log It</option><option value="min" ${g.targetType==='min'?'selected':''}>Eat At Least (Min)</option><option value="max" ${g.targetType==='max'?'selected':''}>Eat At Most (Max)</option></select>`; if (g.targetType !== 'none') { html += `<input type="number" class="edit-input" style="width:80px; margin:0;" placeholder="kcal" value="${g.calories||2500}" onchange="app.draftChallenge.goals[${i}].calories=parseInt(this.value)">`; } html += `</div>`; }
-            else if (g.type === 'water') { html += `<input class="edit-input" style="margin:0;" placeholder="Target (e.g. 1 Gallon, 3 Liters)" value="${g.target||''}" onchange="app.draftChallenge.goals[${i}].target=this.value">`; }
-            else if (g.type === 'reading') { html += `<input class="edit-input" style="margin:0;" placeholder="Target (e.g. 10 Pages, 1 Chapter)" value="${g.target||''}" onchange="app.draftChallenge.goals[${i}].target=this.value">`; }
-            else if (g.type === 'custom') { html += `<input class="edit-input" style="margin:0;" placeholder="Goal Name (e.g. Take Progress Pic)" value="${g.title||''}" onchange="app.draftChallenge.goals[${i}].title=this.value">`; }
+            else if (g.type === 'water' || g.type === 'reading') { html += `<input class="edit-input" style="margin:0;" placeholder="Target (e.g. 10 Pages)" value="${g.target||''}" onchange="app.draftChallenge.goals[${i}].target=this.value">`; }
+            else if (g.type === 'custom') { html += `<input class="edit-input" style="margin:0;" placeholder="Goal Name" value="${g.title||''}" onchange="app.draftChallenge.goals[${i}].title=this.value">`; }
             html += `</div>`;
         });
-        html += `<div style="display:flex; width:100%;"><select id="add-goal-select" class="edit-input" style="margin:0; flex:1; min-width:0; border-top-right-radius:0; border-bottom-right-radius:0;"><option value="workout">Complete Workout(s)</option><option value="weight">Log Bodyweight</option><option value="nutrition">Track Nutrition</option><option value="water">Drink Water (Manual)</option><option value="reading">Reading/Learning (Manual)</option><option value="custom">Custom Goal (Manual)</option></select><button class="btn" style="width:auto; flex-shrink:0; border-top-left-radius:0; border-bottom-left-radius:0;" onclick="app.addChallengeGoal(document.getElementById('add-goal-select').value)">Add Goal</button></div>`;
+        html += `<div style="display:flex; width:100%;"><select id="add-goal-select" class="edit-input" style="margin:0; flex:1; min-width:0; border-top-right-radius:0; border-bottom-right-radius:0;"><option value="workout">Complete Strength Session</option><option value="cardio">Daily Cardio</option><option value="weight">Log Bodyweight</option><option value="nutrition">Track Nutrition</option><option value="water">Drink Water (Manual)</option><option value="reading">Reading/Learning (Manual)</option><option value="custom">Custom Goal (Manual)</option></select><button class="btn" style="width:auto; flex-shrink:0; border-top-left-radius:0; border-bottom-left-radius:0;" onclick="app.addChallengeGoal(document.getElementById('add-goal-select').value)">Add Goal</button></div>`;
         if(store.state.challenge && store.state.challenge.isActive) { html += `<button class="btn" style="background:transparent; border:1px solid var(--accent-color); color:var(--accent-color); margin-top:24px;" onclick="app.endChallenge()">End / Delete Challenge</button>`; } return html;
     },
     renderWorkoutList() {
         let html = `<h1>Your Splits</h1><p class="text-muted mb-4">Select a program to view or edit, or create a new one.</p>`;
-        store.state.routines.forEach(r => {
-            const isActive = r.id === store.state.activeRoutineId;
-            html += `<div class="card" style="cursor:pointer; border-color: ${isActive ? 'var(--accent-color)' : 'var(--border)'}; padding: 20px;" onclick="app.viewRoutine('${r.id}')"><div class="flex-between"><h3 style="margin:0">${r.name}</h3>${isActive ? '<span class="text-accent" style="font-size:12px; font-weight:bold;">ACTIVE</span>' : ''}</div></div>`;
-        });
-        html += `<button class="btn" style="border:1px dashed var(--accent-color); color:var(--accent-color); background:transparent;" onclick="app.createNewRoutine()">+ Create New Split</button>`;
-        return html;
+        store.state.routines.forEach(r => { const isActive = r.id === store.state.activeRoutineId; html += `<div class="card" style="cursor:pointer; border-color: ${isActive ? 'var(--accent-color)' : 'var(--border)'}; padding: 20px;" onclick="app.viewRoutine('${r.id}')"><div class="flex-between"><h3 style="margin:0">${r.name}</h3>${isActive ? '<span class="text-accent" style="font-size:12px; font-weight:bold;">ACTIVE</span>' : ''}</div></div>`; });
+        html += `<button class="btn" style="border:1px dashed var(--accent-color); color:var(--accent-color); background:transparent;" onclick="app.createNewRoutine()">+ Create New Split</button>`; return html;
     },
     renderWorkoutDetail() {
         if (app.isEditingProgram) return this.renderProgramEditor();
@@ -626,18 +522,15 @@ const views = {
         order.forEach(dayIndex => {
             const d = r.days.find(x => x.day === dayIndex) || { day: dayIndex, workouts: [] }; const isToday = d.day === new Date().getDay() && isActive;
             html += `<div class="card" style="${isToday ? 'border-color: var(--accent-color);' : ''}"><div class="flex-between" style="margin-bottom:8px;"><span class="text-muted" style="font-size:12px; text-transform:uppercase">${utils.getDayName(d.day)}</span>${isToday ? '<span class="text-accent" style="font-size:12px; font-weight:bold">TODAY</span>' : ''}</div>`;
-            if (d.workouts.length === 0) { html += `<div class="text-muted">Rest Day ${app.sym('rest')}</div>`; } else { d.workouts.forEach(w => { html += `<div style="margin-top:8px; padding-top:8px; border-top:1px solid var(--border);"><div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;"><h4 style="margin:0;">${w.name}</h4>${w.isActivity ? `<span class="text-accent" style="font-size:10px; border:1px solid var(--accent-color); padding:2px 4px; border-radius:4px;">ACTIVITY</span>` : ''}</div>${w.exercises.map(e => `<div class="text-muted" style="font-size:14px; margin-bottom:2px;">• ${e.name} (${e.targetSets}x${e.targetReps})</div>`).join('')}</div>`; }); }
-            html += `</div>`;
+            if (d.workouts.length === 0) { html += `<div class="text-muted">Rest Day ${app.sym('rest')}</div>`; } else { d.workouts.forEach(w => { html += `<div style="margin-top:8px; padding-top:8px; border-top:1px solid var(--border);"><div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;"><h4 style="margin:0;">${w.name}</h4>${w.isActivity ? `<span class="text-accent" style="font-size:10px; border:1px solid var(--accent-color); padding:2px 4px; border-radius:4px;">ACTIVITY</span>` : ''}</div>${w.exercises.map(e => `<div class="text-muted" style="font-size:14px; margin-bottom:2px;">• ${e.name} (${e.targetSets}x${e.targetReps})</div>`).join('')}</div>`; }); } html += `</div>`;
         }); return html;
     },
     renderProgramEditor() {
-        let html = `<div class="page-header" style="flex-direction:column; align-items:flex-start; gap:12px;"><div class="flex-between" style="width:100%;"><input class="edit-input" style="font-size:24px !important; font-weight:bold; color:var(--accent-color); border:none; background:transparent; padding:0; margin:0; flex:1; min-width:0;" value="${app.draftRoutine.name}" onchange="app.draftRoutine.name = this.value"><div style="display:flex; gap:8px; flex-shrink:0;"><button class="btn btn-sm btn-success" onclick="app.saveProgramEdit()"><i class="fas fa-save"></i> Save</button></div></div>${store.state.routines.length > 1 ? `<button class="btn btn-sm" style="background:transparent; border:1px solid var(--accent-color); color:var(--accent-color); width:100%;" onclick="app.deleteCurrentRoutine()"><i class="fas fa-trash"></i> Delete This Split</button>` : ''}</div><p class="text-muted" style="margin-bottom:16px; font-size:12px;">Customize your schedule. Add workouts or import templates via the "+ Add Workout" dropdowns.</p>`;
-        let allSavedWorkoutsMap = {}; store.state.routines.forEach(r => r.days.forEach(d => d.workouts.forEach(w => { if(!allSavedWorkoutsMap[w.name]) { allSavedWorkoutsMap[w.name] = w; } }))); let uniqueWorkouts = Object.values(allSavedWorkoutsMap);
-        const order = [1, 2, 3, 4, 5, 6, 0];
-        order.forEach((dayIndex) => { 
+        let html = `<div class="page-header" style="flex-direction:column; align-items:flex-start; gap:12px;"><div class="flex-between" style="width:100%;"><input class="edit-input" style="font-size:24px !important; font-weight:bold; color:var(--accent-color); border:none; background:transparent; padding:0; margin:0; flex:1; min-width:0;" value="${app.draftRoutine.name}" onchange="app.draftRoutine.name = this.value"><div style="display:flex; gap:8px; flex-shrink:0;"><button class="btn btn-sm btn-success" onclick="app.saveProgramEdit()"><i class="fas fa-save"></i> Save</button></div></div>${store.state.routines.length > 1 ? `<button class="btn btn-sm" style="background:transparent; border:1px solid var(--accent-color); color:var(--accent-color); width:100%;" onclick="app.deleteCurrentRoutine()"><i class="fas fa-trash"></i> Delete This Split</button>` : ''}</div>`;
+        let allWorkoutsMap = {}; store.state.routines.forEach(r => r.days.forEach(d => d.workouts.forEach(w => { if(!allWorkoutsMap[w.name]) { allWorkoutsMap[w.name] = w; } }))); let uniqueWorkouts = Object.values(allWorkoutsMap);
+        [1, 2, 3, 4, 5, 6, 0].forEach((dayIndex) => { 
             const dIdx = app.draftRoutine.days.findIndex(d => d.day === dayIndex); if(dIdx === -1) return; const day = app.draftRoutine.days[dIdx]; 
-            let addWorkoutDropdown = `<div style="position:relative; display:inline-block;"><select class="edit-input" style="padding: 4px 12px; font-size: 12px !important; margin: 0; background: var(--accent-color); border: none; font-weight: bold; color:var(--bg-color); border-radius:12px; width:auto; text-align:center;" onchange="app.addWorkoutToDay(${dIdx}, this.value); this.value='';"><option value="" disabled selected>+ ADD WORKOUT</option><option value="blank">📝 Blank Workout</option><option value="activity">${app.sym('activity')} Cardio / Activity</option><optgroup label="Import Saved Workout">${uniqueWorkouts.map(w => `<option value="${w.id}">${w.name}</option>`).join('')}</optgroup></select></div>`;
-            html += `<div class="card" style="border: 1px solid var(--accent-color); padding: 12px;"><div class="flex-between" style="margin-bottom: 12px;"><span class="text-muted" style="font-size:12px; text-transform:uppercase; font-weight:bold;">${utils.getDayName(day.day)}</span>${addWorkoutDropdown}</div>`;
+            html += `<div class="card" style="border: 1px solid var(--accent-color); padding: 12px;"><div class="flex-between" style="margin-bottom: 12px;"><span class="text-muted" style="font-size:12px; text-transform:uppercase; font-weight:bold;">${utils.getDayName(day.day)}</span><select class="edit-input" style="padding: 4px 12px; font-size: 12px !important; margin: 0; background: var(--accent-color); border: none; font-weight: bold; color:var(--bg-color); border-radius:12px; width:auto; text-align:center;" onchange="app.addWorkoutToDay(${dIdx}, this.value); this.value='';"><option value="" disabled selected>+ ADD WORKOUT</option><option value="blank">📝 Blank Workout</option><option value="activity">${app.sym('activity')} Cardio / Activity</option><optgroup label="Import Saved Workout">${uniqueWorkouts.map(w => `<option value="${w.id}">${w.name}</option>`).join('')}</optgroup></select></div>`;
             if (day.workouts.length === 0) { html += `<div class="text-muted" style="font-size:14px; margin-bottom:8px;">Rest Day</div>`; } else {
                 day.workouts.forEach((w, wIdx) => {
                     html += `<div style="background: var(--surface-elevated); border-radius: 8px; padding: 12px; margin-bottom: 12px;"><div class="flex-between" style="margin-bottom:8px;"><div style="display:flex; align-items:center; flex:1;"><input class="edit-input" style="font-size:16px !important; font-weight:bold; margin:0; padding:4px 8px; flex:1;" value="${w.name}" onchange="app.updateWorkoutName(${dIdx}, ${wIdx}, this.value)" placeholder="Workout Name">${w.isActivity ? `<span class="text-accent" style="font-size:10px; margin-left:8px; border:1px solid var(--accent-color); padding:2px 4px; border-radius:4px;">ACTIVITY</span>` : ''}</div><button class="btn-icon text-accent" style="width:28px; height:28px; flex-shrink:0; margin-left:8px;" onclick="app.removeWorkoutFromDay(${dIdx}, ${wIdx})"><i class="fas fa-trash"></i></button></div>`;
@@ -647,186 +540,134 @@ const views = {
             } html += `</div>`; 
         }); return html;
     },
+    renderPastWorkoutEditor() {
+        const w = this.draftPastWorkout; if (!w) return `<p>Error loading workout.</p>`;
+        let html = `<div class="page-header"><button class="btn btn-sm btn-icon" onclick="app.navigate('data')"><i class="fas fa-arrow-left"></i></button><h2 style="margin:0; font-size:18px;">Edit Workout Data</h2><button class="btn btn-sm btn-success" onclick="app.savePastWorkout()"><i class="fas fa-save"></i> Save</button></div>`;
+        html += `<div class="card"><label class="text-muted" style="font-size:12px;">Workout Name</label><input type="text" class="edit-input" style="font-weight:bold; margin-bottom:0;" value="${w.name}" onchange="app.draftPastWorkout.name=this.value"></div>`;
+        w.exercises.forEach((ex, exIdx) => {
+            html += `<div class="card"><div class="flex-between" style="margin-bottom:8px;"><h4 style="margin:0;">${ex.name}</h4><button class="btn-icon text-accent" style="width:30px; height:30px;" onclick="app.draftPastWorkout.exercises.splice(${exIdx},1); app.navigate('workout-edit');"><i class="fas fa-trash"></i></button></div>`;
+            ex.sets.forEach((set, setIdx) => {
+                html += `<div style="display:flex; gap:8px; margin-top:8px; align-items:center;">
+                    <span class="text-muted" style="font-size:12px; width:35px;">Set ${setIdx+1}</span>
+                    <input type="number" inputmode="decimal" class="edit-input" style="margin:0; text-align:center;" value="${set.weight}" onchange="app.draftPastWorkout.exercises[${exIdx}].sets[${setIdx}].weight=parseFloat(this.value)||0" placeholder="kg">
+                    <span class="text-muted" style="font-size:12px;">x</span>
+                    <input type="number" inputmode="numeric" class="edit-input" style="margin:0; text-align:center;" value="${set.reps}" onchange="app.draftPastWorkout.exercises[${exIdx}].sets[${setIdx}].reps=parseFloat(this.value)||0" placeholder="reps">
+                    <button class="btn-icon text-accent" style="width:30px; height:30px; font-size:12px; flex-shrink:0;" onclick="app.draftPastWorkout.exercises[${exIdx}].sets.splice(${setIdx},1); app.navigate('workout-edit');"><i class="fas fa-times"></i></button>
+                </div>`;
+            });
+            html += `<button class="btn btn-sm" style="margin-top:12px; width:100%; border:1px dashed var(--border); background:transparent;" onclick="app.draftPastWorkout.exercises[${exIdx}].sets.push({weight:0, reps:0, rir:2, completed:true}); app.navigate('workout-edit');">+ Add Set</button></div>`;
+        }); return html;
+    },
     renderCustomB() { let grouped = utils.getGroupedExercises(); let html = `<div class="page-header"><button class="btn btn-sm btn-icon" onclick="app.navigate('home')"><i class="fas fa-arrow-left"></i></button><h2 style="margin:0; font-size:18px;">Mix Exercises</h2><button class="btn btn-sm btn-success" onclick="app.startCustomMix()">START</button></div>`; Object.keys(grouped).sort().forEach(muscle => { html += `<h3 style="margin-top:16px; color:var(--text-secondary); font-size:14px;">${muscle}</h3><div style="display:flex; flex-direction:column; gap:8px;">`; grouped[muscle].sort((a,b) => a.name.localeCompare(b.name)).forEach(ex => { html += `<label class="data-row flex-between" style="padding:12px; background:var(--surface-color); border-radius:8px; border:1px solid var(--border);"><div><div style="font-weight:bold;">${ex.name}</div><div class="text-muted" style="font-size:12px;">Def: ${ex.targetSets}x${ex.targetReps}</div></div><input type="checkbox" class="cx-checkbox" value="${ex.name}" data-sets="${ex.targetSets}" data-reps="${ex.targetReps}" style="width:24px; height:24px;"></label>`; }); html += `</div>`; }); return html; },
-    renderNutrition() { return `<h1>${app.sym('nutrition') || ''} Daily Nutrition</h1><div class="card"><h3>Log Today's Fuel</h3><div style="display:flex; flex-direction:column; gap:12px; margin-top:16px;"><div><label class="text-muted" style="font-size:12px;">Calories Consumed</label><input type="number" id="nut-cal" class="edit-input" style="font-size:24px !important; font-weight:bold; height:50px; text-align:center;" placeholder="kcal"></div><div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:12px;"><div><label class="text-muted" style="font-size:12px;">Protein (g)</label><input type="number" id="nut-pro" class="edit-input" style="text-align:center"></div><div><label class="text-muted" style="font-size:12px;">Carbs (g)</label><input type="number" id="nut-car" class="edit-input" style="text-align:center"></div><div><label class="text-muted" style="font-size:12px;">Fats (g)</label><input type="number" id="nut-fat" class="edit-input" style="text-align:center"></div></div><div style="margin-top:8px;"><label class="text-muted" style="font-size:12px;">Active Calories Burned</label><input type="number" id="nut-burn" class="edit-input" style="text-align:center" placeholder="kcal (optional)"></div><button class="btn btn-success" style="margin-top:12px;" onclick="app.logNutrition()"><i class="fas fa-save"></i> SAVE MACROS</button></div></div>`; },
+    renderNutrition() { return `<h1>${app.sym('nutrition') || ''} Daily Nutrition</h1><div class="card"><h3>Log Today's Fuel</h3><div style="display:flex; flex-direction:column; gap:12px; margin-top:16px;"><div><label class="text-muted" style="font-size:12px;">Calories Consumed</label><input type="number" id="nut-cal" class="edit-input" style="font-size:24px !important; font-weight:bold; height:50px; text-align:center;" placeholder="kcal"></div><div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:12px;"><div><label class="text-muted" style="font-size:12px;">Protein (g)</label><input type="number" id="nut-pro" class="edit-input" style="text-align:center"></div><div><label class="text-muted" style="font-size:12px;">Carbs (g)</label><input type="number" id="nut-car" class="edit-input" style="text-align:center"></div><div><label class="text-muted" style="font-size:12px;">Fats (g)</label><input type="number" id="nut-fat" class="edit-input" style="text-align:center"></div></div><button class="btn btn-success" style="margin-top:12px;" onclick="app.logNutrition()"><i class="fas fa-save"></i> SAVE MACROS</button></div></div>`; },
     renderProgress() { 
-        let html = `<h1>${app.sym('analytics') || ''} Analytics</h1>
-        <div class="card" style="background: linear-gradient(145deg, var(--pr-bg1), var(--pr-bg2)); border-color: var(--accent-color); box-shadow: 0 4px 16px var(--accent-dim);">
-            <h2 style="margin:0; color:var(--accent-color); font-style:italic; margin-bottom: 16px;">${app.sym('pr')} PR ZONE</h2>
-            <div style="background:var(--surface-color); padding: 12px; border-radius: calc(var(--card-radius) - 4px); margin-bottom: 16px; border: 1px solid var(--accent-dim);">
-                <h3 style="font-size:14px; margin:0;"><i class="fas fa-chart-line text-accent"></i> Estimated PR's (e1RM)</h3>
-                <p class="text-muted" style="font-size:11px; margin-top:4px;">Uses the standard Epley formula dynamically applied to your best sets per session.</p>
-                <canvas id="e1rmChart" style="margin-top:12px;"></canvas>
-            </div>
-            <h3 style="font-size:14px; margin:0;">${app.sym('success')} Recorded PR's</h3>
-            <p class="text-muted" style="font-size:11px; margin-top:4px; margin-bottom: 12px;">Tap a box to log or update your all-time actual PR.</p>
-            <div style="display:flex; gap:8px;">
-                <div class="streak-box" style="flex:1; flex-direction:column; padding:12px; margin:0; border-color:var(--info); background: var(--info-dim);" onclick="app.editPR('Bench')">
-                    <span class="text-muted" style="font-size:12px; text-transform:uppercase;">Bench</span>
-                    <span style="font-size:22px; font-weight:bold; color:var(--text-primary);">${store.state.prs.Bench || 0}<span style="font-size:12px; color:var(--text-secondary);">kg</span></span>
-                </div>
-                <div class="streak-box" style="flex:1; flex-direction:column; padding:12px; margin:0; border-color:var(--accent-color); background: var(--accent-dim);" onclick="app.editPR('Squat')">
-                    <span class="text-muted" style="font-size:12px; text-transform:uppercase;">Squat</span>
-                    <span style="font-size:22px; font-weight:bold; color:var(--text-primary);">${store.state.prs.Squat || 0}<span style="font-size:12px; color:var(--text-secondary);">kg</span></span>
-                </div>
-                <div class="streak-box" style="flex:1; flex-direction:column; padding:12px; margin:0; border-color:var(--success); background: var(--success-dim);" onclick="app.editPR('Deadlift')">
-                    <span class="text-muted" style="font-size:12px; text-transform:uppercase;">Deadlift</span>
-                    <span style="font-size:22px; font-weight:bold; color:var(--text-primary);">${store.state.prs.Deadlift || 0}<span style="font-size:12px; color:var(--text-secondary);">kg</span></span>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card" style="background: linear-gradient(145deg, var(--bw-bg1), var(--bw-bg2)); border-color: var(--warning); box-shadow: 0 4px 16px var(--warning-dim);">
-            <h2 style="margin:0; color:var(--warning); font-style:italic; margin-bottom: 8px;">${app.sym('bw')} BODYWEIGHT</h2>
-            <p class="text-muted" style="font-size:11px; margin-bottom:12px;">Weekly average weight to accurately track bulks/cuts.</p>
-            <div style="background:var(--surface-color); padding: 12px; border-radius: calc(var(--card-radius) - 4px); border: 1px solid var(--warning-dim);">
-                <canvas id="bwTimeChart"></canvas>
-            </div>
-        </div>
-
-        <div class="card" style="background: linear-gradient(145deg, var(--vol-bg1), var(--vol-bg2)); border-color: var(--info); box-shadow: 0 4px 16px var(--info-dim);">
-            <h2 style="margin:0; color:var(--info); font-style:italic; margin-bottom: 8px;">${app.sym('vol')} MUSCLE VOLUME</h2>
-            <p class="text-muted" style="font-size:11px; margin-bottom:12px;">Total kg lifted per muscle group during each exact session.</p>
-            <div style="background:var(--surface-color); padding: 12px; border-radius: calc(var(--card-radius) - 4px); border: 1px solid var(--info-dim);">
-                <canvas id="muscleTimeChart"></canvas>
-            </div>
-        </div>`; 
-        
+        let html = `<h1>${app.sym('analytics') || ''} Analytics</h1><div class="card" style="background: linear-gradient(145deg, var(--pr-bg1), var(--pr-bg2)); border-color: var(--accent-color); box-shadow: 0 4px 16px var(--accent-dim);"><h2 style="margin:0; color:var(--accent-color); font-style:italic; margin-bottom: 16px;">${app.sym('pr')} PR ZONE</h2><div style="background:var(--surface-color); padding: 12px; border-radius: calc(var(--card-radius) - 4px); margin-bottom: 16px; border: 1px solid var(--accent-dim);"><h3 style="font-size:14px; margin:0;"><i class="fas fa-chart-line text-accent"></i> Estimated PR's (e1RM)</h3><p class="text-muted" style="font-size:11px; margin-top:4px;">Uses the Epley formula dynamically applied to your best sets.</p><canvas id="e1rmChart" style="margin-top:12px;"></canvas></div><h3 style="font-size:14px; margin:0;">${app.sym('success')} Recorded PR's</h3><div style="display:flex; gap:8px; margin-top:12px;"><div class="streak-box" style="flex:1; flex-direction:column; padding:12px; margin:0; border-color:var(--info); background: var(--info-dim);" onclick="app.editPR('Bench')"><span class="text-muted" style="font-size:12px; text-transform:uppercase;">Bench</span><span style="font-size:22px; font-weight:bold; color:var(--text-primary);">${store.state.prs.Bench || 0}<span style="font-size:12px; color:var(--text-secondary);">kg</span></span></div><div class="streak-box" style="flex:1; flex-direction:column; padding:12px; margin:0; border-color:var(--accent-color); background: var(--accent-dim);" onclick="app.editPR('Squat')"><span class="text-muted" style="font-size:12px; text-transform:uppercase;">Squat</span><span style="font-size:22px; font-weight:bold; color:var(--text-primary);">${store.state.prs.Squat || 0}<span style="font-size:12px; color:var(--text-secondary);">kg</span></span></div><div class="streak-box" style="flex:1; flex-direction:column; padding:12px; margin:0; border-color:var(--success); background: var(--success-dim);" onclick="app.editPR('Deadlift')"><span class="text-muted" style="font-size:12px; text-transform:uppercase;">Deadlift</span><span style="font-size:22px; font-weight:bold; color:var(--text-primary);">${store.state.prs.Deadlift || 0}<span style="font-size:12px; color:var(--text-secondary);">kg</span></span></div></div></div><div class="card" style="background: linear-gradient(145deg, var(--bw-bg1), var(--bw-bg2)); border-color: var(--warning); box-shadow: 0 4px 16px var(--warning-dim);"><h2 style="margin:0; color:var(--warning); font-style:italic; margin-bottom: 8px;">${app.sym('bw')} BODYWEIGHT</h2><div style="background:var(--surface-color); padding: 12px; border-radius: calc(var(--card-radius) - 4px); border: 1px solid var(--warning-dim);"><canvas id="bwTimeChart"></canvas></div></div><div class="card" style="background: linear-gradient(145deg, var(--vol-bg1), var(--vol-bg2)); border-color: var(--info); box-shadow: 0 4px 16px var(--info-dim);"><h2 style="margin:0; color:var(--info); font-style:italic; margin-bottom: 8px;">${app.sym('vol')} MUSCLE VOLUME</h2><div style="background:var(--surface-color); padding: 12px; border-radius: calc(var(--card-radius) - 4px); border: 1px solid var(--info-dim);"><canvas id="muscleTimeChart"></canvas></div></div>`; 
         setTimeout(() => { 
             const colorAccent = utils.getCssVar('--accent-color', '#ff3b30'); const colorSuccess = utils.getCssVar('--success', '#34c759'); const colorWarning = utils.getCssVar('--warning', '#ff9500'); const colorInfo = utils.getCssVar('--info', '#007aff'); const colorTextSec = utils.getCssVar('--text-secondary', '#8e8e93'); const colorGrid = utils.getCssVar('--border', '#333336'); const ff = utils.getCssVar('--font-family', 'sans-serif');
-
             const e1rmCtx = document.getElementById('e1rmChart');
             if(e1rmCtx) {
-                const e1Data = utils.getE1RMHistory(); let allTs = new Set();
-                [...e1Data.bench, ...e1Data.squat, ...e1Data.deadlift].forEach(x => allTs.add(x.ts));
-                let sortedTs = Array.from(allTs).sort((a,b)=>a-b); let e1Labels = sortedTs.map(ts => utils.formatDateShort(new Date(ts)));
-                let mapData = (arr) => sortedTs.map(ts => { let match = arr.find(x => x.ts === ts); return match ? match.e1rm.toFixed(1) : null; });
+                const e1Data = utils.getE1RMHistory(); let allTs = new Set(); [...e1Data.bench, ...e1Data.squat, ...e1Data.deadlift].forEach(x => allTs.add(x.ts)); let sortedTs = Array.from(allTs).sort((a,b)=>a-b); let e1Labels = sortedTs.map(ts => utils.formatDateShort(new Date(ts))); let mapData = (arr) => sortedTs.map(ts => { let match = arr.find(x => x.ts === ts); return match ? match.e1rm.toFixed(1) : null; });
                 new Chart(e1rmCtx, { type: 'line', data: { labels: e1Labels, datasets: [ { label: 'Bench', data: mapData(e1Data.bench), borderColor: colorInfo, backgroundColor: colorInfo, tension: 0.3, borderWidth: 2, spanGaps: true }, { label: 'Squat', data: mapData(e1Data.squat), borderColor: colorAccent, backgroundColor: colorAccent, tension: 0.3, borderWidth: 2, spanGaps: true }, { label: 'Deadlift', data: mapData(e1Data.deadlift), borderColor: colorSuccess, backgroundColor: colorSuccess, tension: 0.3, borderWidth: 2, spanGaps: true } ]}, options: { responsive: true, plugins: { legend: { position: 'top', labels: { color: colorTextSec, boxWidth: 12, font: {family: ff} } } }, scales: { y: { grid: { color: colorGrid }, ticks: {font: {family: ff}, color: colorTextSec} }, x: { grid: { display: false }, ticks: {font: {family: ff}, color: colorTextSec} } } } });
             }
-
             const bwData = utils.getWeeklyData(store.state.history.bodyweight); const bwWeeks = Object.keys(bwData).sort(); const bwLabels = bwWeeks.map(w => utils.formatDateShort(new Date(parseInt(w)))); const bwAverages = bwWeeks.map(w => { const entries = bwData[w].entries; const sum = entries.reduce((acc, e) => acc + (parseFloat(e.weight) || 0), 0); return sum / entries.length; }); const bwCtx = document.getElementById('bwTimeChart'); if(bwCtx && bwLabels.length > 0) { new Chart(bwCtx, { type: 'line', data: { labels: bwLabels, datasets: [{ label: 'Avg Weight (kg)', data: bwAverages, borderColor: colorWarning, backgroundColor: colorWarning, tension: 0.3, borderWidth: 2 }] }, options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { grid: { color: colorGrid }, ticks: {font: {family: ff}, color: colorTextSec} }, x: { grid: { display: false }, ticks: {font: {family: ff}, color: colorTextSec} } } } }); } 
-            
-            const musData = utils.getSessionMuscleVolume(); const musKeys = Object.keys(musData.sessions).sort((a,b) => a - b); const musLabels = musKeys.map(k => musData.sessions[k].label); 
-            const CHAT_COLORS = [colorAccent, colorInfo, colorSuccess, colorWarning, utils.getCssVar('--text-primary', '#fff'), '#af52de', '#5ac8fa'];
-            const musDatasets = musData.muscles.map((muscle, i) => { return { label: muscle, data: musKeys.map(k => musData.sessions[k].vols[muscle] || null), borderColor: CHAT_COLORS[i % CHAT_COLORS.length], backgroundColor: CHAT_COLORS[i % CHAT_COLORS.length], tension: 0.3, borderWidth: 2, spanGaps: true }; }); const musCtx = document.getElementById('muscleTimeChart'); if(musCtx && musLabels.length > 0) { new Chart(musCtx, { type: 'line', data: { labels: musLabels, datasets: musDatasets }, options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { color: colorTextSec, boxWidth: 12, font: {family: ff} } } }, scales: { y: { grid: { color: colorGrid }, ticks: {font: {family: ff}, color: colorTextSec} }, x: { grid: { display: false }, ticks: {font: {family: ff}, color: colorTextSec} } } } }); } 
-        }, 100); 
-        return html; 
+            const musData = utils.getSessionMuscleVolume(); const musKeys = Object.keys(musData.sessions).sort((a,b) => a - b); const musLabels = musKeys.map(k => musData.sessions[k].label); const CHAT_COLORS = [colorAccent, colorInfo, colorSuccess, colorWarning, utils.getCssVar('--text-primary', '#fff'), '#af52de', '#5ac8fa']; const musDatasets = musData.muscles.map((muscle, i) => { return { label: muscle, data: musKeys.map(k => musData.sessions[k].vols[muscle] || null), borderColor: CHAT_COLORS[i % CHAT_COLORS.length], backgroundColor: CHAT_COLORS[i % CHAT_COLORS.length], tension: 0.3, borderWidth: 2, spanGaps: true }; }); const musCtx = document.getElementById('muscleTimeChart'); if(musCtx && musLabels.length > 0) { new Chart(musCtx, { type: 'line', data: { labels: musLabels, datasets: musDatasets }, options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { color: colorTextSec, boxWidth: 12, font: {family: ff} } } }, scales: { y: { grid: { color: colorGrid }, ticks: {font: {family: ff}, color: colorTextSec} }, x: { grid: { display: false }, ticks: {font: {family: ff}, color: colorTextSec} } } } }); } 
+        }, 100); return html; 
     },
     renderData() {
         let html = `<h1>${app.sym('data') || ''} Data Management</h1><button class="btn" style="margin-bottom:16px;" onclick="app.toggleDataTab('training')"><i class="fas fa-dumbbell"></i> Training History</button>`;
-        if (app.activeDataTab === 'training') { const workouts = [...store.state.history.workouts].reverse(); if (workouts.length === 0) html += `<p class="text-muted" style="margin-bottom:16px;">No workouts logged yet.</p>`; workouts.forEach(w => { if(w.isSkipped) { html += `<div class="card" style="border-left: 4px solid var(--warning); padding: 12px 16px;"><div class="flex-between"><h3 style="margin:0; color:var(--text-primary)">${w.name}</h3><span class="text-muted" style="font-size:12px">${utils.formatDate(w.date)}</span></div></div>`; } else if (w.isActivity) { html += `<div class="card" style="border-left: 4px solid var(--success); padding: 12px 16px;"><div class="flex-between"><h3 style="margin:0; color:var(--text-primary)">${w.name}</h3><span class="text-muted" style="font-size:12px">${utils.formatDate(w.date)}</span></div><div style="margin-top:8px; display:flex; gap:16px;" class="text-muted"><span><i class="fas fa-clock"></i> ${w.duration}m</span><span>${app.sym('activity')} Activity</span></div></div>`; } else { const vol = (w.exercises||[]).reduce((acc, ex) => acc + utils.calcVolume(ex.sets), 0); const sets = (w.exercises||[]).reduce((acc, ex) => acc + ex.sets.length, 0); html += `<div class="card"><div class="flex-between"><h3 style="margin:0; color:var(--text-primary)">${w.name}</h3><span class="text-muted" style="font-size:12px">${utils.formatDate(w.date)}</span></div><div style="margin-top:8px; display:flex; gap:16px;" class="text-muted"><span><i class="fas fa-clock"></i> ${w.duration}m</span><span>${app.sym('vol')} ${sets} sets</span><span>${app.sym('bw')} ${(vol/1000).toFixed(1)}k kg</span></div></div>`; } }); }
+        if (app.activeDataTab === 'training') { 
+            const workouts = [...store.state.history.workouts].reverse(); if (workouts.length === 0) html += `<p class="text-muted" style="margin-bottom:16px;">No workouts logged yet.</p>`; 
+            workouts.forEach(w => { 
+                let inner = `<div class="flex-between"><h3 style="margin:0; color:var(--text-primary)">${w.name}</h3><span class="text-muted" style="font-size:12px">${utils.formatDate(w.date)}</span></div>`;
+                if(w.isSkipped) { html += `<div class="card" style="border-left: 4px solid var(--warning); padding: 12px 16px;">${inner}</div>`; } 
+                else if (w.isActivity) { html += `<div class="card" style="border-left: 4px solid var(--success); padding: 12px 16px;">${inner}<div style="margin-top:8px; display:flex; gap:16px;" class="text-muted"><span><i class="fas fa-clock"></i> ${w.duration}m</span><span>${app.sym('activity')} Activity</span></div></div>`; } 
+                else { const vol = (w.exercises||[]).reduce((acc, ex) => acc + utils.calcVolume(ex.sets), 0); const sets = (w.exercises||[]).reduce((acc, ex) => acc + ex.sets.length, 0); html += `<div class="card" style="cursor:pointer; border: 1px solid var(--border);" onclick="app.editPastWorkout('${w.id}')">${inner}<div style="margin-top:8px; display:flex; gap:16px;" class="text-muted"><span><i class="fas fa-clock"></i> ${w.duration}m</span><span>${app.sym('vol')} ${sets} sets</span><span>${app.sym('bw')} ${(vol/1000).toFixed(1)}k kg</span></div><div class="text-accent" style="font-size:10px; text-transform:uppercase; margin-top:8px; font-weight:bold;"><i class="fas fa-pen"></i> Tap to edit sets/reps</div></div>`; } 
+            }); 
+        }
+        
         html += `<button class="btn" style="margin-bottom:16px;" onclick="app.toggleDataTab('bodyweight')"><i class="fas fa-weight-scale"></i> Bodyweight History</button>`;
-        if (app.activeDataTab === 'bodyweight') { const weeklyBW = utils.getWeeklyData(store.state.history.bodyweight); const sortedWeeks = Object.keys(weeklyBW).sort((a,b) => b - a); if (sortedWeeks.length === 0) html += `<p class="text-muted" style="margin-bottom:16px;">No bodyweight data logged.</p>`; sortedWeeks.forEach(mon => { html += `<div class="card"><h3 style="margin-bottom:12px;">Week of ${utils.formatDateShort(new Date(parseInt(mon)))}</h3>`; const entries = weeklyBW[mon].entries.sort((a,b) => new Date(b.date) - new Date(a.date)); entries.forEach(entry => { const d = new Date(entry.date); html += `<div class="data-row flex-between"><span class="text-muted" style="width: 80px; font-size:12px;">${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getDay()]} ${utils.formatDateShort(d)}</span><div style="display:flex; gap:8px; align-items:center;"><input type="number" inputmode="decimal" class="inline-edit" style="width:60px; font-size:16px !important;" value="${entry.weight}" onchange="app.editEntry('bodyweight', '${entry.date}', 'weight', this.value)"><span class="text-muted">kg</span></div><button class="btn-icon" style="color:var(--accent-color); width:30px; height:30px;" onclick="app.deleteEntry('bodyweight', '${entry.date}')"><i class="fas fa-trash"></i></button></div>`; }); html += `</div>`; }); }
+        if (app.activeDataTab === 'bodyweight') { 
+            html += `<div class="card" style="padding:12px;"><h4 style="margin-top:0; margin-bottom:8px; font-size:14px; color:var(--accent-color);">+ Add Historical Entry</h4><div style="display:flex; gap:8px;"><input type="date" id="past-bw-date" class="edit-input" style="margin:0; font-size:14px !important; flex:2;" value="${utils.getLocalISODate(new Date())}"><input type="number" inputmode="decimal" id="past-bw-val" class="edit-input" style="margin:0; flex:1;" placeholder="kg"><button class="btn btn-sm btn-success" style="padding: 0 16px;" onclick="app.addPastBodyweight()">Add</button></div></div>`;
+            const weeklyBW = utils.getWeeklyData(store.state.history.bodyweight); const sortedWeeks = Object.keys(weeklyBW).sort((a,b) => b - a); if (sortedWeeks.length === 0) html += `<p class="text-muted" style="margin-bottom:16px;">No bodyweight data logged.</p>`; 
+            sortedWeeks.forEach(mon => { html += `<div class="card"><h3 style="margin-bottom:12px;">Week of ${utils.formatDateShort(new Date(parseInt(mon)))}</h3>`; const entries = weeklyBW[mon].entries.sort((a,b) => new Date(b.date) - new Date(a.date)); entries.forEach(entry => { const d = new Date(entry.date); html += `<div class="data-row flex-between"><span class="text-muted" style="width: 80px; font-size:12px;">${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getDay()]} ${utils.formatDateShort(d)}</span><div style="display:flex; gap:8px; align-items:center;"><input type="number" inputmode="decimal" class="inline-edit" style="width:60px; font-size:16px !important;" value="${entry.weight}" onchange="app.editEntry('bodyweight', '${entry.date}', 'weight', this.value)"><span class="text-muted">kg</span></div><button class="btn-icon" style="color:var(--accent-color); width:30px; height:30px;" onclick="app.deleteEntry('bodyweight', '${entry.date}')"><i class="fas fa-trash"></i></button></div>`; }); html += `</div>`; }); 
+        }
+        
         html += `<button class="btn" style="margin-bottom:16px;" onclick="app.toggleDataTab('nutrition')"><i class="fas fa-apple-whole"></i> Nutrition History</button>`;
-        if (app.activeDataTab === 'nutrition') { const weeklyNut = utils.getWeeklyData(store.state.history.nutrition); const sortedWeeks = Object.keys(weeklyNut).sort((a,b) => b - a); if (sortedWeeks.length === 0) html += `<p class="text-muted" style="margin-bottom:16px;">No nutrition data logged.</p>`; sortedWeeks.forEach(mon => { html += `<div class="card" style="padding:12px;"><h3 style="margin-bottom:8px;">Week of ${utils.formatDateShort(new Date(parseInt(mon)))}</h3><div class="nut-grid text-muted" style="border-bottom:1px solid var(--border); padding-bottom:4px; margin-bottom:4px;"><div class="nut-label">Date</div><div class="nut-label">Kcal</div><div class="nut-label">Pro</div><div class="nut-label">Car</div><div class="nut-label">Fat</div><div></div></div>`; const entries = weeklyNut[mon].entries.sort((a,b) => new Date(b.date) - new Date(a.date)); entries.forEach(entry => { const d = new Date(entry.date); html += `<div class="nut-grid data-row" style="padding: 6px 0;"><span class="text-muted" style="font-size:11px;">${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getDay()]} ${d.getDate()}</span><input type="number" class="inline-edit" value="${entry.cal||0}" onchange="app.editEntry('nutrition', '${entry.date}', 'cal', this.value)"><input type="number" class="inline-edit" value="${entry.pro||0}" onchange="app.editEntry('nutrition', '${entry.date}', 'pro', this.value)"><input type="number" class="inline-edit" value="${entry.car||0}" onchange="app.editEntry('nutrition', '${entry.date}', 'car', this.value)"><input type="number" class="inline-edit" value="${entry.fat||0}" onchange="app.editEntry('nutrition', '${entry.date}', 'fat', this.value)"><button class="btn-icon" style="color:var(--accent-color); width:24px; height:24px; font-size:12px;" onclick="app.deleteEntry('nutrition', '${entry.date}')"><i class="fas fa-trash"></i></button></div>`; }); html += `</div>`; }); }
+        if (app.activeDataTab === 'nutrition') { 
+            html += `<div class="card" style="padding:12px;"><h4 style="margin-top:0; margin-bottom:8px; font-size:14px; color:var(--accent-color);">+ Add Historical Entry</h4><div style="display:flex; gap:8px; flex-wrap:wrap;"><input type="date" id="past-nut-date" class="edit-input" style="margin:0; font-size:14px !important; min-width:140px; flex:1;" value="${utils.getLocalISODate(new Date())}"><input type="number" id="past-nut-cal" class="edit-input" style="margin:0; width:60px; flex:1;" placeholder="Cal"><input type="number" id="past-nut-pro" class="edit-input" style="margin:0; width:60px; flex:1;" placeholder="Pro"><input type="number" id="past-nut-car" class="edit-input" style="margin:0; width:60px; flex:1;" placeholder="Car"><input type="number" id="past-nut-fat" class="edit-input" style="margin:0; width:60px; flex:1;" placeholder="Fat"><button class="btn btn-sm btn-success" style="width:100%; margin-top:4px;" onclick="app.addPastNutrition()">Add Data</button></div></div>`;
+            const weeklyNut = utils.getWeeklyData(store.state.history.nutrition); const sortedWeeks = Object.keys(weeklyNut).sort((a,b) => b - a); if (sortedWeeks.length === 0) html += `<p class="text-muted" style="margin-bottom:16px;">No nutrition data logged.</p>`; 
+            sortedWeeks.forEach(mon => { html += `<div class="card" style="padding:12px;"><h3 style="margin-bottom:8px;">Week of ${utils.formatDateShort(new Date(parseInt(mon)))}</h3><div class="nut-grid text-muted" style="border-bottom:1px solid var(--border); padding-bottom:4px; margin-bottom:4px;"><div class="nut-label">Date</div><div class="nut-label">Kcal</div><div class="nut-label">Pro</div><div class="nut-label">Car</div><div class="nut-label">Fat</div><div></div></div>`; const entries = weeklyNut[mon].entries.sort((a,b) => new Date(b.date) - new Date(a.date)); entries.forEach(entry => { const d = new Date(entry.date); html += `<div class="nut-grid data-row" style="padding: 6px 0;"><span class="text-muted" style="font-size:11px;">${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getDay()]} ${d.getDate()}</span><input type="number" class="inline-edit" value="${entry.cal||0}" onchange="app.editEntry('nutrition', '${entry.date}', 'cal', this.value)"><input type="number" class="inline-edit" value="${entry.pro||0}" onchange="app.editEntry('nutrition', '${entry.date}', 'pro', this.value)"><input type="number" class="inline-edit" value="${entry.car||0}" onchange="app.editEntry('nutrition', '${entry.date}', 'car', this.value)"><input type="number" class="inline-edit" value="${entry.fat||0}" onchange="app.editEntry('nutrition', '${entry.date}', 'fat', this.value)"><button class="btn-icon" style="color:var(--accent-color); width:24px; height:24px; font-size:12px;" onclick="app.deleteEntry('nutrition', '${entry.date}')"><i class="fas fa-trash"></i></button></div>`; }); html += `</div>`; }); 
+        }
         
         let t = store.state.settings.theme;
-        html += `<div style="margin-top:40px; padding-top:20px; border-top:1px solid var(--border);">
-            <h3 style="margin-bottom: 12px;"><i class="fas fa-palette"></i> App Theme</h3>
-            <p class="text-muted" style="font-size:12px; margin-bottom:16px;">Customize background, icons, fonts, and emojis dynamically.</p>
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
-                <button class="btn ${t==='basic'?'btn-primary':''}" style="${t!=='basic'?'background:var(--surface-elevated)':''}" onclick="app.setTheme('basic')">🔴 Basic</button>
-                <button class="btn ${t==='cyberpunk'?'btn-primary':''}" style="${t!=='cyberpunk'?'background:var(--surface-elevated)':''}" onclick="app.setTheme('cyberpunk')">👾 Cyberpunk</button>
-                <button class="btn ${t==='midnight'?'btn-primary':''}" style="${t!=='midnight'?'background:var(--surface-elevated)':''}" onclick="app.setTheme('midnight')">🌌 Midnight</button>
-                <button class="btn ${t==='tactical'?'btn-primary':''}" style="${t!=='tactical'?'background:var(--surface-elevated)':''}" onclick="app.setTheme('tactical')">🌲 Tactical</button>
-                <button class="btn ${t==='iron'?'btn-primary':''}" style="grid-column: span 2; ${t!=='iron'?'background:var(--surface-elevated)':''}" onclick="app.setTheme('iron')">⛓️ Iron (Mono)</button>
-            </div>
-        </div>`;
-
-        html += `<div style="margin-top:40px; padding-top:20px; border-top:1px solid var(--border);"><h3 style="margin-bottom: 12px;">Backups</h3><p class="text-muted" style="font-size:12px; margin-bottom:12px;">Save your data to your phone's Files to prevent losing it if your browser cache is cleared.</p><div style="display:flex; gap:12px; margin-bottom:24px;"><button class="btn btn-success" style="flex:1;" onclick="app.exportData()"><i class="fas fa-download"></i> Export Data</button><label class="btn" style="flex:1; background:var(--surface-elevated); margin:0; cursor:pointer;"><i class="fas fa-upload"></i> Import<input type="file" accept=".json" style="display:none;" onchange="app.importData(event)"></label></div><button class="btn" style="background:transparent; border:1px solid var(--accent-color); color:var(--accent-color);" onclick="app.resetData()"><i class="fas fa-triangle-exclamation"></i> FACTORY RESET APP</button></div>`; return html;
+        html += `<div style="margin-top:40px; padding-top:20px; border-top:1px solid var(--border);"><h3 style="margin-bottom: 12px;"><i class="fas fa-palette"></i> App Theme</h3><div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;"><button class="btn ${t==='basic'?'btn-primary':''}" style="${t!=='basic'?'background:var(--surface-elevated)':''}" onclick="app.setTheme('basic')">🔴 Basic</button><button class="btn ${t==='cyberpunk'?'btn-primary':''}" style="${t!=='cyberpunk'?'background:var(--surface-elevated)':''}" onclick="app.setTheme('cyberpunk')">👾 Cyberpunk</button><button class="btn ${t==='midnight'?'btn-primary':''}" style="${t!=='midnight'?'background:var(--surface-elevated)':''}" onclick="app.setTheme('midnight')">🌌 Midnight</button><button class="btn ${t==='tactical'?'btn-primary':''}" style="${t!=='tactical'?'background:var(--surface-elevated)':''}" onclick="app.setTheme('tactical')">🌲 Tactical</button><button class="btn ${t==='iron'?'btn-primary':''}" style="grid-column: span 2; ${t!=='iron'?'background:var(--surface-elevated)':''}" onclick="app.setTheme('iron')">⛓️ Iron (Mono)</button></div></div>`;
+        html += `<div style="margin-top:40px; padding-top:20px; border-top:1px solid var(--border);"><h3 style="margin-bottom: 12px;">Backups</h3><div style="display:flex; gap:12px; margin-bottom:24px;"><button class="btn btn-success" style="flex:1;" onclick="app.exportData()"><i class="fas fa-download"></i> Export Data</button><label class="btn" style="flex:1; background:var(--surface-elevated); margin:0; cursor:pointer;"><i class="fas fa-upload"></i> Import<input type="file" accept=".json" style="display:none;" onchange="app.importData(event)"></label></div><button class="btn" style="background:transparent; border:1px solid var(--accent-color); color:var(--accent-color);" onclick="app.resetData()"><i class="fas fa-triangle-exclamation"></i> FACTORY RESET APP</button></div>`; return html;
     }
 };
 
 const app = {
-    isEditingProgram: false, viewingRoutineId: null, draftRoutine: null, activeDataTab: null, customDraftTitle: '', draftChallenge: null, currentView: 'home',
+    isEditingProgram: false, viewingRoutineId: null, draftRoutine: null, activeDataTab: null, customDraftTitle: '', draftChallenge: null, currentView: 'home', editingPastWorkoutId: null, draftPastWorkout: null, challengeOffset: 0,
     init() { store.load(); this.setTheme(store.state.settings.theme, false); this.navigate('home'); },
     sym(key) { const t = store.state.settings.theme; return THEME_MAP[t] ? THEME_MAP[t].symbols[key] || THEME_MAP['basic'].symbols[key] : THEME_MAP['basic'].symbols[key]; },
     renderNav() {
         const t = store.state.settings.theme; const icons = THEME_MAP[t] ? THEME_MAP[t].nav : THEME_MAP['basic'].nav;
         const viewsList = [ {id:'home', label:'Home', i:icons[0]}, {id:'workout', label:'Workout', i:icons[1]}, {id:'progress', label:'Analytics', i:icons[2]}, {id:'nutrition', label:'Nutrition', i:icons[3]}, {id:'data', label:'Data', i:icons[4]} ];
-        let navHtml = '';
-        viewsList.forEach(v => {
-            const isActive = this.currentView === v.id || (v.id === 'workout' && this.currentView === 'workout-detail');
-            navHtml += `<div class="nav-item ${isActive ? 'active' : ''}" onclick="app.navigate('${v.id}')"><i class="fas ${v.i}"></i>${v.label}</div>`;
-        });
+        let navHtml = ''; viewsList.forEach(v => { const isActive = this.currentView === v.id || (v.id === 'workout' && this.currentView === 'workout-detail'); navHtml += `<div class="nav-item ${isActive ? 'active' : ''}" onclick="app.navigate('${v.id}')"><i class="fas ${v.i}"></i>${v.label}</div>`; });
         document.getElementById('nav-bar').innerHTML = navHtml;
     },
-    navigate(viewId) { this.currentView = viewId; this.renderNav(); const c = document.getElementById('main-content'); if(viewId==='home') c.innerHTML = views.renderHome(); else if(viewId==='workout') c.innerHTML = views.renderWorkoutList(); else if(viewId==='workout-detail') c.innerHTML = views.renderWorkoutDetail(); else if(viewId==='nutrition') c.innerHTML = views.renderNutrition(); else if(viewId==='progress') c.innerHTML = views.renderProgress(); else if(viewId==='data') c.innerHTML = views.renderData(); else if(viewId==='custom-b') c.innerHTML = views.renderCustomB(); else if(viewId==='challenge') c.innerHTML = views.renderChallenge(); else if(viewId==='challenge-edit') c.innerHTML = views.renderChallengeEditor(); window.scrollTo(0,0); },
+    navigate(viewId) { this.currentView = viewId; this.renderNav(); const c = document.getElementById('main-content'); if(viewId==='home') { this.challengeOffset = 0; c.innerHTML = views.renderHome(); } else if(viewId==='workout') c.innerHTML = views.renderWorkoutList(); else if(viewId==='workout-detail') c.innerHTML = views.renderWorkoutDetail(); else if(viewId==='nutrition') c.innerHTML = views.renderNutrition(); else if(viewId==='progress') c.innerHTML = views.renderProgress(); else if(viewId==='data') c.innerHTML = views.renderData(); else if(viewId==='custom-b') c.innerHTML = views.renderCustomB(); else if(viewId==='challenge') c.innerHTML = views.renderChallenge(); else if(viewId==='challenge-edit') c.innerHTML = views.renderChallengeEditor(); else if(viewId==='workout-edit') c.innerHTML = views.renderPastWorkoutEditor(); window.scrollTo(0,0); },
     setTheme(themeName, render = true) { store.state.settings.theme = themeName; store.save(); document.documentElement.setAttribute('data-theme', themeName); if(render) { this.navigate(this.currentView); } },
     
     showStartOptions() {
-        const activeRoutine = utils.getActiveRoutine();
-        const modal = document.getElementById('start-workout-modal');
-        
-        let workoutsHtml = '';
-        const dayOrder = [1, 2, 3, 4, 5, 6, 0]; // Mon-Sun
-        dayOrder.forEach(dayIndex => {
-            const d = activeRoutine.days.find(x => x.day === dayIndex);
-            if (d && d.workouts && d.workouts.length > 0) {
-                d.workouts.forEach(w => {
-                    workoutsHtml += `<div class="card" style="border-color: var(--accent-color); cursor:pointer; margin-bottom:8px;" onclick="app.startWorkoutById('${w.id}')">
-                        <div class="flex-between">
-                            <h3 style="margin:0;">${w.name}</h3>
-                            <i class="fas fa-play text-accent"></i>
-                        </div>
-                        <p class="text-muted" style="margin-top:4px; font-size:12px;">${utils.getDayName(d.day)} • ${w.isActivity ? 'Cardio / Activity' : `${w.exercises.length} exercises`}</p>
-                    </div>`;
-                });
-            }
-        });
-
-        let html = `
-        <div class="page-header">
-            <button class="btn btn-sm btn-icon" onclick="document.getElementById('start-workout-modal').style.display='none'">
-                <i class="fas fa-times"></i>
-            </button>
-            <h2 style="margin:0; font-size:18px;">Start Session</h2>
-            <div style="width:36px;"></div>
-        </div>
-        <div style="padding: 16px; padding-bottom: 80px;">
-            <h3 style="margin-bottom:12px; color:var(--text-secondary); font-size:14px; text-transform:uppercase;">Select Workout from Split</h3>
-            ${workoutsHtml}
-            
-            <div class="card" style="border: 2px dashed var(--border); cursor:pointer; text-align:center; padding: 16px; margin-top:16px;" onclick="app.logRestDay()">
-                <h4 style="margin:0;">Log Rest Day ${app.sym('rest')}</h4>
-            </div>
-            
-            <h3 style="margin-top:24px; margin-bottom:12px; color:var(--text-secondary); font-size:14px; text-transform:uppercase;">Custom Session</h3>
-            <div style="display:flex; flex-direction:column; gap:12px;">
-                <button class="btn" style="background:var(--surface-elevated); font-size:16px; justify-content:flex-start; padding: 16px;" onclick="app.customFlow('B')">
-                    <span style="margin-right:12px; width:20px;">🔀</span> Mix Custom Exercises
-                </button>
-                <button class="btn" style="background:var(--surface-elevated); font-size:16px; justify-content:flex-start; padding: 16px;" onclick="app.customFlow('C')">
-                    <span style="margin-right:12px; width:20px;">${app.sym('activity')}</span> Other Activity (Cardio, Sport)
-                </button>
-            </div>
-        </div>`;
-        modal.innerHTML = html; 
-        modal.style.display = 'flex';
+        const activeRoutine = utils.getActiveRoutine(); const modal = document.getElementById('start-workout-modal'); let workoutsHtml = '';
+        [1, 2, 3, 4, 5, 6, 0].forEach(dayIndex => { const d = activeRoutine.days.find(x => x.day === dayIndex); if (d && d.workouts && d.workouts.length > 0) { d.workouts.forEach(w => { workoutsHtml += `<div class="card" style="border-color: var(--accent-color); cursor:pointer; margin-bottom:8px;" onclick="app.startWorkoutById('${w.id}')"><div class="flex-between"><h3 style="margin:0;">${w.name}</h3><i class="fas fa-play text-accent"></i></div><p class="text-muted" style="margin-top:4px; font-size:12px;">${utils.getDayName(d.day)} • ${w.isActivity ? 'Cardio / Activity' : `${w.exercises.length} exercises`}</p></div>`; }); } });
+        let html = `<div class="page-header"><button class="btn btn-sm btn-icon" onclick="document.getElementById('start-workout-modal').style.display='none'"><i class="fas fa-times"></i></button><h2 style="margin:0; font-size:18px;">Start Session</h2><div style="width:36px;"></div></div><div style="padding: 16px; padding-bottom: 80px;"><h3 style="margin-bottom:12px; color:var(--text-secondary); font-size:14px; text-transform:uppercase;">Select Workout from Split</h3>${workoutsHtml}<div class="card" style="border: 2px dashed var(--border); cursor:pointer; text-align:center; padding: 16px; margin-top:16px;" onclick="app.logRestDay()"><h4 style="margin:0;">Log Rest Day ${app.sym('rest')}</h4></div><h3 style="margin-top:24px; margin-bottom:12px; color:var(--text-secondary); font-size:14px; text-transform:uppercase;">Custom Session</h3><div style="display:flex; flex-direction:column; gap:12px;"><button class="btn" style="background:var(--surface-elevated); font-size:16px; justify-content:flex-start; padding: 16px;" onclick="app.customFlow('B')"><span style="margin-right:12px; width:20px;">🔀</span> Mix Custom Exercises</button></div></div>`;
+        modal.innerHTML = html; modal.style.display = 'flex';
     },
-    startWorkoutById(id) {
-        const activeRoutine = utils.getActiveRoutine();
-        let workoutToStart = null;
-        activeRoutine.days.forEach(d => { d.workouts.forEach(w => { if (w.id === id) workoutToStart = w; }); });
-        if (workoutToStart) { document.getElementById('start-workout-modal').style.display = 'none'; workoutEngine.start(JSON.parse(JSON.stringify(workoutToStart))); }
+    startWorkoutById(id) { 
+        if (store.state.activeSession) { if (!confirm("You have a workout in progress. Discard it to start a new one?")) return; workoutEngine.discard(true); }
+        const activeRoutine = utils.getActiveRoutine(); let workoutToStart = null; activeRoutine.days.forEach(d => { d.workouts.forEach(w => { if (w.id === id) workoutToStart = w; }); }); 
+        if (workoutToStart) { document.getElementById('start-workout-modal').style.display = 'none'; workoutEngine.start(JSON.parse(JSON.stringify(workoutToStart))); } 
     },
-    logRestDay() { document.getElementById('start-workout-modal').style.display = 'none'; const reason = prompt(`Log Rest Day! ${app.sym('rest')} (e.g. Recovering):`, "Rest"); if(reason !== null) { store.addWorkout({ id: utils.generateId(), date: new Date().toISOString(), name: `Rest Day - ${reason}`, isSkipped: true, duration: 0, exercises: [] }); app.navigate('home'); } },
-    customFlow(type) { document.getElementById('start-workout-modal').style.display = 'none'; const title = prompt("Enter Title for Custom Workout:", type === 'C' ? "Skiing / Netball" : "Custom Session"); if(!title) return; this.customDraftTitle = "Custom Workout - " + title; if (type === 'B') { this.navigate('custom-b'); } else if (type === 'C') { workoutEngine.start({ name: this.customDraftTitle, exercises: [], isActivity: true }); } },
-    startCustomMix() { const checkboxes = document.querySelectorAll('.cx-checkbox:checked'); if(checkboxes.length === 0) { alert("Please select at least one exercise."); return; } let exercises = []; checkboxes.forEach(cb => { exercises.push({ name: cb.value, targetSets: parseInt(cb.getAttribute('data-sets')), targetReps: cb.getAttribute('data-reps') }); }); workoutEngine.start({ name: this.customDraftTitle, exercises: exercises }); },
+    logRestDay() { 
+        if (store.state.activeSession) { if (!confirm("Discard current workout to log a rest day?")) return; workoutEngine.discard(true); }
+        document.getElementById('start-workout-modal').style.display = 'none'; const reason = prompt(`Log Rest Day! ${app.sym('rest')} (e.g. Recovering):`, "Rest"); 
+        if(reason !== null) { store.addWorkout({ id: utils.generateId(), date: new Date().toISOString(), name: `Rest Day - ${reason}`, isSkipped: true, duration: 0, exercises: [] }); app.navigate('home'); } 
+    },
+    customFlow(type) { document.getElementById('start-workout-modal').style.display = 'none'; const title = prompt("Enter Title for Custom Workout:", "Custom Session"); if(!title) return; this.customDraftTitle = "Custom Workout - " + title; this.navigate('custom-b'); },
+    startCustomMix() { 
+        if (store.state.activeSession) { if (!confirm("Discard current workout to start a new one?")) return; workoutEngine.discard(true); }
+        const checkboxes = document.querySelectorAll('.cx-checkbox:checked'); if(checkboxes.length === 0) { alert("Please select at least one exercise."); return; } 
+        let exercises = []; checkboxes.forEach(cb => { exercises.push({ name: cb.value, targetSets: parseInt(cb.getAttribute('data-sets')), targetReps: cb.getAttribute('data-reps') }); }); workoutEngine.start({ name: this.customDraftTitle, exercises: exercises }); 
+    },
+    
     logWeight() { const input = document.getElementById('quick-bw-input'); if (input && input.value) { store.addBodyweight(input.value); input.value = store.state.user.currentWeight; this.navigate('home'); } },
-    logNutrition() { const cal = document.getElementById('nut-cal').value; const pro = document.getElementById('nut-pro').value; const car = document.getElementById('nut-car').value; const fat = document.getElementById('nut-fat').value; const burn = document.getElementById('nut-burn').value; if(!cal) { alert("Please enter at least your calories consumed."); return; } store.addNutrition({ cal, pro, car, fat, burn }); alert(`Nutrition logged! ${app.sym('success')}`); this.navigate('home'); },
+    logNutrition() { const cal = document.getElementById('nut-cal').value; const pro = document.getElementById('nut-pro').value; const car = document.getElementById('nut-car').value; const fat = document.getElementById('nut-fat').value; if(!cal) { alert("Please enter at least your calories."); return; } store.addNutrition({ cal, pro, car, fat }); alert(`Nutrition logged! ${app.sym('success')}`); this.navigate('home'); },
+    
+    logCardio(intensity, dateStr) { store.state.history.cardio.push({ date: dateStr + 'T12:00:00Z', intensity }); store.save(); this.navigate('home'); },
+    removeCardio(dateStr) { store.state.history.cardio = store.state.history.cardio.filter(c => utils.getLocalISODate(c.date) !== dateStr); store.save(); this.navigate('home'); },
+    
+    addPastBodyweight() { const d = document.getElementById('past-bw-date').value; const w = document.getElementById('past-bw-val').value; if(!d || !w) return; store.addBodyweight(w, d + 'T12:00:00Z'); this.navigate('data'); },
+    addPastNutrition() { const d = document.getElementById('past-nut-date').value; const cal = document.getElementById('past-nut-cal').value; const pro = document.getElementById('past-nut-pro').value; const car = document.getElementById('past-nut-car').value; const fat = document.getElementById('past-nut-fat').value; if(!d || !cal) return; store.addNutrition({ cal, pro, car, fat }, d + 'T12:00:00Z'); this.navigate('data'); },
+    
+    editPastWorkout(id) { this.editingPastWorkoutId = id; this.draftPastWorkout = JSON.parse(JSON.stringify(store.state.history.workouts.find(w => w.id === id))); this.navigate('workout-edit'); },
+    savePastWorkout() { const idx = store.state.history.workouts.findIndex(w => w.id === this.editingPastWorkoutId); if (idx > -1) { store.state.history.workouts[idx] = this.draftPastWorkout; store.save(); } this.editingPastWorkoutId = null; this.draftPastWorkout = null; this.navigate('data'); },
+    
     editEntry(type, date, field, val) { if(type === 'bodyweight') store.updateBodyweight(date, val); else if (type === 'nutrition') store.updateNutrition(date, field, val); this.navigate('data'); }, deleteEntry(type, date) { if(confirm("Delete this entry forever?")) { store.deleteEntry(type, date); this.navigate('data'); } }, toggleDataTab(tabName) { this.activeDataTab = (this.activeDataTab === tabName) ? null : tabName; this.navigate('data'); }, resetData() { if(confirm("WARNING: This will delete all history and reset the app. Are you sure?")) { localStorage.removeItem('irontrack_state'); location.reload(); } },
-    exportData() { const dataStr = JSON.stringify(store.state, null, 2); const blob = new Blob([dataStr], { type: "application/json" }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `IronTrack_Backup_${utils.getLocalISODate(new Date())}.json`; a.click(); URL.revokeObjectURL(url); }, importData(event) { const file = event.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = (e) => { try { const importedState = JSON.parse(e.target.result); if (importedState && importedState.history) { store.state = store.migrate(importedState); store.save(); alert("Data imported successfully! 🚀"); location.reload(); } else { alert("Invalid backup file."); } } catch (error) { alert("Error reading file. Make sure it's a valid IronTrack backup."); } }; reader.readAsText(file); },
+    exportData() { const dataStr = JSON.stringify(store.state, null, 2); const blob = new Blob([dataStr], { type: "application/json" }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `IronTrack_Backup_${utils.getLocalISODate(new Date())}.json`; a.click(); URL.revokeObjectURL(url); }, importData(event) { const file = event.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = (e) => { try { const importedState = JSON.parse(e.target.result); if (importedState && importedState.history) { store.state = store.migrate(importedState); store.save(); alert("Data imported successfully! 🚀"); location.reload(); } else { alert("Invalid backup file."); } } catch (error) { alert("Error reading file."); } }; reader.readAsText(file); },
     viewRoutine(id) { this.viewingRoutineId = id; this.isEditingProgram = false; this.navigate('workout-detail'); }, setRoutineActive(id) { store.state.activeRoutineId = id; store.save(); this.navigate('workout-detail'); }, createNewRoutine() { const name = prompt("Enter name for new split:", "New Split"); if (!name) return; const newRoutine = { id: utils.generateId(), name: name, days: [1,2,3,4,5,6,0].map(d => ({ day: d, workouts: [] })) }; store.state.routines.push(newRoutine); store.state.activeRoutineId = newRoutine.id; store.save(); this.viewRoutine(newRoutine.id); }, deleteCurrentRoutine() { if(store.state.routines.length <= 1) { alert("You must have at least one routine."); return; } if(confirm("Delete this routine permanently?")) { store.state.routines = store.state.routines.filter(r => r.id !== this.draftRoutine.id); store.state.activeRoutineId = store.state.routines[0].id; this.isEditingProgram = false; store.save(); this.navigate('workout'); } },
     toggleProgramEdit() { const r = store.state.routines.find(x => x.id === this.viewingRoutineId); this.draftRoutine = JSON.parse(JSON.stringify(r)); this.isEditingProgram = true; this.navigate('workout-detail'); }, saveProgramEdit() { this.draftRoutine.days.forEach(d => d.workouts.forEach(w => w.exercises.forEach(e => { e.targetSets = parseInt(e.targetSets)||1; }))); const idx = store.state.routines.findIndex(r => r.id === this.draftRoutine.id); if(idx > -1) store.state.routines[idx] = this.draftRoutine; store.save(); this.isEditingProgram = false; this.navigate('workout-detail'); },
-    addWorkoutToDay(dIdx, templateId) {
-        if (!templateId) return; let newWorkout = { id: utils.generateId(), name: 'New Workout', exercises: [] };
-        if (templateId === 'activity') { newWorkout.name = 'Morning Cardio'; newWorkout.isActivity = true; } 
-        else if (templateId !== 'blank') { let found = null; store.state.routines.forEach(r => r.days.forEach(d => d.workouts.forEach(w => { if(w.id === templateId) found = w; }))); if (found) { newWorkout.name = found.name; newWorkout.isActivity = found.isActivity || false; newWorkout.exercises = JSON.parse(JSON.stringify(found.exercises)); } }
-        this.draftRoutine.days[dIdx].workouts.push(newWorkout); this.navigate('workout-detail');
+    addWorkoutToDay(dIdx, templateId) { if (!templateId) return; let newWorkout = { id: utils.generateId(), name: 'New Workout', exercises: [] }; if (templateId === 'activity') { newWorkout.name = 'Morning Cardio'; newWorkout.isActivity = true; } else if (templateId !== 'blank') { let found = null; store.state.routines.forEach(r => r.days.forEach(d => d.workouts.forEach(w => { if(w.id === templateId) found = w; }))); if (found) { newWorkout.name = found.name; newWorkout.isActivity = found.isActivity || false; newWorkout.exercises = JSON.parse(JSON.stringify(found.exercises)); } } this.draftRoutine.days[dIdx].workouts.push(newWorkout); this.navigate('workout-detail'); }, removeWorkoutFromDay(dIdx, wIdx) { if(confirm("Remove this workout?")) { this.draftRoutine.days[dIdx].workouts.splice(wIdx, 1); this.navigate('workout-detail'); } }, updateWorkoutName(dIdx, wIdx, val) { this.draftRoutine.days[dIdx].workouts[wIdx].name = val; }, addEx(dIdx, wIdx) { this.draftRoutine.days[dIdx].workouts[wIdx].exercises.push({ name: 'New Exercise', targetSets: 3, targetReps: '8-12', muscle: 'Other' }); this.navigate('workout-detail'); }, updateEx(dIdx, wIdx, eIdx, field, val) { this.draftRoutine.days[dIdx].workouts[wIdx].exercises[eIdx][field] = val; }, moveEx(dIdx, wIdx, eIdx, dir) { const arr = this.draftRoutine.days[dIdx].workouts[wIdx].exercises; if(eIdx+dir < 0 || eIdx+dir >= arr.length) return; const temp = arr[eIdx]; arr[eIdx] = arr[eIdx+dir]; arr[eIdx+dir] = temp; this.navigate('workout-detail'); }, deleteEx(dIdx, wIdx, eIdx) { this.draftRoutine.days[dIdx].workouts[wIdx].exercises.splice(eIdx, 1); this.navigate('workout-detail'); },
+    
+    editChallenge() { const c = store.state.challenge; if (c && c.isActive) { this.draftChallenge = JSON.parse(JSON.stringify(c)); } else { const start = utils.getLocalISODate(new Date()); const endD = new Date(); endD.setDate(endD.getDate() + 74); const end = utils.getLocalISODate(endD); this.draftChallenge = { isActive: true, title: '', startDate: start, endDate: end, goals: [] }; } this.navigate('challenge-edit'); }, addChallengeGoal(type) { let g = { id: utils.generateId(), type, createdAt: utils.getLocalISODate(new Date()) }; if (type === 'workout') g.count = 1; if (type === 'nutrition') { g.targetType = 'none'; g.calories = 2500; } if (type === 'water' || type === 'reading') g.target = '10 Pages'; if (type === 'custom') g.title = 'New Goal'; this.draftChallenge.goals.push(g); this.navigate('challenge-edit'); }, removeChallengeGoal(idx) { this.draftChallenge.goals.splice(idx, 1); this.navigate('challenge-edit'); }, saveChallenge() { if (!this.draftChallenge.title || this.draftChallenge.goals.length === 0) return; store.state.challenge = this.draftChallenge; store.save(); this.navigate('challenge'); }, endChallenge() { if(confirm("End/Delete this challenge?")) { store.state.challenge = { isActive: false, title: '', startDate: '', endDate: '', goals: [] }; store.save(); this.navigate('challenge'); } }, 
+    
+    changeChallengeDay(dir) { this.challengeOffset += dir; if(this.challengeOffset > 0) this.challengeOffset = 0; this.navigate('challenge'); },
+    toggleGoal(goalId, dateStr, type) { 
+        if (type === 'cardio') { const existingIdx = store.state.history.cardio.findIndex(c => utils.getLocalISODate(c.date) === dateStr); if(existingIdx >= 0) store.state.history.cardio.splice(existingIdx, 1); else store.state.history.cardio.push({ date: dateStr + 'T12:00:00Z', intensity: 'High' }); } 
+        else { if (!store.state.history.challengeLogs) store.state.history.challengeLogs = {}; if (!store.state.history.challengeLogs[dateStr]) store.state.history.challengeLogs[dateStr] = {}; store.state.history.challengeLogs[dateStr][goalId] = !store.state.history.challengeLogs[dateStr][goalId]; } 
+        store.save(); this.navigate('challenge'); 
     },
-    removeWorkoutFromDay(dIdx, wIdx) { if(confirm("Remove this workout?")) { this.draftRoutine.days[dIdx].workouts.splice(wIdx, 1); this.navigate('workout-detail'); } }, updateWorkoutName(dIdx, wIdx, val) { this.draftRoutine.days[dIdx].workouts[wIdx].name = val; }, addEx(dIdx, wIdx) { this.draftRoutine.days[dIdx].workouts[wIdx].exercises.push({ name: 'New Exercise', targetSets: 3, targetReps: '8-12', muscle: 'Other' }); this.navigate('workout-detail'); }, updateEx(dIdx, wIdx, eIdx, field, val) { this.draftRoutine.days[dIdx].workouts[wIdx].exercises[eIdx][field] = val; }, moveEx(dIdx, wIdx, eIdx, dir) { const arr = this.draftRoutine.days[dIdx].workouts[wIdx].exercises; if(eIdx+dir < 0 || eIdx+dir >= arr.length) return; const temp = arr[eIdx]; arr[eIdx] = arr[eIdx+dir]; arr[eIdx+dir] = temp; this.navigate('workout-detail'); }, deleteEx(dIdx, wIdx, eIdx) { this.draftRoutine.days[dIdx].workouts[wIdx].exercises.splice(eIdx, 1); this.navigate('workout-detail'); },
-    editChallenge() { const c = store.state.challenge; if (c && c.isActive) { this.draftChallenge = JSON.parse(JSON.stringify(c)); } else { const start = utils.getLocalISODate(new Date()); const endD = new Date(); endD.setDate(endD.getDate() + 74); const end = utils.getLocalISODate(endD); this.draftChallenge = { isActive: true, title: '', startDate: start, endDate: end, goals: [] }; } this.navigate('challenge-edit'); }, addChallengeGoal(type) { let g = { id: utils.generateId(), type, createdAt: utils.getLocalISODate(new Date()) }; if (type === 'workout') g.count = 1; if (type === 'nutrition') { g.targetType = 'none'; g.calories = 2500; } if (type === 'water') g.target = '1 Gallon'; if (type === 'reading') g.target = '10 Pages'; if (type === 'custom') g.title = 'New Goal'; this.draftChallenge.goals.push(g); this.navigate('challenge-edit'); }, removeChallengeGoal(idx) { this.draftChallenge.goals.splice(idx, 1); this.navigate('challenge-edit'); }, saveChallenge() { if (!this.draftChallenge.title) { alert("Please enter a challenge title."); return; } if (this.draftChallenge.goals.length === 0) { alert("Please add at least one goal."); return; } store.state.challenge = this.draftChallenge; store.save(); this.navigate('challenge'); }, endChallenge() { if(confirm("End/Delete this challenge?")) { store.state.challenge = { isActive: false, title: '', startDate: '', endDate: '', goals: [] }; store.save(); this.navigate('challenge'); } }, toggleManualGoal(goalId, dateStr) { if (!store.state.history.challengeLogs) store.state.history.challengeLogs = {}; if (!store.state.history.challengeLogs[dateStr]) store.state.history.challengeLogs[dateStr] = {}; store.state.history.challengeLogs[dateStr][goalId] = !store.state.history.challengeLogs[dateStr][goalId]; store.save(); this.navigate('challenge'); },
+    
     editPR(lift) { let val = prompt(`Enter your All-Time Recorded PR for ${lift} (kg):`, store.state.prs[lift] || 0); if (val !== null) { store.state.prs[lift] = parseFloat(val) || 0; store.save(); this.navigate('progress'); } }
 };
 
