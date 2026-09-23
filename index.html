@@ -250,7 +250,12 @@ const utils = {
     generateId: () => Math.random().toString(36).substr(2, 9),
     formatDate: (isoString) => new Date(isoString).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }),
     formatDateShort: (dateObj) => dateObj.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }),
-    getLocalISODate: (isoString) => { const d = new Date(isoString); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; },
+    getLocalISODate: (isoString) => { 
+        if (!isoString) return '';
+        const d = new Date(isoString); 
+        if (isNaN(d)) return '';
+        return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; 
+    },
     getMonday: (dateInput) => { const d = new Date(dateInput); const day = d.getDay(); const diff = d.getDate() - day + (day === 0 ? -6 : 1); return new Date(d.setDate(diff)).setHours(0,0,0,0); },
     calcVolume: (sets) => sets.filter(s => s.completed).reduce((acc, s) => acc + ((parseFloat(s.weight)||0) * (parseFloat(s.reps)||0)), 0),
     getDayName: (dayIndex) => ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayIndex],
@@ -306,9 +311,9 @@ const utils = {
             if (g.createdAt && dStr < g.createdAt) continue; 
             if (['water', 'reading', 'custom'].includes(g.type)) { if (!store.state.history.challengeLogs || !store.state.history.challengeLogs[dStr] || !store.state.history.challengeLogs[dStr][g.id]) return false; }
             else if (g.type === 'workout') { const count = store.state.history.workouts.filter(w => utils.getLocalISODate(w.date) === dStr && !w.isSkipped && !w.isActivity).length; if (count < (g.count || 1) && !isRest) return false; }
-            else if (g.type === 'weight') { const hasW = store.state.history.bodyweight.some(w => utils.getLocalISODate(w.date) === dStr); if (!hasW) return false; }
-            else if (g.type === 'nutrition') { const nut = store.state.history.nutrition.find(n => utils.getLocalISODate(n.date) === dStr); if (!nut) return false; if (g.targetType === 'min' && nut.cal < g.calories) return false; if (g.targetType === 'max' && nut.cal > g.calories) return false; }
-            else if (g.type === 'cardio') { const hasC = store.state.history.cardio.some(c => utils.getLocalISODate(c.date) === dStr); if (!hasC) return false; }
+            else if (g.type === 'weight') { const hasW = store.state.history.bodyweight.some(w => w && w.date && utils.getLocalISODate(w.date) === dStr); if (!hasW) return false; }
+            else if (g.type === 'nutrition') { const nut = store.state.history.nutrition.find(n => n && n.date && utils.getLocalISODate(n.date) === dStr); if (!nut) return false; if (g.targetType === 'min' && nut.cal < g.calories) return false; if (g.targetType === 'max' && nut.cal > g.calories) return false; }
+            else if (g.type === 'cardio') { const hasC = store.state.history.cardio.some(c => c && c.date && utils.getLocalISODate(c.date) === dStr); if (!hasC) return false; }
         } return true;
     },
     calculateStreak: () => {
@@ -392,8 +397,8 @@ const workoutEngine = {
 const views = {
     renderHome() {
         const todayStr = utils.getLocalISODate(new Date()); const today = new Date(); const prog = utils.getTodayProgram();
-        const bwEntry = store.state.history.bodyweight.find(w => utils.getLocalISODate(w.date) === todayStr); const bwLogged = !!bwEntry;
-        const cardioEntry = store.state.history.cardio.find(c => utils.getLocalISODate(c.date) === todayStr); const cardioLogged = !!cardioEntry;
+        const bwEntry = store.state.history.bodyweight.find(w => w && w.date && utils.getLocalISODate(w.date) === todayStr); const bwLogged = !!bwEntry;
+        const cardioEntry = store.state.history.cardio.find(c => c && c.date && utils.getLocalISODate(c.date) === todayStr); const cardioLogged = !!cardioEntry;
         
         const todayWorkoutsLogged = store.state.history.workouts.filter(w => utils.getLocalISODate(w.date) === todayStr && !w.isSkipped && !w.isActivity);
         const todayRestLogged = store.state.history.workouts.filter(w => utils.getLocalISODate(w.date) === todayStr && w.isSkipped);
@@ -479,9 +484,9 @@ const views = {
         c.goals.forEach(g => {
             let met = false; let label = ''; let isManual = false;
             if (g.type === 'workout') { const count = store.state.history.workouts.filter(w => utils.getLocalISODate(w.date) === viewDateStr && !w.isSkipped && !w.isActivity).length; met = count >= (g.count||1) || isRest; label = `Complete ${g.count||1} Strength Session(s)`; }
-            else if (g.type === 'weight') { met = store.state.history.bodyweight.some(w => utils.getLocalISODate(w.date) === viewDateStr); label = `Log Bodyweight`; }
-            else if (g.type === 'nutrition') { const nut = store.state.history.nutrition.find(n => utils.getLocalISODate(n.date) === viewDateStr); met = !!nut; label = `Track Nutrition`; if (g.targetType === 'min') { met = nut && nut.cal >= g.calories; label += ` (Min ${g.calories} kcal)`; } else if (g.targetType === 'max') { met = nut && nut.cal <= g.calories; label += ` (Max ${g.calories} kcal)`; } } 
-            else if (g.type === 'cardio') { met = store.state.history.cardio.some(c => utils.getLocalISODate(c.date) === viewDateStr); label = `Daily Cardio`; isManual = true; }
+            else if (g.type === 'weight') { met = store.state.history.bodyweight.some(w => w && w.date && utils.getLocalISODate(w.date) === viewDateStr); label = `Log Bodyweight`; }
+            else if (g.type === 'nutrition') { const nut = store.state.history.nutrition.find(n => n && n.date && utils.getLocalISODate(n.date) === viewDateStr); met = !!nut; label = `Track Nutrition`; if (g.targetType === 'min') { met = nut && nut.cal >= g.calories; label += ` (Min ${g.calories} kcal)`; } else if (g.targetType === 'max') { met = nut && nut.cal <= g.calories; label += ` (Max ${g.calories} kcal)`; } } 
+            else if (g.type === 'cardio') { met = store.state.history.cardio.some(c => c && c.date && utils.getLocalISODate(c.date) === viewDateStr); label = `Daily Cardio`; isManual = true; }
             else { isManual = true; met = store.state.history.challengeLogs && store.state.history.challengeLogs[viewDateStr] && store.state.history.challengeLogs[viewDateStr][g.id]; label = g.type === 'custom' ? (g.title || 'Custom Goal') : `${g.type === 'water' ? 'Drink' : 'Read'} ${g.target || 'Goal'}`; }
             
             let rowStyle = isManual ? `cursor:pointer; background: ${met ? 'var(--success-dim)' : 'var(--pending-dim)'}; padding: 12px; border-radius: 12px; border: 1px solid ${met ? 'var(--success)' : 'var(--pending)'}; transition: all 0.2s;` : `padding: 12px 0; border-bottom: 1px solid var(--border);`;
@@ -648,14 +653,14 @@ const app = {
     logNutrition() { const cal = document.getElementById('nut-cal').value; const pro = document.getElementById('nut-pro').value; const car = document.getElementById('nut-car').value; const fat = document.getElementById('nut-fat').value; if(!cal) { alert("Please enter at least your calories."); return; } store.addNutrition({ cal, pro, car, fat }); alert(`Nutrition logged! ${app.sym('success')}`); this.navigate('home'); },
     
     toggleCardio(dateStr) { 
-        const existingIdx = store.state.history.cardio.findIndex(c => utils.getLocalISODate(c.date) === dateStr);
+        const existingIdx = store.state.history.cardio.findIndex(c => c && c.date && utils.getLocalISODate(c.date) === dateStr);
         if (existingIdx >= 0) store.state.history.cardio.splice(existingIdx, 1);
-        else store.state.history.cardio.push({ date: dateStr + 'T12:00:00Z', intensity: 'Completed' });
+        else store.state.history.cardio.push({ date: dateStr + 'T12:00:00', intensity: 'Completed' });
         store.save(); this.navigate('home');
     },
     
-    addPastBodyweight() { const d = document.getElementById('past-bw-date').value; const w = document.getElementById('past-bw-val').value; if(!d || !w) return; store.addBodyweight(w, d + 'T12:00:00Z'); this.navigate('data'); },
-    addPastNutrition() { const d = document.getElementById('past-nut-date').value; const cal = document.getElementById('past-nut-cal').value; const pro = document.getElementById('past-nut-pro').value; const car = document.getElementById('past-nut-car').value; const fat = document.getElementById('past-nut-fat').value; if(!d || !cal) return; store.addNutrition({ cal, pro, car, fat }, d + 'T12:00:00Z'); this.navigate('data'); },
+    addPastBodyweight() { const d = document.getElementById('past-bw-date').value; const w = document.getElementById('past-bw-val').value; if(!d || !w) return; store.addBodyweight(w, d + 'T12:00:00'); this.navigate('data'); },
+    addPastNutrition() { const d = document.getElementById('past-nut-date').value; const cal = document.getElementById('past-nut-cal').value; const pro = document.getElementById('past-nut-pro').value; const car = document.getElementById('past-nut-car').value; const fat = document.getElementById('past-nut-fat').value; if(!d || !cal) return; store.addNutrition({ cal, pro, car, fat }, d + 'T12:00:00'); this.navigate('data'); },
     
     editPastWorkout(id) { this.editingPastWorkoutId = id; this.draftPastWorkout = JSON.parse(JSON.stringify(store.state.history.workouts.find(w => w.id === id))); this.navigate('workout-edit'); },
     savePastWorkout() { const idx = store.state.history.workouts.findIndex(w => w.id === this.editingPastWorkoutId); if (idx > -1) { store.state.history.workouts[idx] = this.draftPastWorkout; store.save(); } this.editingPastWorkoutId = null; this.draftPastWorkout = null; this.navigate('data'); },
@@ -670,8 +675,16 @@ const app = {
     
     changeChallengeDay(dir) { this.challengeOffset += dir; if(this.challengeOffset > 0) this.challengeOffset = 0; this.navigate('challenge'); },
     toggleGoal(goalId, dateStr, type) { 
-        if (type === 'cardio') { const existingIdx = store.state.history.cardio.findIndex(c => utils.getLocalISODate(c.date) === dateStr); if(existingIdx >= 0) store.state.history.cardio.splice(existingIdx, 1); else store.state.history.cardio.push({ date: dateStr + 'T12:00:00Z', intensity: 'Completed' }); } 
-        else { if (!store.state.history.challengeLogs) store.state.history.challengeLogs = {}; if (!store.state.history.challengeLogs[dateStr]) store.state.history.challengeLogs[dateStr] = {}; store.state.history.challengeLogs[dateStr][goalId] = !store.state.history.challengeLogs[dateStr][goalId]; } 
+        if (type === 'cardio') { 
+            const existingIdx = store.state.history.cardio.findIndex(c => c && c.date && utils.getLocalISODate(c.date) === dateStr); 
+            if(existingIdx >= 0) store.state.history.cardio.splice(existingIdx, 1); 
+            else store.state.history.cardio.push({ date: dateStr + 'T12:00:00', intensity: 'Completed' }); 
+        } 
+        else { 
+            if (!store.state.history.challengeLogs) store.state.history.challengeLogs = {}; 
+            if (!store.state.history.challengeLogs[dateStr]) store.state.history.challengeLogs[dateStr] = {}; 
+            store.state.history.challengeLogs[dateStr][goalId] = !store.state.history.challengeLogs[dateStr][goalId]; 
+        } 
         store.save(); this.navigate('challenge'); 
     },
     
