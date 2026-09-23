@@ -192,6 +192,10 @@
 <div id="start-workout-modal"></div>
 
 <script>
+const QUOTES = [
+    "You have power over your mind—not outside events. Realize this, and you will find strength.", "The happiness of your life depends upon the quality of your thoughts.", "The impediment to action advances action. What stands in the way becomes the way.", "When you arise in the morning, think of what a privilege it is to be alive, to think, to enjoy, to love.", "Waste no more time arguing about what a good man should be. Be one.", "The best revenge is to be unlike him who performed the injury.", "The soul becomes dyed with the colour of its thoughts.", "If it is not right, do not do it, if it is not true, do not say it.", "Do every act of your life as though it were the very last act of your life.", "It is in your power whenever you shall choose to retire into yourself.", "The universe is transformation: life is opinion.", "Remember that very little is needed to make a happy life.", "Do not act as if you had ten thousand years to live.", "While you live, while it is in your power, be good.", "Begin the morning by saying to thyself, I shall meet with the busy-body, the ungrateful, arrogant, deceitful, envious, unsocial.", "We were born to work together like feet, hands, and eyes.", "To obstruct each other is unnatural.", "The things which are not in thy power, let them not trouble thee.", "If you are pained by any external thing, it is not this thing that disturbs you, but your own judgment about it.", "Remove the judgment, and you have removed the notion that you have been harmed.", "Be like the promontory against which the waves continually break, but it stands firm and tames the fury of the water around it.", "Nothing happens to any man which he is not formed by nature to bear.", "Accept whatever comes to you woven in the pattern of your destiny.", "What is not good for the hive, is not good for the bee.", "He who does wrong does wrong against himself.", "The art of living is more like wrestling than dancing.", "The mind adapts and converts to its purposes the obstacle to our acting.", "A man’s worth is no greater than his ambitions.", "Look well into thyself; there is a source of strength which will always spring up if thou wilt always look.", "Loss is nothing else than change, and change is Nature’s delight.", "Everything is in a state of metamorphosis. Thou thyself art in everlasting change.", "Neither the future nor the past pains thee, but only the present.", "Do not despise death, but be well content with it, since this too is one of those things which nature wills.", "The happiness of those who want to be popular depends on others; but the happiness of those who seek wisdom depends on themselves.", "Say nothing more to thyself than what the first appearances report.", "Look down from above on the countless herds of men.", "It is possible to live this life happily and to live according to nature.", "You have power over your mind, not outside events.", "Think of yourself as dead. You have lived your life. Now take what’s left and live it properly.", "The things you think about determine the quality of your mind.", "Very little is needed to make a happy life; it is all within yourself.", "The present is all that you can give your attention to.", "Do not be disgusted, nor dissatisfied, nor out of humour, if you cannot do everything exactly according to right principles.", "The termination of life for every man is no evil, since it is seasonable.", "A healthy eye ought to look at all visible things and not say, ‘I want green things.’", "What is not good for the hive, is not good for the bee.", "Everything is in a state of change, and nothing is fixed.", "The universe is change: life is opinion.", "The present is the only thing of which we can be deprived, because this is the only thing which you have.", "You can commit yourself to what seems to you best, and you can live your life according to your own nature."
+];
+
 const DEFAULT_PROGRAM = [
     { day: 0, workouts: [] },
     { day: 1, workouts: [{ id: 'w1', name: 'Hamstring Legs', exercises: [ { name: 'Squat', targetSets: 3, targetReps: '5-8' }, { name: 'Standing Calf Raise', targetSets: 4, targetReps: '10-15' }, { name: 'Seated Hamstring Leg Curl', targetSets: 3, targetReps: '8-12' }, { name: 'Romanian Deadlift', targetSets: 3, targetReps: '8-10' }, { name: 'Unilateral Leg Extension', targetSets: 3, targetReps: '10-15' }, { name: 'Bulgarian Split Squat', targetSets: 3, targetReps: '8-12' }, { name: 'Weighted Crunch', targetSets: 3, targetReps: '10-15' } ] }] },
@@ -202,8 +206,9 @@ const DEFAULT_PROGRAM = [
     { day: 6, workouts: [{ id: 'w6', name: 'Upper Body', exercises: [ { name: 'Bench Press', targetSets: 3, targetReps: '8-10' }, { name: 'Incline DB Press', targetSets: 3, targetReps: '8-10' }, { name: 'Lat Pulldown', targetSets: 3, targetReps: '8-12' }, { name: 'Cable Lateral Raise', targetSets: 3, targetReps: '12-15' }, { name: 'Seated Curl', targetSets: 3, targetReps: '10-12' }, { name: 'Dips', targetSets: 3, targetReps: 'AMRAP' } ] }] }
 ];
 
-const EXERCISE_DB = { 'Bench Press': { muscle: 'Chest' }, 'Squat': { muscle: 'Quads' }, 'Deadlift': { muscle: 'Back' }, 'Incline DB Press': { muscle: 'Chest' }, 'Pec Deck': { muscle: 'Chest' }, 'Flat Machine Press': { muscle: 'Chest' }, 'Dips': { muscle: 'Chest' }, 'Lat Pulldown': { muscle: 'Back' }, 'Chest Supported Row': { muscle: 'Back' }, 'Pull-Ups': { muscle: 'Back' }, 'Cable Lateral Raise': { muscle: 'Shoulders' }, 'Rear Delt Fly': { muscle: 'Shoulders' }, 'Preacher Curl': { muscle: 'Biceps' }, 'Hammer Curl': { muscle: 'Biceps' }, 'Seated Curl': { muscle: 'Biceps' }, 'Tricep Pushdown': { muscle: 'Triceps' }, 'Overhead Extension': { muscle: 'Triceps' }, 'Hack Squat': { muscle: 'Quads' }, 'Leg Press': { muscle: 'Quads' }, 'Leg Extension': { muscle: 'Quads' }, 'Bulgarian Split Squat': { muscle: 'Quads' }, 'Unilateral Leg Extension': { muscle: 'Quads' }, 'Romanian Deadlift': { muscle: 'Hamstrings' }, 'Seated Hamstring Leg Curl': { muscle: 'Hamstrings' }, 'Seated Leg Curl': { muscle: 'Hamstrings' }, 'Standing Calf Raise': { muscle: 'Calves' }, 'Weighted Crunch': { muscle: 'Abs' }, 'Hanging Leg Raise': { muscle: 'Abs' }, 'Incline Treadmill Walk': { muscle: 'Cardio' } };
-const MUSCLE_GROUPS = ['Chest', 'Back', 'Shoulders', 'Biceps', 'Triceps', 'Quads', 'Hamstrings', 'Calves', 'Abs', 'Cardio', 'Other'];
+const EXERCISE_DB = { 'Bench Press': { muscle: 'Chest' }, 'Squat': { muscle: 'Quads' }, 'Deadlift': { muscle: 'Hamstrings' }, 'Incline DB Press': { muscle: 'Chest' }, 'Pec Deck': { muscle: 'Chest' }, 'Flat Machine Press': { muscle: 'Chest' }, 'Dips': { muscle: 'Chest' }, 'Lat Pulldown': { muscle: 'Back' }, 'Chest Supported Row': { muscle: 'Back' }, 'Pull-Ups': { muscle: 'Back' }, 'Cable Lateral Raise': { muscle: 'Shoulders' }, 'Rear Delt Fly': { muscle: 'Shoulders' }, 'Preacher Curl': { muscle: 'Biceps' }, 'Hammer Curl': { muscle: 'Biceps' }, 'Seated Curl': { muscle: 'Biceps' }, 'Tricep Pushdown': { muscle: 'Triceps' }, 'Overhead Extension': { muscle: 'Triceps' }, 'Hack Squat': { muscle: 'Quads' }, 'Leg Press': { muscle: 'Quads' }, 'Leg Extension': { muscle: 'Quads' }, 'Bulgarian Split Squat': { muscle: 'Quads' }, 'Unilateral Leg Extension': { muscle: 'Quads' }, 'Romanian Deadlift': { muscle: 'Hamstrings' }, 'Seated Hamstring Leg Curl': { muscle: 'Hamstrings' }, 'Seated Leg Curl': { muscle: 'Hamstrings' }, 'Standing Calf Raise': { muscle: 'Calves' }, 'Weighted Crunch': { muscle: 'Abs' }, 'Hanging Leg Raise': { muscle: 'Abs' }, 'Incline Treadmill Walk': { muscle: 'Cardio' } };
+const MUSCLE_GROUPS = ['Chest', 'Back', 'Shoulders', 'Biceps', 'Triceps', 'Quads', 'Hamstrings', 'Abs', 'Calves', 'Cardio', 'Other'];
+const HYPERTROPHY_GROUPS = ['Chest', 'Back', 'Shoulders', 'Biceps', 'Triceps', 'Quads', 'Hamstrings'];
 
 const THEME_MAP = {
     basic: { nav: ['fa-home', 'fa-dumbbell', 'fa-chart-line', 'fa-apple-whole', 'fa-database'], symbols: { streak: '🔥', pr: '🏆', bw: '⚖️', vol: '📊', rest: '🛋️', workout: '💪', success: '⭐', activity: '🏃‍♂️', cardGoal: '🎯', analytics: '📈', nutrition: '🍎', data: '🗄️' } },
@@ -264,17 +269,19 @@ const utils = {
     getMuscle: (ex) => { if(ex.muscle && ex.muscle !== 'Other') return ex.muscle; return (EXERCISE_DB[ex.name] && EXERCISE_DB[ex.name].muscle) ? EXERCISE_DB[ex.name].muscle : 'Other'; },
     getWeeklyData: (dataset) => { let weekly = {}; dataset.forEach(entry => { const mon = utils.getMonday(entry.date); if (!weekly[mon]) weekly[mon] = { entries: [] }; weekly[mon].entries.push(entry); }); return weekly; },
     getSessionMuscleVolume: () => {
-        const sessions = {}; const muscles = new Set();
+        const sessions = {};
         store.state.history.workouts.forEach(w => {
             if(w.isSkipped || w.isActivity) return;
             const timestamp = new Date(w.date).getTime();
             if(!sessions[timestamp]) sessions[timestamp] = { label: utils.formatDateShort(new Date(w.date)), vols: {} };
             (w.exercises||[]).forEach(ex => {
-                const target = utils.getMuscle(ex); muscles.add(target);
-                const vol = utils.calcVolume(ex.sets);
-                if(vol > 0) sessions[timestamp].vols[target] = (sessions[timestamp].vols[target] || 0) + vol;
+                const target = utils.getMuscle(ex);
+                if (HYPERTROPHY_GROUPS.includes(target)) {
+                    const vol = utils.calcVolume(ex.sets);
+                    if(vol > 0) sessions[timestamp].vols[target] = (sessions[timestamp].vols[target] || 0) + vol;
+                }
             });
-        }); return { sessions, muscles: Array.from(muscles) };
+        }); return { sessions, muscles: HYPERTROPHY_GROUPS };
     },
     getE1RMHistory: () => {
         let history = { bench: [], squat: [], deadlift: [] };
@@ -302,18 +309,22 @@ const utils = {
         history.bench.sort((a,b)=>a.ts-b.ts); history.squat.sort((a,b)=>a.ts-b.ts); history.deadlift.sort((a,b)=>a.ts-b.ts);
         return history;
     },
-    checkDaySuccess: (dStr) => {
-        const c = store.state.challenge; if (!c || !c.isActive || c.goals.length === 0) return false;
+    checkGoalSuccess: (dStr, g) => {
         const parts = dStr.split('-'); const dObj = new Date(parts[0], parts[1]-1, parts[2]); const dayIndex = dObj.getDay();
         const active = utils.getActiveRoutine(); const prog = active.days.find(x => x.day === dayIndex); const isRest = !prog || prog.workouts.length === 0;
 
+        if (['water', 'reading', 'custom'].includes(g.type)) { return !!(store.state.history.challengeLogs && store.state.history.challengeLogs[dStr] && store.state.history.challengeLogs[dStr][g.id]); }
+        else if (g.type === 'workout') { const count = store.state.history.workouts.filter(w => utils.getLocalISODate(w.date) === dStr && !w.isSkipped && !w.isActivity).length; return count >= (g.count || 1) || isRest; }
+        else if (g.type === 'weight') { return store.state.history.bodyweight.some(w => w && w.date && utils.getLocalISODate(w.date) === dStr); }
+        else if (g.type === 'nutrition') { const nut = store.state.history.nutrition.find(n => n && n.date && utils.getLocalISODate(n.date) === dStr); if (!nut) return false; if (g.targetType === 'min' && nut.cal < g.calories) return false; if (g.targetType === 'max' && nut.cal > g.calories) return false; return true; }
+        else if (g.type === 'cardio') { return store.state.history.cardio.some(c => c && c.date && utils.getLocalISODate(c.date) === dStr); }
+        return false;
+    },
+    checkDaySuccess: (dStr) => {
+        const c = store.state.challenge; if (!c || !c.isActive || c.goals.length === 0) return false;
         for (let g of c.goals) {
             if (g.createdAt && dStr < g.createdAt) continue; 
-            if (['water', 'reading', 'custom'].includes(g.type)) { if (!store.state.history.challengeLogs || !store.state.history.challengeLogs[dStr] || !store.state.history.challengeLogs[dStr][g.id]) return false; }
-            else if (g.type === 'workout') { const count = store.state.history.workouts.filter(w => utils.getLocalISODate(w.date) === dStr && !w.isSkipped && !w.isActivity).length; if (count < (g.count || 1) && !isRest) return false; }
-            else if (g.type === 'weight') { const hasW = store.state.history.bodyweight.some(w => w && w.date && utils.getLocalISODate(w.date) === dStr); if (!hasW) return false; }
-            else if (g.type === 'nutrition') { const nut = store.state.history.nutrition.find(n => n && n.date && utils.getLocalISODate(n.date) === dStr); if (!nut) return false; if (g.targetType === 'min' && nut.cal < g.calories) return false; if (g.targetType === 'max' && nut.cal > g.calories) return false; }
-            else if (g.type === 'cardio') { const hasC = store.state.history.cardio.some(c => c && c.date && utils.getLocalISODate(c.date) === dStr); if (!hasC) return false; }
+            if (!utils.checkGoalSuccess(dStr, g)) return false;
         } return true;
     },
     calculateStreak: () => {
@@ -338,7 +349,21 @@ const utils = {
         const start = new Date(c.startDate + 'T00:00:00'); const end = new Date(c.endDate + 'T00:00:00'); const today = new Date(); today.setHours(0,0,0,0);
         let dayTotal = Math.round((end - start) / (1000*60*60*24)) + 1; let dayCurrent = Math.round((today - start) / (1000*60*60*24)) + 1;
         if (dayCurrent < 1) dayCurrent = 0; if (dayCurrent > dayTotal) dayCurrent = dayTotal;
-        return { title: c.title, dayCurrent, dayTotal, streak: utils.calculateStreak() };
+        
+        let possibleGoals = 0; let metGoals = 0;
+        let checkEnd = today < end ? today : end;
+        for (let d = new Date(start); d <= checkEnd; d.setDate(d.getDate() + 1)) {
+            let dStr = utils.getLocalISODate(d);
+            c.goals.forEach(g => {
+                if (!g.createdAt || dStr >= g.createdAt) {
+                    possibleGoals++;
+                    if (utils.checkGoalSuccess(dStr, g)) metGoals++;
+                }
+            });
+        }
+        let successRate = possibleGoals === 0 ? 0 : Math.round((metGoals / possibleGoals) * 100);
+
+        return { title: c.title, dayCurrent, dayTotal, streak: utils.calculateStreak(), successRate, possibleGoals, metGoals };
     },
     getCssVar: (varName, defaultHex) => { const val = getComputedStyle(document.documentElement).getPropertyValue(varName).trim(); return val ? val : defaultHex; },
     getGroupedExercises: () => { let allExercises = []; store.state.routines.forEach(r => r.days.forEach(d => d.workouts.forEach(w => w.exercises.forEach(ex => { if(!allExercises.find(e => e.name === ex.name)) allExercises.push(ex); })))); let grouped = {}; allExercises.forEach(ex => { let muscle = utils.getMuscle(ex).toUpperCase(); if(!grouped[muscle]) grouped[muscle] = []; grouped[muscle].push(ex); }); return grouped; }
@@ -408,8 +433,23 @@ const views = {
         if (todayWorkoutsLogged.length > 0) trainingText = `${todayWorkoutsLogged.length} Session(s) Completed`; else if (todayRestLogged.length > 0) trainingText = `Rest Day Logged`;
 
         let isWorkoutActive = !!store.state.activeSession;
+        
+        // Stoic Quote Engine
+        const dayOfYear = Math.floor(new Date().getTime() / 86400000);
+        const dailyQuote = QUOTES[dayOfYear % QUOTES.length];
+        
+        // Weekly Strength Progress Engine
+        const activeRoutine = utils.getActiveRoutine(); 
+        const targetWorkouts = activeRoutine.days.filter(d => d.workouts.length > 0).length;
+        const mon = utils.getMonday(new Date());
+        const thisWeekWorkouts = store.state.history.workouts.filter(w => new Date(w.date) >= mon && !w.isSkipped && !w.isActivity).length;
+        const weekMsg = thisWeekWorkouts >= targetWorkouts ? "Goal Hit - Great job!" : "Keep going!";
 
         let html = `<h1>Dashboard</h1>
+        <div style="background:var(--surface-color); border-left: 2px solid var(--accent-color); padding: 12px; margin-bottom: 16px; border-radius: 8px;">
+            <p class="text-muted" style="font-style:italic; font-size:13px; line-height:1.4; margin:0;">"${dailyQuote}"</p>
+        </div>
+        
         <div class="card" style="padding:0; overflow:hidden; border-color: ${isTrainingDone && bwLogged && cardioLogged && !isWorkoutActive ? 'var(--success)' : 'var(--border)'}; box-shadow: ${isTrainingDone && bwLogged && cardioLogged && !isWorkoutActive ? 'var(--success-glow)' : '0 4px 12px rgba(0,0,0,0.2)'};">
             <div style="padding: 16px; background: ${isTrainingDone && bwLogged && cardioLogged && !isWorkoutActive ? 'var(--success-dim)' : 'var(--surface-elevated)'}; border-bottom: 1px solid ${isTrainingDone && bwLogged && cardioLogged && !isWorkoutActive ? 'var(--success-dim)' : 'var(--border)'}; display:flex; justify-content:space-between; align-items:center; transition: all 0.4s ease;">
                 <div><h2 style="margin:0; font-size:18px; color:${isTrainingDone && bwLogged && cardioLogged && !isWorkoutActive ? 'var(--success)' : 'var(--text-primary)'};">Today's Action Plan</h2><p class="text-muted" style="font-size:12px; margin-top:4px;">${utils.getDayName(today.getDay())}, ${utils.formatDateShort(today)}</p></div>
@@ -449,7 +489,20 @@ const views = {
                     </div>
                 </div>
             </div>
-        </div>`;
+        </div>
+        
+        <div class="card" style="padding:16px;">
+            <div class="flex-between">
+                <div>
+                    <h3 style="font-size:12px; margin:0;">Weekly Progress</h3>
+                    <div style="font-weight:bold; font-size:16px; margin-top:4px;">${thisWeekWorkouts} / ${targetWorkouts} Lifts Done</div>
+                </div>
+                <div class="text-accent" style="font-size:12px; font-weight:bold;">
+                    ${weekMsg}
+                </div>
+            </div>
+        </div>
+        `;
 
         let streakSafe = false; let streakTitle = "Daily Goals"; let streakSubtitle = "Log everything to keep streak";
         if (store.state.challenge && store.state.challenge.isActive) { streakSafe = utils.checkDaySuccess(todayStr); } 
@@ -459,7 +512,7 @@ const views = {
         }
         const streakStats = utils.getChallengeStats(); const streakCount = store.state.challenge && store.state.challenge.isActive ? streakStats.streak : utils.calculateStreak();
         
-        html += `<div class="streak-box ${streakSafe ? 'streak-completed' : ''}" onclick="app.navigate('challenge')" style="margin-top:16px;">
+        html += `<div class="streak-box ${streakSafe ? 'streak-completed' : ''}" onclick="app.navigate('challenge')" style="margin-top:0px;">
             <div class="streak-fire">${app.sym('streak')}</div><div><h2 class="streak-text">${streakCount} Day Streak</h2><span class="text-muted" style="font-size:12px; ${streakSafe ? 'color:var(--text-primary)' : ''}">${store.state.challenge && store.state.challenge.isActive ? `${streakStats.title} (Day ${streakStats.dayCurrent}/${streakStats.dayTotal})` : 'Keep the momentum going!'}</span></div>
         </div>`; return html;
     },
@@ -469,33 +522,44 @@ const views = {
         const start = new Date(c.startDate + 'T00:00:00'); const end = new Date(c.endDate + 'T00:00:00'); 
         let viewDate = new Date(); if (app.challengeOffset) viewDate.setDate(viewDate.getDate() + app.challengeOffset); viewDate.setHours(0,0,0,0);
         let viewDateStr = utils.getLocalISODate(viewDate);
+        let todayStr = utils.getLocalISODate(new Date());
         let dayTotal = Math.round((end - start) / (1000*60*60*24)) + 1;
         let dayCurrentTarget = Math.round((viewDate - start) / (1000*60*60*24)) + 1;
         let dayCurrentReal = Math.round((new Date().setHours(0,0,0,0) - start) / (1000*60*60*24)) + 1;
         let pct = (dayTotal > 0) ? (dayCurrentReal / dayTotal) * 100 : 0; if (pct > 100) pct = 100;
+        
+        let stats = utils.getChallengeStats();
 
         let html = `<div class="page-header"><button class="btn btn-sm btn-icon" onclick="app.navigate('home')"><i class="fas fa-arrow-left"></i></button><h2 style="margin:0; font-size:18px;">Active Challenge</h2><button class="btn btn-sm btn-icon" onclick="app.editChallenge()"><i class="fas fa-pen"></i></button></div>`;
-        html += `<div class="card"><h2 style="font-size:24px; color:var(--accent-color);">${c.title}</h2><div class="flex-between" style="font-size:12px; margin-bottom:12px;"><span class="text-muted">${utils.formatDateShort(new Date(c.startDate))} - ${utils.formatDateShort(new Date(c.endDate))}</span></div><div class="progress-bg"><div class="progress-fill" style="width:${pct}%"></div></div>`;
+        html += `<div class="card"><div class="flex-between"><h2 style="font-size:24px; margin:0; color:var(--accent-color);">${c.title}</h2><div style="text-align:right;"><div style="font-size:18px; font-weight:bold;">${stats.successRate}%</div><div class="text-muted" style="font-size:10px;">SUCCESS RATE</div></div></div><div class="flex-between" style="font-size:12px; margin-bottom:12px; margin-top:8px;"><span class="text-muted">${utils.formatDateShort(new Date(c.startDate))} - ${utils.formatDateShort(new Date(c.endDate))}</span><span class="text-muted">${stats.metGoals} / ${stats.possibleGoals} tasks</span></div><div class="progress-bg"><div class="progress-fill" style="width:${pct}%"></div></div>`;
         html += `<div style="display:flex; justify-content:center; align-items:center; gap:20px; margin-top:24px; margin-bottom:8px;"><button class="btn-icon" style="width:44px; height:44px; font-size:20px;" onclick="app.changeChallengeDay(-1)"><i class="fas fa-chevron-left"></i></button><div style="text-align:center; min-width:140px;"><div style="font-size: 60px; font-weight: 900; line-height: 1; letter-spacing: -2px;">${dayCurrentTarget}<span style="color:var(--text-secondary); font-size: 32px; letter-spacing: 0;">/${dayTotal}</span></div><div class="text-accent" style="font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-top: 8px;">Day ${dayCurrentTarget} ${app.challengeOffset < 0 ? '(Past)' : ''}</div></div><button class="btn-icon" style="width:44px; height:44px; font-size:20px; ${app.challengeOffset >= 0 ? 'opacity:0.2' : ''}" onclick="app.changeChallengeDay(1)" ${app.challengeOffset >= 0 ? 'disabled' : ''}><i class="fas fa-chevron-right"></i></button></div></div>`;
         
         html += `<h3>Checklist for Day ${dayCurrentTarget}</h3><div class="card" style="display:flex; flex-direction:column; gap:12px;">`;
-        const prog = utils.getTodayProgram(); const isRest = prog.workouts.length === 0;
 
+        let dayMetCount = 0;
         c.goals.forEach(g => {
-            let met = false; let label = ''; let isManual = false;
-            if (g.type === 'workout') { const count = store.state.history.workouts.filter(w => utils.getLocalISODate(w.date) === viewDateStr && !w.isSkipped && !w.isActivity).length; met = count >= (g.count||1) || isRest; label = `Complete ${g.count||1} Strength Session(s)`; }
-            else if (g.type === 'weight') { met = store.state.history.bodyweight.some(w => w && w.date && utils.getLocalISODate(w.date) === viewDateStr); label = `Log Bodyweight`; }
-            else if (g.type === 'nutrition') { const nut = store.state.history.nutrition.find(n => n && n.date && utils.getLocalISODate(n.date) === viewDateStr); met = !!nut; label = `Track Nutrition`; if (g.targetType === 'min') { met = nut && nut.cal >= g.calories; label += ` (Min ${g.calories} kcal)`; } else if (g.targetType === 'max') { met = nut && nut.cal <= g.calories; label += ` (Max ${g.calories} kcal)`; } } 
-            else if (g.type === 'cardio') { met = store.state.history.cardio.some(c => c && c.date && utils.getLocalISODate(c.date) === viewDateStr); label = `Daily Cardio`; isManual = true; }
-            else { isManual = true; met = store.state.history.challengeLogs && store.state.history.challengeLogs[viewDateStr] && store.state.history.challengeLogs[viewDateStr][g.id]; label = g.type === 'custom' ? (g.title || 'Custom Goal') : `${g.type === 'water' ? 'Drink' : 'Read'} ${g.target || 'Goal'}`; }
+            let met = utils.checkGoalSuccess(viewDateStr, g);
+            if (met) dayMetCount++;
+            
+            let label = ''; let isManual = false;
+            if (g.type === 'workout') { label = `Complete ${g.count||1} Strength Session(s)`; }
+            else if (g.type === 'weight') { label = `Log Bodyweight`; }
+            else if (g.type === 'nutrition') { label = `Track Nutrition`; if (g.targetType === 'min') { label += ` (Min ${g.calories} kcal)`; } else if (g.targetType === 'max') { label += ` (Max ${g.calories} kcal)`; } } 
+            else if (g.type === 'cardio') { label = `Daily Cardio`; isManual = true; }
+            else { isManual = true; label = g.type === 'custom' ? (g.title || 'Custom Goal') : `${g.type === 'water' ? 'Drink' : 'Read'} ${g.target || 'Goal'}`; }
             
             let rowStyle = isManual ? `cursor:pointer; background: ${met ? 'var(--success-dim)' : 'var(--pending-dim)'}; padding: 12px; border-radius: 12px; border: 1px solid ${met ? 'var(--success)' : 'var(--pending)'}; transition: all 0.2s;` : `padding: 12px 0; border-bottom: 1px solid var(--border);`;
             html += `<div style="display:flex; align-items:center; gap:12px; ${rowStyle}" ${isManual ? `onclick="app.toggleGoal('${g.id}', '${viewDateStr}', '${g.type}')"` : ''}><div class="btn-check ${met ? 'completed' : ''}" style="width:32px; height:32px; display:flex; align-items:center; justify-content:center; border-radius:16px; border:2px solid ${met ? 'var(--success)' : 'var(--pending)'}; font-size:14px; background:${met ? 'var(--success)' : 'transparent'}; flex-shrink:0;"><i class="fas fa-check" style="color:${met ? 'var(--bg-color)' : 'transparent'};"></i></div><div style="display:flex; flex-direction:column; min-width:0; flex:1;"><span style="font-size:14px; color:${met ? 'var(--text-primary)' : 'var(--text-secondary)'}; font-weight:${met ? 'bold' : 'normal'}; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${label}</span>${isManual ? `<span style="font-size:10px; color:var(--text-secondary);">${met ? 'Tap to unmark' : 'Tap to toggle entry'}</span>` : ''}</div></div>`;
         });
         html += `</div>`; 
         
-        let isStreakSafe = utils.checkDaySuccess(viewDateStr);
-        if (isStreakSafe) { html += `<div class="streak-box streak-completed" style="cursor:default;"><div class="streak-fire">${app.sym('streak')}</div><div><h2 class="streak-text">Day Complete!</h2><span class="text-muted" style="font-size:12px; color:var(--text-primary);">All checkmarks logged.</span></div></div>`; }
+        let isStreakSafe = dayMetCount === c.goals.length;
+        if (isStreakSafe) { 
+            html += `<div class="streak-box streak-completed" style="cursor:default;"><div class="streak-fire">${app.sym('streak')}</div><div><h2 class="streak-text">Day Complete!</h2><span class="text-muted" style="font-size:12px; color:var(--text-primary);">All checkmarks logged.</span></div></div>`; 
+        } else if (viewDateStr < todayStr) {
+            let dayPct = Math.round((dayMetCount / c.goals.length) * 100);
+            html += `<div class="streak-box" style="cursor:default; border-color:var(--warning); background:var(--warning-dim); box-shadow:none;"><div class="streak-fire" style="animation:none; color:var(--warning);"><i class="fas fa-circle-exclamation"></i></div><div><h2 class="streak-text" style="font-size:18px;">Day Incomplete</h2><span class="text-muted" style="font-size:12px;">You finished ${dayPct}% of your goals.</span></div></div>`; 
+        }
         return html;
     },
     renderChallengeEditor() {
@@ -569,16 +633,58 @@ const views = {
     renderCustomB() { let grouped = utils.getGroupedExercises(); let html = `<div class="page-header"><button class="btn btn-sm btn-icon" onclick="app.navigate('home')"><i class="fas fa-arrow-left"></i></button><h2 style="margin:0; font-size:18px;">Mix Exercises</h2><button class="btn btn-sm btn-success" onclick="app.startCustomMix()">START</button></div>`; Object.keys(grouped).sort().forEach(muscle => { html += `<h3 style="margin-top:16px; color:var(--text-secondary); font-size:14px;">${muscle}</h3><div style="display:flex; flex-direction:column; gap:8px;">`; grouped[muscle].sort((a,b) => a.name.localeCompare(b.name)).forEach(ex => { html += `<label class="data-row flex-between" style="padding:12px; background:var(--surface-color); border-radius:8px; border:1px solid var(--border);"><div><div style="font-weight:bold;">${ex.name}</div><div class="text-muted" style="font-size:12px;">Def: ${ex.targetSets}x${ex.targetReps}</div></div><input type="checkbox" class="cx-checkbox" value="${ex.name}" data-sets="${ex.targetSets}" data-reps="${ex.targetReps}" style="width:24px; height:24px;"></label>`; }); html += `</div>`; }); return html; },
     renderNutrition() { return `<h1>${app.sym('nutrition') || ''} Daily Nutrition</h1><div class="card"><h3>Log Today's Fuel</h3><div style="display:flex; flex-direction:column; gap:12px; margin-top:16px;"><div><label class="text-muted" style="font-size:12px;">Calories Consumed</label><input type="number" id="nut-cal" class="edit-input" style="font-size:24px !important; font-weight:bold; height:50px; text-align:center;" placeholder="kcal"></div><div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:12px;"><div><label class="text-muted" style="font-size:12px;">Protein (g)</label><input type="number" id="nut-pro" class="edit-input" style="text-align:center"></div><div><label class="text-muted" style="font-size:12px;">Carbs (g)</label><input type="number" id="nut-car" class="edit-input" style="text-align:center"></div><div><label class="text-muted" style="font-size:12px;">Fats (g)</label><input type="number" id="nut-fat" class="edit-input" style="text-align:center"></div></div><button class="btn btn-success" style="margin-top:12px;" onclick="app.logNutrition()"><i class="fas fa-save"></i> SAVE MACROS</button></div></div>`; },
     renderProgress() { 
-        let html = `<h1>${app.sym('analytics') || ''} Analytics</h1><div class="card" style="background: linear-gradient(145deg, var(--pr-bg1), var(--pr-bg2)); border-color: var(--accent-color); box-shadow: 0 4px 16px var(--accent-dim);"><h2 style="margin:0; color:var(--accent-color); font-style:italic; margin-bottom: 16px;">${app.sym('pr')} PR ZONE</h2><div style="background:var(--surface-color); padding: 12px; border-radius: calc(var(--card-radius) - 4px); margin-bottom: 16px; border: 1px solid var(--accent-dim);"><h3 style="font-size:14px; margin:0;"><i class="fas fa-chart-line text-accent"></i> Estimated PR's (e1RM)</h3><p class="text-muted" style="font-size:11px; margin-top:4px;">Uses the Epley formula dynamically applied to your best sets.</p><canvas id="e1rmChart" style="margin-top:12px;"></canvas></div><h3 style="font-size:14px; margin:0;">${app.sym('success')} Recorded PR's</h3><div style="display:flex; gap:8px; margin-top:12px;"><div class="streak-box" style="flex:1; flex-direction:column; padding:12px; margin:0; border-color:var(--info); background: var(--info-dim);" onclick="app.editPR('Bench')"><span class="text-muted" style="font-size:12px; text-transform:uppercase;">Bench</span><span style="font-size:22px; font-weight:bold; color:var(--text-primary);">${store.state.prs.Bench || 0}<span style="font-size:12px; color:var(--text-secondary);">kg</span></span></div><div class="streak-box" style="flex:1; flex-direction:column; padding:12px; margin:0; border-color:var(--accent-color); background: var(--accent-dim);" onclick="app.editPR('Squat')"><span class="text-muted" style="font-size:12px; text-transform:uppercase;">Squat</span><span style="font-size:22px; font-weight:bold; color:var(--text-primary);">${store.state.prs.Squat || 0}<span style="font-size:12px; color:var(--text-secondary);">kg</span></span></div><div class="streak-box" style="flex:1; flex-direction:column; padding:12px; margin:0; border-color:var(--success); background: var(--success-dim);" onclick="app.editPR('Deadlift')"><span class="text-muted" style="font-size:12px; text-transform:uppercase;">Deadlift</span><span style="font-size:22px; font-weight:bold; color:var(--text-primary);">${store.state.prs.Deadlift || 0}<span style="font-size:12px; color:var(--text-secondary);">kg</span></span></div></div></div><div class="card" style="background: linear-gradient(145deg, var(--bw-bg1), var(--bw-bg2)); border-color: var(--warning); box-shadow: 0 4px 16px var(--warning-dim);"><h2 style="margin:0; color:var(--warning); font-style:italic; margin-bottom: 8px;">${app.sym('bw')} BODYWEIGHT</h2><div style="background:var(--surface-color); padding: 12px; border-radius: calc(var(--card-radius) - 4px); border: 1px solid var(--warning-dim);"><canvas id="bwTimeChart"></canvas></div></div><div class="card" style="background: linear-gradient(145deg, var(--vol-bg1), var(--vol-bg2)); border-color: var(--info); box-shadow: 0 4px 16px var(--info-dim);"><h2 style="margin:0; color:var(--info); font-style:italic; margin-bottom: 8px;">${app.sym('vol')} MUSCLE VOLUME</h2><div style="background:var(--surface-color); padding: 12px; border-radius: calc(var(--card-radius) - 4px); border: 1px solid var(--info-dim);"><canvas id="muscleTimeChart"></canvas></div></div>`; 
+        // Build weekly set counters
+        let weekSets = { Chest:0, Back:0, Triceps:0, Biceps:0, Shoulders:0, Quads:0, Hamstrings:0 };
+        const mon = utils.getMonday(new Date());
+        store.state.history.workouts.forEach(w => {
+            if (new Date(w.date) >= mon && !w.isSkipped && !w.isActivity) {
+                (w.exercises||[]).forEach(ex => {
+                    const m = utils.getMuscle(ex);
+                    if (weekSets[m] !== undefined) {
+                        weekSets[m] += ex.sets.filter(s => s.completed).length;
+                    }
+                });
+            }
+        });
+        
+        let hyperHtml = `<div class="card" style="background:var(--surface-color); border:1px solid var(--info-dim);"><h3 style="margin:0; font-size:14px; margin-bottom:12px;"><i class="fas fa-bullseye text-info"></i> Weekly Hypertrophy Sets</h3><p class="text-muted" style="font-size:11px; margin-bottom:12px;">Science recommends hitting 10 - 20 hard sets per muscle group each week to maximize muscle growth.</p><div style="display:flex; flex-direction:column; gap:8px;">`;
+        HYPERTROPHY_GROUPS.forEach(m => {
+            let sets = weekSets[m] || 0;
+            let pct = (sets / 20) * 100; if (pct > 100) pct = 100;
+            let color = sets >= 10 ? 'var(--success)' : 'var(--info)';
+            hyperHtml += `<div class="flex-between" style="font-size:12px; margin-bottom:2px;"><span style="font-weight:bold;">${m}</span><span class="text-muted">${sets} / 10-20</span></div><div class="progress-bg" style="height:6px; margin:0;"><div class="progress-fill" style="width:${pct}%; background:${color};"></div></div>`;
+        });
+        hyperHtml += `</div></div>`;
+
+        let html = `<h1>${app.sym('analytics') || ''} Analytics</h1><div class="card" style="background: linear-gradient(145deg, var(--pr-bg1), var(--pr-bg2)); border-color: var(--accent-color); box-shadow: 0 4px 16px var(--accent-dim);"><h2 style="margin:0; color:var(--accent-color); font-style:italic; margin-bottom: 16px;">${app.sym('pr')} PR ZONE</h2><div style="background:var(--surface-color); padding: 12px; border-radius: calc(var(--card-radius) - 4px); margin-bottom: 16px; border: 1px solid var(--accent-dim);"><h3 style="font-size:14px; margin:0;"><i class="fas fa-chart-line text-accent"></i> Estimated PR's (e1RM)</h3><p class="text-muted" style="font-size:11px; margin-top:4px;">Uses the Epley formula dynamically applied to your best sets.</p><canvas id="e1rmChart" style="margin-top:12px;"></canvas></div><h3 style="font-size:14px; margin:0;">${app.sym('success')} Recorded PR's</h3><div style="display:flex; gap:8px; margin-top:12px;"><div class="streak-box" style="flex:1; flex-direction:column; padding:12px; margin:0; border-color:var(--info); background: var(--info-dim);" onclick="app.editPR('Bench')"><span class="text-muted" style="font-size:12px; text-transform:uppercase;">Bench</span><span style="font-size:22px; font-weight:bold; color:var(--text-primary);">${store.state.prs.Bench || 0}<span style="font-size:12px; color:var(--text-secondary);">kg</span></span></div><div class="streak-box" style="flex:1; flex-direction:column; padding:12px; margin:0; border-color:var(--accent-color); background: var(--accent-dim);" onclick="app.editPR('Squat')"><span class="text-muted" style="font-size:12px; text-transform:uppercase;">Squat</span><span style="font-size:22px; font-weight:bold; color:var(--text-primary);">${store.state.prs.Squat || 0}<span style="font-size:12px; color:var(--text-secondary);">kg</span></span></div><div class="streak-box" style="flex:1; flex-direction:column; padding:12px; margin:0; border-color:var(--success); background: var(--success-dim);" onclick="app.editPR('Deadlift')"><span class="text-muted" style="font-size:12px; text-transform:uppercase;">Deadlift</span><span style="font-size:22px; font-weight:bold; color:var(--text-primary);">${store.state.prs.Deadlift || 0}<span style="font-size:12px; color:var(--text-secondary);">kg</span></span></div></div></div><div class="card" style="background: linear-gradient(145deg, var(--bw-bg1), var(--bw-bg2)); border-color: var(--warning); box-shadow: 0 4px 16px var(--warning-dim);"><h2 style="margin:0; color:var(--warning); font-style:italic; margin-bottom: 8px;">${app.sym('bw')} BODYWEIGHT</h2><div style="background:var(--surface-color); padding: 12px; border-radius: calc(var(--card-radius) - 4px); border: 1px solid var(--warning-dim);"><canvas id="bwTimeChart"></canvas></div></div>${hyperHtml}<div class="card" style="background: linear-gradient(145deg, var(--vol-bg1), var(--vol-bg2)); border-color: var(--info); box-shadow: 0 4px 16px var(--info-dim);"><h2 style="margin:0; color:var(--info); font-style:italic; margin-bottom: 8px;">${app.sym('vol')} MUSCLE VOLUME</h2><div style="background:var(--surface-color); padding: 12px; border-radius: calc(var(--card-radius) - 4px); border: 1px solid var(--info-dim);"><canvas id="muscleTimeChart"></canvas></div></div>`; 
+        
         setTimeout(() => { 
             const colorAccent = utils.getCssVar('--accent-color', '#ff3b30'); const colorSuccess = utils.getCssVar('--success', '#34c759'); const colorWarning = utils.getCssVar('--warning', '#ff9500'); const colorInfo = utils.getCssVar('--info', '#007aff'); const colorTextSec = utils.getCssVar('--text-secondary', '#8e8e93'); const colorGrid = utils.getCssVar('--border', '#333336'); const ff = utils.getCssVar('--font-family', 'sans-serif');
+            
             const e1rmCtx = document.getElementById('e1rmChart');
             if(e1rmCtx) {
+                if(window.e1rmChartInst) window.e1rmChartInst.destroy();
                 const e1Data = utils.getE1RMHistory(); let allTs = new Set(); [...e1Data.bench, ...e1Data.squat, ...e1Data.deadlift].forEach(x => allTs.add(x.ts)); let sortedTs = Array.from(allTs).sort((a,b)=>a-b); let e1Labels = sortedTs.map(ts => utils.formatDateShort(new Date(ts))); let mapData = (arr) => sortedTs.map(ts => { let match = arr.find(x => x.ts === ts); return match ? match.e1rm.toFixed(1) : null; });
-                new Chart(e1rmCtx, { type: 'line', data: { labels: e1Labels, datasets: [ { label: 'Bench', data: mapData(e1Data.bench), borderColor: colorInfo, backgroundColor: colorInfo, tension: 0.3, borderWidth: 2, spanGaps: true }, { label: 'Squat', data: mapData(e1Data.squat), borderColor: colorAccent, backgroundColor: colorAccent, tension: 0.3, borderWidth: 2, spanGaps: true }, { label: 'Deadlift', data: mapData(e1Data.deadlift), borderColor: colorSuccess, backgroundColor: colorSuccess, tension: 0.3, borderWidth: 2, spanGaps: true } ]}, options: { responsive: true, plugins: { legend: { position: 'top', labels: { color: colorTextSec, boxWidth: 12, font: {family: ff} } } }, scales: { y: { grid: { color: colorGrid }, ticks: {font: {family: ff}, color: colorTextSec} }, x: { grid: { display: false }, ticks: {font: {family: ff}, color: colorTextSec} } } } });
+                window.e1rmChartInst = new Chart(e1rmCtx, { type: 'line', data: { labels: e1Labels, datasets: [ { label: 'Bench', data: mapData(e1Data.bench), borderColor: colorInfo, backgroundColor: colorInfo, tension: 0.3, borderWidth: 2, spanGaps: true }, { label: 'Squat', data: mapData(e1Data.squat), borderColor: colorAccent, backgroundColor: colorAccent, tension: 0.3, borderWidth: 2, spanGaps: true }, { label: 'Deadlift', data: mapData(e1Data.deadlift), borderColor: colorSuccess, backgroundColor: colorSuccess, tension: 0.3, borderWidth: 2, spanGaps: true } ]}, options: { responsive: true, plugins: { legend: { position: 'top', labels: { color: colorTextSec, boxWidth: 12, font: {family: ff} } } }, scales: { y: { grid: { color: colorGrid }, ticks: {font: {family: ff}, color: colorTextSec} }, x: { grid: { display: false }, ticks: {font: {family: ff}, color: colorTextSec} } } } });
             }
-            const bwData = utils.getWeeklyData(store.state.history.bodyweight); const bwWeeks = Object.keys(bwData).sort(); const bwLabels = bwWeeks.map(w => utils.formatDateShort(new Date(parseInt(w)))); const bwAverages = bwWeeks.map(w => { const entries = bwData[w].entries; const sum = entries.reduce((acc, e) => acc + (parseFloat(e.weight) || 0), 0); return sum / entries.length; }); const bwCtx = document.getElementById('bwTimeChart'); if(bwCtx && bwLabels.length > 0) { new Chart(bwCtx, { type: 'line', data: { labels: bwLabels, datasets: [{ label: 'Avg Weight (kg)', data: bwAverages, borderColor: colorWarning, backgroundColor: colorWarning, tension: 0.3, borderWidth: 2 }] }, options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { grid: { color: colorGrid }, ticks: {font: {family: ff}, color: colorTextSec} }, x: { grid: { display: false }, ticks: {font: {family: ff}, color: colorTextSec} } } } }); } 
-            const musData = utils.getSessionMuscleVolume(); const musKeys = Object.keys(musData.sessions).sort((a,b) => a - b); const musLabels = musKeys.map(k => musData.sessions[k].label); const CHAT_COLORS = [colorAccent, colorInfo, colorSuccess, colorWarning, utils.getCssVar('--text-primary', '#fff'), '#af52de', '#5ac8fa']; const musDatasets = musData.muscles.map((muscle, i) => { return { label: muscle, data: musKeys.map(k => musData.sessions[k].vols[muscle] || null), borderColor: CHAT_COLORS[i % CHAT_COLORS.length], backgroundColor: CHAT_COLORS[i % CHAT_COLORS.length], tension: 0.3, borderWidth: 2, spanGaps: true }; }); const musCtx = document.getElementById('muscleTimeChart'); if(musCtx && musLabels.length > 0) { new Chart(musCtx, { type: 'line', data: { labels: musLabels, datasets: musDatasets }, options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { color: colorTextSec, boxWidth: 12, font: {family: ff} } } }, scales: { y: { grid: { color: colorGrid }, ticks: {font: {family: ff}, color: colorTextSec} }, x: { grid: { display: false }, ticks: {font: {family: ff}, color: colorTextSec} } } } }); } 
+            
+            const bwCtx = document.getElementById('bwTimeChart'); 
+            if(bwCtx) {
+                if(window.bwChartInst) window.bwChartInst.destroy();
+                const bwData = utils.getWeeklyData(store.state.history.bodyweight); const bwWeeks = Object.keys(bwData).sort(); const bwLabels = bwWeeks.map(w => utils.formatDateShort(new Date(parseInt(w)))); const bwAverages = bwWeeks.map(w => { const entries = bwData[w].entries; const sum = entries.reduce((acc, e) => acc + (parseFloat(e.weight) || 0), 0); return sum / entries.length; }); 
+                if (bwLabels.length > 0) {
+                    window.bwChartInst = new Chart(bwCtx, { type: 'line', data: { labels: bwLabels, datasets: [{ label: 'Avg Weight (kg)', data: bwAverages, borderColor: colorWarning, backgroundColor: colorWarning, tension: 0.3, borderWidth: 2 }] }, options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { grid: { color: colorGrid }, ticks: {font: {family: ff}, color: colorTextSec} }, x: { grid: { display: false }, ticks: {font: {family: ff}, color: colorTextSec} } } } }); 
+                }
+            } 
+            
+            const musCtx = document.getElementById('muscleTimeChart'); 
+            if(musCtx) {
+                if(window.musChartInst) window.musChartInst.destroy();
+                const musData = utils.getSessionMuscleVolume(); const musKeys = Object.keys(musData.sessions).sort((a,b) => a - b); const musLabels = musKeys.map(k => musData.sessions[k].label); const CHAT_COLORS = [colorAccent, colorInfo, colorSuccess, colorWarning, utils.getCssVar('--text-primary', '#fff'), '#af52de', '#5ac8fa']; const musDatasets = musData.muscles.map((muscle, i) => { return { label: muscle, data: musKeys.map(k => musData.sessions[k].vols[muscle] || null), borderColor: CHAT_COLORS[i % CHAT_COLORS.length], backgroundColor: CHAT_COLORS[i % CHAT_COLORS.length], tension: 0.3, borderWidth: 2, spanGaps: true }; }); 
+                if (musLabels.length > 0) {
+                    window.musChartInst = new Chart(musCtx, { type: 'line', data: { labels: musLabels, datasets: musDatasets }, options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { color: colorTextSec, boxWidth: 12, font: {family: ff} } } }, scales: { y: { grid: { color: colorGrid }, ticks: {font: {family: ff}, color: colorTextSec} }, x: { grid: { display: false }, ticks: {font: {family: ff}, color: colorTextSec} } } } }); 
+                }
+            } 
         }, 100); return html; 
     },
     renderData() {
