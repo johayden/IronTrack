@@ -8,7 +8,10 @@
     <meta name="theme-color" content="#121212">
     <title>IronTrack OS</title>
     
+    <!-- Chart.js and the Date adapter for proper time-scaled zooming -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
@@ -288,7 +291,6 @@ const utils = {
         let history = { bench: [], squat: [], deadlift: [] };
         store.state.history.workouts.forEach(w => {
             if (w.isSkipped || w.isActivity) return;
-            let dateStr = utils.formatDateShort(new Date(w.date));
             let sessionBench = 0, sessionSquat = 0, sessionDeadlift = 0;
             (w.exercises||[]).forEach(ex => {
                 let n = ex.name.toLowerCase();
@@ -303,9 +305,9 @@ const utils = {
                     if (isDeadlift && maxE1RM > sessionDeadlift) sessionDeadlift = maxE1RM;
                 }
             });
-            if (sessionBench > 0) history.bench.push({ date: dateStr, e1rm: sessionBench, ts: new Date(w.date).getTime() });
-            if (sessionSquat > 0) history.squat.push({ date: dateStr, e1rm: sessionSquat, ts: new Date(w.date).getTime() });
-            if (sessionDeadlift > 0) history.deadlift.push({ date: dateStr, e1rm: sessionDeadlift, ts: new Date(w.date).getTime() });
+            if (sessionBench > 0) history.bench.push({ e1rm: sessionBench, ts: new Date(w.date).getTime() });
+            if (sessionSquat > 0) history.squat.push({ e1rm: sessionSquat, ts: new Date(w.date).getTime() });
+            if (sessionDeadlift > 0) history.deadlift.push({ e1rm: sessionDeadlift, ts: new Date(w.date).getTime() });
         });
         history.bench.sort((a,b)=>a.ts-b.ts); history.squat.sort((a,b)=>a.ts-b.ts); history.deadlift.sort((a,b)=>a.ts-b.ts);
         return history;
@@ -703,41 +705,118 @@ const views = {
     },
 
     renderCharts() {
-        const filterVal = document.getElementById('chart-time-filter') ? document.getElementById('chart-time-filter').value : (store.state.settings.chartRange || '90');
+        const filterEl = document.getElementById('chart-time-filter');
+        const filterVal = filterEl ? filterEl.value : (store.state.settings.chartRange || '90');
         store.state.settings.chartRange = filterVal; store.save();
         
         const now = new Date().getTime();
-        let cutoff = 0;
-        if (filterVal !== 'all') { cutoff = now - (parseInt(filterVal) * 86400000); }
+        let minTime = null;
+        if (filterVal !== 'all') { 
+            minTime = now - (parseInt(filterVal) * 86400000); 
+        }
 
-        const colorAccent = utils.getCssVar('--accent-color', '#ff3b30'); const colorSuccess = utils.getCssVar('--success', '#34c759'); const colorWarning = utils.getCssVar('--warning', '#ff9500'); const colorInfo = utils.getCssVar('--info', '#007aff'); const colorTextSec = utils.getCssVar('--text-secondary', '#8e8e93'); const colorGrid = utils.getCssVar('--border', '#333336'); const ff = utils.getCssVar('--font-family', 'sans-serif');
+        const colorAccent = utils.getCssVar('--accent-color', '#ff3b30'); 
+        const colorSuccess = utils.getCssVar('--success', '#34c759'); 
+        const colorWarning = utils.getCssVar('--warning', '#ff9500'); 
+        const colorInfo = utils.getCssVar('--info', '#007aff'); 
+        const colorTextSec = utils.getCssVar('--text-secondary', '#8e8e93'); 
+        const colorGrid = utils.getCssVar('--border', '#333336'); 
+        const ff = utils.getCssVar('--font-family', 'sans-serif');
+        const CHAT_COLORS = [colorAccent, colorInfo, colorSuccess, colorWarning, utils.getCssVar('--text-primary', '#fff'), '#af52de', '#5ac8fa'];
         
-        // e1RM Chart
+        // Base X-axis Time Scale Config
+        const getXScale = (unit = 'day') => {
+            let scale = {
+                type: 'time',
+                time: { 
+                    unit: unit, 
+                    displayFormats: { day: 'MMM d', week: 'MMM d', month: 'MMM yyyy' },
+                    tooltipFormat: 'MMM d, yyyy' 
+                },
+                grid: { display: false, color: colorGrid },
+                ticks: { font: {family: ff}, color: colorTextSec, maxTicksLimit: 6 }
+            };
+            if (minTime) { scale.min = minTime; }
+            scale.max = now + 86400000; // Pad the right edge slightly
+            return scale;
+        };
+
+        // 1. e1RM Chart
         const e1rmCtx = document.getElementById('e1rmChart');
         if(e1rmCtx) {
             if(window.e1rmChartInst) window.e1rmChartInst.destroy();
-            const e1Data = utils.getE1RMHistory(); let allTs = new Set(); [...e1Data.bench, ...e1Data.squat, ...e1Data.deadlift].forEach(x => { if(x.ts >= cutoff) allTs.add(x.ts); }); let sortedTs = Array.from(allTs).sort((a,b)=>a-b); let e1Labels = sortedTs.map(ts => utils.formatDateShort(new Date(ts))); let mapData = (arr) => sortedTs.map(ts => { let match = arr.find(x => x.ts === ts); return match ? match.e1rm.toFixed(1) : null; });
-            window.e1rmChartInst = new Chart(e1rmCtx, { type: 'line', data: { labels: e1Labels, datasets: [ { label: 'Bench', data: mapData(e1Data.bench), borderColor: colorInfo, backgroundColor: colorInfo, tension: 0.3, borderWidth: 2, spanGaps: true }, { label: 'Squat', data: mapData(e1Data.squat), borderColor: colorAccent, backgroundColor: colorAccent, tension: 0.3, borderWidth: 2, spanGaps: true }, { label: 'Deadlift', data: mapData(e1Data.deadlift), borderColor: colorSuccess, backgroundColor: colorSuccess, tension: 0.3, borderWidth: 2, spanGaps: true } ]}, options: { responsive: true, plugins: { legend: { position: 'top', labels: { color: colorTextSec, boxWidth: 12, font: {family: ff} } } }, scales: { y: { grid: { color: colorGrid }, ticks: {font: {family: ff}, color: colorTextSec} }, x: { grid: { display: false }, ticks: {font: {family: ff}, color: colorTextSec} } } } });
+            const e1Data = utils.getE1RMHistory(); 
+            const mapE1 = (arr) => arr.map(d => ({ x: d.ts, y: d.e1rm }));
+            
+            window.e1rmChartInst = new Chart(e1rmCtx, { 
+                type: 'line', 
+                data: { datasets: [ 
+                    { label: 'Bench', data: mapE1(e1Data.bench), borderColor: colorInfo, backgroundColor: colorInfo, tension: 0.3, borderWidth: 2, spanGaps: true }, 
+                    { label: 'Squat', data: mapE1(e1Data.squat), borderColor: colorAccent, backgroundColor: colorAccent, tension: 0.3, borderWidth: 2, spanGaps: true }, 
+                    { label: 'Deadlift', data: mapE1(e1Data.deadlift), borderColor: colorSuccess, backgroundColor: colorSuccess, tension: 0.3, borderWidth: 2, spanGaps: true } 
+                ]}, 
+                options: { 
+                    responsive: true, 
+                    plugins: { legend: { position: 'top', labels: { color: colorTextSec, boxWidth: 12, font: {family: ff} } } }, 
+                    scales: { 
+                        y: { grid: { color: colorGrid }, ticks: {font: {family: ff}, color: colorTextSec} }, 
+                        x: getXScale('day') 
+                    } 
+                } 
+            });
         }
         
-        // BW Chart
+        // 2. Bodyweight Chart (Uses raw daily points)
         const bwCtx = document.getElementById('bwTimeChart'); 
         if(bwCtx) {
             if(window.bwChartInst) window.bwChartInst.destroy();
-            const bwData = utils.getWeeklyData(store.state.history.bodyweight); let bwWeeks = Object.keys(bwData).map(Number).filter(ts => ts >= cutoff).sort((a,b)=>a-b); const bwLabels = bwWeeks.map(w => utils.formatDateShort(new Date(w))); const bwAverages = bwWeeks.map(w => { const entries = bwData[w].entries; const sum = entries.reduce((acc, e) => acc + (parseFloat(e.weight) || 0), 0); return sum / entries.length; }); 
-            if (bwLabels.length > 0) {
-                window.bwChartInst = new Chart(bwCtx, { type: 'line', data: { labels: bwLabels, datasets: [{ label: 'Avg Weight (kg)', data: bwAverages, borderColor: colorWarning, backgroundColor: colorWarning, tension: 0.3, borderWidth: 2 }] }, options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { grid: { color: colorGrid }, ticks: {font: {family: ff}, color: colorTextSec} }, x: { grid: { display: false }, ticks: {font: {family: ff}, color: colorTextSec} } } } }); 
-            }
+            const rawBw = store.state.history.bodyweight
+                .map(e => ({ x: new Date(e.date).getTime(), y: parseFloat(e.weight) }))
+                .filter(e => !isNaN(e.y))
+                .sort((a,b) => a.x - b.x);
+
+            window.bwChartInst = new Chart(bwCtx, { 
+                type: 'line', 
+                data: { datasets: [{ label: 'Bodyweight (kg)', data: rawBw, borderColor: colorWarning, backgroundColor: colorWarning, tension: 0.3, borderWidth: 2, spanGaps: true }] }, 
+                options: { 
+                    responsive: true, 
+                    plugins: { legend: { display: false } }, 
+                    scales: { 
+                        y: { grid: { color: colorGrid }, ticks: {font: {family: ff}, color: colorTextSec} }, 
+                        x: getXScale('day') 
+                    } 
+                } 
+            }); 
         } 
         
-        // Muscle Volume Chart (Now Weekly!)
+        // 3. Muscle Volume Chart (Weekly points plotted precisely)
         const musCtx = document.getElementById('muscleTimeChart'); 
         if(musCtx) {
             if(window.musChartInst) window.musChartInst.destroy();
-            const musData = utils.getWeeklyMuscleVolume(); const filteredWeeks = musData.weeks.filter(w => w.ts >= cutoff); const musLabels = filteredWeeks.map(w => w.label); const CHAT_COLORS = [colorAccent, colorInfo, colorSuccess, colorWarning, utils.getCssVar('--text-primary', '#fff'), '#af52de', '#5ac8fa']; const musDatasets = musData.muscles.map((muscle, i) => { return { label: muscle, data: filteredWeeks.map(w => w.vols[muscle] || null), borderColor: CHAT_COLORS[i % CHAT_COLORS.length], backgroundColor: CHAT_COLORS[i % CHAT_COLORS.length], tension: 0.3, borderWidth: 2, spanGaps: true }; }); 
-            if (musLabels.length > 0) {
-                window.musChartInst = new Chart(musCtx, { type: 'line', data: { labels: musLabels, datasets: musDatasets }, options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { color: colorTextSec, boxWidth: 12, font: {family: ff} } } }, scales: { y: { grid: { color: colorGrid }, ticks: {font: {family: ff}, color: colorTextSec} }, x: { grid: { display: false }, ticks: {font: {family: ff}, color: colorTextSec} } } } }); 
-            }
+            const musData = utils.getWeeklyMuscleVolume(); 
+            const musDatasets = musData.muscles.map((muscle, i) => { 
+                const dataPts = musData.weeks.map(w => ({ x: w.ts, y: w.vols[muscle] || null })).filter(pt => pt.y !== null);
+                return { 
+                    label: muscle, 
+                    data: dataPts, 
+                    borderColor: CHAT_COLORS[i % CHAT_COLORS.length], 
+                    backgroundColor: CHAT_COLORS[i % CHAT_COLORS.length], 
+                    tension: 0.3, borderWidth: 2, spanGaps: true 
+                }; 
+            }); 
+            
+            window.musChartInst = new Chart(musCtx, { 
+                type: 'line', 
+                data: { datasets: musDatasets }, 
+                options: { 
+                    responsive: true, 
+                    plugins: { legend: { position: 'bottom', labels: { color: colorTextSec, boxWidth: 12, font: {family: ff} } } }, 
+                    scales: { 
+                        y: { grid: { color: colorGrid }, ticks: {font: {family: ff}, color: colorTextSec} }, 
+                        x: getXScale('week') 
+                    } 
+                } 
+            }); 
         }
     },
 
