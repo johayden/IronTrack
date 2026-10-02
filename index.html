@@ -256,6 +256,24 @@ const store = {
             if (ex && ex.sets.length > 0) history.push(ex); 
             if (history.length >= 3) break; 
         } return history;
+    },
+    getPeakSet(exerciseName, variationStr = '') {
+        const thirtyDaysAgo = new Date().getTime() - (30 * 24 * 60 * 60 * 1000);
+        let peak = null;
+        this.state.history.workouts.forEach(w => {
+            if (w.isSkipped || w.isActivity || new Date(w.date).getTime() < thirtyDaysAgo) return;
+            const ex = (w.exercises||[]).find(e => e.name === exerciseName && (e.variation || '') === variationStr);
+            if (ex) {
+                ex.sets.forEach(s => {
+                    if (s.completed && s.weight > 0 && s.reps > 0) {
+                        if (!peak || s.weight > peak.weight || (s.weight === peak.weight && s.reps > peak.reps)) {
+                            peak = { weight: s.weight, reps: s.reps };
+                        }
+                    }
+                });
+            }
+        });
+        return peak;
     }
 };
 
@@ -276,20 +294,18 @@ const utils = {
     getTodayProgram: () => { const d = new Date().getDay(); const active = utils.getActiveRoutine(); return active.days.find(p => p.day === d) || { day: d, workouts: [] }; },
     getMuscle: (ex) => { if(ex.muscle && ex.muscle !== 'Other') return ex.muscle; return (EXERCISE_DB[ex.name] && EXERCISE_DB[ex.name].muscle) ? EXERCISE_DB[ex.name].muscle : 'Other'; },
     getWeeklyData: (dataset) => { let weekly = {}; dataset.forEach(entry => { const mon = utils.getMonday(entry.date); if (!weekly[mon]) weekly[mon] = { entries: [] }; weekly[mon].entries.push(entry); }); return weekly; },
-    getWeeklyMuscleVolume: () => {
-        const weeks = {};
+    getWorkoutVolumeHistory: () => {
+        const history = {};
         store.state.history.workouts.forEach(w => {
             if(w.isSkipped || w.isActivity) return;
-            const mon = utils.getMonday(w.date);
-            if(!weeks[mon]) weeks[mon] = { label: utils.formatDateShort(new Date(mon)), vols: {}, ts: mon };
-            (w.exercises||[]).forEach(ex => {
-                const target = utils.getMuscle(ex);
-                if (HYPERTROPHY_GROUPS.includes(target)) {
-                    const vol = utils.calcVolume(ex.sets);
-                    if(vol > 0) weeks[mon].vols[target] = (weeks[mon].vols[target] || 0) + vol;
-                }
-            });
-        }); return { weeks: Object.values(weeks).sort((a,b)=>a.ts-b.ts), muscles: HYPERTROPHY_GROUPS };
+            const name = w.name;
+            if(!history[name]) history[name] = [];
+            let vol = 0;
+            (w.exercises||[]).forEach(ex => { vol += utils.calcVolume(ex.sets); });
+            if(vol > 0) history[name].push({ x: new Date(w.date).getTime(), y: vol });
+        });
+        Object.keys(history).forEach(k => history[k].sort((a,b)=>a.x-b.x));
+        return history;
     },
     getE1RMHistory: () => {
         let history = { bench: [], squat: [], deadlift: [] };
@@ -323,7 +339,11 @@ const utils = {
         if (['water', 'reading', 'custom'].includes(g.type)) { return !!(store.state.history.challengeLogs && store.state.history.challengeLogs[dStr] && store.state.history.challengeLogs[dStr][g.id]); }
         else if (g.type === 'workout') { const count = store.state.history.workouts.filter(w => utils.getLocalISODate(w.date) === dStr && !w.isSkipped && !w.isActivity).length; return count >= (g.count || 1) || isRest; }
         else if (g.type === 'weight') { return store.state.history.bodyweight.some(w => w && w.date && utils.getLocalISODate(w.date) === dStr); }
-        else if (g.type === 'nutrition') { const nut = store.state.history.nutrition.find(n => n && n.date && utils.getLocalISODate(n.date) === dStr); if (!nut) return false; if (g.targetType === 'min' && nut.cal < g.calories) return false; if (g.targetType === 'max' && nut.cal > g.calories) return false; return true; }
+        else if (g.type === 'nutrition') { 
+            const nut = store.state.history.nutrition.find(n => n && n.date && utils.getLocalISODate(n.date) === dStr); 
+            if (!nut) return false; 
+            return nut.cal > 0; // Tick immediately if anything is logged
+        }
         else if (g.type === 'cardio') { return store.state.history.cardio.some(c => c && c.date && utils.getLocalISODate(c.date) === dStr); }
         return false;
     },
@@ -341,7 +361,8 @@ const utils = {
             if (utils.checkDaySuccess(utils.getLocalISODate(d))) streak++; d.setDate(d.getDate() - 1);
             while(d >= start) { if (utils.checkDaySuccess(utils.getLocalISODate(d))) { streak++; d.setDate(d.getDate() - 1); } else break; }
         } else {
-            const wDates = [...new Set(store.state.history.workouts.map(e => utils.getLocalISODate(e.date)))]; const bDates = [...new Set(store.state.history.bodyweight.map(e => utils.getLocalISODate(e.date)))]; const nDates = [...new Set(store.state.history.nutrition.map(e => utils.getLocalISODate(e.date)))];
+            const wDates = [...new Set(store.state.history.workouts.map(e => utils.getLocalISODate(e.date)))]; const bDates = [...new Set(store.state.history.bodyweight.map(e => utils.getLocalISODate(e.date)))]; 
+            const nDates = [...new Set(store.state.history.nutrition.filter(n => n.cal > 0).map(e => utils.getLocalISODate(e.date)))];
             const isComplete = (dStr) => {
                 const parts = dStr.split('-'); const dObj = new Date(parts[0], parts[1]-1, parts[2]); const dayIndex = dObj.getDay();
                 const active = utils.getActiveRoutine(); const prog = active.days.find(x => x.day === dayIndex); const isRest = !prog || prog.workouts.length === 0;
@@ -402,7 +423,15 @@ const workoutEngine = {
         const ex = this.activeWorkout.exercises[exIdx];
         if (val === '__NEW__') { const newVar = prompt(`Enter new variation for ${ex.name}:`); if (!newVar) { this.renderActiveWorkout(); return; } if (!store.state.variations[ex.name]) store.state.variations[ex.name] = []; if (!store.state.variations[ex.name].includes(newVar)) { store.state.variations[ex.name].push(newVar); store.save(); } val = newVar; }
         ex.variation = val; const pastEx = store.getExerciseHistory(ex.name, val); const historySets = pastEx.map(e => e.sets); ex.notes = pastEx[0] && pastEx[0].notes ? pastEx[0].notes : '';
-        ex.sets.forEach((set, i) => { let prevW = historySets[0] && historySets[0][i] ? parseFloat(historySets[0][i].weight) : 0; let prevR = historySets[0] && historySets[0][i] ? parseFloat(historySets[0][i].reps) : 0; let sumW = 0, sumR = 0, count = 0; historySets.forEach(h => { if (h[i]) { sumW += parseFloat(h[i].weight)||0; sumR += parseFloat(h[i].reps)||0; count++; } }); set.prevWeight = prevW; set.prevReps = prevR; set.l3Weight = count ? (sumW / count).toFixed(1) : 0; set.l3Reps = count ? Math.round(sumR / count) : 0; }); 
+        ex.sets.forEach((set, i) => { 
+            let prevW = historySets[0] && historySets[0][i] ? parseFloat(historySets[0][i].weight) : 0; 
+            let prevR = historySets[0] && historySets[0][i] ? parseFloat(historySets[0][i].reps) : 0; 
+            let sumW = 0, sumR = 0, count = 0; 
+            historySets.forEach(h => { if (h[i]) { sumW += parseFloat(h[i].weight)||0; sumR += parseFloat(h[i].reps)||0; count++; } }); 
+            set.prevWeight = prevW; set.prevReps = prevR; 
+            set.l3Weight = count ? (sumW / count).toFixed(1) : 0; set.l3Reps = count ? Math.round(sumR / count) : 0; 
+            if(!set.completed) { set.weight = prevW; set.reps = prevR; }
+        }); 
         this.sync(); this.renderActiveWorkout();
     },
     inputChange(exIdx, setIdx, field, value) { this.activeWorkout.exercises[exIdx].sets[setIdx][field] = parseFloat(value) || 0; this.sync(); }, updateNotes(exIdx, val) { this.activeWorkout.exercises[exIdx].notes = val; this.sync(); }, toggleSet(exIdx, setIdx) { const set = this.activeWorkout.exercises[exIdx].sets[setIdx]; set.completed = !set.completed; if (set.completed) this.startRestTimer(store.state.settings.restTimer); this.sync(); this.renderActiveWorkout(); }, addSet(exIdx) { const sets = this.activeWorkout.exercises[exIdx].sets; const last = sets[sets.length-1] || { weight: 0, reps: 0, rir: 2, prevWeight:0, prevReps:0, l3Weight:0, l3Reps:0 }; sets.push({ ...last, completed: false }); this.sync(); this.renderActiveWorkout(); }, removeSet(exIdx) { const sets = this.activeWorkout.exercises[exIdx].sets; if(sets.length > 1) { sets.pop(); this.sync(); this.renderActiveWorkout(); } else { alert("Cannot remove the last set."); } }, removeExercise(exIdx) { if(confirm(`Remove ${this.activeWorkout.exercises[exIdx].name}?`)) { this.activeWorkout.exercises.splice(exIdx, 1); this.sync(); this.renderActiveWorkout(); } },
@@ -414,12 +443,15 @@ const workoutEngine = {
     discard(skipConfirm = false) { if (!skipConfirm && !confirm("Discard workout? All progress will be lost.")) return; store.state.activeSession = null; store.save(); this.activeWorkout = null; this.stopRestTimer(); document.getElementById('active-workout-view').style.display = 'none'; app.navigate(app.currentView); },
     renderActiveWorkout() {
         const container = document.getElementById('active-workout-view'); if (!this.activeWorkout) return;
-        let html = `<div class="workout-header-sticky"><div><h2 style="margin:0; font-size:18px;">${this.activeWorkout.name}</h2></div>${!this.activeWorkout.isRest ? `<button class="btn btn-sm btn-success" onclick="workoutEngine.finish()"><i class="fas fa-check"></i> FINISH</button>` : ''}<button class="btn btn-sm btn-icon" onclick="workoutEngine.minimize()"><i class="fas fa-chevron-down"></i></button></div><div style="padding: 16px;">`;
+        let html = `<div class="workout-header-sticky"><div><input type="text" class="edit-input" style="font-size:18px !important; font-weight:bold; margin:0; padding:0; border:none; background:transparent; color:var(--text-primary); max-width:200px;" value="${this.activeWorkout.name}" onchange="workoutEngine.activeWorkout.name=this.value; workoutEngine.sync()"></div>${!this.activeWorkout.isRest ? `<button class="btn btn-sm btn-success" onclick="workoutEngine.finish()"><i class="fas fa-check"></i> FINISH</button>` : ''}<button class="btn btn-sm btn-icon" onclick="workoutEngine.minimize()"><i class="fas fa-chevron-down"></i></button></div><div style="padding: 16px;">`;
         if(this.activeWorkout.isActivity) { html += `<div style="text-align:center; padding: 60px 20px;"><div style="font-size:64px; margin-bottom:16px;">${app.sym('activity')}</div><h2>Activity in Progress</h2><p class="text-muted">Timer is running. Hit FINISH when done.</p></div>`; } else {
             html += `<button class="btn" style="background:var(--surface-color); border:1px dashed var(--accent-color); color:var(--accent-color); margin-bottom: 16px;" onclick="workoutEngine.skipWorkout()"><i class="fas fa-forward-step"></i> ${this.activeWorkout.isRest ? `Log Rest Day ${app.sym('rest')}` : 'Skip Workout'}</button>`;
             this.activeWorkout.exercises.forEach((ex, exIdx) => {
                 const varList = store.state.variations[ex.name] || [];
-                html += `<div class="exercise-card"><div class="exercise-header"><div><h3 style="margin:0; color:var(--text-primary)">${ex.name}</h3><select class="edit-input" style="padding: 2px 8px; font-size: 16px !important; margin-top: 4px; margin-bottom: 0; width: auto; background: var(--bg-color); border: 1px solid var(--border);" onchange="workoutEngine.changeVariation(${exIdx}, this.value)"><option value="">Standard</option>${varList.map(v => `<option value="${v}" ${ex.variation === v ? 'selected' : ''}>${v}</option>`).join('')}<option value="__NEW__">+ New Variation</option></select></div><div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;"><button class="btn-icon" style="color:var(--text-secondary); width:32px; height:32px; font-size:16px;" onclick="workoutEngine.removeExercise(${exIdx})"><i class="fas fa-times"></i></button><span class="text-muted" style="font-size:12px">Tgt: ${ex.targetReps}</span></div></div><div style="padding: 0 16px;"><input type="text" class="edit-input" style="font-size:14px !important; margin-top:8px; margin-bottom:0px; width:100%; color:var(--warning);" placeholder="Notes (e.g. UP 2.5kg, seat setting)" value="${ex.notes || ''}" onchange="workoutEngine.updateNotes(${exIdx}, this.value)"></div><div class="exercise-body"><div class="set-row text-muted" style="font-size:12px; margin-bottom: 8px;"><div style="text-align:center">SET</div><div style="text-align:center">KG</div><div style="text-align:center">REPS</div><div style="text-align:center">RIR</div><div></div></div>`;
+                const peak = store.getPeakSet(ex.name, ex.variation || '');
+                const peakHtml = peak ? `<div style="color: var(--pending); font-size: 11px; font-weight: bold; margin-top: 4px; text-align: right;"><i class="fas fa-fire"></i> 30d Peak: ${peak.weight}kg × ${peak.reps}</div>` : '';
+                
+                html += `<div class="exercise-card"><div class="exercise-header"><div><h3 style="margin:0; color:var(--text-primary)">${ex.name}</h3><select class="edit-input" style="padding: 2px 8px; font-size: 16px !important; margin-top: 4px; margin-bottom: 0; width: auto; background: var(--bg-color); border: 1px solid var(--border);" onchange="workoutEngine.changeVariation(${exIdx}, this.value)"><option value="">Standard</option>${varList.map(v => `<option value="${v}" ${ex.variation === v ? 'selected' : ''}>${v}</option>`).join('')}<option value="__NEW__">+ New Variation</option></select></div><div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;"><button class="btn-icon" style="color:var(--text-secondary); width:32px; height:32px; font-size:16px;" onclick="workoutEngine.removeExercise(${exIdx})"><i class="fas fa-times"></i></button><span class="text-muted" style="font-size:12px">Tgt: ${ex.targetReps}</span></div></div><div style="padding: 0 16px;"><input type="text" class="edit-input" style="font-size:14px !important; margin-top:8px; margin-bottom:0px; width:100%; color:var(--warning);" placeholder="Notes (e.g. UP 2.5kg, seat setting)" value="${ex.notes || ''}" onchange="workoutEngine.updateNotes(${exIdx}, this.value)">${peakHtml}</div><div class="exercise-body"><div class="set-row text-muted" style="font-size:12px; margin-bottom: 8px;"><div style="text-align:center">SET</div><div style="text-align:center">KG</div><div style="text-align:center">REPS</div><div style="text-align:center">RIR</div><div></div></div>`;
                 ex.sets.forEach((set, setIdx) => { const isComp = set.completed; html += `<div class="set-wrapper"><div class="flex-between text-muted" style="font-size: 11px; margin-bottom: 4px; padding-left: 45px; padding-right: 55px;"><span>Prev: ${set.prevWeight}×${set.prevReps}</span><span>L3: ${set.l3Weight}×${set.l3Reps}</span></div><div class="set-row"><div class="set-number">${setIdx + 1}</div><div class="input-group"><input type="number" inputmode="decimal" value="${set.weight}" onchange="workoutEngine.inputChange(${exIdx}, ${setIdx}, 'weight', this.value)" ${isComp?'disabled':''}></div><div class="input-group"><input type="number" inputmode="numeric" value="${set.reps}" onchange="workoutEngine.inputChange(${exIdx}, ${setIdx}, 'reps', this.value)" ${isComp?'disabled':''}></div><div class="input-group"><input type="number" inputmode="numeric" value="${set.rir}" max="3" onchange="workoutEngine.inputChange(${exIdx}, ${setIdx}, 'rir', this.value)" ${isComp?'disabled':''}></div><button class="btn-check ${isComp ? 'completed' : ''}" onclick="workoutEngine.toggleSet(${exIdx}, ${setIdx})"><i class="fas fa-check"></i></button></div></div>`; }); html += `<div style="display:flex; gap:8px;"><button class="btn btn-sm" style="flex:1; border:1px solid var(--border);" onclick="workoutEngine.addSet(${exIdx})">+ Add Set</button><button class="btn btn-sm" style="flex:1; border:1px solid var(--border); color:var(--accent-color);" onclick="workoutEngine.removeSet(${exIdx})">- Remove Set</button></div></div></div>`;
             }); html += `<div style="margin-top: 16px; padding-bottom: 32px;"><button class="btn" style="background:transparent; border:1px dashed var(--accent-color); color:var(--accent-color);" onclick="workoutEngine.showAddExerciseModal()">+ Add Another Exercise</button><button class="btn" style="background:transparent; border:1px dashed var(--pending); color:var(--pending); width:100%; margin-top:16px;" onclick="workoutEngine.discard()"><i class="fas fa-trash"></i> Discard Workout Data</button></div>`;
         } html += `</div>`; container.innerHTML = html;
@@ -514,7 +546,8 @@ const views = {
         let streakSafe = false;
         if (store.state.challenge && store.state.challenge.isActive) { streakSafe = utils.checkDaySuccess(todayStr); } 
         else {
-            const wDates = [...new Set(store.state.history.workouts.map(e => utils.getLocalISODate(e.date)))]; const bDates = [...new Set(store.state.history.bodyweight.map(e => utils.getLocalISODate(e.date)))]; const nDates = [...new Set(store.state.history.nutrition.map(e => utils.getLocalISODate(e.date)))];
+            const wDates = [...new Set(store.state.history.workouts.map(e => utils.getLocalISODate(e.date)))]; const bDates = [...new Set(store.state.history.bodyweight.map(e => utils.getLocalISODate(e.date)))]; 
+            const nDates = [...new Set(store.state.history.nutrition.filter(n => n.cal > 0).map(e => utils.getLocalISODate(e.date)))];
             streakSafe = (wDates.includes(todayStr) || isScheduledRest) && bDates.includes(todayStr) && nDates.includes(todayStr); 
         }
         const streakStats = utils.getChallengeStats(); const streakCount = store.state.challenge && store.state.challenge.isActive ? streakStats.streak : utils.calculateStreak();
@@ -545,19 +578,19 @@ const views = {
             
             <div style="display:flex; justify-content:space-between; text-align:center; margin-bottom: 16px;">
                 <div style="flex:1;">
-                    <div class="text-accent" style="font-size:24px; font-weight:bold;">${nutEntry.cal}</div>
+                    <div class="text-accent" style="font-size:24px; font-weight:bold;">${Math.round(nutEntry.cal)}</div>
                     <div class="text-muted" style="font-size:10px; text-transform:uppercase;">Calories / ${targets.cal}</div>
                 </div>
                 <div style="flex:1;">
-                    <div class="text-info" style="font-size:18px; font-weight:bold;">${nutEntry.pro}g</div>
+                    <div class="text-info" style="font-size:18px; font-weight:bold;">${Math.round(nutEntry.pro)}g</div>
                     <div class="text-muted" style="font-size:10px; text-transform:uppercase;">Protein / ${targets.pro}g</div>
                 </div>
                 <div style="flex:1;">
-                    <div class="text-warning" style="font-size:18px; font-weight:bold;">${nutEntry.car}g</div>
+                    <div class="text-warning" style="font-size:18px; font-weight:bold;">${Math.round(nutEntry.car)}g</div>
                     <div class="text-muted" style="font-size:10px; text-transform:uppercase;">Carbs / ${targets.car}g</div>
                 </div>
                 <div style="flex:1;">
-                    <div class="text-pending" style="font-size:18px; font-weight:bold;">${nutEntry.fat}g</div>
+                    <div class="text-pending" style="font-size:18px; font-weight:bold;">${Math.round(nutEntry.fat)}g</div>
                     <div class="text-muted" style="font-size:10px; text-transform:uppercase;">Fats / ${targets.fat}g</div>
                 </div>
             </div>
@@ -583,7 +616,7 @@ const views = {
             <div class="card" style="margin-bottom:16px;">
                 <div class="flex-between" style="margin-bottom: 12px;">
                     <h3 style="margin:0; font-size:16px;">${cat}</h3>
-                    <span class="text-muted" style="font-size:14px; font-weight:bold;">${catCals} kcal</span>
+                    <span class="text-muted" style="font-size:14px; font-weight:bold;">${Math.round(catCals)} kcal</span>
                 </div>
             `;
             
@@ -593,7 +626,7 @@ const views = {
                     <div class="data-row flex-between" style="padding: 8px 0; border-bottom: 1px solid var(--border);">
                         <div>
                             <div style="font-weight:bold; font-size:14px;">${m.name}</div>
-                            <div class="text-muted" style="font-size:10px;">${m.cal} kcal • P:${m.pro} C:${m.car} F:${m.fat}</div>
+                            <div class="text-muted" style="font-size:10px;">${Math.round(m.cal)} kcal • P:${Math.round(m.pro)} C:${Math.round(m.car)} F:${Math.round(m.fat)}</div>
                         </div>
                         <button class="btn-icon text-accent" style="width:28px; height:28px; font-size:12px;" onclick="app.removeLoggedMeal('${todayStr}', '${m.logId}')">
                             <i class="fas fa-times"></i>
@@ -614,7 +647,6 @@ const views = {
         return html;
     },
 
-    // ... All other existing Views (renderChallenge, renderWorkoutList, renderProgress, renderData, renderCharts) remain exactly as in the previous block ...
     renderChallenge() {
         const c = store.state.challenge;
         if (!c || !c.isActive) { return `<div class="page-header"><button class="btn btn-sm btn-icon" onclick="app.navigate('home')"><i class="fas fa-arrow-left"></i></button><h2 style="margin:0; font-size:18px;">Goals & Challenges</h2><div style="width:36px;"></div></div><div class="card" style="text-align:center; padding:40px 20px;"><div style="font-size:48px; margin-bottom:16px;">${app.sym('cardGoal')}</div><h2>Set a New Goal</h2><p class="text-muted" style="margin-bottom:24px; font-size:14px;">Track your progress through a specific stage (like Bulking, 75 Hard, or Marathon prep) by setting specific daily streak requirements.</p><button class="btn btn-primary" onclick="app.editChallenge()"><i class="fas fa-plus"></i> Create Challenge</button></div>`; }
@@ -785,7 +817,7 @@ const views = {
             </div>
         </div>`;
         html += qualityHtml + hyperHtml;
-        html += `<div class="card" style="background: linear-gradient(145deg, var(--pr-bg1), var(--pr-bg2)); border-color: var(--accent-color); box-shadow: 0 4px 16px var(--accent-dim);"><h2 style="margin:0; color:var(--accent-color); font-style:italic; margin-bottom: 16px;">${app.sym('pr')} PR ZONE</h2><div style="background:var(--surface-color); padding: 12px; border-radius: calc(var(--card-radius) - 4px); margin-bottom: 16px; border: 1px solid var(--accent-dim);"><h3 style="font-size:14px; margin:0;"><i class="fas fa-chart-line text-accent"></i> Estimated PR's (e1RM)</h3><p class="text-muted" style="font-size:11px; margin-top:4px;">Uses the Epley formula dynamically applied to your best sets.</p><canvas id="e1rmChart" style="margin-top:12px;"></canvas></div><h3 style="font-size:14px; margin:0;">${app.sym('success')} Recorded PR's</h3><div style="display:flex; gap:8px; margin-top:12px;"><div class="streak-box" style="flex:1; flex-direction:column; padding:12px; margin:0; border-color:var(--info); background: var(--info-dim);" onclick="app.editPR('Bench')"><span class="text-muted" style="font-size:12px; text-transform:uppercase;">Bench</span><span style="font-size:22px; font-weight:bold; color:var(--text-primary);">${store.state.prs.Bench || 0}<span style="font-size:12px; color:var(--text-secondary);">kg</span></span></div><div class="streak-box" style="flex:1; flex-direction:column; padding:12px; margin:0; border-color:var(--accent-color); background: var(--accent-dim);" onclick="app.editPR('Squat')"><span class="text-muted" style="font-size:12px; text-transform:uppercase;">Squat</span><span style="font-size:22px; font-weight:bold; color:var(--text-primary);">${store.state.prs.Squat || 0}<span style="font-size:12px; color:var(--text-secondary);">kg</span></span></div><div class="streak-box" style="flex:1; flex-direction:column; padding:12px; margin:0; border-color:var(--success); background: var(--success-dim);" onclick="app.editPR('Deadlift')"><span class="text-muted" style="font-size:12px; text-transform:uppercase;">Deadlift</span><span style="font-size:22px; font-weight:bold; color:var(--text-primary);">${store.state.prs.Deadlift || 0}<span style="font-size:12px; color:var(--text-secondary);">kg</span></span></div></div></div><div class="card" style="background: linear-gradient(145deg, var(--bw-bg1), var(--bw-bg2)); border-color: var(--warning); box-shadow: 0 4px 16px var(--warning-dim);"><h2 style="margin:0; color:var(--warning); font-style:italic; margin-bottom: 8px;">${app.sym('bw')} BODYWEIGHT</h2><div style="background:var(--surface-color); padding: 12px; border-radius: calc(var(--card-radius) - 4px); border: 1px solid var(--warning-dim);"><canvas id="bwTimeChart"></canvas></div></div><div class="card" style="background: linear-gradient(145deg, var(--vol-bg1), var(--vol-bg2)); border-color: var(--info); box-shadow: 0 4px 16px var(--info-dim);"><h2 style="margin:0; color:var(--info); font-style:italic; margin-bottom: 8px;">${app.sym('vol')} MUSCLE VOLUME</h2><div style="background:var(--surface-color); padding: 12px; border-radius: calc(var(--card-radius) - 4px); border: 1px solid var(--info-dim);"><canvas id="muscleTimeChart"></canvas></div></div>`; 
+        html += `<div class="card" style="background: linear-gradient(145deg, var(--pr-bg1), var(--pr-bg2)); border-color: var(--accent-color); box-shadow: 0 4px 16px var(--accent-dim);"><h2 style="margin:0; color:var(--accent-color); font-style:italic; margin-bottom: 16px;">${app.sym('pr')} PR ZONE</h2><div style="background:var(--surface-color); padding: 12px; border-radius: calc(var(--card-radius) - 4px); margin-bottom: 16px; border: 1px solid var(--accent-dim);"><h3 style="font-size:14px; margin:0;"><i class="fas fa-chart-line text-accent"></i> Estimated PR's (e1RM)</h3><p class="text-muted" style="font-size:11px; margin-top:4px;">Uses the Epley formula dynamically applied to your best sets.</p><canvas id="e1rmChart" style="margin-top:12px;"></canvas></div><h3 style="font-size:14px; margin:0;">${app.sym('success')} Recorded PR's</h3><div style="display:flex; gap:8px; margin-top:12px;"><div class="streak-box" style="flex:1; flex-direction:column; padding:12px; margin:0; border-color:var(--info); background: var(--info-dim);" onclick="app.editPR('Bench')"><span class="text-muted" style="font-size:12px; text-transform:uppercase;">Bench</span><span style="font-size:22px; font-weight:bold; color:var(--text-primary);">${store.state.prs.Bench || 0}<span style="font-size:12px; color:var(--text-secondary);">kg</span></span></div><div class="streak-box" style="flex:1; flex-direction:column; padding:12px; margin:0; border-color:var(--accent-color); background: var(--accent-dim);" onclick="app.editPR('Squat')"><span class="text-muted" style="font-size:12px; text-transform:uppercase;">Squat</span><span style="font-size:22px; font-weight:bold; color:var(--text-primary);">${store.state.prs.Squat || 0}<span style="font-size:12px; color:var(--text-secondary);">kg</span></span></div><div class="streak-box" style="flex:1; flex-direction:column; padding:12px; margin:0; border-color:var(--success); background: var(--success-dim);" onclick="app.editPR('Deadlift')"><span class="text-muted" style="font-size:12px; text-transform:uppercase;">Deadlift</span><span style="font-size:22px; font-weight:bold; color:var(--text-primary);">${store.state.prs.Deadlift || 0}<span style="font-size:12px; color:var(--text-secondary);">kg</span></span></div></div></div><div class="card" style="background: linear-gradient(145deg, var(--bw-bg1), var(--bw-bg2)); border-color: var(--warning); box-shadow: 0 4px 16px var(--warning-dim);"><h2 style="margin:0; color:var(--warning); font-style:italic; margin-bottom: 8px;">${app.sym('bw')} BODYWEIGHT</h2><div style="background:var(--surface-color); padding: 12px; border-radius: calc(var(--card-radius) - 4px); border: 1px solid var(--warning-dim);"><canvas id="bwTimeChart"></canvas></div></div><div class="card" style="background: linear-gradient(145deg, var(--vol-bg1), var(--vol-bg2)); border-color: var(--info); box-shadow: 0 4px 16px var(--info-dim);"><h2 style="margin:0; color:var(--info); font-style:italic; margin-bottom: 8px;">${app.sym('vol')} WORKOUT VOLUME</h2><div style="background:var(--surface-color); padding: 12px; border-radius: calc(var(--card-radius) - 4px); border: 1px solid var(--info-dim);"><canvas id="workoutTimeChart"></canvas></div></div>`; 
         setTimeout(() => { app.renderCharts(); }, 100); return html; 
     },
     renderCharts() {
@@ -819,15 +851,14 @@ const views = {
             window.bwChartInst = new Chart(bwCtx, { type: 'line', data: { datasets: [{ label: 'Bodyweight (kg)', data: rawBw, borderColor: colorWarning, backgroundColor: colorWarning, tension: 0.3, borderWidth: 2, spanGaps: true }] }, options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { grid: { color: colorGrid }, ticks: {font: {family: ff}, color: colorTextSec} }, x: getXScale('day') } } }); 
         } 
         
-        const musCtx = document.getElementById('muscleTimeChart'); 
-        if(musCtx) {
-            if(window.musChartInst) window.musChartInst.destroy();
-            const musData = utils.getWeeklyMuscleVolume(); 
-            const musDatasets = musData.muscles.map((muscle, i) => { 
-                const dataPts = musData.weeks.map(w => ({ x: w.ts, y: w.vols[muscle] || null })).filter(pt => pt.y !== null);
-                return { label: muscle, data: dataPts, borderColor: CHAT_COLORS[i % CHAT_COLORS.length], backgroundColor: CHAT_COLORS[i % CHAT_COLORS.length], tension: 0.3, borderWidth: 2, spanGaps: true }; 
+        const volCtx = document.getElementById('workoutTimeChart'); 
+        if(volCtx) {
+            if(window.volChartInst) window.volChartInst.destroy();
+            const volData = utils.getWorkoutVolumeHistory(); 
+            const datasets = Object.keys(volData).map((workoutName, i) => { 
+                return { label: workoutName, data: volData[workoutName], borderColor: CHAT_COLORS[i % CHAT_COLORS.length], backgroundColor: CHAT_COLORS[i % CHAT_COLORS.length], tension: 0.3, borderWidth: 2, spanGaps: true }; 
             }); 
-            window.musChartInst = new Chart(musCtx, { type: 'line', data: { datasets: musDatasets }, options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { color: colorTextSec, boxWidth: 12, font: {family: ff} } } }, scales: { y: { grid: { color: colorGrid }, ticks: {font: {family: ff}, color: colorTextSec} }, x: getXScale('week') } } }); 
+            window.volChartInst = new Chart(volCtx, { type: 'line', data: { datasets: datasets }, options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { color: colorTextSec, boxWidth: 12, font: {family: ff} } } }, scales: { y: { grid: { color: colorGrid }, ticks: {font: {family: ff}, color: colorTextSec} }, x: getXScale('day') } } }); 
         }
     },
     renderData() {
@@ -853,7 +884,7 @@ const views = {
         if (app.activeDataTab === 'nutrition') { 
             html += `<p class="text-muted" style="font-size:12px; margin-bottom:12px;">This modifies your raw daily totals. To track meals accurately, please use the Nutrition Dashboard instead.</p><div class="card" style="padding:12px;"><h4 style="margin-top:0; margin-bottom:8px; font-size:14px; color:var(--accent-color);">+ Add Raw Entry</h4><div style="display:flex; gap:8px; flex-wrap:wrap;"><input type="date" id="past-nut-date" class="edit-input" style="margin:0; font-size:14px !important; min-width:140px; flex:1;" value="${utils.getLocalISODate(new Date())}"><input type="number" id="past-nut-cal" class="edit-input" style="margin:0; width:60px; flex:1;" placeholder="Cal"><input type="number" id="past-nut-pro" class="edit-input" style="margin:0; width:60px; flex:1;" placeholder="Pro"><input type="number" id="past-nut-car" class="edit-input" style="margin:0; width:60px; flex:1;" placeholder="Car"><input type="number" id="past-nut-fat" class="edit-input" style="margin:0; width:60px; flex:1;" placeholder="Fat"><button class="btn btn-sm btn-success" style="width:100%; margin-top:4px;" onclick="app.addPastNutrition()">Add Raw Data</button></div></div>`;
             const weeklyNut = utils.getWeeklyData(store.state.history.nutrition); const sortedWeeks = Object.keys(weeklyNut).sort((a,b) => b - a); if (sortedWeeks.length === 0) html += `<p class="text-muted" style="margin-bottom:16px;">No nutrition data logged.</p>`; 
-            sortedWeeks.forEach(mon => { html += `<div class="card" style="padding:12px;"><h3 style="margin-bottom:8px;">Week of ${utils.formatDateShort(new Date(parseInt(mon)))}</h3><div class="nut-grid text-muted" style="border-bottom:1px solid var(--border); padding-bottom:4px; margin-bottom:4px;"><div class="nut-label">Date</div><div class="nut-label">Kcal</div><div class="nut-label">Pro</div><div class="nut-label">Car</div><div class="nut-label">Fat</div><div></div></div>`; const entries = weeklyNut[mon].entries.sort((a,b) => new Date(b.date) - new Date(a.date)); entries.forEach(entry => { const d = new Date(entry.date); html += `<div class="nut-grid data-row" style="padding: 6px 0;"><span class="text-muted" style="font-size:11px;">${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getDay()]} ${d.getDate()}</span><input type="number" class="inline-edit" value="${entry.cal||0}" onchange="app.editEntry('nutrition', '${entry.date}', 'cal', this.value)"><input type="number" class="inline-edit" value="${entry.pro||0}" onchange="app.editEntry('nutrition', '${entry.date}', 'pro', this.value)"><input type="number" class="inline-edit" value="${entry.car||0}" onchange="app.editEntry('nutrition', '${entry.date}', 'car', this.value)"><input type="number" class="inline-edit" value="${entry.fat||0}" onchange="app.editEntry('nutrition', '${entry.date}', 'fat', this.value)"><button class="btn-icon" style="color:var(--accent-color); width:24px; height:24px; font-size:12px;" onclick="app.deleteEntry('nutrition', '${entry.date}')"><i class="fas fa-trash"></i></button></div>`; }); html += `</div>`; }); 
+            sortedWeeks.forEach(mon => { html += `<div class="card" style="padding:12px;"><h3 style="margin-bottom:8px;">Week of ${utils.formatDateShort(new Date(parseInt(mon)))}</h3><div class="nut-grid text-muted" style="border-bottom:1px solid var(--border); padding-bottom:4px; margin-bottom:4px;"><div class="nut-label">Date</div><div class="nut-label">Kcal</div><div class="nut-label">Pro</div><div class="nut-label">Car</div><div class="nut-label">Fat</div><div></div></div>`; const entries = weeklyNut[mon].entries.sort((a,b) => new Date(b.date) - new Date(a.date)); entries.forEach(entry => { const d = new Date(entry.date); html += `<div class="nut-grid data-row" style="padding: 6px 0;"><span class="text-muted" style="font-size:11px;">${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getDay()]} ${d.getDate()}</span><input type="number" class="inline-edit" value="${Math.round(entry.cal||0)}" onchange="app.editEntry('nutrition', '${entry.date}', 'cal', this.value)"><input type="number" class="inline-edit" value="${Math.round(entry.pro||0)}" onchange="app.editEntry('nutrition', '${entry.date}', 'pro', this.value)"><input type="number" class="inline-edit" value="${Math.round(entry.car||0)}" onchange="app.editEntry('nutrition', '${entry.date}', 'car', this.value)"><input type="number" class="inline-edit" value="${Math.round(entry.fat||0)}" onchange="app.editEntry('nutrition', '${entry.date}', 'fat', this.value)"><button class="btn-icon" style="color:var(--accent-color); width:24px; height:24px; font-size:12px;" onclick="app.deleteEntry('nutrition', '${entry.date}')"><i class="fas fa-trash"></i></button></div>`; }); html += `</div>`; }); 
         }
         
         let t = store.state.settings.theme;
@@ -910,7 +941,7 @@ const app = {
     },
     
     addPastBodyweight() { const d = document.getElementById('past-bw-date').value; const w = document.getElementById('past-bw-val').value; if(!d || !w) return; store.addBodyweight(w, d + 'T12:00:00'); this.navigate('data'); },
-    addPastNutrition() { const d = document.getElementById('past-nut-date').value; const cal = document.getElementById('past-nut-cal').value; const pro = document.getElementById('past-nut-pro').value; const car = document.getElementById('past-nut-car').value; const fat = document.getElementById('past-nut-fat').value; if(!d || !cal) return; let entry = store.state.history.nutrition.find(n => utils.getLocalISODate(n.date) === d); if(!entry) { entry = { date: d + 'T12:00:00', loggedMeals: [] }; store.state.history.nutrition.push(entry); } entry.cal = (entry.cal || 0) + parseFloat(cal||0); entry.pro = (entry.pro || 0) + parseFloat(pro||0); entry.car = (entry.car || 0) + parseFloat(car||0); entry.fat = (entry.fat || 0) + parseFloat(fat||0); store.save(); this.navigate('data'); },
+    addPastNutrition() { const d = document.getElementById('past-nut-date').value; const cal = document.getElementById('past-nut-cal').value; const pro = document.getElementById('past-nut-pro').value; const car = document.getElementById('past-nut-car').value; const fat = document.getElementById('past-nut-fat').value; if(!d || !cal) return; let entry = store.state.history.nutrition.find(n => utils.getLocalISODate(n.date) === d); if(!entry) { entry = { date: d + 'T12:00:00', loggedMeals: [] }; store.state.history.nutrition.push(entry); } entry.cal = Math.round((entry.cal || 0) + parseFloat(cal||0)); entry.pro = Math.round((entry.pro || 0) + parseFloat(pro||0)); entry.car = Math.round((entry.car || 0) + parseFloat(car||0)); entry.fat = Math.round((entry.fat || 0) + parseFloat(fat||0)); store.save(); this.navigate('data'); },
     
     editPastWorkout(id) { this.editingPastWorkoutId = id; this.draftPastWorkout = JSON.parse(JSON.stringify(store.state.history.workouts.find(w => w.id === id))); this.navigate('workout-edit'); },
     savePastWorkout() { const idx = store.state.history.workouts.findIndex(w => w.id === this.editingPastWorkoutId); if (idx > -1) { store.state.history.workouts[idx] = this.draftPastWorkout; store.save(); } this.editingPastWorkoutId = null; this.draftPastWorkout = null; this.navigate('data'); },
@@ -949,10 +980,10 @@ const app = {
         const fat = prompt("Target Fats (g):", t.fat);
         
         store.state.settings.nutritionTargets = {
-            cal: parseFloat(cal) || 2500,
-            pro: parseFloat(pro) || 160,
-            car: parseFloat(car) || 250,
-            fat: parseFloat(fat) || 70
+            cal: Math.round(parseFloat(cal)) || 2500,
+            pro: Math.round(parseFloat(pro)) || 160,
+            car: Math.round(parseFloat(car)) || 250,
+            fat: Math.round(parseFloat(fat)) || 70
         };
         store.save(); this.navigate('nutrition');
     },
@@ -1000,7 +1031,7 @@ const app = {
             <div class="data-row flex-between" style="padding:12px; background:var(--surface-color); border-radius:8px; border:1px solid var(--border); margin-bottom:8px; cursor:pointer;" onclick="app.logSavedMeal('${m.id}')">
                 <div>
                     <div style="font-weight:bold; color:var(--text-primary); font-size: 16px;">${m.name}</div>
-                    <div class="text-muted" style="font-size:12px; margin-top:2px;">${m.cal} kcal • P:${m.pro}g C:${m.car}g F:${m.fat}g</div>
+                    <div class="text-muted" style="font-size:12px; margin-top:2px;">${Math.round(m.cal)} kcal • P:${Math.round(m.pro)}g C:${Math.round(m.car)}g F:${Math.round(m.fat)}g</div>
                 </div>
                 <button class="btn-icon text-accent" style="width:32px; height:32px; background:var(--surface-elevated); border:1px solid var(--border); border-radius:50%;"><i class="fas fa-plus"></i></button>
             </div>
@@ -1051,10 +1082,10 @@ const app = {
 
     saveNewMeal() {
         const name = document.getElementById('new-meal-name').value.trim();
-        const cal = parseFloat(document.getElementById('new-meal-cal').value) || 0;
-        const pro = parseFloat(document.getElementById('new-meal-pro').value) || 0;
-        const car = parseFloat(document.getElementById('new-meal-car').value) || 0;
-        const fat = parseFloat(document.getElementById('new-meal-fat').value) || 0;
+        const cal = Math.round(parseFloat(document.getElementById('new-meal-cal').value)) || 0;
+        const pro = Math.round(parseFloat(document.getElementById('new-meal-pro').value)) || 0;
+        const car = Math.round(parseFloat(document.getElementById('new-meal-car').value)) || 0;
+        const fat = Math.round(parseFloat(document.getElementById('new-meal-fat').value)) || 0;
 
         if(!name) return alert("Please enter a meal name.");
         
@@ -1087,10 +1118,10 @@ const app = {
             type: this.activeMealType, timestamp: Date.now()
         });
 
-        nutEntry.cal = (nutEntry.cal || 0) + meal.cal;
-        nutEntry.pro = (nutEntry.pro || 0) + meal.pro;
-        nutEntry.car = (nutEntry.car || 0) + meal.car;
-        nutEntry.fat = (nutEntry.fat || 0) + meal.fat;
+        nutEntry.cal = Math.round((nutEntry.cal || 0) + meal.cal);
+        nutEntry.pro = Math.round((nutEntry.pro || 0) + meal.pro);
+        nutEntry.car = Math.round((nutEntry.car || 0) + meal.car);
+        nutEntry.fat = Math.round((nutEntry.fat || 0) + meal.fat);
 
         store.save();
         document.getElementById('meal-search-modal').style.display = 'none';
@@ -1104,10 +1135,10 @@ const app = {
         const mealIdx = nutEntry.loggedMeals.findIndex(m => m.logId === logId);
         if (mealIdx > -1) {
             const m = nutEntry.loggedMeals[mealIdx];
-            nutEntry.cal = Math.max(0, nutEntry.cal - m.cal);
-            nutEntry.pro = Math.max(0, nutEntry.pro - m.pro);
-            nutEntry.car = Math.max(0, nutEntry.car - m.car);
-            nutEntry.fat = Math.max(0, nutEntry.fat - m.fat);
+            nutEntry.cal = Math.max(0, Math.round(nutEntry.cal - m.cal));
+            nutEntry.pro = Math.max(0, Math.round(nutEntry.pro - m.pro));
+            nutEntry.car = Math.max(0, Math.round(nutEntry.car - m.car));
+            nutEntry.fat = Math.max(0, Math.round(nutEntry.fat - m.fat));
             nutEntry.loggedMeals.splice(mealIdx, 1);
             store.save();
             this.navigate('nutrition');
