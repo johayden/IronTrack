@@ -290,6 +290,17 @@ const utils = {
     },
     getMonday: (dateInput) => { const d = new Date(dateInput); const day = d.getDay(); const diff = d.getDate() - day + (day === 0 ? -6 : 1); return new Date(d.setDate(diff)).setHours(0,0,0,0); },
     calcVolume: (sets) => sets.filter(s => s.completed).reduce((acc, s) => acc + ((parseFloat(s.weight)||0) * (parseFloat(s.reps)||0)), 0),
+    calculateSMA: (data, period) => {
+        if (!data || data.length === 0) return [];
+        let sma = [];
+        for (let i = 0; i < data.length; i++) {
+            let start = Math.max(0, i - period + 1);
+            let sum = 0, count = 0;
+            for (let j = start; j <= i; j++) { sum += data[j].y; count++; }
+            sma.push({ x: data[i].x, y: sum / count });
+        }
+        return sma;
+    },
     getDayName: (dayIndex) => ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayIndex],
     getActiveRoutine: () => store.state.routines.find(r => r.id === store.state.activeRoutineId) || store.state.routines[0],
     getTodayProgram: () => { const d = new Date().getDay(); const active = utils.getActiveRoutine(); return active.days.find(p => p.day === d) || { day: d, workouts: [] }; },
@@ -302,21 +313,14 @@ const utils = {
     },
     getWeeklyData: (dataset) => { let weekly = {}; dataset.forEach(entry => { const mon = utils.getMonday(entry.date); if (!weekly[mon]) weekly[mon] = { entries: [] }; weekly[mon].entries.push(entry); }); return weekly; },
     getWorkoutVolumeHistory: () => {
-        const workouts = {};
         const muscles = {};
         store.state.history.workouts.forEach(w => {
             if(w.isSkipped || w.isActivity) return;
-            const wName = w.name;
-            if(!workouts[wName]) workouts[wName] = [];
-            let wVol = 0;
-            
             const dateStr = utils.getLocalISODate(w.date);
             const ts = new Date(w.date).setHours(0,0,0,0);
             
             (w.exercises||[]).forEach(ex => { 
                 let exVol = utils.calcVolume(ex.sets);
-                wVol += exVol; 
-                
                 let mName = utils.getMuscle(ex);
                 if(mName) {
                     if(!muscles[mName]) muscles[mName] = {};
@@ -324,15 +328,13 @@ const utils = {
                     muscles[mName][dateStr].y += exVol;
                 }
             });
-            if(wVol > 0) workouts[wName].push({ x: ts, y: wVol });
         });
         
-        Object.keys(workouts).forEach(k => workouts[k].sort((a,b)=>a.x-b.x));
         const musclesArr = {};
         Object.keys(muscles).forEach(m => {
             musclesArr[m] = Object.values(muscles[m]).sort((a,b)=>a.x-b.x);
         });
-        return { workouts, muscles: musclesArr };
+        return { muscles: musclesArr };
     },
     getE1RMHistory: () => {
         let history = { bench: [], squat: [], deadlift: [] };
@@ -824,25 +826,49 @@ const views = {
         let thisWeekVol = 0; let lastWeekVol = 0;
         let thisWeekRirSum = 0; let thisWeekRirCount = 0;
 
-        const d = new Date(); const mon = utils.getMonday(d);
+        const now = new Date();
+        const mon = utils.getMonday(now);
         const lastMon = mon - (7 * 86400000);
+
+        // -- Table Data setup --
+        const w0Mon = mon;
+        const w1Mon = w0Mon - 7*86400000;
+        const w2Mon = w0Mon - 14*86400000;
+        const w3Mon = w0Mon - 21*86400000;
+        
+        let tableData = {};
+        MUSCLE_GROUPS.forEach(m => tableData[m] = { w0:0, w1:0, w2:0, w3:0 });
 
         store.state.history.workouts.forEach(w => {
             if (w.isSkipped || w.isActivity) return;
-            const wMon = utils.getMonday(new Date(w.date));
+            const wTs = new Date(w.date).getTime();
+            const wMon = utils.getMonday(wTs);
             const isThisWeek = wMon === mon;
             const isLastWeek = wMon === lastMon;
+            
+            let weekKey = null;
+            if (wMon === w0Mon) weekKey = 'w0';
+            else if (wMon === w1Mon) weekKey = 'w1';
+            else if (wMon === w2Mon) weekKey = 'w2';
+            else if (wMon === w3Mon) weekKey = 'w3';
 
             (w.exercises||[]).forEach(ex => {
                 const m = utils.getMuscle(ex);
                 let exVol = utils.calcVolume(ex.sets);
                 
+                // Analytics
                 if (isThisWeek) {
                     if (weekSets[m] !== undefined) weekSets[m] += ex.sets.filter(s => s.completed).length;
                     thisWeekVol += exVol;
                     ex.sets.forEach(s => { if(s.completed && HYPERTROPHY_GROUPS.includes(m)) { thisWeekRirSum += (s.rir||0); thisWeekRirCount++; } });
                 } else if (isLastWeek) {
                     lastWeekVol += exVol;
+                }
+                
+                // Table
+                if (weekKey) {
+                    if(!tableData[m]) tableData[m] = { w0:0, w1:0, w2:0, w3:0 };
+                    tableData[m][weekKey] += exVol;
                 }
             });
         });
@@ -876,20 +902,73 @@ const views = {
         html += qualityHtml + hyperHtml;
         html += `<div class="card" style="background: linear-gradient(145deg, var(--pr-bg1), var(--pr-bg2)); border-color: var(--accent-color); box-shadow: 0 4px 16px var(--accent-dim);"><h2 style="margin:0; color:var(--accent-color); font-style:italic; margin-bottom: 16px;">${app.sym('pr')} PR ZONE</h2><div style="background:var(--surface-color); padding: 12px; border-radius: calc(var(--card-radius) - 4px); margin-bottom: 16px; border: 1px solid var(--accent-dim);"><h3 style="font-size:14px; margin:0;"><i class="fas fa-chart-line text-accent"></i> Estimated PR's (e1RM)</h3><p class="text-muted" style="font-size:11px; margin-top:4px;">Uses the Epley formula dynamically applied to your best sets.</p><canvas id="e1rmChart" style="margin-top:12px;"></canvas></div><h3 style="font-size:14px; margin:0;">${app.sym('success')} Recorded PR's</h3><div style="display:flex; gap:8px; margin-top:12px;"><div class="streak-box" style="flex:1; flex-direction:column; padding:12px; margin:0; border-color:var(--info); background: var(--info-dim);" onclick="app.editPR('Bench')"><span class="text-muted" style="font-size:12px; text-transform:uppercase;">Bench</span><span style="font-size:22px; font-weight:bold; color:var(--text-primary);">${store.state.prs.Bench || 0}<span style="font-size:12px; color:var(--text-secondary);">kg</span></span></div><div class="streak-box" style="flex:1; flex-direction:column; padding:12px; margin:0; border-color:var(--accent-color); background: var(--accent-dim);" onclick="app.editPR('Squat')"><span class="text-muted" style="font-size:12px; text-transform:uppercase;">Squat</span><span style="font-size:22px; font-weight:bold; color:var(--text-primary);">${store.state.prs.Squat || 0}<span style="font-size:12px; color:var(--text-secondary);">kg</span></span></div><div class="streak-box" style="flex:1; flex-direction:column; padding:12px; margin:0; border-color:var(--success); background: var(--success-dim);" onclick="app.editPR('Deadlift')"><span class="text-muted" style="font-size:12px; text-transform:uppercase;">Deadlift</span><span style="font-size:22px; font-weight:bold; color:var(--text-primary);">${store.state.prs.Deadlift || 0}<span style="font-size:12px; color:var(--text-secondary);">kg</span></span></div></div></div><div class="card" style="background: linear-gradient(145deg, var(--bw-bg1), var(--bw-bg2)); border-color: var(--warning); box-shadow: 0 4px 16px var(--warning-dim);"><h2 style="margin:0; color:var(--warning); font-style:italic; margin-bottom: 8px;">${app.sym('bw')} BODYWEIGHT</h2><div style="background:var(--surface-color); padding: 12px; border-radius: calc(var(--card-radius) - 4px); border: 1px solid var(--warning-dim);"><canvas id="bwTimeChart"></canvas></div></div>`;
         
+        // Build 4-Week Volume Table
+        let volTableHtml = `<div class="card" style="margin-bottom:16px; background:var(--surface-color); border:1px solid var(--border); overflow-x:auto;">
+            <h3 style="font-size:14px; margin-bottom:12px; white-space:nowrap;"><i class="fas fa-table text-accent"></i> 4-Week Muscle Volume (kg)</h3>
+            <table style="width:100%; border-collapse:collapse; font-size:11px; text-align:right;">
+                <thead>
+                    <tr style="color:var(--text-secondary); border-bottom:1px solid var(--border);">
+                        <th style="text-align:left; padding:6px 4px;">Muscle</th>
+                        <th style="padding:6px 4px;">W-3</th>
+                        <th style="padding:6px 4px;">W-2</th>
+                        <th style="padding:6px 4px;">W-1</th>
+                        <th style="padding:6px 4px;">Current</th>
+                        <th style="padding:6px 4px;">Trend</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+        const formatV = (v) => v >= 1000 ? (v/1000).toFixed(1)+'k' : Math.round(v);
+        let tableRows = [];
+        Object.keys(tableData).forEach(m => {
+            const d = tableData[m];
+            if (d.w0 === 0 && d.w1 === 0 && d.w2 === 0 && d.w3 === 0) return;
+            const avg3W = (d.w1 + d.w2 + d.w3) / 3;
+            let trendStr = "-";
+            let trendColor = "var(--text-secondary)";
+            if (avg3W > 0) {
+                const pct = Math.round(((d.w0 - avg3W) / avg3W) * 100);
+                if (pct > 0) { trendStr = `+${pct}%`; trendColor = "var(--success)"; }
+                else if (pct < 0) { trendStr = `${pct}%`; trendColor = "var(--pending)"; }
+                else { trendStr = `0%`; }
+            } else if (d.w0 > 0) {
+                trendStr = "NEW"; trendColor = "var(--info)";
+            }
+            
+            tableRows.push({
+                m: m,
+                w3: d.w3 > 0 ? formatV(d.w3) : '-',
+                w2: d.w2 > 0 ? formatV(d.w2) : '-',
+                w1: d.w1 > 0 ? formatV(d.w1) : '-',
+                w0: d.w0 > 0 ? formatV(d.w0) : '-',
+                trendStr, trendColor, total: d.w0 + d.w1 + d.w2 + d.w3
+            });
+        });
+
+        tableRows.sort((a,b) => b.total - a.total);
+        if (tableRows.length === 0) {
+            volTableHtml += `<tr><td colspan="6" style="text-align:center; padding:12px; color:var(--text-secondary);">No volume data last 4 weeks</td></tr>`;
+        } else {
+            tableRows.forEach(r => {
+                volTableHtml += `
+                    <tr style="border-bottom:1px solid var(--surface-elevated);">
+                        <td style="text-align:left; padding:8px 4px; font-weight:bold; color:var(--text-primary); white-space:nowrap;">${r.m}</td>
+                        <td style="padding:8px 4px; color:var(--text-secondary);">${r.w3}</td>
+                        <td style="padding:8px 4px; color:var(--text-secondary);">${r.w2}</td>
+                        <td style="padding:8px 4px; color:var(--text-secondary);">${r.w1}</td>
+                        <td style="padding:8px 4px; font-weight:bold; color:var(--text-primary);">${r.w0}</td>
+                        <td style="padding:8px 4px; font-weight:bold; color:${r.trendColor};">${r.trendStr}</td>
+                    </tr>`;
+            });
+        }
+        volTableHtml += `</tbody></table></div>`;
+        html += volTableHtml;
+
         // Generate Volume Dropdown Options
         const volData = utils.getWorkoutVolumeHistory();
         let volOptions = '';
-        if (Object.keys(volData.workouts).length > 0 || Object.keys(volData.muscles).length > 0) {
-            if (Object.keys(volData.workouts).length > 0) {
-                volOptions += `<optgroup label="By Workout Session">`;
-                Object.keys(volData.workouts).sort().forEach(w => volOptions += `<option value="w_${w}" ${store.state.settings.lastVolFilter === 'w_'+w ? 'selected' : ''}>${w}</option>`);
-                volOptions += `</optgroup>`;
-            }
-            if (Object.keys(volData.muscles).length > 0) {
-                volOptions += `<optgroup label="By Muscle Group">`;
-                Object.keys(volData.muscles).sort().forEach(m => volOptions += `<option value="m_${m}" ${store.state.settings.lastVolFilter === 'm_'+m ? 'selected' : ''}>${m}</option>`);
-                volOptions += `</optgroup>`;
-            }
+        if (Object.keys(volData.muscles).length > 0) {
+            Object.keys(volData.muscles).sort().forEach(m => volOptions += `<option value="m_${m}" ${store.state.settings.lastVolFilter === 'm_'+m ? 'selected' : ''}>${m}</option>`);
         } else {
             volOptions = `<option value="">No data yet</option>`;
         }
@@ -914,18 +993,47 @@ const views = {
             scale.max = now + 86400000; return scale;
         };
 
+        const buildMADataset = (label, data, color) => ({
+            label: label, data: data, borderColor: color, backgroundColor: 'transparent',
+            borderDash: [5, 5], pointRadius: 0, pointHoverRadius: 0, tension: 0.4, borderWidth: 2
+        });
+
+        const buildBaseDataset = (label, data, color) => ({
+            label: label, data: data, borderColor: color, backgroundColor: color, tension: 0.3, borderWidth: 2, spanGaps: true
+        });
+
         const e1rmCtx = document.getElementById('e1rmChart');
         if(e1rmCtx) {
             if(window.e1rmChartInst) window.e1rmChartInst.destroy();
             const e1Data = utils.getE1RMHistory(); const mapE1 = (arr) => arr.map(d => ({ x: d.ts, y: d.e1rm }));
-            window.e1rmChartInst = new Chart(e1rmCtx, { type: 'line', data: { datasets: [ { label: 'Bench', data: mapE1(e1Data.bench), borderColor: colorInfo, backgroundColor: colorInfo, tension: 0.3, borderWidth: 2, spanGaps: true }, { label: 'Squat', data: mapE1(e1Data.squat), borderColor: colorAccent, backgroundColor: colorAccent, tension: 0.3, borderWidth: 2, spanGaps: true }, { label: 'Deadlift', data: mapE1(e1Data.deadlift), borderColor: colorSuccess, backgroundColor: colorSuccess, tension: 0.3, borderWidth: 2, spanGaps: true } ]}, options: { responsive: true, plugins: { legend: { position: 'top', labels: { color: colorTextSec, boxWidth: 12, font: {family: ff} } } }, scales: { y: { grid: { color: colorGrid }, ticks: {font: {family: ff}, color: colorTextSec} }, x: getXScale('day') } } });
+            let datasets = [];
+            
+            if(e1Data.bench.length > 0) {
+                datasets.push(buildBaseDataset('Bench', mapE1(e1Data.bench), colorInfo));
+                datasets.push(buildMADataset('Bench (MA)', utils.calculateSMA(mapE1(e1Data.bench), 3), colorInfo));
+            }
+            if(e1Data.squat.length > 0) {
+                datasets.push(buildBaseDataset('Squat', mapE1(e1Data.squat), colorAccent));
+                datasets.push(buildMADataset('Squat (MA)', utils.calculateSMA(mapE1(e1Data.squat), 3), colorAccent));
+            }
+            if(e1Data.deadlift.length > 0) {
+                datasets.push(buildBaseDataset('Deadlift', mapE1(e1Data.deadlift), colorSuccess));
+                datasets.push(buildMADataset('Deadlift (MA)', utils.calculateSMA(mapE1(e1Data.deadlift), 3), colorSuccess));
+            }
+
+            window.e1rmChartInst = new Chart(e1rmCtx, { type: 'line', data: { datasets: datasets }, options: { responsive: true, plugins: { legend: { position: 'top', labels: { color: colorTextSec, boxWidth: 12, font: {family: ff}, filter: function(item, chart) { return !item.text.includes('(MA)'); } } } }, scales: { y: { grid: { color: colorGrid }, ticks: {font: {family: ff}, color: colorTextSec} }, x: getXScale('day') } } });
         }
         
         const bwCtx = document.getElementById('bwTimeChart'); 
         if(bwCtx) {
             if(window.bwChartInst) window.bwChartInst.destroy();
             const rawBw = store.state.history.bodyweight.map(e => ({ x: new Date(e.date).getTime(), y: parseFloat(e.weight) })).filter(e => !isNaN(e.y)).sort((a,b) => a.x - b.x);
-            window.bwChartInst = new Chart(bwCtx, { type: 'line', data: { datasets: [{ label: 'Bodyweight (kg)', data: rawBw, borderColor: colorWarning, backgroundColor: colorWarning, tension: 0.3, borderWidth: 2, spanGaps: true }] }, options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { grid: { color: colorGrid }, ticks: {font: {family: ff}, color: colorTextSec} }, x: getXScale('day') } } }); 
+            let datasets = [];
+            if (rawBw.length > 0) {
+                datasets.push(buildBaseDataset('Bodyweight (kg)', rawBw, colorWarning));
+                datasets.push(buildMADataset('Bodyweight (MA)', utils.calculateSMA(rawBw, 5), colorWarning));
+            }
+            window.bwChartInst = new Chart(bwCtx, { type: 'line', data: { datasets: datasets }, options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { grid: { color: colorGrid }, ticks: {font: {family: ff}, color: colorTextSec} }, x: getXScale('day') } } }); 
         } 
         
         const volCtx = document.getElementById('workoutTimeChart'); 
@@ -939,21 +1047,23 @@ const views = {
             let plotData = [];
             let labelName = 'Volume';
 
-            if (selected && selected.startsWith('w_')) {
-                labelName = selected.substring(2);
-                plotData = volData.workouts[labelName] || [];
-            } else if (selected && selected.startsWith('m_')) {
+            if (selected && selected.startsWith('m_')) {
                 labelName = selected.substring(2);
                 plotData = volData.muscles[labelName] || [];
             } else {
-                const firstW = Object.keys(volData.workouts)[0];
-                if (firstW) {
-                    labelName = firstW;
-                    plotData = volData.workouts[firstW];
+                const firstM = Object.keys(volData.muscles).sort()[0];
+                if (firstM) {
+                    labelName = firstM;
+                    plotData = volData.muscles[firstM];
                 }
             }
 
-            window.volChartInst = new Chart(volCtx, { type: 'line', data: { datasets: [{ label: labelName + ' Volume (kg)', data: plotData, borderColor: colorInfo, backgroundColor: colorInfo, tension: 0.3, borderWidth: 2, spanGaps: true }] }, options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { grid: { color: colorGrid }, ticks: {font: {family: ff}, color: colorTextSec} }, x: getXScale('day') } } }); 
+            let datasets = [];
+            if (plotData.length > 0) {
+                datasets.push(buildBaseDataset(labelName + ' Volume (kg)', plotData, colorInfo));
+                datasets.push(buildMADataset(labelName + ' (MA)', utils.calculateSMA(plotData, 3), colorInfo));
+            }
+            window.volChartInst = new Chart(volCtx, { type: 'line', data: { datasets: datasets }, options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { grid: { color: colorGrid }, ticks: {font: {family: ff}, color: colorTextSec} }, x: getXScale('day') } } }); 
         }
     },
     renderData() {
