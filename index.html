@@ -33,26 +33,32 @@
             --card-radius: 16px; --card-border: 1px solid var(--border);
         }
 
-        /* OLYMPUS (GREEK GOD) THEME */
+        /* OLYMPUS (GREEK GOD) THEME - GOLDEN HOUR */
         [data-theme="olympus"] {
-            --bg-color: #f4f4f4; --surface-color: #ffffff; --surface-elevated: #fafafa;
-            --accent-color: #c5a059; --accent-dim: rgba(197, 160, 89, 0.15);
-            --text-primary: #1c1c1e; --text-secondary: #6e6e73;
-            --success: #2e7d32; --success-dim: rgba(46, 125, 50, 0.15); --success-glow: 0 0 15px rgba(46, 125, 50, 0.2);
-            --pending: #c62828; --pending-dim: rgba(198, 40, 40, 0.1);
-            --warning: #d84315; --warning-dim: rgba(216, 67, 21, 0.15);
-            --info: #1565c0; --info-dim: rgba(21, 101, 192, 0.15); --info-glow: 0 0 15px rgba(21, 101, 192, 0.2);
-            --border: #e0e0e0;
-            --streak-bg1: #ffffff; --streak-bg2: #fdfdfd;
-            --pr-bg1: #ffffff; --pr-bg2: #fdfaf2;
-            --bw-bg1: #ffffff; --bw-bg2: #fdfdfd;
-            --vol-bg1: #ffffff; --vol-bg2: #f4f8fc;
-            --app-backdrop: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
-            --card-radius: 12px; --card-border: 1px solid rgba(197, 160, 89, 0.3);
+            --bg-color: #16120b; 
+            --surface-color: rgba(36, 28, 18, 0.85); 
+            --surface-elevated: rgba(48, 38, 24, 0.95);
+            --accent-color: #ffd700; /* Vibrant Gold */
+            --accent-dim: rgba(255, 215, 0, 0.15);
+            --text-primary: #fff8eb; 
+            --text-secondary: #cba876;
+            --success: #4caf50; --success-dim: rgba(76, 175, 80, 0.15); --success-glow: 0 0 15px rgba(76, 175, 80, 0.2);
+            --pending: #d32f2f; --pending-dim: rgba(211, 47, 47, 0.1);
+            --warning: #f57c00; --warning-dim: rgba(245, 124, 0, 0.15);
+            --info: #0288d1; --info-dim: rgba(2, 136, 209, 0.15); --info-glow: 0 0 15px rgba(2, 136, 209, 0.2);
+            --border: rgba(255, 215, 0, 0.25);
+            --streak-bg1: #2a2010; --streak-bg2: #16120b;
+            --pr-bg1: #2a2010; --pr-bg2: #382b17;
+            --bw-bg1: #1f1c18; --bw-bg2: #2b251f;
+            --vol-bg1: #1a1a24; --vol-bg2: #242436;
+            /* Sunlit golden top fading into dark marble shadows */
+            --app-backdrop: radial-gradient(circle at 50% 0%, #4a381c 0%, #16120b 60%, #0a0805 100%);
+            --card-radius: 12px; --card-border: 1px solid rgba(255, 215, 0, 0.35);
             --font-family: "Georgia", "Times New Roman", serif;
         }
-        [data-theme="olympus"] h1, [data-theme="olympus"] h2, [data-theme="olympus"] h3 { letter-spacing: 0.5px; text-transform: uppercase; }
-        [data-theme="olympus"] .card, [data-theme="olympus"] .streak-box { box-shadow: 0 8px 24px rgba(0,0,0,0.04); }
+        [data-theme="olympus"] h1, [data-theme="olympus"] h2, [data-theme="olympus"] h3 { letter-spacing: 0.5px; text-transform: uppercase; color: var(--accent-color); }
+        [data-theme="olympus"] .card, [data-theme="olympus"] .streak-box { box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+        [data-theme="olympus"] .text-primary { color: #fff8eb !important; }
 
         /* CYBERPUNK THEME */
         [data-theme="cyberpunk"] {
@@ -71,22 +77,25 @@
             --font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
-        /* TACTICAL THEME */
+        /* TACTICAL THEME - ARMY CAMO */
         [data-theme="tactical"] {
-            --bg-color: #0a0c0a; --surface-color: rgba(19, 23, 19, 0.95); --surface-elevated: rgba(30, 36, 30, 0.95);
-            --accent-color: #84cc16; --accent-dim: rgba(132, 204, 22, 0.15);
-            --text-primary: #f4fcf4; --text-secondary: #899c89;
-            --success: #10b981; --success-dim: rgba(16, 185, 129, 0.2); --success-glow: 0 0 25px rgba(16, 185, 129, 0.4);
+            --bg-color: #151711; --surface-color: rgba(25, 28, 20, 0.95); --surface-elevated: rgba(36, 41, 29, 0.95);
+            --accent-color: #9acd32; --accent-dim: rgba(154, 205, 50, 0.15);
+            --text-primary: #e5ede0; --text-secondary: #8a997a;
+            --success: #4ade80; --success-dim: rgba(74, 222, 128, 0.15); --success-glow: 0 0 25px rgba(74, 222, 128, 0.3);
             --pending: #ef4444; --pending-dim: rgba(239, 68, 68, 0.15);
             --warning: #eab308; --warning-dim: rgba(234, 179, 8, 0.15);
-            --info: #0ea5e9; --info-dim: rgba(14, 165, 233, 0.15); --info-glow: 0 0 20px rgba(14, 165, 233, 0.3);
-            --border: #2c362c;
-            --streak-bg1: rgba(26, 41, 26, 0.9); --streak-bg2: rgba(12, 20, 12, 0.9); 
-            --pr-bg1: rgba(12, 20, 12, 0.9); --pr-bg2: rgba(26, 41, 26, 0.9);
+            --info: #38bdf8; --info-dim: rgba(56, 189, 248, 0.15); --info-glow: 0 0 20px rgba(56, 189, 248, 0.3);
+            --border: #3d4a30;
+            --streak-bg1: rgba(30, 36, 24, 0.9); --streak-bg2: rgba(20, 24, 16, 0.9); 
+            --pr-bg1: rgba(20, 24, 16, 0.9); --pr-bg2: rgba(36, 42, 28, 0.9);
             --bw-bg1: rgba(28, 24, 11, 0.9); --bw-bg2: rgba(46, 38, 18, 0.9); 
-            --vol-bg1: rgba(8, 17, 20, 0.9); --vol-bg2: rgba(16, 33, 41, 0.9);
-            --app-backdrop: linear-gradient(rgba(10, 12, 10, 0.85), rgba(10, 12, 10, 0.95)), url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noise)" opacity="0.1"/></svg>');
-            --card-radius: 4px; --card-border: 2px solid #2c362c;
+            --vol-bg1: rgba(16, 20, 24, 0.9); --vol-bg2: rgba(24, 30, 36, 0.9);
+            /* SVG Camouflage Pattern generated in CSS */
+            --app-backdrop: 
+                linear-gradient(rgba(20, 24, 16, 0.88), rgba(15, 18, 12, 0.95)), 
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect width='200' height='200' fill='%233B412B'/%3E%3Cpath d='M-10,50 Q20,30 40,60 T90,50 T130,70 T180,40 T220,60 L220,220 L-10,220 Z' fill='%23292F1F' opacity='0.8'/%3E%3Cpath d='M-10,120 Q30,90 60,130 T120,110 T160,140 T220,120 L220,220 L-10,220 Z' fill='%234B5335' opacity='0.7'/%3E%3Ccircle cx='50' cy='150' r='30' fill='%231E2316' opacity='0.6'/%3E%3Ccircle cx='150' cy='80' r='40' fill='%231E2316' opacity='0.6'/%3E%3Cpath d='M40,-10 Q70,30 90,0 T140,20 T180,-10 Z' fill='%234B5335' opacity='0.7'/%3E%3C/svg%3E");
+            --card-radius: 4px; --card-border: 2px solid #3d4a30;
             --font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
         }
         [data-theme="tactical"] h1, [data-theme="tactical"] h2, [data-theme="tactical"] h3 { text-transform: uppercase; }
@@ -195,9 +204,9 @@ const HYPERTROPHY_GROUPS = ['Chest', 'Back', 'Shoulders', 'Biceps', 'Triceps', '
 
 const THEME_MAP = {
     basic: { nav: ['fa-home', 'fa-dumbbell', 'fa-chart-line', 'fa-apple-whole', 'fa-database'], symbols: { streak: '🔥', pr: '🏆', bw: '⚖️', vol: '📊', rest: '🛋️', workout: '💪', success: '⭐', activity: '🏃‍♂️', cardGoal: '🎯', analytics: '📈', nutrition: '🍎', data: '🗄️' } },
-    olympus: { nav: ['fa-building-columns', 'fa-hand-fist', 'fa-bolt', 'fa-leaf', 'fa-scroll'], symbols: { streak: '🏛️', pr: '🔱', bw: '⚖️', vol: '🗿', rest: '🫒', workout: '🦾', success: '👑', activity: '🐎', cardGoal: '🎯', analytics: '📜', nutrition: '🍇', data: '🏺' } },
+    olympus: { nav: ['fa-building-columns', 'fa-hand-fist', 'fa-bolt', 'fa-leaf', 'fa-scroll'], symbols: { streak: '⚡', pr: '🔱', bw: '⚖️', vol: '🗿', rest: '🫒', workout: '🏺', success: '👑', activity: '🐎', cardGoal: '🏛️', analytics: '📜', nutrition: '🍇', data: '🪙' } },
     cyberpunk: { nav: ['fa-city', 'fa-robot', 'fa-network-wired', 'fa-capsules', 'fa-microchip'], symbols: { streak: '⚡', pr: '👾', bw: '🔋', vol: '💾', rest: '🔌', workout: '🦾', success: '💎', activity: '🏍️', cardGoal: '💠', analytics: '📡', nutrition: '🧪', data: '🖥️' } },
-    tactical: { nav: ['fa-campground', 'fa-person-rifle', 'fa-satellite-dish', 'fa-drumstick-bite', 'fa-box-archive'], symbols: { streak: '🔫', pr: '🎖️', bw: '🪖', vol: '🎯', rest: '⛺', workout: '🪖', success: '🏅', activity: '🚁', cardGoal: '🎯', analytics: '🛰️', nutrition: '🥩', data: '💾' } },
+    tactical: { nav: ['fa-campground', 'fa-person-rifle', 'fa-crosshairs', 'fa-drumstick-bite', 'fa-box-archive'], symbols: { streak: '💥', pr: '🎖️', bw: '🪖', vol: '🔫', rest: '⛺', workout: '💣', success: '🎯', activity: '🚁', cardGoal: '🚩', analytics: '🛰️', nutrition: '🥩', data: '💾' } },
 };
 
 const store = {
