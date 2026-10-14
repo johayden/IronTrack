@@ -349,6 +349,17 @@ const utils = {
                 const totalWater = nut.waterLog.reduce((sum, entry) => sum + entry.amount, 0);
                 rp += Math.floor(totalWater / 1000) * 15; // 15 RP per Liter
             }
+            
+            // Add Challenge Goals Points
+            if (store.state.challenge && store.state.challenge.isActive) {
+                store.state.challenge.goals.forEach(g => {
+                    if (!g.createdAt || dateStr >= g.createdAt) {
+                        if (utils.checkGoalSuccess(dateStr, g)) {
+                            rp += 30; // 30 RP per goal met
+                        }
+                    }
+                });
+            }
         }
         return rp;
     },
@@ -503,6 +514,48 @@ const views = {
         </div>`;
         // SVG Heatmap Card
         html += this.renderHeatmap();
+
+        // 🎯 DAILY GOALS SECTION
+        const c = store.state.challenge;
+        if (c && c.isActive && c.goals.length > 0) {
+            let goalsHtml = `<div class="card">
+                <div class="flex-between" style="margin-bottom:16px;">
+                    <h3 style="font-size:12px; margin:0; color:var(--text-secondary); text-transform:uppercase; letter-spacing:1px; text-align:left;">🎯 Daily Goals (${c.title})</h3>
+                    <button class="btn-icon" style="width:28px; height:28px; font-size:12px; color:var(--text-secondary);" onclick="app.navigate('challenge')"><i class="fas fa-pen"></i></button>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:8px;">`;
+            c.goals.forEach(g => {
+                let met = utils.checkGoalSuccess(todayStr, g);
+                let label = '';
+                let isManual = false;
+                if (g.type === 'workout') { label = `Complete ${g.count||1} Strength Session(s)`; }
+                else if (g.type === 'weight') { label = `Log Bodyweight`; }
+                else if (g.type === 'nutrition') { label = `Track Nutrition`; if (g.targetType === 'min') { label += ` (Min ${g.calories})`; } else if (g.targetType === 'max') { label += ` (Max ${g.calories})`; } }
+                else if (g.type === 'cardio') { label = `Daily Cardio`; isManual = true; }
+                else { isManual = true; label = g.type === 'custom' ? (g.title || 'Custom Goal') : `${g.type === 'water' ? 'Drink' : 'Read'} ${g.target || 'Goal'}`; }
+                
+                let rowStyle = isManual ? `cursor:pointer; background: ${met ? 'var(--success-dim)' : 'var(--surface-elevated)'}; padding: 12px; border-radius: 8px; border: 1px solid ${met ? 'var(--success)' : 'var(--border)'}; transition: all 0.2s;` : `padding: 12px; background: ${met ? 'var(--success-dim)' : 'var(--surface-elevated)'}; border-radius: 8px; border: 1px solid ${met ? 'var(--success)' : 'var(--border)'}; opacity: 0.8;`;
+                
+                goalsHtml += `<div style="display:flex; align-items:center; gap:12px; ${rowStyle}" ${isManual ? `onclick="app.toggleGoal('${g.id}', '${todayStr}', '${g.type}', true)"` : ''}>
+                    <div class="btn-check ${met ? 'completed' : ''}" style="width:28px; height:28px; display:flex; align-items:center; justify-content:center; border-radius:14px; border:2px solid ${met ? 'var(--success)' : 'var(--pending)'}; font-size:12px; background:${met ? 'var(--success)' : 'transparent'}; flex-shrink:0;">
+                        <i class="fas fa-check" style="color:${met ? 'var(--bg-color)' : 'transparent'};"></i>
+                    </div>
+                    <div style="display:flex; flex-direction:column; min-width:0; flex:1;">
+                        <span style="font-size:14px; color:${met ? 'var(--text-primary)' : 'var(--text-secondary)'}; font-weight:${met ? 'bold' : 'normal'}; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${label}</span>
+                        <span style="font-size:10px; color:${met ? 'var(--success)' : 'var(--accent-color)'}; font-weight:bold;">+30 RP</span>
+                    </div>
+                </div>`;
+            });
+            goalsHtml += `</div></div>`;
+            html += goalsHtml;
+        } else {
+            html += `<div class="card" style="text-align:center; padding: 24px 16px;">
+                <h3 style="font-size:12px; margin-bottom:8px; color:var(--text-secondary); text-transform:uppercase; letter-spacing:1px;">🎯 Daily Goals</h3>
+                <p class="text-muted" style="font-size:12px; margin-bottom:16px;">Set up a challenge to track daily habits and earn bonus Rank Points.</p>
+                <button class="btn btn-sm" style="border:1px dashed var(--accent-color); color:var(--accent-color); background:transparent;" onclick="app.navigate('challenge')">+ Create Goals</button>
+            </div>`;
+        }
+
         return html;
     },
     renderHeatmap() {
@@ -901,7 +954,19 @@ const app = {
     addWorkoutToDay(dIdx, templateId) { if (!templateId) return; let newWorkout = { id: utils.generateId(), name: 'New Workout', exercises: [] }; if (templateId === 'activity') { newWorkout.name = 'Morning Cardio'; newWorkout.isActivity = true; } else if (templateId !== 'blank') { let found = null; store.state.routines.forEach(r => r.days.forEach(d => d.workouts.forEach(w => { if(w.id === templateId) found = w; }))); if (found) { newWorkout.name = found.name; newWorkout.isActivity = found.isActivity || false; newWorkout.exercises = JSON.parse(JSON.stringify(found.exercises)); } } this.draftRoutine.days[dIdx].workouts.push(newWorkout); this.navigate('workout-detail'); }, removeWorkoutFromDay(dIdx, wIdx) { if(confirm("Remove this workout?")) { this.draftRoutine.days[dIdx].workouts.splice(wIdx, 1); this.navigate('workout-detail'); } }, updateWorkoutName(dIdx, wIdx, val) { this.draftRoutine.days[dIdx].workouts[wIdx].name = val; }, addEx(dIdx, wIdx) { this.draftRoutine.days[dIdx].workouts[wIdx].exercises.push({ name: 'New Exercise', targetSets: 3, targetReps: '8-12', muscle: 'Other' }); this.navigate('workout-detail'); }, updateEx(dIdx, wIdx, eIdx, field, val) { this.draftRoutine.days[dIdx].workouts[wIdx].exercises[eIdx][field] = val; }, moveEx(dIdx, wIdx, eIdx, dir) { const arr = this.draftRoutine.days[dIdx].workouts[wIdx].exercises; if(eIdx+dir < 0 || eIdx+dir >= arr.length) return; const temp = arr[eIdx]; arr[eIdx] = arr[eIdx+dir]; arr[eIdx+dir] = temp; this.navigate('workout-detail'); }, deleteEx(dIdx, wIdx, eIdx) { this.draftRoutine.days[dIdx].workouts[wIdx].exercises.splice(eIdx, 1); this.navigate('workout-detail'); },
     editChallenge() { const c = store.state.challenge; if (c && c.isActive) { this.draftChallenge = JSON.parse(JSON.stringify(c)); } else { const start = utils.getLocalISODate(new Date()); const endD = new Date(); endD.setDate(endD.getDate() + 74); const end = utils.getLocalISODate(endD); this.draftChallenge = { isActive: true, title: '', startDate: start, endDate: end, goals: [] }; } this.navigate('challenge-edit'); }, addChallengeGoal(type) { let g = { id: utils.generateId(), type, createdAt: utils.getLocalISODate(new Date()) }; if (type === 'workout') g.count = 1; if (type === 'nutrition') { g.targetType = 'none'; g.calories = 2500; } if (type === 'water' || type === 'reading') g.target = '10 Pages'; if (type === 'custom') g.title = 'New Goal'; this.draftChallenge.goals.push(g); this.navigate('challenge-edit'); }, removeChallengeGoal(idx) { this.draftChallenge.goals.splice(idx, 1); this.navigate('challenge-edit'); }, saveChallenge() { if (!this.draftChallenge.title || this.draftChallenge.goals.length === 0) return; store.state.challenge = this.draftChallenge; store.save(); this.navigate('challenge'); }, endChallenge() { if(confirm("End/Delete this challenge?")) { store.state.challenge = { isActive: false, title: '', startDate: '', endDate: '', goals: [] }; store.save(); this.navigate('challenge'); } },
     changeChallengeDay(dir) { this.challengeOffset += dir; if(this.challengeOffset > 0) this.challengeOffset = 0; this.navigate('challenge'); },
-    toggleGoal(goalId, dateStr, type) { if (type === 'cardio') { const existingIdx = store.state.history.cardio.findIndex(c => c && c.date && utils.getLocalISODate(c.date) === dateStr); if(existingIdx >= 0) store.state.history.cardio.splice(existingIdx, 1); else store.state.history.cardio.push({ date: dateStr + 'T12:00:00', intensity: 'Completed' }); } else { if (!store.state.history.challengeLogs) store.state.history.challengeLogs = {}; if (!store.state.history.challengeLogs[dateStr]) store.state.history.challengeLogs[dateStr] = {}; store.state.history.challengeLogs[dateStr][goalId] = !store.state.history.challengeLogs[dateStr][goalId]; } store.save(); this.navigate('challenge'); },
+    toggleGoal(goalId, dateStr, type, returnHome = false) { 
+        if (type === 'cardio') { 
+            const existingIdx = store.state.history.cardio.findIndex(c => c && c.date && utils.getLocalISODate(c.date) === dateStr); 
+            if(existingIdx >= 0) store.state.history.cardio.splice(existingIdx, 1); 
+            else store.state.history.cardio.push({ date: dateStr + 'T12:00:00', intensity: 'Completed' }); 
+        } else { 
+            if (!store.state.history.challengeLogs) store.state.history.challengeLogs = {}; 
+            if (!store.state.history.challengeLogs[dateStr]) store.state.history.challengeLogs[dateStr] = {}; 
+            store.state.history.challengeLogs[dateStr][goalId] = !store.state.history.challengeLogs[dateStr][goalId]; 
+        } 
+        store.save(); 
+        if(returnHome) this.navigate('home'); else this.navigate('challenge'); 
+    },
     editPR(lift) { let val = prompt(`Enter your All-Time Recorded PR for ${lift} (kg):`, store.state.prs[lift] || 0); if (val !== null) { store.state.prs[lift] = parseFloat(val) || 0; store.save(); this.navigate('progress'); } },
 
     // NUTRITION MEALS ENGINE
