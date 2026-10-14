@@ -7,7 +7,6 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#121212">
     <title>IronTrack OS</title>
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -85,7 +84,6 @@
         }
         [data-theme="tactical"] h1, [data-theme="tactical"] h2, [data-theme="tactical"] h3 { text-transform: uppercase; }
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
         body {
             background: var(--app-backdrop); background-color: var(--bg-color); background-size: cover; background-position: center; background-attachment: fixed;
             color: var(--text-primary); font-family: var(--font-family); line-height: 1.5;
@@ -93,10 +91,9 @@
             display: flex; flex-direction: column; overflow: hidden; width: 100vw;
             transition: background 0.4s ease, color 0.4s ease, font-family 0.4s ease;
         }
-
         #app-container { display: flex; flex-direction: column; height: 100%; width: 100%; max-width: 800px; margin: 0 auto; position: relative; overflow: hidden; }
         #main-content { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding-left: 16px; padding-right: 16px; padding-bottom: calc(100px + var(--safe-bottom)); }
-        
+
         /* Dynamic Streak Fire CSS */
         .streak-flame {
             display: inline-flex; align-items: center; justify-content: center;
@@ -110,12 +107,11 @@
         .streak-tier-4 { color: #d600ff; background: rgba(214, 0, 255, 0.15); border: 1px solid #d600ff; box-shadow: 0 0 25px rgba(214, 0, 255, 0.6); transform: scale(1.15); animation: pulseTier4 1.5s infinite; text-shadow: 0 0 5px #d600ff; }
         @keyframes pulseTier3 { 0% { box-shadow: 0 0 15px rgba(255,59,48,0.3); } 50% { box-shadow: 0 0 25px rgba(255,59,48,0.6); } 100% { box-shadow: 0 0 15px rgba(255,59,48,0.3); } }
         @keyframes pulseTier4 { 0% { box-shadow: 0 0 20px rgba(214,0,255,0.4); } 50% { box-shadow: 0 0 35px rgba(214,0,255,0.8); } 100% { box-shadow: 0 0 20px rgba(214,0,255,0.4); } }
-        
+
         h1, h2, h3, h4 { font-weight: 700; margin-bottom: 12px; }
         h1 { font-size: 28px; letter-spacing: -0.5px; margin-top: calc(24px + var(--safe-top)); } h2 { font-size: 20px; color: var(--text-primary); } h3 { font-size: 16px; color: var(--text-secondary); }
         .text-muted { color: var(--text-secondary); font-size: 14px; } .text-accent { color: var(--accent-color); } .text-success { color: var(--success); } .text-info { color: var(--info); } .text-warning { color: var(--warning); } .text-pending { color: var(--pending); }
         .card { background: var(--surface-color); border-radius: var(--card-radius); padding: 16px; margin-bottom: 16px; border: var(--card-border); box-shadow: 0 4px 12px rgba(0,0,0,0.2); transition: all 0.4s ease; }
-
         .objective-row { display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--pending-dim); border: 2px solid var(--pending); border-radius: calc(var(--card-radius) - 4px); transition: all 0.3s; cursor: pointer; margin-bottom: 8px; }
         .objective-row:active { transform: scale(0.98); }
         .check-circle { width: 28px; height: 28px; flex-shrink: 0; border-radius: 50%; border: 2px solid var(--pending); display: flex; align-items: center; justify-content: center; font-size: 14px; color: transparent; transition: all 0.3s; }
@@ -123,42 +119,39 @@
         .objective-row.completed .check-circle { background: var(--success); border-color: var(--success); color: var(--bg-color); }
         .objective-row.resume-pulse { animation: resumePulse 2s infinite; }
         @keyframes resumePulse { 0% { box-shadow: 0 0 0 0 rgba(0, 122, 255, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(0, 122, 255, 0); } 100% { box-shadow: 0 0 0 0 rgba(0, 122, 255, 0); } }
-        
-        .progress-bg { background: var(--surface-elevated); height: 12px; border-radius: 6px; overflow: hidden; margin-top: 8px; border: 1px solid var(--border); } 
+
+        .progress-bg { background: var(--surface-elevated); height: 12px; border-radius: 6px; overflow: hidden; margin-top: 8px; border: 1px solid var(--border); }
         .progress-fill { background: var(--accent-color); height: 100%; transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.4s ease; }
-        
+
         .btn { background: var(--surface-elevated); color: var(--text-primary); border: 1px solid var(--border); padding: 14px 20px; border-radius: calc(var(--card-radius) - 4px); font-size: 16px; font-weight: 600; cursor: pointer; width: 100%; display: inline-flex; justify-content: center; align-items: center; gap: 8px; transition: transform 0.1s, opacity 0.1s, all 0.4s ease; font-family: var(--font-family); }
         .btn:active { transform: scale(0.98); opacity: 0.8; } .btn-primary { background: var(--accent-color); color: var(--bg-color); border:none;} .btn-success { background: var(--success); color: var(--bg-color); border:none;}
         .btn-sm { padding: 8px 12px; font-size: 14px; width: auto; border-radius: calc(var(--card-radius) - 6px); } .btn-icon { width: 36px; height: 36px; border-radius: calc(var(--card-radius) - 6px); padding: 0; background: var(--surface-elevated); display:flex; justify-content:center; align-items:center; color: var(--text-primary); border: 1px solid var(--border);}
-        
+
         .input-group { display: flex; background: var(--surface-color); border-radius: 8px; border: 1px solid var(--border); overflow: hidden; height: 44px; transition: background-color 0.4s ease, border-color 0.4s ease; }
         .input-group input { flex: 1; background: transparent; border: none; color: var(--text-primary); text-align: center; font-size: 18px; font-weight: bold; width: 100%; -moz-appearance: textfield; min-width:0; font-family: var(--font-family); }
         .edit-input { background: var(--surface-elevated); border: 1px solid var(--border); color: var(--text-primary); padding: 8px; border-radius: 8px; width: 100%; font-size: 16px !important; margin-bottom: 8px; -webkit-appearance: none; min-width:0; transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease; font-family: var(--font-family); }
         .inline-edit { background: var(--surface-elevated); border: 1px solid var(--border); color: var(--text-primary); padding: 4px; border-radius: 4px; font-size: 16px !important; font-weight:bold; text-align:center; width: 100%; min-width: 0; transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease; font-family: var(--font-family); }
-        
+
         .exercise-card { background: var(--surface-color); border-radius: var(--card-radius); border: var(--card-border); overflow: hidden; margin-bottom: 16px; transition: all 0.4s ease; } .exercise-header { padding: 16px; background: var(--surface-elevated); display: flex; justify-content: space-between; align-items: flex-start; transition: background-color 0.4s ease; border-bottom: 1px solid var(--border); } .exercise-body { padding: 12px 16px; } .set-wrapper { margin-bottom: 12px; }
         .set-row { display: grid; grid-template-columns: 40px 1fr 1fr 1fr 50px; gap: 8px; align-items: center; } .set-number { font-size: 14px; color: var(--text-secondary); font-weight: bold; text-align: center; }
         .btn-check { height: 44px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface-elevated); color: var(--text-secondary); font-size: 18px; cursor: pointer; transition: background-color 0.4s ease, color 0.4s ease; } .btn-check.completed { background: var(--success); color: var(--bg-color); border:none;}
-        
+
         .editor-exercise-row { display:flex; gap:12px; align-items:center; background: var(--surface-elevated); padding: 12px; border-radius: 8px; margin-bottom: 8px; transition: background-color 0.4s ease; border: 1px solid var(--border);} .editor-controls { display:flex; gap:8px; flex-direction:column; } .editor-controls button { width: 44px; height: 44px; font-size: 16px; }
         .data-row { padding: 12px 0; border-bottom: 1px solid var(--border); transition: border-color 0.4s ease; } .data-row:last-child { border-bottom: none; }
         .nut-grid { display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr 1fr 30px; gap: 6px; align-items: center; margin-top: 8px; } .nut-label { font-size: 10px; color: var(--text-secondary); text-align: center; text-transform: uppercase; }
-        
+
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg-color); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 12px 6px calc(12px + var(--safe-bottom)); z-index: 1000; transition: background-color 0.4s ease, border-color 0.4s ease; opacity: 0.95; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); }
         .nav-item { color: var(--text-secondary); display: flex; flex-direction: column; align-items: center; text-decoration: none; font-size: 10px; gap: 4px; cursor: pointer; flex: 1; transition: color 0.3s ease; text-transform: uppercase; font-weight: bold; letter-spacing: 0.5px;} .nav-item i { font-size: 20px; margin-bottom: 2px; } .nav-item.active { color: var(--accent-color); }
-        
+
         .page-header { position: sticky; top: 0; background: var(--bg-color); opacity: 0.95; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 10; margin-left: -16px; margin-right: -16px; margin-bottom: 16px; padding-top: calc(16px + var(--safe-top)); padding-left: 16px; padding-right: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; transition: background-color 0.4s ease, border-color 0.4s ease; }
         .workout-header-sticky { position: sticky; top: 0; background: var(--bg-color); opacity: 0.95; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); padding-top: calc(16px + var(--safe-top)); padding-left: 16px; padding-right: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border); z-index: 10; display: flex; justify-content: space-between; align-items: center; transition: background-color 0.4s ease, border-color 0.4s ease; }
-
         #rest-timer-overlay { position: fixed; bottom: calc(80px + var(--safe-bottom)); left: 50%; transform: translateX(-50%); background: var(--accent-color); color: var(--bg-color); padding: 12px 24px; border-radius: 30px; box-shadow: 0 4px 16px var(--accent-dim); display: none; font-weight: bold; font-size: 18px; align-items: center; gap: 16px; z-index: 1001; cursor: pointer; transition: background-color 0.4s ease; border: 1px solid rgba(255,255,255,0.2); }
-
         /* Modals */
         #active-workout-view, #exercise-selection-modal, #start-workout-modal, #meal-search-modal, #meal-create-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 2005; display: none; flex-direction: column; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding-bottom: calc(100px + var(--safe-bottom)); transition: background-color 0.4s ease; }
         #active-workout-view { z-index: 2000; }
-
         .flex-between { display: flex; justify-content: space-between; align-items: center; }
         canvas { max-width: 100%; margin-top: 10px; }
-        
+
         .heatmap-svg { filter: drop-shadow(0 0 8px rgba(0,0,0,0.5)); max-height: 250px; width: 100%; margin: 12px auto;}
     </style>
 </head>
@@ -206,11 +199,11 @@ const store = {
         if(state.activeSession === undefined) state.activeSession = null;
         if(!state.savedMeals) state.savedMeals = [];
         if(!state.customExercises) state.customExercises = [];
-        if(state.history.nutrition) { 
-            state.history.nutrition.forEach(n => { 
-                if(!n.loggedMeals) n.loggedMeals = []; 
-                if(n.waterLog === undefined) n.waterLog = []; 
-            }); 
+        if(state.history.nutrition) {
+            state.history.nutrition.forEach(n => {
+                if(!n.loggedMeals) n.loggedMeals = [];
+                if(n.waterLog === undefined) n.waterLog = [];
+            });
         }
         return state;
     },
@@ -340,7 +333,7 @@ const utils = {
         (store.state.customExercises||[]).forEach(ex => { if(!allExercises.find(e => e.name === ex.name)) allExercises.push(ex); });
         let grouped = {}; allExercises.forEach(ex => { let muscle = utils.getMuscle(ex).toUpperCase(); if(!grouped[muscle]) grouped[muscle] = []; grouped[muscle].push(ex); }); return grouped;
     },
-    
+
     // Feature: R6 Siege Weekly Rank Calculator
     getWeeklyRP: () => {
         let rp = 0; const now = new Date(); const mon = utils.getMonday(now);
@@ -366,8 +359,8 @@ const utils = {
         const rankIdx = Math.min(7, Math.floor(rp / 300));
         const currentRankRP = rp % 300;
         let division = ""; let divProgress = 0; let rpInDiv = 0;
-        
-        if (rankIdx === 7) { 
+
+        if (rankIdx === 7) {
             division = ""; divProgress = 100; rpInDiv = currentRankRP;
         } else {
             const divIdx = Math.floor(currentRankRP / 60); // 0 to 4
@@ -377,7 +370,7 @@ const utils = {
         }
         return { name: rankNames[rankIdx], division: division, color: rankColors[rankIdx], progress: divProgress, rpInDiv: rpInDiv, maxDivRP: 60, isMax: rankIdx === 7 };
     },
-    
+
     // Feature: Heatmap Logic
     getMuscleHeatColor: (muscleName) => {
         let sets = 0; const cutoff = new Date().getTime() - (30 * 86400000);
@@ -385,12 +378,14 @@ const utils = {
             if(w.isSkipped || w.isActivity || new Date(w.date).getTime() < cutoff) return;
             (w.exercises||[]).forEach(ex => { if(utils.getMuscle(ex) === muscleName) sets += ex.sets.filter(s=>s.completed).length; });
         });
-        if(sets === 0) return '#1c5276'; // Untrained (Blue)
-        if(sets < 10) return '#f39c12';  // Moderate (Orange/Yellow)
-        return '#e74c3c';                // Optimal (Red)
+        if (sets >= 20) return '#e74c3c'; // Red
+        if (sets >= 15) return '#e67e22'; // Orange
+        if (sets >= 10) return '#f1c40f'; // Yellow
+        if (sets >= 5)  return '#3498db'; // Light Blue
+        if (sets >= 1)  return '#2e86ab'; // Dark Blue
+        return '#333333';                 // Untargeted
     }
 };
-
 const workoutEngine = {
     activeWorkout: null, timerInterval: null,
     sync() { store.state.activeSession = this.activeWorkout; store.save(); },
@@ -410,43 +405,38 @@ const workoutEngine = {
     discard(skipConfirm = false) { if (!skipConfirm && !confirm("Discard workout? All progress will be lost.")) return; store.state.activeSession = null; store.save(); this.activeWorkout = null; this.stopRestTimer(); document.getElementById('active-workout-view').style.display = 'none'; app.navigate(app.currentView); },
     renderActiveWorkout() {
         const container = document.getElementById('active-workout-view'); if (!this.activeWorkout) return;
-        let html = `<div class="workout-header-sticky"><div><input type="text" class="edit-input" style="font-size:18px !important; font-weight:bold; margin:0; padding:0; border:none; background:transparent; color:var(--text-primary); max-width:200px;" value="${this.activeWorkout.name}" onchange="workoutEngine.activeWorkout.name=this.value; workoutEngine.sync()"></div>${!this.activeWorkout.isRest ? ` <button class="btn btn-sm btn-success" onclick="workoutEngine.finish()"><i class="fas fa-check"></i> FINISH</button> ` : ''}<button class="btn btn-sm btn-icon" onclick="workoutEngine.minimize()"><i class="fas fa-chevron-down"></i></button></div><div style="padding: 16px;">`;
+        let html = `<div class="workout-header-sticky"><div><input type="text" class="edit-input" style="font-size:18px !important; font-weight:bold; margin:0; padding:0; border:none; background:transparent; color:var(--text-primary); max-width:200px;" value="${this.activeWorkout.name}" onchange="workoutEngine.activeWorkout.name=this.value; workoutEngine.sync()"></div>${!this.activeWorkout.isRest ?` <button class="btn btn-sm btn-success" onclick="workoutEngine.finish()"><i class="fas fa-check"></i> FINISH</button> `: ''}<button class="btn btn-sm btn-icon" onclick="workoutEngine.minimize()"><i class="fas fa-chevron-down"></i></button></div><div style="padding: 16px;">`;
         if(this.activeWorkout.isActivity) { html += `<div style="text-align:center; padding: 60px 20px;"><div style="font-size:64px; margin-bottom:16px;">${app.sym('activity')}</div><h2>Activity in Progress</h2><p class="text-muted">Timer is running. Hit FINISH when done.</p></div>`; } else {
-            html += `<button class="btn" style="background:var(--surface-color); border:1px dashed var(--accent-color); color:var(--accent-color); margin-bottom: 16px;" onclick="workoutEngine.skipWorkout()"><i class="fas fa-forward-step"></i> ${this.activeWorkout.isRest ? ` Log Rest Day ${app.sym('rest')}` : 'Skip Workout'}</button>`;
+            html += `<button class="btn" style="background:var(--surface-color); border:1px dashed var(--accent-color); color:var(--accent-color); margin-bottom: 16px;" onclick="workoutEngine.skipWorkout()"><i class="fas fa-forward-step"></i> ${this.activeWorkout.isRest ? `Log Rest Day ${app.sym('rest')}` : 'Skip Workout'}</button>`;
             this.activeWorkout.exercises.forEach((ex, exIdx) => {
                 this.updatePrefills(ex); const varList = store.state.variations[ex.name] || []; const peak = store.getPeakSet(ex.name, ex.variation || ''); const peakHtml = peak ? `<div style="color: var(--pending); font-size: 11px; font-weight: bold; margin-top: 4px; text-align: right;"><i class="fas fa-fire"></i> 30d Peak: ${peak.weight}kg × ${peak.reps}</div>` : '';
-                html += `<div class="exercise-card"><div class="exercise-header"><div><h3 style="margin:0; color:var(--text-primary)">${ex.name}</h3><select class="edit-input" style="padding: 2px 8px; font-size: 16px !important; margin-top: 4px; margin-bottom: 0; width: auto; background: var(--bg-color); border: 1px solid var(--border);" onchange="workoutEngine.changeVariation(${exIdx}, this.value)"><option value="">Standard</option>${varList.map(v => ` <option value="${v}" ${ex.variation === v ? 'selected' : ''}>${v}</option>`).join('')}<option value="__NEW__">+ New Variation</option></select></div><div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;"><button class="btn-icon" style="color:var(--text-secondary); width:32px; height:32px; font-size:16px;" onclick="workoutEngine.removeExercise(${exIdx})"><i class="fas fa-times"></i></button><span class="text-muted" style="font-size:12px">Tgt: ${ex.targetReps}</span></div></div><div style="padding: 0 16px;"><input type="text" class="edit-input" style="font-size:14px !important; margin-top:8px; margin-bottom:0px; width:100%; color:var(--warning);" placeholder="Notes (e.g. UP 2.5kg, seat setting)" value="${ex.notes || ''}" onchange="workoutEngine.updateNotes(${exIdx}, this.value)">${peakHtml}</div><div class="exercise-body"><div class="set-row text-muted" style="font-size:12px; margin-bottom: 8px;"><div style="text-align:center">SET</div><div style="text-align:center">KG</div><div style="text-align:center">REPS</div><div style="text-align:center">RIR</div><div></div></div>`;
+                html += `<div class="exercise-card"><div class="exercise-header"><div><h3 style="margin:0; color:var(--text-primary)">${ex.name}</h3><select class="edit-input" style="padding: 2px 8px; font-size: 16px !important; margin-top: 4px; margin-bottom: 0; width: auto; background: var(--bg-color); border: 1px solid var(--border);" onchange="workoutEngine.changeVariation(${exIdx}, this.value)"><option value="">Standard</option>${varList.map(v =>` <option value="${v}" ${ex.variation === v ? 'selected' : ''}>${v}</option>`).join('')}<option value="__NEW__">+ New Variation</option></select></div><div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;"><button class="btn-icon" style="color:var(--text-secondary); width:32px; height:32px; font-size:16px;" onclick="workoutEngine.removeExercise(${exIdx})"><i class="fas fa-times"></i></button><span class="text-muted" style="font-size:12px">Tgt: ${ex.targetReps}</span></div></div><div style="padding: 0 16px;"><input type="text" class="edit-input" style="font-size:14px !important; margin-top:8px; margin-bottom:0px; width:100%; color:var(--warning);" placeholder="Notes (e.g. UP 2.5kg, seat setting)" value="${ex.notes || ''}" onchange="workoutEngine.updateNotes(${exIdx}, this.value)">${peakHtml}</div><div class="exercise-body"><div class="set-row text-muted" style="font-size:12px; margin-bottom: 8px;"><div style="text-align:center">SET</div><div style="text-align:center">KG</div><div style="text-align:center">REPS</div><div style="text-align:center">RIR</div><div></div></div>`;
                 ex.sets.forEach((set, setIdx) => { const isComp = set.completed; html += `<div class="set-wrapper"><div class="flex-between text-muted" style="font-size: 11px; margin-bottom: 4px; padding-left: 45px; padding-right: 55px;"><span>Prev: ${set.prevWeight}×${set.prevReps}</span><span>L3: ${set.l3Weight}×${set.l3Reps}</span></div><div class="set-row"><div class="set-number">${setIdx + 1}</div><div class="input-group"><input type="number" inputmode="decimal" value="${set.weight}" onchange="workoutEngine.inputChange(${exIdx}, ${setIdx}, 'weight', this.value)" ${isComp?'disabled':''}></div><div class="input-group"><input type="number" inputmode="numeric" value="${set.reps}" onchange="workoutEngine.inputChange(${exIdx}, ${setIdx}, 'reps', this.value)" ${isComp?'disabled':''}></div><div class="input-group"><input type="number" inputmode="numeric" value="${set.rir}" max="3" onchange="workoutEngine.inputChange(${exIdx}, ${setIdx}, 'rir', this.value)" ${isComp?'disabled':''}></div><button class="btn-check ${isComp ? 'completed' : ''}" onclick="workoutEngine.toggleSet(${exIdx}, ${setIdx})"><i class="fas fa-check"></i></button></div></div>`; }); html += `<div style="display:flex; gap:8px;"><button class="btn btn-sm" style="flex:1; border:1px solid var(--border);" onclick="workoutEngine.addSet(${exIdx})">+ Add Set</button><button class="btn btn-sm" style="flex:1; border:1px solid var(--border); color:var(--accent-color);" onclick="workoutEngine.removeSet(${exIdx})">- Remove Set</button></div></div></div>`;
             }); html += `<div style="margin-top: 16px; padding-bottom: 32px;"><button class="btn" style="background:transparent; border:1px dashed var(--accent-color); color:var(--accent-color);" onclick="workoutEngine.showAddExerciseModal()">+ Add Another Exercise</button><button class="btn" style="background:transparent; border:1px dashed var(--pending); color:var(--pending); width:100%; margin-top:16px;" onclick="workoutEngine.discard()"><i class="fas fa-trash"></i> Discard Workout Data</button></div>`;
         } html += `</div>`; container.innerHTML = html;
     }
 };
-
 const views = {
     renderHome() {
         const todayStr = utils.getLocalISODate(new Date()); const today = new Date(); const prog = utils.getTodayProgram();
         const bwEntry = store.state.history.bodyweight.find(w => w && w.date && utils.getLocalISODate(w.date) === todayStr); const bwLogged = !!bwEntry;
         const cardioEntry = store.state.history.cardio.find(c => c && c.date && utils.getLocalISODate(c.date) === todayStr); const cardioLogged = !!cardioEntry;
-
         const todayWorkoutsLogged = store.state.history.workouts.filter(w => utils.getLocalISODate(w.date) === todayStr && !w.isSkipped && !w.isActivity);
         const todayRestLogged = store.state.history.workouts.filter(w => utils.getLocalISODate(w.date) === todayStr && w.isSkipped);
         let isScheduledRest = prog.workouts.length === 0; let isTrainingDone = todayWorkoutsLogged.length > 0 || todayRestLogged.length > 0 || isScheduledRest;
         let trainingText = isScheduledRest ? `Scheduled Rest Day - Auto Ticked` : `Tap to select a workout or rest`;
         if (todayWorkoutsLogged.length > 0) trainingText = `${todayWorkoutsLogged.length} Session(s) Completed`; else if (todayRestLogged.length > 0) trainingText = `Rest Day Logged`;
         let isWorkoutActive = !!store.state.activeSession;
-
         const dayOfYear = Math.floor(new Date().getTime() / 86400000); const dailyQuote = QUOTES[dayOfYear % QUOTES.length];
-
         const activeRoutine = utils.getActiveRoutine(); const targetWorkouts = activeRoutine.days.filter(d => d.workouts.length > 0).length;
         const mon = utils.getMonday(new Date()); const thisWeekWorkouts = store.state.history.workouts.filter(w => new Date(w.date) >= mon && !w.isSkipped && !w.isActivity).length;
         const weekMsg = thisWeekWorkouts >= targetWorkouts ? "Goal Hit - Great job!" : "Keep going!";
-        
+
         const streakCount = store.state.challenge && store.state.challenge.isActive ? utils.getChallengeStats().streak : utils.calculateStreak();
         let streakTier = 1;
         if (streakCount >= 15) streakTier = 4;
         else if (streakCount >= 10) streakTier = 3;
         else if (streakCount >= 5) streakTier = 2;
-
         let html = `
         <div style="display:flex; justify-content:space-between; align-items:center;">
             <h1>Dashboard</h1>
@@ -455,7 +445,6 @@ const views = {
         <div style="background:var(--surface-color); border-left: 2px solid var(--accent-color); padding: 12px; margin-bottom: 16px; border-radius: 8px;">
             <p class="text-muted" style="font-style:italic; font-size:13px; line-height:1.4; margin:0;">"${dailyQuote}"</p>
         </div>
-
         <div class="card" style="padding:0; overflow:hidden; border-color: ${isTrainingDone && bwLogged && cardioLogged && !isWorkoutActive ? 'var(--success)' : 'var(--border)'}; box-shadow: ${isTrainingDone && bwLogged && cardioLogged && !isWorkoutActive ? 'var(--success-glow)' : '0 4px 12px rgba(0,0,0,0.2)'};">
             <div style="padding: 16px; background: ${isTrainingDone && bwLogged && cardioLogged && !isWorkoutActive ? 'var(--success-dim)' : 'var(--surface-elevated)'}; border-bottom: 1px solid ${isTrainingDone && bwLogged && cardioLogged && !isWorkoutActive ? 'var(--success-dim)' : 'var(--border)'}; display:flex; justify-content:space-between; align-items:center; transition: all 0.4s ease;">
                 <div><h2 style="margin:0; font-size:18px; color:${isTrainingDone && bwLogged && cardioLogged && !isWorkoutActive ? 'var(--success)' : 'var(--text-primary)'};">Today's Action Plan</h2><p class="text-muted" style="font-size:12px; margin-top:4px;">${utils.getDayName(today.getDay())}, ${utils.formatDateShort(today)}</p></div>
@@ -487,7 +476,6 @@ const views = {
                 </div>
             </div>
         </div>`;
-
         // Rank System
         const r6Data = utils.getWeeklyRankData();
         html += `
@@ -505,7 +493,6 @@ const views = {
             </div>
             <p class="text-muted" style="font-size:10px; margin-top:12px;">Accumulate Rank Points (RP) via consistent tasks. Resets Monday.</p>
         </div>`;
-
         // Weekly Progress
         html += `
         <div class="card" style="padding:16px;">
@@ -514,100 +501,148 @@ const views = {
                 <div class="text-accent" style="font-size:12px; font-weight:bold;">${weekMsg}</div>
             </div>
         </div>`;
-
         // SVG Heatmap Card
         html += this.renderHeatmap();
-
         return html;
     },
-
     renderHeatmap() {
         const hc = utils.getMuscleHeatColor;
-        const blank = '#262930';
         return `
         <div class="card" style="text-align:center; padding-bottom: 24px; overflow:hidden;">
-            <h3 style="font-size:12px; margin-bottom:4px; color:var(--text-secondary); text-transform:uppercase; letter-spacing:1px;">Muscle Volume Heatmap</h3>
-            <p class="text-muted" style="font-size:10px; margin-bottom: 16px;">Based on total sets over the last 30 days.</p>
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 16px;">
+                <div>
+                    <h3 style="font-size:12px; margin:0; color:var(--text-secondary); text-transform:uppercase; letter-spacing:1px; text-align:left;">Anatomical Breakdown</h3>
+                    <p class="text-muted" style="font-size:10px; margin:0; text-align:left;">Volume over the last 30 days</p>
+                </div>
+            </div>
             
-            <svg class="heatmap-svg" viewBox="0 0 400 330" xmlns="http://www.w3.org/2000/svg">
-                <!-- Global Style for Armor Plates -->
-                <g stroke="var(--bg-color)" stroke-width="2" stroke-linejoin="round">
-                    <!-- FRONT FIGURE (Center: 100) -->
-                    <polygon points="90,15 110,15 110,40 90,40" fill="${blank}"/>
-                    <polygon points="92,40 108,40 115,50 85,50" fill="${blank}"/>
-                    <polygon points="85,50 100,50 100,80 70,75" fill="${hc('Chest')}"/>
-                    <polygon points="115,50 100,50 100,80 130,75" fill="${hc('Chest')}"/>
-                    <polygon points="85,50 50,60 55,85 70,75" fill="${hc('Shoulders')}"/>
-                    <polygon points="115,50 150,60 145,85 130,75" fill="${hc('Shoulders')}"/>
-                    <polygon points="100,80 70,75 75,120 100,125" fill="${hc('Abs')}"/>
-                    <polygon points="100,80 130,75 125,120 100,125" fill="${hc('Abs')}"/>
-                    <polygon points="70,75 55,85 65,115 75,120" fill="${hc('Abs')}"/>
-                    <polygon points="130,75 145,85 135,115 125,120" fill="${hc('Abs')}"/>
-                    <polygon points="55,85 40,110 50,125 65,115" fill="${hc('Biceps')}"/>
-                    <polygon points="145,85 160,110 150,125 135,115" fill="${hc('Biceps')}"/>
-                    <polygon points="50,125 35,160 45,170 60,140" fill="${blank}"/>
-                    <polygon points="150,125 165,160 155,170 140,140" fill="${blank}"/>
-                    <polygon points="75,120 125,120 100,140" fill="${blank}"/>
-                    <polygon points="75,120 100,140 90,210 60,200 65,150" fill="${hc('Quads')}"/>
-                    <polygon points="125,120 100,140 110,210 140,200 135,150" fill="${hc('Quads')}"/>
-                    <polygon points="60,200 90,210 85,230 65,220" fill="${blank}"/>
-                    <polygon points="140,200 110,210 115,230 135,220" fill="${blank}"/>
-                    <polygon points="65,220 85,230 80,290 65,280" fill="${hc('Calves')}"/>
-                    <polygon points="135,220 115,230 120,290 135,280" fill="${hc('Calves')}"/>
-                    <polygon points="65,280 80,290 85,305 60,300" fill="${blank}"/>
-                    <polygon points="135,280 120,290 115,305 140,300" fill="${blank}"/>
-
-                    <!-- BACK FIGURE (Center: 300) -->
-                    <polygon points="290,15 310,15 310,40 290,40" fill="${blank}"/>
-                    <polygon points="292,40 308,40 315,50 285,50" fill="${blank}"/>
-                    <polygon points="285,50 315,50 330,75 300,90 270,75" fill="${hc('Back')}"/>
-                    <polygon points="285,50 250,60 255,85 270,75" fill="${hc('Shoulders')}"/>
-                    <polygon points="315,50 350,60 345,85 330,75" fill="${hc('Shoulders')}"/>
-                    <polygon points="270,75 300,90 295,130 260,115" fill="${hc('Back')}"/>
-                    <polygon points="330,75 300,90 305,130 340,115" fill="${hc('Back')}"/>
-                    <polygon points="295,130 305,130 320,145 280,145" fill="${hc('Back')}"/>
-                    <polygon points="255,85 240,110 250,125 265,115" fill="${hc('Triceps')}"/>
-                    <polygon points="345,85 360,110 350,125 335,115" fill="${hc('Triceps')}"/>
-                    <polygon points="250,125 235,160 245,170 260,140" fill="${blank}"/>
-                    <polygon points="350,125 365,160 355,170 340,140" fill="${blank}"/>
-                    <polygon points="280,145 300,145 295,180 260,170" fill="${hc('Hamstrings')}"/>
-                    <polygon points="320,145 300,145 305,180 340,170" fill="${hc('Hamstrings')}"/>
-                    <polygon points="260,170 295,180 285,230 255,220" fill="${hc('Hamstrings')}"/>
-                    <polygon points="340,170 305,180 315,230 345,220" fill="${hc('Hamstrings')}"/>
-                    <polygon points="255,220 285,230 280,245 260,240" fill="${blank}"/>
-                    <polygon points="345,220 315,230 320,245 340,240" fill="${blank}"/>
-                    <polygon points="260,240 280,245 275,305 260,295" fill="${hc('Calves')}"/>
-                    <polygon points="340,240 320,245 325,305 340,295" fill="${hc('Calves')}"/>
-                    <polygon points="260,295 275,305 270,315 255,310" fill="${blank}"/>
-                    <polygon points="340,295 325,305 330,315 345,310" fill="${blank}"/>
+            <svg class="heatmap-svg" viewBox="0 0 400 350" xmlns="http://www.w3.org/2000/svg" style="max-height: 320px; width: 100%; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));">
+                <style>
+                    .muscle { stroke: var(--bg-color); stroke-width: 3.5; stroke-linejoin: round; transition: fill 0.4s ease, opacity 0.3s; }
+                    .muscle:hover { opacity: 0.8; filter: brightness(1.2); cursor: pointer; }
+                </style>
+                
+                <!-- FRONT FIGURE (Left) -->
+                <g class="figure-front">
+                    <!-- Head & Neck -->
+                    <ellipse cx="100" cy="30" rx="13" ry="18" fill="#333333" class="muscle"/>
+                    <path d="M 93 43 L 107 43 Q 110 50 110 55 L 90 55 Q 90 50 93 43 Z" fill="#333333" class="muscle"/>
+                    
+                    <!-- Chest -->
+                    <path d="M 98 55 Q 85 55 75 62 Q 70 80 85 90 Q 95 90 98 88 Z" fill="${hc('Chest')}" class="muscle"/>
+                    <path d="M 102 55 Q 115 55 125 62 Q 130 80 115 90 Q 105 90 102 88 Z" fill="${hc('Chest')}" class="muscle"/>
+                    
+                    <!-- Shoulders (Front) -->
+                    <path d="M 73 60 Q 55 65 60 90 Q 68 100 73 85 Z" fill="${hc('Shoulders')}" class="muscle"/>
+                    <path d="M 127 60 Q 145 65 140 90 Q 132 100 127 85 Z" fill="${hc('Shoulders')}" class="muscle"/>
+                    
+                    <!-- Biceps -->
+                    <path d="M 58 92 Q 45 110 55 130 Q 65 130 68 105 Z" fill="${hc('Biceps')}" class="muscle"/>
+                    <path d="M 142 92 Q 155 110 145 130 Q 135 130 132 105 Z" fill="${hc('Biceps')}" class="muscle"/>
+                    
+                    <!-- Forearms -->
+                    <path d="M 54 133 Q 40 160 50 190 Q 60 190 62 140 Z" fill="#333333" class="muscle"/>
+                    <path d="M 146 133 Q 160 160 150 190 Q 140 190 138 140 Z" fill="#333333" class="muscle"/>
+                    
+                    <!-- Abs & Obliques -->
+                    <path d="M 98 90 L 102 90 Q 108 120 105 155 L 95 155 Q 92 120 98 90 Z" fill="${hc('Abs')}" class="muscle"/>
+                    <path d="M 98 90 Q 80 110 85 150 L 95 155 Q 92 120 98 90 Z" fill="${hc('Abs')}" class="muscle"/>
+                    <path d="M 102 90 Q 120 110 115 150 L 105 155 Q 108 120 102 90 Z" fill="${hc('Abs')}" class="muscle"/>
+                    
+                    <!-- Pelvis -->
+                    <path d="M 86 153 L 114 153 Q 110 170 100 175 Q 90 170 86 153 Z" fill="#333333" class="muscle"/>
+                    
+                    <!-- Quads -->
+                    <path d="M 85 155 Q 65 180 80 235 Q 90 240 95 225 Q 98 180 97 158 Z" fill="${hc('Quads')}" class="muscle"/>
+                    <path d="M 115 155 Q 135 180 120 235 Q 110 240 105 225 Q 102 180 103 158 Z" fill="${hc('Quads')}" class="muscle"/>
+                    
+                    <!-- Knees -->
+                    <circle cx="87" cy="242" r="6" fill="#333333" class="muscle"/>
+                    <circle cx="113" cy="242" r="6" fill="#333333" class="muscle"/>
+                    
+                    <!-- Calves (Front Tibialis) -->
+                    <path d="M 80 250 Q 65 280 82 320 L 92 320 Q 95 280 94 250 Z" fill="${hc('Calves')}" class="muscle"/>
+                    <path d="M 120 250 Q 135 280 118 320 L 108 320 Q 105 280 106 250 Z" fill="${hc('Calves')}" class="muscle"/>
+                    
+                    <!-- Feet -->
+                    <path d="M 81 322 C 70 330, 75 338, 90 338 C 95 338, 95 330, 93 322 Z" fill="#333333" class="muscle"/>
+                    <path d="M 119 322 C 130 330, 125 338, 110 338 C 105 338, 105 330, 107 322 Z" fill="#333333" class="muscle"/>
                 </g>
-                <!-- Labels -->
-                <text x="100" y="325" fill="var(--text-secondary)" font-size="14" font-weight="bold" text-anchor="middle" letter-spacing="2">FRONT</text>
-                <text x="300" y="325" fill="var(--text-secondary)" font-size="14" font-weight="bold" text-anchor="middle" letter-spacing="2">BACK</text>
+                
+                <!-- BACK FIGURE (Right) -->
+                <g class="figure-back">
+                    <!-- Head & Neck -->
+                    <ellipse cx="300" cy="30" rx="13" ry="18" fill="#333333" class="muscle"/>
+                    <path d="M 293 43 L 307 43 Q 310 50 310 55 L 290 55 Q 290 50 293 43 Z" fill="#333333" class="muscle"/>
+                    
+                    <!-- Traps (Upper Back Center) -->
+                    <path d="M 300 55 Q 310 58 315 65 Q 305 80 300 95 Q 295 80 285 65 Q 290 58 300 55 Z" fill="${hc('Back')}" class="muscle"/>
+                    
+                    <!-- Shoulders (Rear Deltoids) -->
+                    <path d="M 273 60 Q 255 65 260 90 Q 268 100 273 85 Z" fill="${hc('Shoulders')}" class="muscle"/>
+                    <path d="M 327 60 Q 345 65 340 90 Q 332 100 327 85 Z" fill="${hc('Shoulders')}" class="muscle"/>
+                    
+                    <!-- Lats (Left & Right) -->
+                    <path d="M 285 65 Q 278 60 275 62 Q 260 100 280 148 L 298 153 Q 296 120 300 95 Q 295 80 285 65 Z" fill="${hc('Back')}" class="muscle"/>
+                    <path d="M 315 65 Q 322 60 325 62 Q 340 100 320 148 L 302 153 Q 304 120 300 95 Q 305 80 315 65 Z" fill="${hc('Back')}" class="muscle"/>
+                    
+                    <!-- Lower Back (Erector Spinae Center) -->
+                    <path d="M 300 95 Q 304 120 302 153 L 298 153 Q 296 120 300 95 Z" fill="${hc('Back')}" class="muscle"/>
+                    
+                    <!-- Triceps (Rear) -->
+                    <path d="M 258 92 Q 245 110 255 130 Q 265 130 268 105 Z" fill="${hc('Triceps')}" class="muscle"/>
+                    <path d="M 342 92 Q 355 110 345 130 Q 335 130 332 105 Z" fill="${hc('Triceps')}" class="muscle"/>
+                    
+                    <!-- Forearms (Rear) -->
+                    <path d="M 254 133 Q 240 160 250 190 Q 260 190 262 140 Z" fill="#333333" class="muscle"/>
+                    <path d="M 346 133 Q 360 160 350 190 Q 340 190 338 140 Z" fill="#333333" class="muscle"/>
+                    
+                    <!-- Glutes -->
+                    <path d="M 274 148 Q 285 155 299 152 L 299 183 Q 270 175 274 148 Z" fill="${hc('Hamstrings')}" class="muscle"/>
+                    <path d="M 326 148 Q 315 155 301 152 L 301 183 Q 330 175 326 148 Z" fill="${hc('Hamstrings')}" class="muscle"/>
+                    
+                    <!-- Hamstrings (Rear Thigh) -->
+                    <path d="M 276 182 Q 260 210 280 245 Q 290 245 295 210 L 297 185 Z" fill="${hc('Hamstrings')}" class="muscle"/>
+                    <path d="M 324 182 Q 340 210 320 245 Q 310 245 305 210 L 303 185 Z" fill="${hc('Hamstrings')}" class="muscle"/>
+                    
+                    <!-- Knees -->
+                    <circle cx="287" cy="242" r="6" fill="#333333" class="muscle"/>
+                    <circle cx="313" cy="242" r="6" fill="#333333" class="muscle"/>
+                    
+                    <!-- Calves (Rear) -->
+                    <path d="M 278 250 Q 260 280 282 320 L 292 320 Q 298 280 292 250 Z" fill="${hc('Calves')}" class="muscle"/>
+                    <path d="M 322 250 Q 340 280 318 320 L 308 320 Q 302 280 308 250 Z" fill="${hc('Calves')}" class="muscle"/>
+                    
+                    <!-- Feet (Rear) -->
+                    <path d="M 281 322 C 270 330, 275 338, 290 338 C 295 338, 295 330, 293 322 Z" fill="#333333" class="muscle"/>
+                    <path d="M 319 322 C 330 330, 325 338, 310 338 C 305 338, 305 330, 307 322 Z" fill="#333333" class="muscle"/>
+                </g>
             </svg>
-            <div style="display:flex; justify-content:center; gap: 16px; font-size:10px; font-weight:bold; margin-top:12px;">
-                <div style="display:flex; align-items:center; gap:4px;"><span style="display:inline-block; width:10px; height:10px; background:#1c5276; border-radius:2px;"></span> Untrained</div>
-                <div style="display:flex; align-items:center; gap:4px;"><span style="display:inline-block; width:10px; height:10px; background:#f39c12; border-radius:2px;"></span> Moderate</div>
-                <div style="display:flex; align-items:center; gap:4px;"><span style="display:inline-block; width:10px; height:10px; background:#e74c3c; border-radius:2px;"></span> Optimal</div>
+
+            <!-- 6-Tier Heatmap Legend -->
+            <div style="display:flex; justify-content:center; flex-wrap:wrap; gap: 12px; font-size:10px; font-weight:bold; margin-top:16px;">
+                <div style="display:flex; align-items:center; gap:4px; color:var(--text-secondary);"><span style="display:inline-block; width:12px; height:12px; background:#333333; border-radius:3px;"></span> Untargeted</div>
+                <div style="display:flex; align-items:center; gap:4px;"><span style="display:inline-block; width:12px; height:12px; background:#2e86ab; border-radius:3px;"></span> 1-4</div>
+                <div style="display:flex; align-items:center; gap:4px;"><span style="display:inline-block; width:12px; height:12px; background:#3498db; border-radius:3px;"></span> 5-9</div>
+                <div style="display:flex; align-items:center; gap:4px;"><span style="display:inline-block; width:12px; height:12px; background:#f1c40f; border-radius:3px;"></span> 10-14</div>
+                <div style="display:flex; align-items:center; gap:4px;"><span style="display:inline-block; width:12px; height:12px; background:#e67e22; border-radius:3px;"></span> 15-19</div>
+                <div style="display:flex; align-items:center; gap:4px;"><span style="display:inline-block; width:12px; height:12px; background:#e74c3c; border-radius:3px;"></span> 20+ Sets</div>
             </div>
         </div>`;
     },
-
     renderNutrition() {
         const todayStr = utils.getLocalISODate(new Date());
         let nutEntry = store.state.history.nutrition.find(n => utils.getLocalISODate(n.date) === todayStr) || { cal:0, pro:0, car:0, fat:0, loggedMeals:[], waterLog:[] };
         const targets = store.state.settings.nutritionTargets;
-
         const calPct = Math.min(100, (nutEntry.cal / targets.cal) * 100) || 0;
         const proPct = Math.min(100, (nutEntry.pro / targets.pro) * 100) || 0;
         const carPct = Math.min(100, (nutEntry.car / targets.car) * 100) || 0;
         const fatPct = Math.min(100, (nutEntry.fat / targets.fat) * 100) || 0;
-        
+
         let totalWater = 0; if (nutEntry.waterLog) { totalWater = nutEntry.waterLog.reduce((s, e) => s + e.amount, 0); }
         let waterPct = Math.min(100, (totalWater / 4000) * 100);
-
         let html = `<h1>${app.sym('nutrition') || ''} Nutrition</h1>`;
-        
+
         // Interactive Water Tracker
         html += `
         <div class="card" style="margin-bottom: 24px;">
@@ -624,7 +659,6 @@ const views = {
                <button class="btn" style="flex:1; background:rgba(0,229,255,0.1); border-color:#00e5ff; color:#00e5ff;" onclick="app.addWater(800)"><i class="fas fa-bottle-water"></i> +800ml Bottle</button>
            </div>
         </div>`;
-
         html += `<div class="card" style="margin-bottom: 24px;">
             <div class="flex-between" style="margin-bottom:12px;">
                 <h2 style="margin:0; font-size:18px;">Daily Summary</h2>
@@ -656,7 +690,7 @@ const views = {
         if (legacyOnly) { html += `<div class="card"><h3 style="color:var(--warning);">Legacy Entry Detected</h3><p class="text-muted" style="font-size:12px;">You have unassigned macros logged today. Clear them to use the new meal system properly without duplicating stats.</p><button class="btn btn-sm btn-icon" style="color:var(--pending); width:100%; border:1px dashed var(--pending); margin-top:8px;" onclick="app.clearLegacyNutrition('${todayStr}')"><i class="fas fa-trash"></i> Clear Legacy Macros</button></div>`; }
         return html;
     },
-    
+
     renderChallenge() {
         const c = store.state.challenge; if (!c || !c.isActive) { return `<div class="page-header"><button class="btn btn-sm btn-icon" onclick="app.navigate('home')"><i class="fas fa-arrow-left"></i></button><h2 style="margin:0; font-size:18px;">Goals & Challenges</h2><div style="width:36px;"></div></div><div class="card" style="text-align:center; padding:40px 20px;"><div style="font-size:48px; margin-bottom:16px;">${app.sym('cardGoal')}</div><h2>Set a New Goal</h2><p class="text-muted" style="margin-bottom:24px; font-size:14px;">Track your progress through a specific stage (like Bulking, 75 Hard, or Marathon prep) by setting specific daily streak requirements.</p><button class="btn btn-primary" onclick="app.editChallenge()"><i class="fas fa-plus"></i> Create Challenge</button></div>`; }
         const start = new Date(c.startDate + 'T00:00:00'); const end = new Date(c.endDate + 'T00:00:00'); let viewDate = new Date(); if (app.challengeOffset) viewDate.setDate(viewDate.getDate() + app.challengeOffset); viewDate.setHours(0,0,0,0);
@@ -671,7 +705,7 @@ const views = {
             let met = utils.checkGoalSuccess(viewDateStr, g); if (met) dayMetCount++; let label = ''; let isManual = false;
             if (g.type === 'workout') { label = `Complete ${g.count||1} Strength Session(s)`; } else if (g.type === 'weight') { label = `Log Bodyweight`; } else if (g.type === 'nutrition') { label = `Track Nutrition`; if (g.targetType === 'min') { label += `(Min ${g.calories} kcal)`; } else if (g.targetType === 'max') { label += `(Max ${g.calories} kcal)`; } } else if (g.type === 'cardio') { label = `Daily Cardio`; isManual = true; } else { isManual = true; label = g.type === 'custom' ? (g.title || 'Custom Goal') : `${g.type === 'water' ? 'Drink' : 'Read'} ${g.target || 'Goal'}`; }
             let rowStyle = isManual ? `cursor:pointer; background: ${met ? 'var(--success-dim)' : 'var(--pending-dim)'}; padding: 12px; border-radius: 12px; border: 1px solid ${met ? 'var(--success)' : 'var(--pending)'}; transition: all 0.2s;` : `padding: 12px 0; border-bottom: 1px solid var(--border);`;
-            html += `<div style="display:flex; align-items:center; gap:12px; ${rowStyle}" ${isManual ?` onclick="app.toggleGoal('${g.id}', '${viewDateStr}', '${g.type}') `: ''}><div class="btn-check ${met ? 'completed' : ''}" style="width:32px; height:32px; display:flex; align-items:center; justify-content:center; border-radius:16px; border:2px solid ${met ? 'var(--success)' : 'var(--pending)'}; font-size:14px; background:${met ? 'var(--success)' : 'transparent'}; flex-shrink:0;"><i class="fas fa-check" style="color:${met ? 'var(--bg-color)' : 'transparent'};"></i></div><div style="display:flex; flex-direction:column; min-width:0; flex:1;"><span style="font-size:14px; color:${met ? 'var(--text-primary)' : 'var(--text-secondary)'}; font-weight:${met ? 'bold' : 'normal'}; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${label}</span>${isManual ?` <span style="font-size:10px; color:var(--text-secondary);">${met ? 'Tap to unmark' : 'Tap to toggle entry'}</span `: ''}</div></div>`;
+            html += `<div style="display:flex; align-items:center; gap:12px; ${rowStyle}" ${isManual ? `onclick="app.toggleGoal('${g.id}', '${viewDateStr}', '${g.type}')"` : ''}><div class="btn-check ${met ? 'completed' : ''}" style="width:32px; height:32px; display:flex; align-items:center; justify-content:center; border-radius:16px; border:2px solid ${met ? 'var(--success)' : 'var(--pending)'}; font-size:14px; background:${met ? 'var(--success)' : 'transparent'}; flex-shrink:0;"><i class="fas fa-check" style="color:${met ? 'var(--bg-color)' : 'transparent'};"></i></div><div style="display:flex; flex-direction:column; min-width:0; flex:1;"><span style="font-size:14px; color:${met ? 'var(--text-primary)' : 'var(--text-secondary)'}; font-weight:${met ? 'bold' : 'normal'}; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${label}</span>${isManual ?` <span style="font-size:10px; color:var(--text-secondary);">${met ? 'Tap to unmark' : 'Tap to toggle entry'}</span> `: ''}</div></div>`;
         });
         html += `</div>`; return html;
     },
@@ -700,19 +734,19 @@ const views = {
         order.forEach(dayIndex => {
             const d = r.days.find(x => x.day === dayIndex) || { day: dayIndex, workouts: [] }; const isToday = d.day === new Date().getDay() && isActive;
             html += `<div class="card" style="${isToday ? 'border-color: var(--accent-color);' : ''}"><div class="flex-between" style="margin-bottom:8px;"><span class="text-muted" style="font-size:12px; text-transform:uppercase">${utils.getDayName(d.day)}</span>${isToday ? '<span class="text-accent" style="font-size:12px; font-weight:bold">TODAY</span>' : ''}</div>`;
-            if (d.workouts.length === 0) { html += `<div class="text-muted">Rest Day ${app.sym('rest')}</div>`; } else { d.workouts.forEach(w => { html += `<div style="margin-top:8px; padding-top:8px; border-top:1px solid var(--border);"><div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;"><h4 style="margin:0;">${w.name}</h4>${w.isActivity ?` <span class="text-accent" style="font-size:10px; border:1px solid var(--accent-color); padding:2px 4px; border-radius:4px;">ACTIVITY</span `: ''}</div>${w.exercises.map(e =>` <div class="text-muted" style="font-size:14px; margin-bottom:2px;">• ${e.name} (${e.targetSets}x${e.targetReps})</div`).join('')}</div>`; }); } html += `</div>`;
+            if (d.workouts.length === 0) { html += `<div class="text-muted">Rest Day ${app.sym('rest')}</div>`; } else { d.workouts.forEach(w => { html += `<div style="margin-top:8px; padding-top:8px; border-top:1px solid var(--border);"><div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;"><h4 style="margin:0;">${w.name}</h4>${w.isActivity ?` <span class="text-accent" style="font-size:10px; border:1px solid var(--accent-color); padding:2px 4px; border-radius:4px;">ACTIVITY</span> `: ''}</div>${w.exercises.map(e =>` <div class="text-muted" style="font-size:14px; margin-bottom:2px;">• ${e.name} (${e.targetSets}x${e.targetReps})</div>`).join('')}</div>`; }); } html += `</div>`;
         }); return html;
     },
     renderProgramEditor() {
-        let html = `<div class="page-header" style="flex-direction:column; align-items:flex-start; gap:12px;"><div class="flex-between" style="width:100%;"><input class="edit-input" style="font-size:24px !important; font-weight:bold; color:var(--accent-color); border:none; background:transparent; padding:0; margin:0; flex:1; min-width:0;" value="${app.draftRoutine.name}" onchange="app.draftRoutine.name = this.value"><div style="display:flex; gap:8px; flex-shrink:0;"><button class="btn btn-sm btn-success" onclick="app.saveProgramEdit()"><i class="fas fa-save"></i> Save</button></div></div>${store.state.routines.length > 1 ?` <button class="btn btn-sm" style="background:transparent; border:1px solid var(--accent-color); color:var(--accent-color); width:100%;" onclick="app.deleteCurrentRoutine()"><i class="fas fa-trash"></i> Delete This Split</button `: ''}</div>`;
+        let html = `<div class="page-header" style="flex-direction:column; align-items:flex-start; gap:12px;"><div class="flex-between" style="width:100%;"><input class="edit-input" style="font-size:24px !important; font-weight:bold; color:var(--accent-color); border:none; background:transparent; padding:0; margin:0; flex:1; min-width:0;" value="${app.draftRoutine.name}" onchange="app.draftRoutine.name = this.value"><div style="display:flex; gap:8px; flex-shrink:0;"><button class="btn btn-sm btn-success" onclick="app.saveProgramEdit()"><i class="fas fa-save"></i> Save</button></div></div>${store.state.routines.length > 1 ?` <button class="btn btn-sm" style="background:transparent; border:1px solid var(--accent-color); color:var(--accent-color); width:100%;" onclick="app.deleteCurrentRoutine()"><i class="fas fa-trash"></i> Delete This Split</button> `: ''}</div>`;
         let allWorkoutsMap = {}; store.state.routines.forEach(r => r.days.forEach(d => d.workouts.forEach(w => { if(!allWorkoutsMap[w.name]) { allWorkoutsMap[w.name] = w; } }))); let uniqueWorkouts = Object.values(allWorkoutsMap);
         [1, 2, 3, 4, 5, 6, 0].forEach((dayIndex) => {
             const dIdx = app.draftRoutine.days.findIndex(d => d.day === dayIndex); if(dIdx === -1) return; const day = app.draftRoutine.days[dIdx];
-            html += `<div class="card" style="border: 1px solid var(--accent-color); padding: 12px;"><div class="flex-between" style="margin-bottom: 12px;"><span class="text-muted" style="font-size:12px; text-transform:uppercase; font-weight:bold;">${utils.getDayName(day.day)}</span><select class="edit-input" style="padding: 4px 12px; font-size: 12px !important; margin: 0; background: var(--accent-color); border: none; font-weight: bold; color:var(--bg-color); border-radius:12px; width:auto; text-align:center;" onchange="app.addWorkoutToDay(${dIdx}, this.value); this.value='';"><option value="" disabled selected>+ ADD WORKOUT</option><option value="blank">📝 Blank Workout</option><option value="activity">${app.sym('activity')} Cardio / Activity</option><optgroup label="Import Saved Workout">${uniqueWorkouts.map(w =>` <option value="${w.id}">${w.name}</option`).join('')}</optgroup></select></div>`;
+            html += `<div class="card" style="border: 1px solid var(--accent-color); padding: 12px;"><div class="flex-between" style="margin-bottom: 12px;"><span class="text-muted" style="font-size:12px; text-transform:uppercase; font-weight:bold;">${utils.getDayName(day.day)}</span><select class="edit-input" style="padding: 4px 12px; font-size: 12px !important; margin: 0; background: var(--accent-color); border: none; font-weight: bold; color:var(--bg-color); border-radius:12px; width:auto; text-align:center;" onchange="app.addWorkoutToDay(${dIdx}, this.value); this.value='';"><option value="" disabled selected>+ ADD WORKOUT</option><option value="blank">📝 Blank Workout</option><option value="activity">${app.sym('activity')} Cardio / Activity</option><optgroup label="Import Saved Workout">${uniqueWorkouts.map(w =>` <option value="${w.id}">${w.name}</option>`).join('')}</optgroup></select></div>`;
             if (day.workouts.length === 0) { html += `<div class="text-muted" style="font-size:14px; margin-bottom:8px;">Rest Day</div>`; } else {
                 day.workouts.forEach((w, wIdx) => {
-                    html += `<div style="background: var(--surface-elevated); border-radius: 8px; padding: 12px; margin-bottom: 12px;"><div class="flex-between" style="margin-bottom:8px;"><div style="display:flex; align-items:center; flex:1;"><input class="edit-input" style="font-size:16px !important; font-weight:bold; margin:0; padding:4px 8px; flex:1;" value="${w.name}" onchange="app.updateWorkoutName(${dIdx}, ${wIdx}, this.value)" placeholder="Workout Name">${w.isActivity ?` <span class="text-accent" style="font-size:10px; margin-left:8px; border:1px solid var(--accent-color); padding:2px 4px; border-radius:4px;">ACTIVITY</span `: ''}</div><button class="btn-icon text-accent" style="width:28px; height:28px; flex-shrink:0; margin-left:8px;" onclick="app.removeWorkoutFromDay(${dIdx}, ${wIdx})"><i class="fas fa-trash"></i></button></div>`;
-                    w.exercises.forEach((ex, eIdx) => { const currentMuscle = utils.getMuscle(ex); html += `<div class="editor-exercise-row" style="background: var(--bg-color);"><div style="flex:1;"><input class="edit-input" style="font-size:16px !important; margin-bottom:4px;" placeholder="Exercise Name" value="${ex.name}" onchange="app.updateEx(${dIdx}, ${wIdx}, ${eIdx}, 'name', this.value)"><div style="display:flex; gap:8px;"><input type="number" class="edit-input" style="font-size:16px !important; margin:0;" placeholder="Sets" value="${ex.targetSets}" onchange="app.updateEx(${dIdx}, ${wIdx}, ${eIdx}, 'targetSets', this.value)"><input class="edit-input" style="font-size:16px !important; margin:0;" placeholder="Reps (e.g. 8-12)" value="${ex.targetReps}" onchange="app.updateEx(${dIdx}, ${wIdx}, ${eIdx}, 'targetReps', this.value)"></div><select class="edit-input" style="font-size:16px !important; margin-top:8px; margin-bottom:0; padding:4px;" onchange="app.updateEx(${dIdx}, ${wIdx}, ${eIdx}, 'muscle', this.value)">${MUSCLE_GROUPS.map(m =>` <option value="${m}" ${currentMuscle === m ? 'selected' : ''}>Muscle: ${m}</option`).join('')}</select></div><div class="editor-controls" style="display:flex; flex-direction:column; gap:4px;"><button class="btn-icon" style="background:var(--surface-color); border:1px solid var(--border); border-radius:4px; height:36px; color:var(--text-secondary);" onclick="app.moveEx(${dIdx}, ${wIdx}, ${eIdx}, -1)"><i class="fas fa-chevron-up"></i></button><button class="btn-icon" style="background:var(--surface-color); border:1px solid var(--border); border-radius:4px; height:36px; color:var(--text-secondary);" onclick="app.moveEx(${dIdx}, ${wIdx}, ${eIdx}, 1)"><i class="fas fa-chevron-down"></i></button><button class="btn-icon text-accent" style="background:var(--surface-color); border:1px solid var(--border); border-radius:4px; height:36px;" onclick="app.deleteEx(${dIdx}, ${wIdx}, ${eIdx})"><i class="fas fa-times"></i></button></div></div>`; });
+                    html += `<div style="background: var(--surface-elevated); border-radius: 8px; padding: 12px; margin-bottom: 12px;"><div class="flex-between" style="margin-bottom:8px;"><div style="display:flex; align-items:center; flex:1;"><input class="edit-input" style="font-size:16px !important; font-weight:bold; margin:0; padding:4px 8px; flex:1;" value="${w.name}" onchange="app.updateWorkoutName(${dIdx}, ${wIdx}, this.value)" placeholder="Workout Name">${w.isActivity ?` <span class="text-accent" style="font-size:10px; margin-left:8px; border:1px solid var(--accent-color); padding:2px 4px; border-radius:4px;">ACTIVITY</span> `: ''}</div><button class="btn-icon text-accent" style="width:28px; height:28px; flex-shrink:0; margin-left:8px;" onclick="app.removeWorkoutFromDay(${dIdx}, ${wIdx})"><i class="fas fa-trash"></i></button></div>`;
+                    w.exercises.forEach((ex, eIdx) => { const currentMuscle = utils.getMuscle(ex); html += `<div class="editor-exercise-row" style="background: var(--bg-color);"><div style="flex:1;"><input class="edit-input" style="font-size:16px !important; margin-bottom:4px;" placeholder="Exercise Name" value="${ex.name}" onchange="app.updateEx(${dIdx}, ${wIdx}, ${eIdx}, 'name', this.value)"><div style="display:flex; gap:8px;"><input type="number" class="edit-input" style="font-size:16px !important; margin:0;" placeholder="Sets" value="${ex.targetSets}" onchange="app.updateEx(${dIdx}, ${wIdx}, ${eIdx}, 'targetSets', this.value)"><input class="edit-input" style="font-size:16px !important; margin:0;" placeholder="Reps (e.g. 8-12)" value="${ex.targetReps}" onchange="app.updateEx(${dIdx}, ${wIdx}, ${eIdx}, 'targetReps', this.value)"></div><select class="edit-input" style="font-size:16px !important; margin-top:8px; margin-bottom:0; padding:4px;" onchange="app.updateEx(${dIdx}, ${wIdx}, ${eIdx}, 'muscle', this.value)">${MUSCLE_GROUPS.map(m =>` <option value="${m}" ${currentMuscle === m ? 'selected' : ''}>Muscle: ${m}</option>`).join('')}</select></div><div class="editor-controls" style="display:flex; flex-direction:column; gap:4px;"><button class="btn-icon" style="background:var(--surface-color); border:1px solid var(--border); border-radius:4px; height:36px; color:var(--text-secondary);" onclick="app.moveEx(${dIdx}, ${wIdx}, ${eIdx}, -1)"><i class="fas fa-chevron-up"></i></button><button class="btn-icon" style="background:var(--surface-color); border:1px solid var(--border); border-radius:4px; height:36px; color:var(--text-secondary);" onclick="app.moveEx(${dIdx}, ${wIdx}, ${eIdx}, 1)"><i class="fas fa-chevron-down"></i></button><button class="btn-icon text-accent" style="background:var(--surface-color); border:1px solid var(--border); border-radius:4px; height:36px;" onclick="app.deleteEx(${dIdx}, ${wIdx}, ${eIdx})"><i class="fas fa-times"></i></button></div></div>`; });
                     if (!w.isActivity) html += `<button class="btn btn-sm" style="margin-top:8px; width:100%; border:1px dashed var(--border); background:transparent;" onclick="app.addEx(${dIdx}, ${wIdx})">+ Add Exercise</button>`; html += `</div>`;
                 });
             } html += `</div>`;
@@ -809,7 +843,7 @@ const views = {
         const getXScale = (unit = 'day') => { let scale = { type: 'time', time: { unit: unit, displayFormats: { day: 'MMM d', week: 'MMM d', month: 'MMM yyyy' }, tooltipFormat: 'MMM d, yyyy' }, grid: { display: false, color: colorGrid }, ticks: { font: {family: ff}, color: colorTextSec, maxTicksLimit: 6 } }; if (minTime) scale.min = minTime; scale.max = now + 86400000; return scale; };
         const buildMADataset = (label, data, color) => ({ label: label, data: data, borderColor: color, backgroundColor: 'transparent', borderDash: [5, 5], pointRadius: 0, pointHoverRadius: 0, tension: 0.4, borderWidth: 2 });
         const buildBaseDataset = (label, data, color) => ({ label: label, data: data, borderColor: color, backgroundColor: color, tension: 0.3, borderWidth: 2, spanGaps: true });
-        
+
         const e1rmCtx = document.getElementById('e1rmChart');
         if(e1rmCtx) {
             if(window.e1rmChartInst) window.e1rmChartInst.destroy(); const e1Data = utils.getE1RMHistory(); const mapE1 = (arr) => arr.map(d => ({ x: d.ts, y: d.e1rm })); let datasets = [];
@@ -836,7 +870,6 @@ const views = {
         }
     }
 };
-
 const app = {
     isEditingProgram: false, viewingRoutineId: null, draftRoutine: null, activeDataTab: null, customDraftTitle: '', draftChallenge: null, currentView: 'home', editingPastWorkoutId: null, draftPastWorkout: null, challengeOffset: 0,
     activeMealType: 'Breakfast', mealSearchQuery: '',
@@ -846,12 +879,11 @@ const app = {
     navigate(viewId) { this.currentView = viewId; this.renderNav(); const c = document.getElementById('main-content'); if(viewId==='home') { this.challengeOffset = 0; c.innerHTML = views.renderHome(); } else if(viewId==='workout') c.innerHTML = views.renderWorkoutList(); else if(viewId==='workout-detail') c.innerHTML = views.renderWorkoutDetail(); else if(viewId==='nutrition') c.innerHTML = views.renderNutrition(); else if(viewId==='progress') c.innerHTML = views.renderProgress(); else if(viewId==='data') c.innerHTML = views.renderData(); else if(viewId==='custom-b') c.innerHTML = views.renderCustomB(); else if(viewId==='challenge') c.innerHTML = views.renderChallenge(); else if(viewId==='challenge-edit') c.innerHTML = views.renderChallengeEditor(); else if(viewId==='workout-edit') c.innerHTML = views.renderPastWorkoutEditor(); window.scrollTo(0,0); },
     setTheme(themeName, render = true) { store.state.settings.theme = themeName; store.save(); document.documentElement.setAttribute('data-theme', themeName); if(render) { this.navigate(this.currentView); } },
     renderCharts() { views.renderCharts(); },
-    
+
     // WATER ENGINE
     addWater(amount) { const todayStr = utils.getLocalISODate(new Date()); let nutEntry = store.state.history.nutrition.find(n => utils.getLocalISODate(n.date) === todayStr); if (!nutEntry) { nutEntry = { date: todayStr + 'T12:00:00', cal: 0, pro: 0, car: 0, fat: 0, loggedMeals: [], waterLog: [] }; store.state.history.nutrition.push(nutEntry); } if (!nutEntry.waterLog) nutEntry.waterLog = []; nutEntry.waterLog.push({ id: utils.generateId(), amount: amount, ts: Date.now() }); store.save(); this.navigate('nutrition'); },
     undoWater() { const todayStr = utils.getLocalISODate(new Date()); let nutEntry = store.state.history.nutrition.find(n => utils.getLocalISODate(n.date) === todayStr); if (nutEntry && nutEntry.waterLog && nutEntry.waterLog.length > 0) { nutEntry.waterLog.pop(); store.save(); this.navigate('nutrition'); } },
-
-    showStartOptions() { const activeRoutine = utils.getActiveRoutine(); const modal = document.getElementById('start-workout-modal'); let workoutsHtml = ''; [1, 2, 3, 4, 5, 6, 0].forEach(dayIndex => { const d = activeRoutine.days.find(x => x.day === dayIndex); if (d && d.workouts && d.workouts.length > 0) { d.workouts.forEach(w => { workoutsHtml += `<div class="card" style="border-color: var(--accent-color); cursor:pointer; margin-bottom:8px;" onclick="app.startWorkoutById('${w.id}')"><div class="flex-between"><h3 style="margin:0;">${w.name}</h3><i class="fas fa-play text-accent"></i></div><p class="text-muted" style="margin-top:4px; font-size:12px;">${utils.getDayName(d.day)} • ${w.isActivity ? 'Cardio / Activity' :` ${w.exercises.length} exercise`}</p></div>`; }); } }); let html = `<div class="page-header"><button class="btn btn-sm btn-icon" onclick="document.getElementById('start-workout-modal').style.display='none'"><i class="fas fa-times"></i></button><h2 style="margin:0; font-size:18px;">Start Session</h2><div style="width:36px;"></div></div><div style="padding: 16px; padding-bottom: 80px;"><h3 style="margin-bottom:12px; color:var(--text-secondary); font-size:14px; text-transform:uppercase;">Select Workout from Split</h3>${workoutsHtml}<div class="card" style="border: 2px dashed var(--border); cursor:pointer; text-align:center; padding: 16px; margin-top:16px;" onclick="app.logRestDay()"><h4 style="margin:0;">Log Rest Day ${app.sym('rest')}</h4></div><h3 style="margin-top:24px; margin-bottom:12px; color:var(--text-secondary); font-size:14px; text-transform:uppercase;">Custom Session</h3><div style="display:flex; flex-direction:column; gap:12px;"><button class="btn" style="background:var(--surface-elevated); font-size:16px; justify-content:flex-start; padding: 16px;" onclick="app.customFlow('B')"><span style="margin-right:12px; width:20px;">🔀</span> Mix Custom Exercises</button></div></div>`; modal.innerHTML = html; modal.style.display = 'flex'; },
+    showStartOptions() { const activeRoutine = utils.getActiveRoutine(); const modal = document.getElementById('start-workout-modal'); let workoutsHtml = ''; [1, 2, 3, 4, 5, 6, 0].forEach(dayIndex => { const d = activeRoutine.days.find(x => x.day === dayIndex); if (d && d.workouts && d.workouts.length > 0) { d.workouts.forEach(w => { workoutsHtml += `<div class="card" style="border-color: var(--accent-color); cursor:pointer; margin-bottom:8px;" onclick="app.startWorkoutById('${w.id}')"><div class="flex-between"><h3 style="margin:0;">${w.name}</h3><i class="fas fa-play text-accent"></i></div><p class="text-muted" style="margin-top:4px; font-size:12px;">${utils.getDayName(d.day)} • ${w.isActivity ? 'Cardio / Activity' : ` ${w.exercises.length} exercis`}</p></div>`; }); } }); let html = `<div class="page-header"><button class="btn btn-sm btn-icon" onclick="document.getElementById('start-workout-modal').style.display='none'"><i class="fas fa-times"></i></button><h2 style="margin:0; font-size:18px;">Start Session</h2><div style="width:36px;"></div></div><div style="padding: 16px; padding-bottom: 80px;"><h3 style="margin-bottom:12px; color:var(--text-secondary); font-size:14px; text-transform:uppercase;">Select Workout from Split</h3>${workoutsHtml}<div class="card" style="border: 2px dashed var(--border); cursor:pointer; text-align:center; padding: 16px; margin-top:16px;" onclick="app.logRestDay()"><h4 style="margin:0;">Log Rest Day ${app.sym('rest')}</h4></div><h3 style="margin-top:24px; margin-bottom:12px; color:var(--text-secondary); font-size:14px; text-transform:uppercase;">Custom Session</h3><div style="display:flex; flex-direction:column; gap:12px;"><button class="btn" style="background:var(--surface-elevated); font-size:16px; justify-content:flex-start; padding: 16px;" onclick="app.customFlow('B')"><span style="margin-right:12px; width:20px;">🔀</span> Mix Custom Exercises</button></div></div>`; modal.innerHTML = html; modal.style.display = 'flex'; },
     startWorkoutById(id) { if (store.state.activeSession) { if (!confirm("You have a workout in progress. Discard it to start a new one?")) return; workoutEngine.discard(true); } const activeRoutine = utils.getActiveRoutine(); let workoutToStart = null; activeRoutine.days.forEach(d => { d.workouts.forEach(w => { if (w.id === id) workoutToStart = w; }); }); if (workoutToStart) { document.getElementById('start-workout-modal').style.display = 'none'; workoutEngine.start(JSON.parse(JSON.stringify(workoutToStart))); } },
     logRestDay() { if (store.state.activeSession) { if (!confirm("Discard current workout to log a rest day?")) return; workoutEngine.discard(true); } document.getElementById('start-workout-modal').style.display = 'none'; const reason = prompt(`Log Rest Day! ${app.sym('rest')} (e.g. Recovering):`, "Rest"); if(reason !== null) { store.addWorkout({ id: utils.generateId(), date: new Date().toISOString(), name: `Rest Day - ${reason}`, isSkipped: true, duration: 0, exercises: [] }); app.navigate('home'); } },
     customFlow(type) { document.getElementById('start-workout-modal').style.display = 'none'; const title = prompt("Enter Title for Custom Workout:", "Custom Session"); if(!title) return; this.customDraftTitle = "Custom Workout - " + title; this.navigate('custom-b'); },
@@ -871,13 +903,13 @@ const app = {
     changeChallengeDay(dir) { this.challengeOffset += dir; if(this.challengeOffset > 0) this.challengeOffset = 0; this.navigate('challenge'); },
     toggleGoal(goalId, dateStr, type) { if (type === 'cardio') { const existingIdx = store.state.history.cardio.findIndex(c => c && c.date && utils.getLocalISODate(c.date) === dateStr); if(existingIdx >= 0) store.state.history.cardio.splice(existingIdx, 1); else store.state.history.cardio.push({ date: dateStr + 'T12:00:00', intensity: 'Completed' }); } else { if (!store.state.history.challengeLogs) store.state.history.challengeLogs = {}; if (!store.state.history.challengeLogs[dateStr]) store.state.history.challengeLogs[dateStr] = {}; store.state.history.challengeLogs[dateStr][goalId] = !store.state.history.challengeLogs[dateStr][goalId]; } store.save(); this.navigate('challenge'); },
     editPR(lift) { let val = prompt(`Enter your All-Time Recorded PR for ${lift} (kg):`, store.state.prs[lift] || 0); if (val !== null) { store.state.prs[lift] = parseFloat(val) || 0; store.save(); this.navigate('progress'); } },
-    
+
     // NUTRITION MEALS ENGINE
     editMacroTargets() { const t = store.state.settings.nutritionTargets; const cal = prompt("Target Calories (kcal):", t.cal); if(!cal) return; const pro = prompt("Target Protein (g):", t.pro); const car = prompt("Target Carbs (g):", t.car); const fat = prompt("Target Fats (g):", t.fat); store.state.settings.nutritionTargets = { cal: Math.round(parseFloat(cal)) || 2500, pro: Math.round(parseFloat(pro)) || 160, car: Math.round(parseFloat(car)) || 250, fat: Math.round(parseFloat(fat)) || 70 }; store.save(); this.navigate('nutrition'); },
     clearLegacyNutrition(dateStr) { let nutEntry = store.state.history.nutrition.find(n => utils.getLocalISODate(n.date) === dateStr); if (nutEntry) { nutEntry.cal = 0; nutEntry.pro = 0; nutEntry.car = 0; nutEntry.fat = 0; store.save(); this.navigate('nutrition'); } },
-    showMealSearch(type) { this.activeMealType = type; this.mealSearchQuery = ''; const modal = document.getElementById('meal-search-modal'); modal.innerHTML = ` <div class="page-header"> <button class="btn btn-sm btn-icon" onclick="document.getElementById('meal-search-modal').style.display='none'"><i class="fas fa-arrow-left"></i></button> <h2 style="margin:0; font-size:18px;">Add ${this.activeMealType}</h2> <div style="width:36px;"></div> </div> <div style="padding: 16px; padding-bottom: 80px;"> <input type="text" class="edit-input" style="width:100%; margin-bottom: 16px; text-align:left; font-size:18px !important; padding:12px;" placeholder="Search your meals..." oninput="app.mealSearchQuery=this.value; app.updateMealSearchList()"> <button class="btn btn-primary" style="margin-bottom: 24px;" onclick="app.showMealCreate()"><i class="fas fa-plus"></i> Create New Meal</button> <h3 style="font-size:14px; margin-bottom:12px; color:var(--text-secondary);">Saved Meals</h3> <div id="meal-list-container"></div> </div> `; modal.style.display = 'flex'; this.updateMealSearchList(); },
-    updateMealSearchList() { const container = document.getElementById('meal-list-container'); if (!container) return; let meals = store.state.savedMeals; if (this.mealSearchQuery) { const q = this.mealSearchQuery.toLowerCase(); meals = meals.filter(m => m.name.toLowerCase().includes(q)); } meals.sort((a, b) => (b.useCount?.[this.activeMealType] || 0) - (a.useCount?.[this.activeMealType] || 0)); container.innerHTML = meals.map(m => ` <div class="data-row flex-between" style="padding:12px; background:var(--surface-color); border-radius:8px; border:1px solid var(--border); margin-bottom:8px; cursor:pointer;"> <div onclick="app.logSavedMeal('${m.id}')" style="flex:1;"> <div style="font-weight:bold; color:var(--text-primary); font-size: 16px;">${m.name}</div> <div class="text-muted" style="font-size:12px; margin-top:2px;">${Math.round(m.cal)} kcal • P:${Math.round(m.pro)}g C:${Math.round(m.car)}g F:${Math.round(m.fat)}g</div> </div> <div style="display:flex; gap:8px;"> <button class="btn-icon" style="background:var(--surface-elevated); border:1px solid var(--border); border-radius:50%;" onclick="app.showMealCreate('${m.id}')"><i class="fas fa-pen"></i></button> <button class="btn-icon text-accent" style="background:var(--surface-elevated); border:1px solid var(--border); border-radius:50%;" onclick="app.logSavedMeal('${m.id}')"><i class="fas fa-plus"></i></button> </div> </div> `).join('') || '<p class="text-muted" style="text-align:center; padding:20px; font-style:italic;">No meals found. Create one above!</p>'; },
-    showMealCreate(mealId = null) { document.getElementById('meal-search-modal').style.display = 'none'; const modal = document.getElementById('meal-create-modal'); let m = { name: '', cal: '', pro: '', car: '', fat: '' }; let isEdit = false; if (mealId) { const found = store.state.savedMeals.find(x => x.id === mealId); if (found) { m = found; isEdit = true; } } modal.innerHTML = ` <div class="page-header"> <button class="btn btn-sm btn-icon" onclick="document.getElementById('meal-create-modal').style.display='none'; document.getElementById('meal-search-modal').style.display='flex';"><i class="fas fa-arrow-left"></i></button> <h2 style="margin:0; font-size:18px;">${isEdit ? 'Edit Meal' : 'Create Meal'}</h2> <div style="width:36px;"> ${isEdit ? `<button class="btn-icon text-pending" onclick="app.deleteSavedMeal('${mealId}')"><i class="fas fa-trash"></i></button>` : ''} </div> </div> <div style="padding: 16px;"> <label class="text-muted" style="font-size:12px;">Meal Name</label> <input type="text" id="new-meal-name" class="edit-input" style="text-align:left; font-size: 18px !important; padding: 12px;" placeholder="e.g. Chicken & Rice" value="${m.name}"> <div class="card" style="margin-top: 16px;"> <div style="display:flex; flex-direction:column; gap:12px;"> <div> <label class="text-muted" style="font-size:12px;">Calories (kcal)</label> <input type="number" id="new-meal-cal" class="edit-input" style="font-size:24px !important; font-weight:bold; height:50px;" placeholder="kcal" value="${m.cal !== '' ? m.cal : ''}"> </div> <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:12px;"> <div> <label class="text-info" style="font-size:12px; font-weight:bold;">Protein (g)</label> <input type="number" id="new-meal-pro" class="edit-input" placeholder="0" value="${m.pro !== '' ? m.pro : ''}"> </div> <div> <label class="text-warning" style="font-size:12px; font-weight:bold;">Carbs (g)</label> <input type="number" id="new-meal-car" class="edit-input" placeholder="0" value="${m.car !== '' ? m.car : ''}"> </div> <div> <label class="text-pending" style="font-size:12px; font-weight:bold;">Fats (g)</label> <input type="number" id="new-meal-fat" class="edit-input" placeholder="0" value="${m.fat !== '' ? m.fat : ''}"> </div> </div> </div> </div> <button class="btn btn-success" style="margin-top:16px;" onclick="app.saveNewMeal('${isEdit ? mealId : ''}')"><i class="fas fa-save"></i> Save ${!isEdit ? `& Log to ${this.activeMealType}` : ''}</button> </div> `; modal.style.display = 'flex'; },
+    showMealSearch(type) { this.activeMealType = type; this.mealSearchQuery = ''; const modal = document.getElementById('meal-search-modal'); modal.innerHTML = `<div class="page-header"> <button class="btn btn-sm btn-icon" onclick="document.getElementById('meal-search-modal').style.display='none'"><i class="fas fa-arrow-left"></i></button> <h2 style="margin:0; font-size:18px;">Add ${this.activeMealType}</h2> <div style="width:36px;"></div> </div> <div style="padding: 16px; padding-bottom: 80px;"> <input type="text" class="edit-input" style="width:100%; margin-bottom: 16px; text-align:left; font-size:18px !important; padding:12px;" placeholder="Search your meals..." oninput="app.mealSearchQuery=this.value; app.updateMealSearchList()"> <button class="btn btn-primary" style="margin-bottom: 24px;" onclick="app.showMealCreate()"><i class="fas fa-plus"></i> Create New Meal</button> <h3 style="font-size:14px; margin-bottom:12px; color:var(--text-secondary);">Saved Meals</h3> <div id="meal-list-container"></div> </div>` ; modal.style.display = 'flex'; this.updateMealSearchList(); },
+    updateMealSearchList() { const container = document.getElementById('meal-list-container'); if (!container) return; let meals = store.state.savedMeals; if (this.mealSearchQuery) { const q = this.mealSearchQuery.toLowerCase(); meals = meals.filter(m => m.name.toLowerCase().includes(q)); } meals.sort((a, b) => (b.useCount?.[this.activeMealType] || 0) - (a.useCount?.[this.activeMealType] || 0)); container.innerHTML = meals.map(m => `<div class="data-row flex-between" style="padding:12px; background:var(--surface-color); border-radius:8px; border:1px solid var(--border); margin-bottom:8px; cursor:pointer;"> <div onclick="app.logSavedMeal('${m.id}')" style="flex:1;"> <div style="font-weight:bold; color:var(--text-primary); font-size: 16px;">${m.name}</div> <div class="text-muted" style="font-size:12px; margin-top:2px;">${Math.round(m.cal)} kcal • P:${Math.round(m.pro)}g C:${Math.round(m.car)}g F:${Math.round(m.fat)}g</div> </div> <div style="display:flex; gap:8px;"> <button class="btn-icon" style="background:var(--surface-elevated); border:1px solid var(--border); border-radius:50%;" onclick="app.showMealCreate('${m.id}')"><i class="fas fa-pen"></i></button> <button class="btn-icon text-accent" style="background:var(--surface-elevated); border:1px solid var(--border); border-radius:50%;" onclick="app.logSavedMeal('${m.id}')"><i class="fas fa-plus"></i></button> </div> </div>` ).join('') || '<p class="text-muted" style="text-align:center; padding:20px; font-style:italic;">No meals found. Create one above!</p>'; },
+    showMealCreate(mealId = null) { document.getElementById('meal-search-modal').style.display = 'none'; const modal = document.getElementById('meal-create-modal'); let m = { name: '', cal: '', pro: '', car: '', fat: '' }; let isEdit = false; if (mealId) { const found = store.state.savedMeals.find(x => x.id === mealId); if (found) { m = found; isEdit = true; } } modal.innerHTML = `<div class="page-header"> <button class="btn btn-sm btn-icon" onclick="document.getElementById('meal-create-modal').style.display='none'; document.getElementById('meal-search-modal').style.display='flex';"><i class="fas fa-arrow-left"></i></button> <h2 style="margin:0; font-size:18px;">${isEdit ? 'Edit Meal' : 'Create Meal'}</h2> <div style="width:36px;"> ${isEdit ?` <button class="btn-icon text-pending" onclick="app.deleteSavedMeal('${mealId}')"><i class="fas fa-trash"></i></button> `: ''} </div> </div> <div style="padding: 16px;"> <label class="text-muted" style="font-size:12px;">Meal Name</label> <input type="text" id="new-meal-name" class="edit-input" style="text-align:left; font-size: 18px !important; padding: 12px;" placeholder="e.g. Chicken & Rice" value="${m.name}"> <div class="card" style="margin-top: 16px;"> <div style="display:flex; flex-direction:column; gap:12px;"> <div> <label class="text-muted" style="font-size:12px;">Calories (kcal)</label> <input type="number" id="new-meal-cal" class="edit-input" style="font-size:24px !important; font-weight:bold; height:50px;" placeholder="kcal" value="${m.cal !== '' ? m.cal : ''}"> </div> <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:12px;"> <div> <label class="text-info" style="font-size:12px; font-weight:bold;">Protein (g)</label> <input type="number" id="new-meal-pro" class="edit-input" placeholder="0" value="${m.pro !== '' ? m.pro : ''}"> </div> <div> <label class="text-warning" style="font-size:12px; font-weight:bold;">Carbs (g)</label> <input type="number" id="new-meal-car" class="edit-input" placeholder="0" value="${m.car !== '' ? m.car : ''}"> </div> <div> <label class="text-pending" style="font-size:12px; font-weight:bold;">Fats (g)</label> <input type="number" id="new-meal-fat" class="edit-input" placeholder="0" value="${m.fat !== '' ? m.fat : ''}"> </div> </div> </div> </div> <button class="btn btn-success" style="margin-top:16px;" onclick="app.saveNewMeal('${isEdit ? mealId : ''}')"><i class="fas fa-save"></i> Save ${!isEdit ?` & Log to ${this.activeMealType} `: ''}</button> </div>` ; modal.style.display = 'flex'; },
     deleteSavedMeal(mealId) { if(confirm("Delete this saved meal?")) { store.state.savedMeals = store.state.savedMeals.filter(m => m.id !== mealId); store.save(); document.getElementById('meal-create-modal').style.display='none'; this.showMealSearch(this.activeMealType); } },
     saveNewMeal(editId = '') { const name = document.getElementById('new-meal-name').value.trim(); const cal = Math.round(parseFloat(document.getElementById('new-meal-cal').value)) || 0; const pro = Math.round(parseFloat(document.getElementById('new-meal-pro').value)) || 0; const car = Math.round(parseFloat(document.getElementById('new-meal-car').value)) || 0; const fat = Math.round(parseFloat(document.getElementById('new-meal-fat').value)) || 0; if(!name) return alert("Please enter a meal name."); if (editId) { const m = store.state.savedMeals.find(x => x.id === editId); if (m) { m.name = name; m.cal = cal; m.pro = pro; m.car = car; m.fat = fat; store.save(); document.getElementById('meal-create-modal').style.display = 'none'; this.showMealSearch(this.activeMealType); } } else { const newMeal = { id: utils.generateId(), name, cal, pro, car, fat, useCount: { Breakfast:0, Lunch:0, Dinner:0, Snacks:0 } }; store.state.savedMeals.push(newMeal); store.save(); document.getElementById('meal-create-modal').style.display = 'none'; this.logSavedMeal(newMeal.id); } },
     logSavedMeal(mealId) { const meal = store.state.savedMeals.find(m => m.id === mealId); if(!meal) return; if(!meal.useCount) meal.useCount = { Breakfast:0, Lunch:0, Dinner:0, Snacks:0 }; meal.useCount[this.activeMealType] = (meal.useCount[this.activeMealType] || 0) + 1; const todayStr = utils.getLocalISODate(new Date()); let nutEntry = store.state.history.nutrition.find(n => utils.getLocalISODate(n.date) === todayStr); if (!nutEntry) { nutEntry = { date: todayStr + 'T12:00:00', cal: 0, pro: 0, car: 0, fat: 0, loggedMeals: [], waterLog:[] }; store.state.history.nutrition.push(nutEntry); } if(!nutEntry.loggedMeals) nutEntry.loggedMeals = []; nutEntry.loggedMeals.push({ logId: utils.generateId(), mealId: meal.id, name: meal.name, cal: meal.cal, pro: meal.pro, car: meal.car, fat: meal.fat, type: this.activeMealType, timestamp: Date.now() }); nutEntry.cal = Math.round((nutEntry.cal || 0) + meal.cal); nutEntry.pro = Math.round((nutEntry.pro || 0) + meal.pro); nutEntry.car = Math.round((nutEntry.car || 0) + meal.car); nutEntry.fat = Math.round((nutEntry.fat || 0) + meal.fat); store.save(); document.getElementById('meal-search-modal').style.display = 'none'; this.navigate('nutrition'); },
