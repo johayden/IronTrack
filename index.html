@@ -158,9 +158,10 @@
         /* Auto Rest Timer Overlay */
         #rest-timer-overlay { position: fixed; bottom: calc(80px + var(--safe-bottom)); left: 50%; transform: translateX(-50%); background: var(--accent-color); color: var(--bg-color); padding: 12px 24px; border-radius: 30px; box-shadow: 0 4px 16px var(--accent-dim); display: none; font-weight: bold; font-size: 18px; align-items: center; gap: 16px; z-index: 1001; cursor: pointer; transition: background-color 0.4s ease; border: 1px solid rgba(255,255,255,0.2); }
 
-        /* Modals */
-        #active-workout-view, #exercise-selection-modal, #start-workout-modal, #meal-search-modal, #meal-create-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 2005; display: none; flex-direction: column; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding-bottom: calc(100px + var(--safe-bottom)); transition: background-color 0.4s ease; }
-        #active-workout-view { z-index: 2000; }
+        /* Modals and Overlays */
+        #active-workout-view { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 2000; display: none; flex-direction: column; overflow: hidden; transition: background-color 0.4s ease; }
+        #exercise-selection-modal, #start-workout-modal, #meal-search-modal, #meal-create-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 2005; display: none; flex-direction: column; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding-bottom: calc(100px + var(--safe-bottom)); transition: background-color 0.4s ease; }
+        
         .flex-between { display: flex; justify-content: space-between; align-items: center; }
         canvas { max-width: 100%; margin-top: 10px; }
         .heatmap-svg { filter: drop-shadow(0 0 8px rgba(0,0,0,0.5)); max-height: 250px; width: 100%; margin: 12px auto;}
@@ -559,7 +560,10 @@ const workoutEngine = {
     
     renderActiveWorkout() {
         const container = document.getElementById('active-workout-view'); if (!this.activeWorkout) return;
-        let html = `<div class="workout-header-sticky"><div><input type="text" class="edit-input" style="font-size:18px !important; font-weight:bold; margin:0; padding:0; border:none; background:transparent; color:var(--text-primary); max-width:200px;" value="${this.activeWorkout.name}" onchange="workoutEngine.activeWorkout.name=this.value; workoutEngine.sync()"></div>${!this.activeWorkout.isRest ?` <button class="btn btn-sm btn-success" onclick="workoutEngine.finish()"><i class="fas fa-check"></i> FINISH</button> `: ''}<button class="btn btn-sm btn-icon" onclick="workoutEngine.minimize()"><i class="fas fa-chevron-down"></i></button></div><div style="padding: 16px;">`;
+        let html = `<div class="workout-header-sticky" style="flex-shrink:0;"><div><input type="text" class="edit-input" style="font-size:18px !important; font-weight:bold; margin:0; padding:0; border:none; background:transparent; color:var(--text-primary); max-width:200px;" value="${this.activeWorkout.name}" onchange="workoutEngine.activeWorkout.name=this.value; workoutEngine.sync()"></div>${!this.activeWorkout.isRest ?` <button class="btn btn-sm btn-success" onclick="workoutEngine.finish()"><i class="fas fa-check"></i> FINISH</button> `: ''}<button class="btn btn-sm btn-icon" onclick="workoutEngine.minimize()"><i class="fas fa-chevron-down"></i></button></div>`;
+        
+        // Flex 1 scrollable wrapper for exercises so bottom timer stays perfectly visible
+        html += `<div style="flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 16px; padding-bottom: 40px;">`;
         if(this.activeWorkout.isActivity) { html += `<div style="text-align:center; padding: 60px 20px;"><div style="font-size:64px; margin-bottom:16px;">${app.sym('activity')}</div><h2>Activity in Progress</h2><p class="text-muted">Timer is running. Hit FINISH when done.</p></div>`; } else {
             html += `<button class="btn" style="background:var(--surface-color); border:1px dashed var(--accent-color); color:var(--accent-color); margin-bottom: 16px;" onclick="workoutEngine.skipWorkout()"><i class="fas fa-forward-step"></i> ${this.activeWorkout.isRest ?` Log Rest Day ${app.sym('rest')} `: 'Skip Workout'}</button>`;
             this.activeWorkout.exercises.forEach((ex, exIdx) => {
@@ -568,9 +572,10 @@ const workoutEngine = {
                 ex.sets.forEach((set, setIdx) => { const isComp = set.completed; html += `<div class="set-wrapper"><div class="flex-between text-muted" style="font-size: 11px; margin-bottom: 4px; padding-left: 45px; padding-right: 55px;"><span>Prev: ${set.prevWeight}×${set.prevReps}</span><span>L3: ${set.l3Weight}×${set.l3Reps}</span></div><div class="set-row"><div class="set-number">${setIdx + 1}</div><div class="input-group"><input type="number" inputmode="decimal" value="${set.weight}" onchange="workoutEngine.inputChange(${exIdx}, ${setIdx}, 'weight', this.value)" ${isComp?'disabled':''}></div><div class="input-group"><input type="number" inputmode="numeric" value="${set.reps}" onchange="workoutEngine.inputChange(${exIdx}, ${setIdx}, 'reps', this.value)" ${isComp?'disabled':''}></div><div class="input-group"><input type="number" inputmode="numeric" value="${set.rir}" max="3" onchange="workoutEngine.inputChange(${exIdx}, ${setIdx}, 'rir', this.value)" ${isComp?'disabled':''}></div><button class="btn-check ${isComp ? 'completed' : ''}" onclick="workoutEngine.toggleSet(${exIdx}, ${setIdx})"><i class="fas fa-check"></i></button></div></div>`; }); html += `<div style="display:flex; gap:8px;"><button class="btn btn-sm" style="flex:1; border:1px solid var(--border);" onclick="workoutEngine.addSet(${exIdx})">+ Add Set</button><button class="btn btn-sm" style="flex:1; border:1px solid var(--border); color:var(--accent-color);" onclick="workoutEngine.removeSet(${exIdx})">- Remove Set</button></div></div></div>`;
             }); html += `<div style="margin-top: 16px; padding-bottom: 32px;"><button class="btn" style="background:transparent; border:1px dashed var(--accent-color); color:var(--accent-color);" onclick="workoutEngine.showAddExerciseModal()">+ Add Another Exercise</button><button class="btn" style="background:transparent; border:1px dashed var(--pending); color:var(--pending); width:100%; margin-top:16px;" onclick="workoutEngine.discard()"><i class="fas fa-trash"></i> Discard Workout Data</button></div>`;
         } 
+        html += `</div>`; // Close Flex 1 scrollable wrapper
         
-        // Manual Rest Timer Sticky Footer
-        html += `</div><div style="position: sticky; bottom: 0; left: 0; right: 0; background: var(--surface-color); border-top: 1px solid var(--border); padding: 12px; padding-bottom: calc(12px + var(--safe-bottom)); display: flex; align-items: center; justify-content: space-between; z-index: 100; box-shadow: 0 -4px 10px rgba(0,0,0,0.3);">
+        // Manual Rest Timer Sticky Footer (Absolutely locked to bottom via flex-shrink 0)
+        html += `<div style="flex-shrink: 0; background: var(--surface-color); border-top: 1px solid var(--border); padding: 12px; padding-bottom: calc(12px + var(--safe-bottom)); display: flex; align-items: center; justify-content: space-between; z-index: 100; box-shadow: 0 -4px 10px rgba(0,0,0,0.3);">
             <div style="display:flex; align-items:center; gap:12px;">
                 <i class="fas fa-stopwatch text-accent" style="font-size:24px;"></i>
                 <div style="font-size: 24px; font-weight: bold; font-variant-numeric: tabular-nums; color:var(--text-primary);" id="manual-timer-display">00:00</div>
@@ -882,7 +887,14 @@ const views = {
         const order = [1, 2, 3, 4, 5, 6, 0];
         order.forEach(dayIndex => {
             const d = r.days.find(x => x.day === dayIndex) || { day: dayIndex, workouts: [] }; const isToday = d.day === new Date().getDay() && isActive;
-            html += `<div class="card" style="${isToday ? 'border-color: var(--accent-color);' : ''}"><div class="flex-between" style="margin-bottom:8px;"><span class="text-muted" style="font-size:12px; text-transform:uppercase">${utils.getDayName(d.day)}</span>${isToday ? '<span class="text-accent" style="font-size:12px; font-weight:bold">TODAY</span>' : ''}</div>`;
+            html += `<div class="card" draggable="true" ondragstart="event.dataTransfer.setData('text/plain', ${dayIndex}); this.style.opacity='0.4';" ondragend="this.style.opacity='1';" ondragover="event.preventDefault(); this.style.borderColor='var(--info)';" ondragleave="this.style.borderColor='${isToday ? 'var(--accent-color)' : 'var(--border)'}';" ondrop="this.style.borderColor='${isToday ? 'var(--accent-color)' : 'var(--border)'}'; app.swapDaysInView(event, ${dayIndex})" style="cursor: grab; transition: all 0.2s; ${isToday ? 'border-color: var(--accent-color);' : ''} position: relative;">
+            <div class="flex-between" style="margin-bottom:8px;">
+                <span class="text-muted" style="font-size:12px; text-transform:uppercase">${utils.getDayName(d.day)}</span>
+                <div style="display:flex; align-items:center; gap: 8px;">
+                    ${isToday ? '<span class="text-accent" style="font-size:12px; font-weight:bold">TODAY</span>' : ''}
+                    <i class="fas fa-grip-lines text-muted" style="opacity: 0.5;"></i>
+                </div>
+            </div>`;
             if (d.workouts.length === 0) { html += `<div class="text-muted">Rest Day ${app.sym('rest')}</div>`; } else { d.workouts.forEach(w => { html += `<div style="margin-top:8px; padding-top:8px; border-top:1px solid var(--border);"><div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;"><h4 style="margin:0;">${w.name}</h4>${w.isActivity ?` <span class="text-accent" style="font-size:10px; border:1px solid var(--accent-color); padding:2px 4px; border-radius:4px;">ACTIVITY</span> `: ''}</div>${w.exercises.map(e =>` <div class="text-muted" style="font-size:14px; margin-bottom:2px;">• ${e.name} (${e.targetSets}x${e.targetReps})</div>`).join('')}</div>`; }); } html += `</div>`;
         }); return html;
     },
@@ -892,9 +904,7 @@ const views = {
         [1, 2, 3, 4, 5, 6, 0].forEach((dayIndex) => {
             const dIdx = app.draftRoutine.days.findIndex(d => d.day === dayIndex); if(dIdx === -1) return; const day = app.draftRoutine.days[dIdx];
             
-            // Drag and Drop Wrappers
-            html += `<div class="card" draggable="true" ondragstart="event.dataTransfer.setData('text/plain', ${dIdx}); this.style.opacity='0.5';" ondragend="this.style.opacity='1';" ondragover="event.preventDefault(); this.style.borderColor='var(--info)';" ondragleave="this.style.borderColor='var(--accent-color)';" ondrop="this.style.borderColor='var(--accent-color)'; app.dropDay(event, ${dIdx})" style="border: 2px dashed var(--accent-color); padding: 12px; cursor: grab; transition: all 0.2s;">
-            <div style="font-size:10px; color:var(--text-secondary); text-align:center; margin-bottom:8px;"><i class="fas fa-grip-lines"></i> Drag to swap days</div>
+            html += `<div class="card" style="border: 2px dashed var(--accent-color); padding: 12px; transition: all 0.2s;">
             <div class="flex-between" style="margin-bottom: 12px;"><span class="text-muted" style="font-size:12px; text-transform:uppercase; font-weight:bold;">${utils.getDayName(day.day)}</span><select class="edit-input" style="padding: 4px 12px; font-size: 12px !important; margin: 0; background: var(--accent-color); border: none; font-weight: bold; color:var(--bg-color); border-radius:12px; width:auto; text-align:center;" onchange="app.addWorkoutToDay(${dIdx}, this.value); this.value='';"><option value="" disabled selected>+ ADD WORKOUT</option><option value="blank">📝 Blank Workout</option><option value="activity">${app.sym('activity')} Cardio / Activity</option><optgroup label="Import Saved Workout">${uniqueWorkouts.map(w =>` <option value="${w.id}">${w.name}</option>`).join('')}</optgroup></select></div>`;
             
             if (day.workouts.length === 0) { html += `<div class="text-muted" style="font-size:14px; margin-bottom:8px;">Rest Day</div>`; } else {
@@ -1094,25 +1104,35 @@ const app = {
     
     toggleProgramEdit() { const r = store.state.routines.find(x => x.id === this.viewingRoutineId); this.draftRoutine = JSON.parse(JSON.stringify(r)); this.isEditingProgram = true; this.navigate('workout-detail'); }, 
     
-    /* SYNC BUG FIX */
     saveProgramEdit() { 
         this.draftRoutine.days.forEach(d => d.workouts.forEach(w => w.exercises.forEach(e => { e.targetSets = parseInt(e.targetSets)||1; }))); 
         const idx = store.state.routines.findIndex(r => r.id === this.draftRoutine.id); 
-        if(idx > -1) store.state.routines[idx] = JSON.parse(JSON.stringify(this.draftRoutine)); // FORCE DEEP COPY FIX
+        if(idx > -1) store.state.routines[idx] = JSON.parse(JSON.stringify(this.draftRoutine)); 
         store.save(); 
         this.isEditingProgram = false; 
         this.navigate('workout-detail'); 
     },
     
-    /* DRAG & DROP DAY SWAPPER */
-    dropDay(e, targetIdx) {
+    /* DRAG & DROP DAY SWAPPER (On Detail View) */
+    swapDaysInView(e, targetDayIndex) {
         e.preventDefault();
-        const sourceIdx = parseInt(e.dataTransfer.getData('text/plain'));
-        if(isNaN(sourceIdx) || sourceIdx === targetIdx) return;
-        const temp = app.draftRoutine.days[sourceIdx].workouts;
-        app.draftRoutine.days[sourceIdx].workouts = app.draftRoutine.days[targetIdx].workouts;
-        app.draftRoutine.days[targetIdx].workouts = temp;
-        app.navigate('workout-detail');
+        const sourceDayIndex = parseInt(e.dataTransfer.getData('text/plain'));
+        if(isNaN(sourceDayIndex) || sourceDayIndex === targetDayIndex) return;
+        const r = store.state.routines.find(x => x.id === this.viewingRoutineId);
+        if(!r) return;
+        
+        let d1 = r.days.find(d => d.day === sourceDayIndex);
+        let d2 = r.days.find(d => d.day === targetDayIndex);
+        
+        if(!d1) { d1 = { day: sourceDayIndex, workouts: [] }; r.days.push(d1); }
+        if(!d2) { d2 = { day: targetDayIndex, workouts: [] }; r.days.push(d2); }
+        
+        const temp = d1.workouts;
+        d1.workouts = d2.workouts;
+        d2.workouts = temp;
+        
+        store.save();
+        this.navigate('workout-detail');
     },
     
     addWorkoutToDay(dIdx, templateId) { if (!templateId) return; let newWorkout = { id: utils.generateId(), name: 'New Workout', exercises: [] }; if (templateId === 'activity') { newWorkout.name = 'Morning Cardio'; newWorkout.isActivity = true; } else if (templateId !== 'blank') { let found = null; store.state.routines.forEach(r => r.days.forEach(d => d.workouts.forEach(w => { if(w.id === templateId) found = w; }))); if (found) { newWorkout.name = found.name; newWorkout.isActivity = found.isActivity || false; newWorkout.exercises = JSON.parse(JSON.stringify(found.exercises)); } } this.draftRoutine.days[dIdx].workouts.push(newWorkout); this.navigate('workout-detail'); }, removeWorkoutFromDay(dIdx, wIdx) { if(confirm("Remove this workout?")) { this.draftRoutine.days[dIdx].workouts.splice(wIdx, 1); this.navigate('workout-detail'); } }, updateWorkoutName(dIdx, wIdx, val) { this.draftRoutine.days[dIdx].workouts[wIdx].name = val; }, addEx(dIdx, wIdx) { this.draftRoutine.days[dIdx].workouts[wIdx].exercises.push({ name: 'New Exercise', targetSets: 3, targetReps: '8-12', muscle: 'Other' }); this.navigate('workout-detail'); }, updateEx(dIdx, wIdx, eIdx, field, val) { this.draftRoutine.days[dIdx].workouts[wIdx].exercises[eIdx][field] = val; }, moveEx(dIdx, wIdx, eIdx, dir) { const arr = this.draftRoutine.days[dIdx].workouts[wIdx].exercises; if(eIdx+dir < 0 || eIdx+dir >= arr.length) return; const temp = arr[eIdx]; arr[eIdx] = arr[eIdx+dir]; arr[eIdx+dir] = temp; this.navigate('workout-detail'); }, deleteEx(dIdx, wIdx, eIdx) { this.draftRoutine.days[dIdx].workouts[wIdx].exercises.splice(eIdx, 1); this.navigate('workout-detail'); },
