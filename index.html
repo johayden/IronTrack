@@ -93,6 +93,7 @@
         }
         #app-container { display: flex; flex-direction: column; height: 100%; width: 100%; max-width: 800px; margin: 0 auto; position: relative; overflow: hidden; }
         #main-content { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding-left: 16px; padding-right: 16px; padding-bottom: calc(100px + var(--safe-bottom)); }
+        
         /* Dynamic Streak Fire CSS */
         .streak-flame {
             display: inline-flex; align-items: center; justify-content: center;
@@ -106,6 +107,7 @@
         .streak-tier-4 { color: #d600ff; background: rgba(214, 0, 255, 0.15); border: 1px solid #d600ff; box-shadow: 0 0 25px rgba(214, 0, 255, 0.6); transform: scale(1.15); animation: pulseTier4 1.5s infinite; text-shadow: 0 0 5px #d600ff; }
         @keyframes pulseTier3 { 0% { box-shadow: 0 0 15px rgba(255,59,48,0.3); } 50% { box-shadow: 0 0 25px rgba(255,59,48,0.6); } 100% { box-shadow: 0 0 15px rgba(255,59,48,0.3); } }
         @keyframes pulseTier4 { 0% { box-shadow: 0 0 20px rgba(214,0,255,0.4); } 50% { box-shadow: 0 0 35px rgba(214,0,255,0.8); } 100% { box-shadow: 0 0 20px rgba(214,0,255,0.4); } }
+        
         /* Dynamic Account Level CSS */
         .level-badge {
             display: inline-flex; align-items: center; justify-content: center;
@@ -121,6 +123,7 @@
         .lvl-tier-5 { background: linear-gradient(135deg, #2fa869, #155734); box-shadow: 0 0 20px rgba(47,168,105,0.7); color: #d1ffe6; }
         .lvl-tier-6 { background: linear-gradient(135deg, #00e5ff, #007685); box-shadow: 0 0 25px rgba(0,229,255,0.8); color: #e0fdff; }
         .lvl-tier-7 { background: linear-gradient(135deg, #9d00ff, #4e0080); box-shadow: 0 0 30px rgba(157,0,255,0.9); color: #f4e0ff; animation: pulseTier4 1.5s infinite; }
+        
         h1, h2, h3, h4 { font-weight: 700; margin-bottom: 12px; }
         h1 { font-size: 28px; letter-spacing: -0.5px; margin-top: calc(24px + var(--safe-top)); } h2 { font-size: 20px; color: var(--text-primary); } h3 { font-size: 16px; color: var(--text-secondary); }
         .text-muted { color: var(--text-secondary); font-size: 14px; } .text-accent { color: var(--accent-color); } .text-success { color: var(--success); } .text-info { color: var(--info); } .text-warning { color: var(--warning); } .text-pending { color: var(--pending); }
@@ -151,6 +154,8 @@
         .nav-item { color: var(--text-secondary); display: flex; flex-direction: column; align-items: center; text-decoration: none; font-size: 10px; gap: 4px; cursor: pointer; flex: 1; transition: color 0.3s ease; text-transform: uppercase; font-weight: bold; letter-spacing: 0.5px;} .nav-item i { font-size: 20px; margin-bottom: 2px; } .nav-item.active { color: var(--accent-color); }
         .page-header { position: sticky; top: 0; background: var(--bg-color); opacity: 0.95; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 10; margin-left: -16px; margin-right: -16px; margin-bottom: 16px; padding-top: calc(16px + var(--safe-top)); padding-left: 16px; padding-right: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; transition: background-color 0.4s ease, border-color 0.4s ease; }
         .workout-header-sticky { position: sticky; top: 0; background: var(--bg-color); opacity: 0.95; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); padding-top: calc(16px + var(--safe-top)); padding-left: 16px; padding-right: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border); z-index: 10; display: flex; justify-content: space-between; align-items: center; transition: background-color 0.4s ease, border-color 0.4s ease; }
+        
+        /* Auto Rest Timer Overlay */
         #rest-timer-overlay { position: fixed; bottom: calc(80px + var(--safe-bottom)); left: 50%; transform: translateX(-50%); background: var(--accent-color); color: var(--bg-color); padding: 12px 24px; border-radius: 30px; box-shadow: 0 4px 16px var(--accent-dim); display: none; font-weight: bold; font-size: 18px; align-items: center; gap: 16px; z-index: 1001; cursor: pointer; transition: background-color 0.4s ease; border: 1px solid rgba(255,255,255,0.2); }
 
         /* Modals */
@@ -166,12 +171,16 @@
     <div id="main-content"></div>
     <div class="bottom-nav" id="nav-bar"></div>
 </div>
+
+<!-- Auto Rest Timer (Hidden by default) -->
 <div id="rest-timer-overlay" onclick="workoutEngine.stopRestTimer()"><i class="fas fa-stopwatch"></i> <span id="rest-timer-display">00:00</span></div>
+
 <div id="active-workout-view"></div>
 <div id="exercise-selection-modal"></div>
 <div id="start-workout-modal"></div>
 <div id="meal-search-modal"></div>
 <div id="meal-create-modal"></div>
+
 <script>
 const QUOTES = [
     "You have power over your mind—not outside events. Realize this, and you will find strength.", "The happiness of your life depends upon the quality of your thoughts.", "The impediment to action advances action. What stands in the way becomes the way.", "When you arise in the morning, think of what a privilege it is to be alive, to think, to enjoy, to love.", "Waste no more time arguing about what a good man should be. Be one.", "The best revenge is to be unlike him who performed the injury.", "The soul becomes dyed with the colour of its thoughts.", "If it is not right, do not do it, if it is not true, do not say it.", "Do every act of your life as though it were the very last act of your life.", "It is in your power whenever you shall choose to retire into yourself.", "The universe is transformation: life is opinion.", "Remember that very little is needed to make a happy life."
@@ -509,8 +518,10 @@ const workoutEngine = {
     showAddExerciseModal() { const modal = document.getElementById('exercise-selection-modal'); let grouped = utils.getGroupedExercises(); let html = `<div class="page-header"><button class="btn btn-sm btn-icon" onclick="document.getElementById('exercise-selection-modal').style.display='none'"><i class="fas fa-times"></i></button><h2 style="margin:0; font-size:18px;">Add Exercise</h2><div style="width:36px;"></div></div><div style="padding:0 16px;"><button class="btn btn-primary" style="width:100%; margin-bottom:16px;" onclick="workoutEngine.createCustomExercise()"><i class="fas fa-plus"></i> Create Custom Exercise</button></div><p class="text-muted" style="margin-bottom:16px; font-size:12px; padding:0 16px;">Select an exercise to append to your active workout.</p><div style="padding:0 16px;">`; Object.keys(grouped).sort().forEach(muscle => { html += `<h3 style="margin-top:16px; color:var(--text-secondary); font-size:14px;">${muscle}</h3><div style="display:flex; flex-direction:column; gap:8px;">`; grouped[muscle].sort((a,b) => a.name.localeCompare(b.name)).forEach(ex => { html += `<div class="data-row flex-between" style="padding:12px; background:var(--surface-color); border-radius:8px; border:1px solid var(--border); cursor:pointer;" onclick="workoutEngine.appendExercise('${ex.name}', ${ex.targetSets}, '${ex.targetReps}')"><div><div style="font-weight:bold;">${ex.name}</div><div class="text-muted" style="font-size:12px;">Def: ${ex.targetSets}x${ex.targetReps}</div></div><i class="fas fa-plus text-accent"></i></div>`; }); html += `</div>`; }); html += `</div>`; modal.innerHTML = html; modal.style.display = 'flex'; },
     createCustomExercise() { const name = prompt("Enter Custom Exercise Name:"); if (!name) return; const muscle = prompt("Enter Primary Muscle Group (Chest, Back, Shoulders, Biceps, Triceps, Quads, Hamstrings, Abs, Calves, Cardio):", "Other") || "Other"; if (!store.state.customExercises) store.state.customExercises = []; store.state.customExercises.push({ name, muscle, targetSets: 3, targetReps: '8-12' }); store.save(); this.appendExercise(name, 3, '8-12'); },
     appendExercise(name, targetSets, targetReps) { this.activeWorkout.exercises.push(this.buildExerciseData(name, targetSets, targetReps)); this.sync(); document.getElementById('exercise-selection-modal').style.display='none'; this.renderActiveWorkout(); },
+    
     startRestTimer(seconds) { clearInterval(this.timerInterval); const display = document.getElementById('rest-timer-display'); const overlay = document.getElementById('rest-timer-overlay'); let remaining = seconds; overlay.style.display = 'flex'; this.timerInterval = setInterval(() => { remaining--; let m = Math.floor(remaining / 60), s = remaining % 60; display.innerText = `${m}:${s < 10 ? '0' : ''}${s}`; if (remaining <= 0) { this.stopRestTimer(); if(navigator.vibrate) navigator.vibrate([200, 100, 200]); } }, 1000); }, stopRestTimer() { clearInterval(this.timerInterval); document.getElementById('rest-timer-overlay').style.display = 'none'; },
-    // MANUAL TIMER LOGIC
+    
+    // NEW MANUAL TIMER LOGIC
     toggleManualTimer() {
         if(this.manualTimerRunning) {
             clearInterval(this.manualTimerInterval);
@@ -540,10 +551,12 @@ const workoutEngine = {
         let s = this.manualTimerSeconds % 60;
         el.innerText = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
     },
+    
     skipWorkout() { const sym = app.sym('rest'); const reason = prompt(this.activeWorkout.isRest ? `Log Rest Day! ${sym} (e.g. Skiing, Recovering):` : "Reason for skipping workout:"); if(reason !== null) { store.addWorkout({ id: utils.generateId(), date: new Date().toISOString(), name: `${this.activeWorkout.isRest ? "Rest Day" : "Workout Skipped"} - ${reason}`, isSkipped: true, duration: 0, exercises: [] }); store.state.activeSession = null; store.save(); this.activeWorkout = null; this.stopRestTimer(); document.getElementById('active-workout-view').style.display = 'none'; app.navigate('home'); } },
     finish() { if (!confirm(this.activeWorkout.isActivity ? "Finish Activity Tracking?" : "Finish Workout?")) return; this.activeWorkout.endTime = new Date().getTime(); this.activeWorkout.duration = Math.floor((this.activeWorkout.endTime - this.activeWorkout.startTime) / 60000); this.activeWorkout.date = new Date().toISOString(); this.activeWorkout.isSkipped = false; if(this.activeWorkout.isActivity) { store.addWorkout(this.activeWorkout); } else { this.activeWorkout.exercises.forEach(ex => ex.sets = ex.sets.filter(s => s.completed)); this.activeWorkout.exercises = this.activeWorkout.exercises.filter(ex => ex.sets.length > 0); if(this.activeWorkout.exercises.length > 0) store.addWorkout(this.activeWorkout); } store.state.activeSession = null; store.save(); this.activeWorkout = null; this.stopRestTimer(); this.resetManualTimer(); document.getElementById('active-workout-view').style.display = 'none'; app.navigate('home'); },
     minimize() { document.getElementById('active-workout-view').style.display = 'none'; app.navigate(app.currentView); },
     discard(skipConfirm = false) { if (!skipConfirm && !confirm("Discard workout? All progress will be lost.")) return; store.state.activeSession = null; store.save(); this.activeWorkout = null; this.stopRestTimer(); this.resetManualTimer(); document.getElementById('active-workout-view').style.display = 'none'; app.navigate(app.currentView); },
+    
     renderActiveWorkout() {
         const container = document.getElementById('active-workout-view'); if (!this.activeWorkout) return;
         let html = `<div class="workout-header-sticky"><div><input type="text" class="edit-input" style="font-size:18px !important; font-weight:bold; margin:0; padding:0; border:none; background:transparent; color:var(--text-primary); max-width:200px;" value="${this.activeWorkout.name}" onchange="workoutEngine.activeWorkout.name=this.value; workoutEngine.sync()"></div>${!this.activeWorkout.isRest ?` <button class="btn btn-sm btn-success" onclick="workoutEngine.finish()"><i class="fas fa-check"></i> FINISH</button> `: ''}<button class="btn btn-sm btn-icon" onclick="workoutEngine.minimize()"><i class="fas fa-chevron-down"></i></button></div><div style="padding: 16px;">`;
@@ -1073,9 +1086,15 @@ const app = {
     savePastWorkout() { const idx = store.state.history.workouts.findIndex(w => w.id === this.editingPastWorkoutId); if (idx > -1) { store.state.history.workouts[idx] = this.draftPastWorkout; store.save(); } this.editingPastWorkoutId = null; this.draftPastWorkout = null; this.navigate('data'); },
     editEntry(type, date, field, val) { if(type === 'bodyweight') store.updateBodyweight(date, val); else if (type === 'nutrition') store.updateNutrition(date, field, val); this.navigate('data'); }, deleteEntry(type, date) { if(confirm("Delete this entry forever?")) { store.deleteEntry(type, date); this.navigate('data'); } }, toggleDataTab(tabName) { this.activeDataTab = (this.activeDataTab === tabName) ? null : tabName; this.navigate('data'); }, resetData() { if(confirm("WARNING: This will delete all history and reset the app. Are you sure?")) { localStorage.removeItem('irontrack_state'); location.reload(); } },
     exportData() { const dataStr = JSON.stringify(store.state, null, 2); const blob = new Blob([dataStr], { type: "application/json" }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `IronTrack_Backup_${utils.getLocalISODate(new Date())}.json`; a.click(); URL.revokeObjectURL(url); }, importData(event) { const file = event.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = (e) => { try { const importedState = JSON.parse(e.target.result); if (importedState && importedState.history) { store.state = store.migrate(importedState); store.save(); alert("Data imported successfully! 🚀"); location.reload(); } else { alert("Invalid backup file."); } } catch (error) { alert("Error reading file."); } }; reader.readAsText(file); },
-    viewRoutine(id) { this.viewingRoutineId = id; this.isEditingProgram = false; this.navigate('workout-detail'); }, setRoutineActive(id) { store.state.activeRoutineId = id; store.save(); this.navigate('workout-detail'); }, createNewRoutine() { const name = prompt("Enter name for new split:", "New Split"); if (!name) return; const newRoutine = { id: utils.generateId(), name: name, days: [1,2,3,4,5,6,0].map(d => ({ day: d, workouts: [] })) }; store.state.routines.push(newRoutine); store.state.activeRoutineId = newRoutine.id; store.save(); this.viewRoutine(newRoutine.id); }, deleteCurrentRoutine() { if(store.state.routines.length <= 1) { alert("You must have at least one routine."); return; } if(confirm("Delete this routine permanently?")) { store.state.routines = store.state.routines.filter(r => r.id !== this.draftRoutine.id); store.state.activeRoutineId = store.state.routines[0].id; this.isEditingProgram = false; store.save(); this.navigate('workout'); } },
+    
+    viewRoutine(id) { this.viewingRoutineId = id; this.isEditingProgram = false; this.navigate('workout-detail'); }, 
+    setRoutineActive(id) { store.state.activeRoutineId = id; store.save(); this.navigate('workout-detail'); }, 
+    createNewRoutine() { const name = prompt("Enter name for new split:", "New Split"); if (!name) return; const newRoutine = { id: utils.generateId(), name: name, days: [1,2,3,4,5,6,0].map(d => ({ day: d, workouts: [] })) }; store.state.routines.push(newRoutine); store.state.activeRoutineId = newRoutine.id; store.save(); this.viewRoutine(newRoutine.id); }, 
+    deleteCurrentRoutine() { if(store.state.routines.length <= 1) { alert("You must have at least one routine."); return; } if(confirm("Delete this routine permanently?")) { store.state.routines = store.state.routines.filter(r => r.id !== this.draftRoutine.id); store.state.activeRoutineId = store.state.routines[0].id; this.isEditingProgram = false; store.save(); this.navigate('workout'); } },
     
     toggleProgramEdit() { const r = store.state.routines.find(x => x.id === this.viewingRoutineId); this.draftRoutine = JSON.parse(JSON.stringify(r)); this.isEditingProgram = true; this.navigate('workout-detail'); }, 
+    
+    /* SYNC BUG FIX */
     saveProgramEdit() { 
         this.draftRoutine.days.forEach(d => d.workouts.forEach(w => w.exercises.forEach(e => { e.targetSets = parseInt(e.targetSets)||1; }))); 
         const idx = store.state.routines.findIndex(r => r.id === this.draftRoutine.id); 
@@ -1084,6 +1103,8 @@ const app = {
         this.isEditingProgram = false; 
         this.navigate('workout-detail'); 
     },
+    
+    /* DRAG & DROP DAY SWAPPER */
     dropDay(e, targetIdx) {
         e.preventDefault();
         const sourceIdx = parseInt(e.dataTransfer.getData('text/plain'));
