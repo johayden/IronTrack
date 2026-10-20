@@ -881,22 +881,48 @@ const views = {
         html += `<button class="btn" style="border:1px dashed var(--accent-color); color:var(--accent-color); background:transparent;" onclick="app.createNewRoutine()">+ Create New Split</button>`; return html;
     },
     renderWorkoutDetail() {
-        if (app.isEditingProgram) return this.renderProgramEditor(); const r = store.state.routines.find(x => x.id === app.viewingRoutineId); const isActive = r.id === store.state.activeRoutineId;
+        if (app.isEditingProgram) return this.renderProgramEditor(); 
+        const r = store.state.routines.find(x => x.id === app.viewingRoutineId); 
+        const isActive = r.id === store.state.activeRoutineId;
+        
         let html = `<div class="page-header"><button class="btn btn-sm btn-icon" onclick="app.navigate('workout')"><i class="fas fa-arrow-left"></i></button><h2 style="margin:0; font-size:18px;">${r.name}</h2><button class="btn btn-sm btn-icon" onclick="app.toggleProgramEdit()"><i class="fas fa-pen"></i></button></div>`;
+        
         if (!isActive) html += `<button class="btn btn-primary" style="margin-bottom:16px;" onclick="app.setRoutineActive('${r.id}')"><i class="fas fa-check"></i> SET AS ACTIVE SPLIT</button>`;
+        
         const order = [1, 2, 3, 4, 5, 6, 0];
-        order.forEach(dayIndex => {
-            const d = r.days.find(x => x.day === dayIndex) || { day: dayIndex, workouts: [] }; const isToday = d.day === new Date().getDay() && isActive;
-            html += `<div class="card" draggable="true" ondragstart="event.dataTransfer.setData('text/plain', ${dayIndex}); this.style.opacity='0.4';" ondragend="this.style.opacity='1';" ondragover="event.preventDefault(); this.style.borderColor='var(--info)';" ondragleave="this.style.borderColor='${isToday ? 'var(--accent-color)' : 'var(--border)'}';" ondrop="this.style.borderColor='${isToday ? 'var(--accent-color)' : 'var(--border)'}'; app.swapDaysInView(event, ${dayIndex})" style="cursor: grab; transition: all 0.2s; ${isToday ? 'border-color: var(--accent-color);' : ''} position: relative;">
+        
+        order.forEach((dayIndex, position) => {
+            const d = r.days.find(x => x.day === dayIndex) || { day: dayIndex, workouts: [] }; 
+            const isToday = d.day === new Date().getDay() && isActive;
+            
+            // Generate Arrow Buttons for Mobile Ergonomics
+            let arrowButtons = ``;
+            if (position > 0) {
+                arrowButtons += `<button class="btn-icon" style="width:32px; height:32px; font-size:14px; color:var(--text-secondary);" title="Move Up" onclick="app.swapAdjacentDays(${position}, ${position - 1})"><i class="fas fa-arrow-up"></i></button>`;
+            }
+            if (position < order.length - 1) {
+                arrowButtons += `<button class="btn-icon" style="width:32px; height:32px; font-size:14px; color:var(--text-secondary);" title="Move Down" onclick="app.swapAdjacentDays(${position}, ${position + 1})"><i class="fas fa-arrow-down"></i></button>`;
+            }
+            
+            html += `<div class="card" style="${isToday ? 'border-color: var(--accent-color);' : ''}">
             <div class="flex-between" style="margin-bottom:8px;">
-                <span class="text-muted" style="font-size:12px; text-transform:uppercase">${utils.getDayName(d.day)}</span>
+                <span class="text-muted" style="font-size:12px; text-transform:uppercase; font-weight:bold;">${utils.getDayName(d.day)}</span>
                 <div style="display:flex; align-items:center; gap: 8px;">
-                    ${isToday ? '<span class="text-accent" style="font-size:12px; font-weight:bold">TODAY</span>' : ''}
-                    <i class="fas fa-grip-lines text-muted" style="opacity: 0.5;"></i>
+                    ${isToday ? '<span class="text-accent" style="font-size:12px; font-weight:bold;">TODAY</span>' : ''}
+                    <div style="display:flex; gap:4px;">${arrowButtons}</div>
                 </div>
             </div>`;
-            if (d.workouts.length === 0) { html += `<div class="text-muted">Rest Day ${app.sym('rest')}</div>`; } else { d.workouts.forEach(w => { html += `<div style="margin-top:8px; padding-top:8px; border-top:1px solid var(--border);"><div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;"><h4 style="margin:0;">${w.name}</h4>${w.isActivity ?` <span class="text-accent" style="font-size:10px; border:1px solid var(--accent-color); padding:2px 4px; border-radius:4px;">ACTIVITY</span> `: ''}</div>${w.exercises.map(e =>` <div class="text-muted" style="font-size:14px; margin-bottom:2px;">• ${e.name} (${e.targetSets}x${e.targetReps})</div>`).join('')}</div>`; }); } html += `</div>`;
-        }); return html;
+            
+            if (d.workouts.length === 0) { 
+                html += `<div class="text-muted">Rest Day ${app.sym('rest')}</div>`; 
+            } else { 
+                d.workouts.forEach(w => { 
+                    html += `<div style="margin-top:8px; padding-top:8px; border-top:1px solid var(--border);"><div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;"><h4 style="margin:0;">${w.name}</h4>${w.isActivity ?` <span class="text-accent" style="font-size:10px; border:1px solid var(--accent-color); padding:2px 4px; border-radius:4px;">ACTIVITY</span> `: ''}</div>${w.exercises.map(e =>` <div class="text-muted" style="font-size:14px; margin-bottom:2px;">• ${e.name} (${e.targetSets}x${e.targetReps})</div>`).join('')}</div>`; 
+                }); 
+            } 
+            html += `</div>`;
+        }); 
+        return html;
     },
     renderProgramEditor() {
         let html = `<div class="page-header" style="flex-direction:column; align-items:flex-start; gap:12px;"><div class="flex-between" style="width:100%;"><input class="edit-input" style="font-size:24px !important; font-weight:bold; color:var(--accent-color); border:none; background:transparent; padding:0; margin:0; flex:1; min-width:0;" value="${app.draftRoutine.name}" onchange="app.draftRoutine.name = this.value"><div style="display:flex; gap:8px; flex-shrink:0;"><button class="btn btn-sm btn-success" onclick="app.saveProgramEdit()"><i class="fas fa-save"></i> Save</button></div></div>${store.state.routines.length > 1 ?` <button class="btn btn-sm" style="background:transparent; border:1px solid var(--accent-color); color:var(--accent-color); width:100%;" onclick="app.deleteCurrentRoutine()"><i class="fas fa-trash"></i> Delete This Split</button> `: ''}</div>`;
@@ -1113,20 +1139,25 @@ const app = {
         this.navigate('workout-detail'); 
     },
     
-    /* DRAG & DROP DAY SWAPPER (On Detail View) */
-    swapDaysInView(e, targetDayIndex) {
-        e.preventDefault();
-        const sourceDayIndex = parseInt(e.dataTransfer.getData('text/plain'));
-        if(isNaN(sourceDayIndex) || sourceDayIndex === targetDayIndex) return;
+    /* NEW: Button-based Mobile Day Swapper */
+    swapAdjacentDays(pos1, pos2) {
+        const order = [1, 2, 3, 4, 5, 6, 0];
+        if(pos1 < 0 || pos1 > 6 || pos2 < 0 || pos2 > 6) return;
+        
+        const day1 = order[pos1];
+        const day2 = order[pos2];
+        
         const r = store.state.routines.find(x => x.id === this.viewingRoutineId);
         if(!r) return;
         
-        let d1 = r.days.find(d => d.day === sourceDayIndex);
-        let d2 = r.days.find(d => d.day === targetDayIndex);
+        let d1 = r.days.find(d => d.day === day1);
+        let d2 = r.days.find(d => d.day === day2);
         
-        if(!d1) { d1 = { day: sourceDayIndex, workouts: [] }; r.days.push(d1); }
-        if(!d2) { d2 = { day: targetDayIndex, workouts: [] }; r.days.push(d2); }
+        // Ensure both day objects exist
+        if(!d1) { d1 = { day: day1, workouts: [] }; r.days.push(d1); }
+        if(!d2) { d2 = { day: day2, workouts: [] }; r.days.push(d2); }
         
+        // Swap workouts between the fixed days
         const temp = d1.workouts;
         d1.workouts = d2.workouts;
         d2.workouts = temp;
