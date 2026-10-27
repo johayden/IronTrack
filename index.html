@@ -93,7 +93,6 @@
         }
         #app-container { display: flex; flex-direction: column; height: 100%; width: 100%; max-width: 800px; margin: 0 auto; position: relative; overflow: hidden; }
         #main-content { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding-left: 16px; padding-right: 16px; padding-bottom: calc(100px + var(--safe-bottom)); }
-
         /* Dynamic Streak Fire CSS */
         .streak-flame {
             display: inline-flex; align-items: center; justify-content: center;
@@ -107,7 +106,6 @@
         .streak-tier-4 { color: #d600ff; background: rgba(214, 0, 255, 0.15); border: 1px solid #d600ff; box-shadow: 0 0 25px rgba(214, 0, 255, 0.6); transform: scale(1.15); animation: pulseTier4 1.5s infinite; text-shadow: 0 0 5px #d600ff; }
         @keyframes pulseTier3 { 0% { box-shadow: 0 0 15px rgba(255,59,48,0.3); } 50% { box-shadow: 0 0 25px rgba(255,59,48,0.6); } 100% { box-shadow: 0 0 15px rgba(255,59,48,0.3); } }
         @keyframes pulseTier4 { 0% { box-shadow: 0 0 20px rgba(214,0,255,0.4); } 50% { box-shadow: 0 0 35px rgba(214,0,255,0.8); } 100% { box-shadow: 0 0 20px rgba(214,0,255,0.4); } }
-
         /* Dynamic Account Level CSS */
         .level-badge {
             display: inline-flex; align-items: center; justify-content: center;
@@ -123,7 +121,6 @@
         .lvl-tier-5 { background: linear-gradient(135deg, #2fa869, #155734); box-shadow: 0 0 20px rgba(47,168,105,0.7); color: #d1ffe6; }
         .lvl-tier-6 { background: linear-gradient(135deg, #00e5ff, #007685); box-shadow: 0 0 25px rgba(0,229,255,0.8); color: #e0fdff; }
         .lvl-tier-7 { background: linear-gradient(135deg, #9d00ff, #4e0080); box-shadow: 0 0 30px rgba(157,0,255,0.9); color: #f4e0ff; animation: pulseTier4 1.5s infinite; }
-
         h1, h2, h3, h4 { font-weight: 700; margin-bottom: 12px; }
         h1 { font-size: 28px; letter-spacing: -0.5px; margin-top: calc(24px + var(--safe-top)); } h2 { font-size: 20px; color: var(--text-primary); } h3 { font-size: 16px; color: var(--text-secondary); }
         .text-muted { color: var(--text-secondary); font-size: 14px; } .text-accent { color: var(--accent-color); } .text-success { color: var(--success); } .text-info { color: var(--info); } .text-warning { color: var(--warning); } .text-pending { color: var(--pending); }
@@ -154,13 +151,11 @@
         .nav-item { color: var(--text-secondary); display: flex; flex-direction: column; align-items: center; text-decoration: none; font-size: 10px; gap: 4px; cursor: pointer; flex: 1; transition: color 0.3s ease; text-transform: uppercase; font-weight: bold; letter-spacing: 0.5px;} .nav-item i { font-size: 20px; margin-bottom: 2px; } .nav-item.active { color: var(--accent-color); }
         .page-header { position: sticky; top: 0; background: var(--bg-color); opacity: 0.95; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 10; margin-left: -16px; margin-right: -16px; margin-bottom: 16px; padding-top: calc(16px + var(--safe-top)); padding-left: 16px; padding-right: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; transition: background-color 0.4s ease, border-color 0.4s ease; }
         .workout-header-sticky { position: sticky; top: 0; background: var(--bg-color); opacity: 0.95; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); padding-top: calc(16px + var(--safe-top)); padding-left: 16px; padding-right: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border); z-index: 10; display: flex; justify-content: space-between; align-items: center; transition: background-color 0.4s ease, border-color 0.4s ease; }
-
         /* Auto Rest Timer Overlay */
         #rest-timer-overlay { position: fixed; bottom: calc(80px + var(--safe-bottom)); left: 50%; transform: translateX(-50%); background: var(--accent-color); color: var(--bg-color); padding: 12px 24px; border-radius: 30px; box-shadow: 0 4px 16px var(--accent-dim); display: none; font-weight: bold; font-size: 18px; align-items: center; gap: 16px; z-index: 1001; cursor: pointer; transition: background-color 0.4s ease; border: 1px solid rgba(255,255,255,0.2); }
         /* Modals and Overlays */
         #active-workout-view { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 2000; display: none; flex-direction: column; overflow: hidden; transition: background-color 0.4s ease; }
         #exercise-selection-modal, #start-workout-modal, #meal-search-modal, #meal-create-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 2005; display: none; flex-direction: column; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding-bottom: calc(100px + var(--safe-bottom)); transition: background-color 0.4s ease; }
-
         .flex-between { display: flex; justify-content: space-between; align-items: center; }
         canvas { max-width: 100%; margin-top: 10px; }
         .heatmap-svg { filter: drop-shadow(0 0 8px rgba(0,0,0,0.5)); max-height: 250px; width: 100%; margin: 12px auto;}
@@ -303,8 +298,6 @@ const utils = {
     getDayName: (dayIndex) => ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayIndex],
     getActiveRoutine: () => store.state.routines.find(r => r.id === store.state.activeRoutineId) || store.state.routines[0],
     getTodayProgram: () => { const d = new Date().getDay(); const active = utils.getActiveRoutine(); return active.days.find(p => p.day === d) || { day: d, workouts: [] }; },
-
-    // NEW MULTI-MUSCLE SUPPORT
     getMuscles: (ex) => {
         let m = [];
         if(ex.muscles && Array.isArray(ex.muscles) && ex.muscles.length) m = ex.muscles;
@@ -374,7 +367,7 @@ const utils = {
             if (utils.checkGoalSuccess(dStr, g)) met++;
         }
         if (possible === 0) return false;
-        return (met / possible) >= 0.75; // 75% Rule Enforced
+        return (met / possible) >= 0.75;
     },
     calculateStreak: () => {
         let streak = 0; let d = new Date();
@@ -390,7 +383,7 @@ const utils = {
                 if(wDates.includes(dStr) || isRest || loggedRest) met++;
                 if(bDates.includes(dStr)) met++;
                 if(nDates.includes(dStr)) met++;
-                return (met / possible) >= 0.66; // 2 out of 3 required roughly
+                return (met / possible) >= 0.66;
             };
             if (isComplete(utils.getLocalISODate(d))) streak++; d.setDate(d.getDate() - 1);
             while(true) { if (isComplete(utils.getLocalISODate(d))) { streak++; d.setDate(d.getDate() - 1); } else break; }
@@ -501,6 +494,65 @@ const utils = {
         if (sets >= 5)  return '#3498db';
         if (sets >= 1)  return '#2e86ab';
         return '#333333';
+    },
+    renderAnatomySVG: (colorMap, width = '100%', height = '100%', style = '') => {
+        const hc = (m) => colorMap[m] || '#333333';
+        return `<svg viewBox="0 0 400 350" xmlns="http://www.w3.org/2000/svg" style="width:${width}; height:${height}; ${style}">
+            <style>
+                .muscle { stroke: var(--bg-color); stroke-width: 3.5; stroke-linejoin: round; transition: fill 0.4s ease, opacity 0.3s; }
+                .muscle:hover { opacity: 0.8; filter: brightness(1.2); cursor: pointer; }
+            </style>
+            <!-- FRONT FIGURE (Left) -->
+            <g class="figure-front">
+                <ellipse cx="100" cy="30" rx="13" ry="18" fill="#333333" class="muscle"/>
+                <path d="M 93 43 L 107 43 Q 110 50 110 55 L 90 55 Q 90 50 93 43 Z" fill="#333333" class="muscle"/>
+                <path d="M 98 55 Q 85 55 75 62 Q 70 80 85 90 Q 95 90 98 88 Z" fill="${hc('Chest')}" class="muscle"/>
+                <path d="M 102 55 Q 115 55 125 62 Q 130 80 115 90 Q 105 90 102 88 Z" fill="${hc('Chest')}" class="muscle"/>
+                <path d="M 73 60 Q 55 65 60 90 Q 68 100 73 85 Z" fill="${hc('Shoulders')}" class="muscle"/>
+                <path d="M 127 60 Q 145 65 140 90 Q 132 100 127 85 Z" fill="${hc('Shoulders')}" class="muscle"/>
+                <path d="M 58 92 Q 45 110 55 130 Q 65 130 68 105 Z" fill="${hc('Biceps')}" class="muscle"/>
+                <path d="M 142 92 Q 155 110 145 130 Q 135 130 132 105 Z" fill="${hc('Biceps')}" class="muscle"/>
+                <path d="M 54 133 Q 40 160 50 190 Q 60 190 62 140 Z" fill="#333333" class="muscle"/>
+                <path d="M 146 133 Q 160 160 150 190 Q 140 190 138 140 Z" fill="#333333" class="muscle"/>
+                <path d="M 98 90 L 102 90 Q 108 120 105 155 L 95 155 Q 92 120 98 90 Z" fill="${hc('Abs')}" class="muscle"/>
+                <path d="M 98 90 Q 80 110 85 150 L 95 155 Q 92 120 98 90 Z" fill="${hc('Abs')}" class="muscle"/>
+                <path d="M 102 90 Q 120 110 115 150 L 105 155 Q 108 120 102 90 Z" fill="${hc('Abs')}" class="muscle"/>
+                <path d="M 86 153 L 114 153 Q 110 170 100 175 Q 90 170 86 153 Z" fill="#333333" class="muscle"/>
+                <path d="M 85 155 Q 65 180 80 235 Q 90 240 95 225 Q 98 180 97 158 Z" fill="${hc('Quads')}" class="muscle"/>
+                <path d="M 115 155 Q 135 180 120 235 Q 110 240 105 225 Q 102 180 103 158 Z" fill="${hc('Quads')}" class="muscle"/>
+                <circle cx="87" cy="242" r="6" fill="#333333" class="muscle"/>
+                <circle cx="113" cy="242" r="6" fill="#333333" class="muscle"/>
+                <path d="M 80 250 Q 65 280 82 320 L 92 320 Q 95 280 94 250 Z" fill="${hc('Calves')}" class="muscle"/>
+                <path d="M 120 250 Q 135 280 118 320 L 108 320 Q 105 280 106 250 Z" fill="${hc('Calves')}" class="muscle"/>
+                <path d="M 81 322 C 70 330, 75 338, 90 338 C 95 338, 95 330, 93 322 Z" fill="#333333" class="muscle"/>
+                <path d="M 119 322 C 130 330, 125 338, 110 338 C 105 338, 105 330, 107 322 Z" fill="#333333" class="muscle"/>
+            </g>
+            <!-- BACK FIGURE (Right) -->
+            <g class="figure-back">
+                <ellipse cx="300" cy="30" rx="13" ry="18" fill="#333333" class="muscle"/>
+                <path d="M 293 43 L 307 43 Q 310 50 310 55 L 290 55 Q 290 50 293 43 Z" fill="#333333" class="muscle"/>
+                <path d="M 300 55 Q 310 58 315 65 Q 305 80 300 95 Q 295 80 285 65 Q 290 58 300 55 Z" fill="${hc('Back')}" class="muscle"/>
+                <path d="M 273 60 Q 255 65 260 90 Q 268 100 273 85 Z" fill="${hc('Shoulders')}" class="muscle"/>
+                <path d="M 327 60 Q 345 65 340 90 Q 332 100 327 85 Z" fill="${hc('Shoulders')}" class="muscle"/>
+                <path d="M 285 65 Q 278 60 275 62 Q 260 100 280 148 L 298 153 Q 296 120 300 95 Q 295 80 285 65 Z" fill="${hc('Back')}" class="muscle"/>
+                <path d="M 315 65 Q 322 60 325 62 Q 340 100 320 148 L 302 153 Q 304 120 300 95 Q 305 80 315 65 Z" fill="${hc('Back')}" class="muscle"/>
+                <path d="M 300 95 Q 304 120 302 153 L 298 153 Q 296 120 300 95 Z" fill="${hc('Back')}" class="muscle"/>
+                <path d="M 258 92 Q 245 110 255 130 Q 265 130 268 105 Z" fill="${hc('Triceps')}" class="muscle"/>
+                <path d="M 342 92 Q 355 110 345 130 Q 335 130 332 105 Z" fill="${hc('Triceps')}" class="muscle"/>
+                <path d="M 254 133 Q 240 160 250 190 Q 260 190 262 140 Z" fill="#333333" class="muscle"/>
+                <path d="M 346 133 Q 360 160 350 190 Q 340 190 338 140 Z" fill="#333333" class="muscle"/>
+                <path d="M 274 148 Q 285 155 299 152 L 299 183 Q 270 175 274 148 Z" fill="${hc('Hamstrings')}" class="muscle"/>
+                <path d="M 326 148 Q 315 155 301 152 L 301 183 Q 330 175 326 148 Z" fill="${hc('Hamstrings')}" class="muscle"/>
+                <path d="M 276 182 Q 260 210 280 245 Q 290 245 295 210 L 297 185 Z" fill="${hc('Hamstrings')}" class="muscle"/>
+                <path d="M 324 182 Q 340 210 320 245 Q 310 245 305 210 L 303 185 Z" fill="${hc('Hamstrings')}" class="muscle"/>
+                <circle cx="287" cy="242" r="6" fill="#333333" class="muscle"/>
+                <circle cx="313" cy="242" r="6" fill="#333333" class="muscle"/>
+                <path d="M 278 250 Q 260 280 282 320 L 292 320 Q 298 280 292 250 Z" fill="${hc('Calves')}" class="muscle"/>
+                <path d="M 322 250 Q 340 280 318 320 L 308 320 Q 302 280 308 250 Z" fill="${hc('Calves')}" class="muscle"/>
+                <path d="M 281 322 C 270 330, 275 338, 290 338 C 295 338, 295 330, 293 322 Z" fill="#333333" class="muscle"/>
+                <path d="M 319 322 C 330 330, 325 338, 310 338 C 305 338, 305 330, 307 322 Z" fill="#333333" class="muscle"/>
+            </g>
+        </svg>`;
     }
 };
 const workoutEngine = {
@@ -515,9 +567,7 @@ const workoutEngine = {
     showAddExerciseModal() { const modal = document.getElementById('exercise-selection-modal'); let grouped = utils.getGroupedExercises(); let html = `<div class="page-header"><button class="btn btn-sm btn-icon" onclick="document.getElementById('exercise-selection-modal').style.display='none'"><i class="fas fa-times"></i></button><h2 style="margin:0; font-size:18px;">Add Exercise</h2><div style="width:36px;"></div></div><div style="padding:0 16px;"><button class="btn btn-primary" style="width:100%; margin-bottom:16px;" onclick="workoutEngine.createCustomExercise()"><i class="fas fa-plus"></i> Create Custom Exercise</button></div><p class="text-muted" style="margin-bottom:16px; font-size:12px; padding:0 16px;">Select an exercise to append to your active workout.</p><div style="padding:0 16px;">`; Object.keys(grouped).sort().forEach(muscle => { html += `<h3 style="margin-top:16px; color:var(--text-secondary); font-size:14px;">${muscle}</h3><div style="display:flex; flex-direction:column; gap:8px;">`; grouped[muscle].sort((a,b) => a.name.localeCompare(b.name)).forEach(ex => { html += `<div class="data-row flex-between" style="padding:12px; background:var(--surface-color); border-radius:8px; border:1px solid var(--border); cursor:pointer;" onclick="workoutEngine.appendExercise('${ex.name}', ${ex.targetSets}, '${ex.targetReps}')"><div><div style="font-weight:bold;">${ex.name}</div><div class="text-muted" style="font-size:12px;">Def: ${ex.targetSets}x${ex.targetReps}</div></div><i class="fas fa-plus text-accent"></i></div>`; }); html += `</div>`; }); html += `</div>`; modal.innerHTML = html; modal.style.display = 'flex'; },
     createCustomExercise() { const name = prompt("Enter Custom Exercise Name:"); if (!name) return; const muscle = prompt("Enter Primary Muscle Group (Chest, Back, Shoulders, Biceps, Triceps, Quads, Hamstrings, Abs, Calves, Cardio):", "Other") || "Other"; if (!store.state.customExercises) store.state.customExercises = []; store.state.customExercises.push({ name, muscle, targetSets: 3, targetReps: '8-12' }); store.save(); this.appendExercise(name, 3, '8-12'); },
     appendExercise(name, targetSets, targetReps) { this.activeWorkout.exercises.push(this.buildExerciseData(name, targetSets, targetReps)); this.sync(); document.getElementById('exercise-selection-modal').style.display='none'; this.renderActiveWorkout(); },
-
     startRestTimer(seconds) { clearInterval(this.timerInterval); const display = document.getElementById('rest-timer-display'); const overlay = document.getElementById('rest-timer-overlay'); let remaining = seconds; overlay.style.display = 'flex'; this.timerInterval = setInterval(() => { remaining--; let m = Math.floor(remaining / 60), s = remaining % 60; display.innerText = `${m}:${s < 10 ? '0' : ''}${s}`; if (remaining <= 0) { this.stopRestTimer(); if(navigator.vibrate) navigator.vibrate([200, 100, 200]); } }, 1000); }, stopRestTimer() { clearInterval(this.timerInterval); document.getElementById('rest-timer-overlay').style.display = 'none'; },
-
     // NEW MANUAL TIMER LOGIC
     toggleManualTimer() {
         if(this.manualTimerRunning) {
@@ -548,34 +598,86 @@ const workoutEngine = {
         let s = this.manualTimerSeconds % 60;
         el.innerText = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
     },
-
-    skipWorkout() { const sym = app.sym('rest'); const reason = prompt(this.activeWorkout.isRest ? `Log Rest Day! ${sym} (e.g. Skiing, Recovering):` : "Reason for skipping workout:"); if(reason !== null) { store.addWorkout({ id: utils.generateId(), date: new Date().toISOString(), name: `${this.activeWorkout.isRest ? "Rest Day" : "Workout Skipped"} - ${reason}`, isSkipped: true, duration: 0, exercises: [] }); store.state.activeSession = null; store.save(); this.activeWorkout = null; this.stopRestTimer(); document.getElementById('active-workout-view').style.display = 'none'; app.navigate('home'); } },
+    skipWorkout() { const sym = app.sym('rest'); const reason = prompt(`Log Rest Day! ${sym} (e.g. Skiing, Recovering):`, "Rest"); if(reason !== null) { store.addWorkout({ id: utils.generateId(), date: new Date().toISOString(), name: `${this.activeWorkout.isRest ? "Rest Day" : "Workout Skipped"} - ${reason}`, isSkipped: true, duration: 0, exercises: [] }); store.state.activeSession = null; store.save(); this.activeWorkout = null; this.stopRestTimer(); document.getElementById('active-workout-view').style.display = 'none'; app.navigate('home'); } },
     finish() { if (!confirm(this.activeWorkout.isActivity ? "Finish Activity Tracking?" : "Finish Workout?")) return; this.activeWorkout.endTime = new Date().getTime(); this.activeWorkout.duration = Math.floor((this.activeWorkout.endTime - this.activeWorkout.startTime) / 60000); this.activeWorkout.date = new Date().toISOString(); this.activeWorkout.isSkipped = false; if(this.activeWorkout.isActivity) { store.addWorkout(this.activeWorkout); } else { this.activeWorkout.exercises.forEach(ex => ex.sets = ex.sets.filter(s => s.completed)); this.activeWorkout.exercises = this.activeWorkout.exercises.filter(ex => ex.sets.length > 0); if(this.activeWorkout.exercises.length > 0) store.addWorkout(this.activeWorkout); } store.state.activeSession = null; store.save(); this.activeWorkout = null; this.stopRestTimer(); this.resetManualTimer(); document.getElementById('active-workout-view').style.display = 'none'; app.navigate('home'); },
     minimize() { document.getElementById('active-workout-view').style.display = 'none'; app.navigate(app.currentView); },
     discard(skipConfirm = false) { if (!skipConfirm && !confirm("Discard workout? All progress will be lost.")) return; store.state.activeSession = null; store.save(); this.activeWorkout = null; this.stopRestTimer(); this.resetManualTimer(); document.getElementById('active-workout-view').style.display = 'none'; app.navigate(app.currentView); },
-
     renderActiveWorkout() {
         const container = document.getElementById('active-workout-view'); if (!this.activeWorkout) return;
-        
-        // --- SCROLL FIX: Capture current scroll position before we destroy the DOM elements
+
         const scrollEl = document.getElementById('active-workout-scroll');
         const scrollTop = scrollEl ? scrollEl.scrollTop : 0;
-        
-        let html = `<div class="workout-header-sticky" style="flex-shrink:0;"><div><input type="text" class="edit-input" style="font-size:18px !important; font-weight:bold; margin:0; padding:0; border:none; background:transparent; color:var(--text-primary); max-width:200px;" value="${this.activeWorkout.name}" onchange="workoutEngine.activeWorkout.name=this.value; workoutEngine.sync()"></div>${!this.activeWorkout.isRest ?` <button class="btn btn-sm btn-success" onclick="workoutEngine.finish()"><i class="fas fa-check"></i> FINISH</button> `: ''}<button class="btn btn-sm btn-icon" onclick="workoutEngine.minimize()"><i class="fas fa-chevron-down"></i></button></div>`;
 
-        // Flex 1 scrollable wrapper for exercises so bottom timer stays perfectly visible
+        let html = `<div class="workout-header-sticky" style="flex-shrink:0;"><div><input type="text" class="edit-input" style="font-size:18px !important; font-weight:bold; margin:0; padding:0; border:none; background:transparent; color:var(--text-primary); max-width:200px;" value="${this.activeWorkout.name}" onchange="workoutEngine.activeWorkout.name=this.value; workoutEngine.sync()"></div>${!this.activeWorkout.isRest ?` <button class="btn btn-sm btn-success" onclick="workoutEngine.finish()"><i class="fas fa-check"></i> FINISH</button> `: ''}<button class="btn btn-sm btn-icon" onclick="workoutEngine.minimize()"><i class="fas fa-chevron-down"></i></button></div>`;
         html += `<div id="active-workout-scroll" style="flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 16px; padding-bottom: 40px;">`;
         if(this.activeWorkout.isActivity) { html += `<div style="text-align:center; padding: 60px 20px;"><div style="font-size:64px; margin-bottom:16px;">${app.sym('activity')}</div><h2>Activity in Progress</h2><p class="text-muted">Timer is running. Hit FINISH when done.</p></div>`; } else {
-            html += `<button class="btn" style="background:var(--surface-color); border:1px dashed var(--accent-color); color:var(--accent-color); margin-bottom: 16px;" onclick="workoutEngine.skipWorkout()"><i class="fas fa-forward-step"></i> ${this.activeWorkout.isRest ?` Log Rest Day ${app.sym('rest')} `: 'Skip Workout'}</button>`;
+            html += `<button class="btn" style="background:var(--surface-color); border:1px dashed var(--accent-color); color:var(--accent-color); margin-bottom: 16px;" onclick="workoutEngine.skipWorkout()"><i class="fas fa-forward-step"></i> Skip / Log Rest Day</button>`;
+            
             this.activeWorkout.exercises.forEach((ex, exIdx) => {
-                this.updatePrefills(ex); const varList = store.state.variations[ex.name] || []; const peak = store.getPeakSet(ex.name, ex.variation || ''); const peakHtml = peak ? `<div style="color: var(--pending); font-size: 11px; font-weight: bold; margin-top: 4px; text-align: right;"><i class="fas fa-fire"></i> 30d Peak: ${peak.weight}kg × ${peak.reps}</div>` : '';
-                html += `<div class="exercise-card"><div class="exercise-header"><div><h3 style="margin:0; color:var(--text-primary)">${ex.name}</h3><select class="edit-input" style="padding: 2px 8px; font-size: 16px !important; margin-top: 4px; margin-bottom: 0; width: auto; background: var(--bg-color); border: 1px solid var(--border);" onchange="workoutEngine.changeVariation(${exIdx}, this.value)"><option value="">Standard</option>${varList.map(v => `<option value="${v}" ${ex.variation === v ? 'selected' : ''}>${v}</option>`).join('')}<option value="__NEW__">+ New Variation</option></select></div><div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;"><button class="btn-icon" style="color:var(--text-secondary); width:32px; height:32px; font-size:16px;" onclick="workoutEngine.removeExercise(${exIdx})"><i class="fas fa-times"></i></button><span class="text-muted" style="font-size:12px">Tgt: ${ex.targetReps}</span></div></div><div style="padding: 0 16px;"><input type="text" class="edit-input" style="font-size:14px !important; margin-top:8px; margin-bottom:0px; width:100%; color:var(--warning);" placeholder="Notes (e.g. UP 2.5kg, seat setting)" value="${ex.notes || ''}" onchange="workoutEngine.updateNotes(${exIdx}, this.value)">${peakHtml}</div><div class="exercise-body"><div class="set-row text-muted" style="font-size:12px; margin-bottom: 8px;"><div style="text-align:center">SET</div><div style="text-align:center">KG</div><div style="text-align:center">REPS</div><div style="text-align:center">RIR</div><div></div></div>`;
-                ex.sets.forEach((set, setIdx) => { const isComp = set.completed; html += `<div class="set-wrapper"><div class="flex-between text-muted" style="font-size: 11px; margin-bottom: 4px; padding-left: 45px; padding-right: 55px;"><span>Prev: ${set.prevWeight}×${set.prevReps}</span><span>L3: ${set.l3Weight}×${set.l3Reps}</span></div><div class="set-row"><div class="set-number">${setIdx + 1}</div><div class="input-group"><input type="number" inputmode="decimal" value="${set.weight}" onchange="workoutEngine.inputChange(${exIdx}, ${setIdx}, 'weight', this.value)" ${isComp?'disabled':''}></div><div class="input-group"><input type="number" inputmode="numeric" value="${set.reps}" onchange="workoutEngine.inputChange(${exIdx}, ${setIdx}, 'reps', this.value)" ${isComp?'disabled':''}></div><div class="input-group"><input type="number" inputmode="numeric" value="${set.rir}" max="3" onchange="workoutEngine.inputChange(${exIdx}, ${setIdx}, 'rir', this.value)" ${isComp?'disabled':''}></div><button class="btn-check ${isComp ? 'completed' : ''}" onclick="workoutEngine.toggleSet(${exIdx}, ${setIdx})"><i class="fas fa-check"></i></button></div></div>`; }); html += `<div style="display:flex; gap:8px;"><button class="btn btn-sm" style="flex:1; border:1px solid var(--border);" onclick="workoutEngine.addSet(${exIdx})">+ Add Set</button><button class="btn btn-sm" style="flex:1; border:1px solid var(--border); color:var(--accent-color);" onclick="workoutEngine.removeSet(${exIdx})">- Remove Set</button></div></div></div>`;
-            }); html += `<div style="margin-top: 16px; padding-bottom: 32px;"><button class="btn" style="background:transparent; border:1px dashed var(--accent-color); color:var(--accent-color);" onclick="workoutEngine.showAddExerciseModal()">+ Add Another Exercise</button><button class="btn" style="background:transparent; border:1px dashed var(--pending); color:var(--pending); width:100%; margin-top:16px;" onclick="workoutEngine.discard()"><i class="fas fa-trash"></i> Discard Workout Data</button></div>`;
-        }
-        html += `</div>`; // Close Flex 1 scrollable wrapper
+                this.updatePrefills(ex); const varList = store.state.variations[ex.name] || []; const peak = store.getPeakSet(ex.name, ex.variation || ''); 
+                const peakHtml = peak ? `<div style="color: var(--pending); font-size: 11px; font-weight: bold; margin-top: 4px; text-align: right; display:flex; align-items:center; justify-content:flex-end; gap:4px;"><i class="fas fa-fire"></i> 30d Peak: ${peak.weight}kg × ${peak.reps}</div>` : '';
+                
+                const mNames = utils.getMuscles(ex);
+                let colorMap = {}; mNames.forEach(m => colorMap[m] = 'var(--accent-color)');
+                
+                html += `
+                <div class="exercise-card" style="border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.2); background: var(--surface-color); border-radius: var(--card-radius); overflow:hidden; margin-bottom: 16px;">
+                    <div class="exercise-header" style="padding: 16px; background: linear-gradient(145deg, var(--surface-elevated), var(--surface-color)); position:relative; overflow:hidden; border-bottom: 1px solid var(--border);">
+                        <div style="position:absolute; right: -25px; top: -15px; opacity: 0.45; pointer-events: none; transform: scaleX(-1);">
+                            ${utils.renderAnatomySVG(colorMap, '160px', '160px')}
+                        </div>
+                        <div style="position:relative; z-index: 1;">
+                            <div class="flex-between">
+                                <h3 style="margin:0; font-size: 18px; text-transform: uppercase; letter-spacing: 1px; color:var(--text-primary); text-shadow: 0 2px 4px rgba(0,0,0,0.5);">${ex.name}</h3>
+                                <button class="btn-icon" style="background:var(--surface-color); border:1px solid var(--border); border-radius: 8px; width:32px; height:32px;" onclick="workoutEngine.removeExercise(${exIdx})"><i class="fas fa-times"></i></button>
+                            </div>
+                            <div style="display:flex; gap: 8px; margin-top: 10px; align-items:center;">
+                                <select class="edit-input" style="padding: 4px 8px; font-size: 12px !important; margin: 0; width: auto; background: rgba(0,0,0,0.5); color:var(--text-primary); border: 1px solid var(--border); border-radius: 6px; font-weight:bold;" onchange="workoutEngine.changeVariation(${exIdx}, this.value)">
+                                    <option value="">Standard</option>
+                                    ${varList.map(v => `<option value="${v}" ${ex.variation === v ? 'selected' : ''}>${v}</option>`).join('')}
+                                    <option value="__NEW__">+ New Variation</option>
+                                </select>
+                                <span class="text-muted" style="font-size:11px; text-transform:uppercase; font-weight:bold; background:rgba(0,0,0,0.5); padding: 4px 8px; border-radius:6px; border:1px solid var(--border);">Tgt: ${ex.targetReps}</span>
+                            </div>
+                            ${mNames.length > 0 ? `<div style="margin-top: 12px; font-size: 11px; color: var(--accent-color); font-weight: 800; text-transform: uppercase; border: 1px solid var(--accent-dim); display:inline-block; padding: 4px 8px; border-radius: 4px; background: rgba(0,0,0,0.4); letter-spacing:1px; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">${mNames.join(' & ')} FOCUS</div>` : ''}
+                        </div>
+                    </div>
+                    
+                    <div style="padding: 12px 16px 0 16px;">
+                        <input type="text" class="edit-input" style="font-size:13px !important; margin:0; width:100%; color:var(--warning); background:transparent; border:none; border-bottom:1px dashed var(--border); border-radius:0;" placeholder="+ Add Notes (e.g. Seat 4, Handle 2)" value="${ex.notes || ''}" onchange="workoutEngine.updateNotes(${exIdx}, this.value)">
+                        ${peakHtml}
+                    </div>
 
-        // Manual Rest Timer Sticky Footer (Absolutely locked to bottom via flex-shrink 0)
+                    <div class="exercise-body" style="padding: 16px;">
+                        <div class="set-row text-muted" style="font-size:11px; margin-bottom: 8px; font-weight:bold;">
+                            <div style="text-align:center">SET</div><div style="text-align:center">KG</div><div style="text-align:center">REPS</div><div style="text-align:center">RIR</div><div></div>
+                        </div>`;
+                ex.sets.forEach((set, setIdx) => { const isComp = set.completed; 
+                    html += `
+                        <div class="set-wrapper">
+                            <div class="flex-between text-muted" style="font-size: 10px; margin-bottom: 4px; padding-left: 45px; padding-right: 55px; opacity:0.8;">
+                                <span>Prev: ${set.prevWeight}×${set.prevReps}</span><span>L3: ${set.l3Weight}×${set.l3Reps}</span>
+                            </div>
+                            <div class="set-row">
+                                <div class="set-number">${setIdx + 1}</div>
+                                <div class="input-group"><input type="number" inputmode="decimal" value="${set.weight}" onchange="workoutEngine.inputChange(${exIdx}, ${setIdx}, 'weight', this.value)" ${isComp?'disabled':''}></div>
+                                <div class="input-group"><input type="number" inputmode="numeric" value="${set.reps}" onchange="workoutEngine.inputChange(${exIdx}, ${setIdx}, 'reps', this.value)" ${isComp?'disabled':''}></div>
+                                <div class="input-group"><input type="number" inputmode="numeric" value="${set.rir}" max="3" onchange="workoutEngine.inputChange(${exIdx}, ${setIdx}, 'rir', this.value)" ${isComp?'disabled':''}></div>
+                                <button class="btn-check ${isComp ? 'completed' : ''}" onclick="workoutEngine.toggleSet(${exIdx}, ${setIdx})"><i class="fas fa-check"></i></button>
+                            </div>
+                        </div>`; 
+                }); 
+                html += `
+                        <div style="display:flex; gap:8px; margin-top:12px;">
+                            <button class="btn btn-sm" style="flex:1; background:var(--surface-elevated); border:1px solid var(--border);" onclick="workoutEngine.addSet(${exIdx})">+ Add Set</button>
+                            <button class="btn btn-sm" style="flex:1; background:var(--surface-elevated); border:1px solid var(--border); color:var(--accent-color);" onclick="workoutEngine.removeSet(${exIdx})">- Remove Set</button>
+                        </div>
+                    </div>
+                </div>`;
+            }); 
+            html += `<div style="margin-top: 16px; padding-bottom: 32px;"><button class="btn" style="background:transparent; border:1px dashed var(--accent-color); color:var(--accent-color);" onclick="workoutEngine.showAddExerciseModal()">+ Add Another Exercise</button><button class="btn" style="background:transparent; border:1px dashed var(--pending); color:var(--pending); width:100%; margin-top:16px;" onclick="workoutEngine.discard()"><i class="fas fa-trash"></i> Discard Workout Data</button></div>`;
+        }
+        html += `</div>`;
         html += `<div style="flex-shrink: 0; background: var(--surface-color); border-top: 1px solid var(--border); padding: 12px; padding-bottom: calc(12px + var(--safe-bottom)); display: flex; align-items: center; justify-content: space-between; z-index: 100; box-shadow: 0 -4px 10px rgba(0,0,0,0.3);">
             <div style="display:flex; align-items:center; gap:12px;">
                 <i class="fas fa-stopwatch text-accent" style="font-size:24px;"></i>
@@ -587,11 +689,9 @@ const workoutEngine = {
             </div>
         </div>`;
         container.innerHTML = html;
-        
-        // --- SCROLL FIX: Instantly restore the scroll position back so the user doesn't notice the DOM rebuild
+
         const newScrollEl = document.getElementById('active-workout-scroll');
         if (newScrollEl) newScrollEl.scrollTop = scrollTop;
-
         setTimeout(() => this.updateManualTimerDisplay(), 0);
     }
 };
@@ -616,6 +716,7 @@ const views = {
         const accountLevel = Math.max(1, Math.floor(0.5 + Math.sqrt(0.25 + totalRP / 100)));
         const nextLevelRP = 100 * accountLevel * (accountLevel + 1);
         const lvlTier = Math.min(7, Math.floor((accountLevel-1)/5));
+        
         let html = `
         <div style="display:flex; justify-content:space-between; align-items:center; margin-top: calc(24px + var(--safe-top)); margin-bottom: 12px;">
             <h1 style="margin:0;">Dashboard</h1>
@@ -630,8 +731,12 @@ const views = {
         </div>
         <div style="background:var(--surface-color); border-left: 2px solid var(--accent-color); padding: 12px; margin-bottom: 16px; border-radius: 8px;">
             <p class="text-muted" style="font-style:italic; font-size:13px; line-height:1.4; margin:0;">"${dailyQuote}"</p>
-        </div>
-        <div class="card" style="padding:0; overflow:hidden; border-color: ${isTrainingDone && bwLogged && cardioLogged && !isWorkoutActive ? 'var(--success)' : 'var(--border)'}; box-shadow: ${isTrainingDone && bwLogged && cardioLogged && !isWorkoutActive ? 'var(--success-glow)' : '0 4px 12px rgba(0,0,0,0.2)'};">
+        </div>`;
+        
+        // Heatmap relocated to directly under the quote
+        html += this.renderHeatmap();
+
+        html += `<div class="card" style="padding:0; overflow:hidden; border-color: ${isTrainingDone && bwLogged && cardioLogged && !isWorkoutActive ? 'var(--success)' : 'var(--border)'}; box-shadow: ${isTrainingDone && bwLogged && cardioLogged && !isWorkoutActive ? 'var(--success-glow)' : '0 4px 12px rgba(0,0,0,0.2)'};">
             <div style="padding: 16px; background: ${isTrainingDone && bwLogged && cardioLogged && !isWorkoutActive ? 'var(--success-dim)' : 'var(--surface-elevated)'}; border-bottom: 1px solid ${isTrainingDone && bwLogged && cardioLogged && !isWorkoutActive ? 'var(--success-dim)' : 'var(--border)'}; display:flex; justify-content:space-between; align-items:center; transition: all 0.4s ease;">
                 <div><h2 style="margin:0; font-size:18px; color:${isTrainingDone && bwLogged && cardioLogged && !isWorkoutActive ? 'var(--success)' : 'var(--text-primary)'};">Today's Action Plan</h2><p class="text-muted" style="font-size:12px; margin-top:4px;">${utils.getDayName(today.getDay())}, ${utils.formatDateShort(today)}</p></div>
                 ${isTrainingDone && bwLogged && cardioLogged && !isWorkoutActive ? `<div style="background:var(--success); color:var(--bg-color); padding: 4px 8px; border-radius: 8px; font-size: 12px; font-weight:bold; letter-spacing:1px;">${app.sym('success')} PERFECT</div>` : ''}
@@ -642,7 +747,7 @@ const views = {
                     <div class="objective-row resume-pulse" style="border-color:var(--info); background:var(--info-dim);" onclick="workoutEngine.resume()">
                         <div class="check-circle" style="border-color:var(--info); color:var(--info); background:transparent;"><i class="fas fa-spinner fa-spin"></i></div>
                         <div style="flex:1;"><div style="font-weight:bold; color:var(--info);">Resume Workout</div><div class="text-muted" style="font-size:12px;">${store.state.activeSession.name} in progress...</div></div><i class="fas fa-chevron-right" style="color:var(--info)"></i>
-                    </div>` : `
+                    </div `:`
                     <div class="objective-row ${isTrainingDone ? 'completed' : ''}" onclick="app.showStartOptions()">
                         <div class="check-circle"><i class="fas fa-check"></i></div><div style="flex:1;"><div style="font-weight:bold;">Daily Session ${app.sym('workout')}</div><div class="text-muted" style="font-size:12px;">${trainingText}</div></div>${!isTrainingDone ? `<i class="fas fa-play" style="color:var(--pending)"></i>` : ''}
                     </div>`}
@@ -712,11 +817,13 @@ const views = {
                 <div class="text-accent" style="font-size:12px; font-weight:bold;">${weekMsg}</div>
             </div>
         </div>`;
-        html += this.renderHeatmap();
         return html;
     },
     renderHeatmap() {
-        const hc = utils.getMuscleHeatColor;
+        let heatMapColors = {};
+        MUSCLE_GROUPS.forEach(m => {
+            heatMapColors[m] = utils.getMuscleHeatColor(m);
+        });
         return `
         <div class="card" style="text-align:center; padding-bottom: 24px; overflow:hidden;">
             <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 16px;">
@@ -725,62 +832,9 @@ const views = {
                     <p class="text-muted" style="font-size:10px; margin:0; text-align:left;">Volume over the last 30 days</p>
                 </div>
             </div>
-            <svg class="heatmap-svg" viewBox="0 0 400 350" xmlns="http://www.w3.org/2000/svg" style="max-height: 320px; width: 100%; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));">
-                <style>
-                    .muscle { stroke: var(--bg-color); stroke-width: 3.5; stroke-linejoin: round; transition: fill 0.4s ease, opacity 0.3s; }
-                    .muscle:hover { opacity: 0.8; filter: brightness(1.2); cursor: pointer; }
-                </style>
-                <!-- FRONT FIGURE (Left) -->
-                <g class="figure-front">
-                    <ellipse cx="100" cy="30" rx="13" ry="18" fill="#333333" class="muscle"/>
-                    <path d="M 93 43 L 107 43 Q 110 50 110 55 L 90 55 Q 90 50 93 43 Z" fill="#333333" class="muscle"/>
-                    <path d="M 98 55 Q 85 55 75 62 Q 70 80 85 90 Q 95 90 98 88 Z" fill="${hc('Chest')}" class="muscle"/>
-                    <path d="M 102 55 Q 115 55 125 62 Q 130 80 115 90 Q 105 90 102 88 Z" fill="${hc('Chest')}" class="muscle"/>
-                    <path d="M 73 60 Q 55 65 60 90 Q 68 100 73 85 Z" fill="${hc('Shoulders')}" class="muscle"/>
-                    <path d="M 127 60 Q 145 65 140 90 Q 132 100 127 85 Z" fill="${hc('Shoulders')}" class="muscle"/>
-                    <path d="M 58 92 Q 45 110 55 130 Q 65 130 68 105 Z" fill="${hc('Biceps')}" class="muscle"/>
-                    <path d="M 142 92 Q 155 110 145 130 Q 135 130 132 105 Z" fill="${hc('Biceps')}" class="muscle"/>
-                    <path d="M 54 133 Q 40 160 50 190 Q 60 190 62 140 Z" fill="#333333" class="muscle"/>
-                    <path d="M 146 133 Q 160 160 150 190 Q 140 190 138 140 Z" fill="#333333" class="muscle"/>
-                    <path d="M 98 90 L 102 90 Q 108 120 105 155 L 95 155 Q 92 120 98 90 Z" fill="${hc('Abs')}" class="muscle"/>
-                    <path d="M 98 90 Q 80 110 85 150 L 95 155 Q 92 120 98 90 Z" fill="${hc('Abs')}" class="muscle"/>
-                    <path d="M 102 90 Q 120 110 115 150 L 105 155 Q 108 120 102 90 Z" fill="${hc('Abs')}" class="muscle"/>
-                    <path d="M 86 153 L 114 153 Q 110 170 100 175 Q 90 170 86 153 Z" fill="#333333" class="muscle"/>
-                    <path d="M 85 155 Q 65 180 80 235 Q 90 240 95 225 Q 98 180 97 158 Z" fill="${hc('Quads')}" class="muscle"/>
-                    <path d="M 115 155 Q 135 180 120 235 Q 110 240 105 225 Q 102 180 103 158 Z" fill="${hc('Quads')}" class="muscle"/>
-                    <circle cx="87" cy="242" r="6" fill="#333333" class="muscle"/>
-                    <circle cx="113" cy="242" r="6" fill="#333333" class="muscle"/>
-                    <path d="M 80 250 Q 65 280 82 320 L 92 320 Q 95 280 94 250 Z" fill="${hc('Calves')}" class="muscle"/>
-                    <path d="M 120 250 Q 135 280 118 320 L 108 320 Q 105 280 106 250 Z" fill="${hc('Calves')}" class="muscle"/>
-                    <path d="M 81 322 C 70 330, 75 338, 90 338 C 95 338, 95 330, 93 322 Z" fill="#333333" class="muscle"/>
-                    <path d="M 119 322 C 130 330, 125 338, 110 338 C 105 338, 105 330, 107 322 Z" fill="#333333" class="muscle"/>
-                </g>
-                <!-- BACK FIGURE (Right) -->
-                <g class="figure-back">
-                    <ellipse cx="300" cy="30" rx="13" ry="18" fill="#333333" class="muscle"/>
-                    <path d="M 293 43 L 307 43 Q 310 50 310 55 L 290 55 Q 290 50 293 43 Z" fill="#333333" class="muscle"/>
-                    <path d="M 300 55 Q 310 58 315 65 Q 305 80 300 95 Q 295 80 285 65 Q 290 58 300 55 Z" fill="${hc('Back')}" class="muscle"/>
-                    <path d="M 273 60 Q 255 65 260 90 Q 268 100 273 85 Z" fill="${hc('Shoulders')}" class="muscle"/>
-                    <path d="M 327 60 Q 345 65 340 90 Q 332 100 327 85 Z" fill="${hc('Shoulders')}" class="muscle"/>
-                    <path d="M 285 65 Q 278 60 275 62 Q 260 100 280 148 L 298 153 Q 296 120 300 95 Q 295 80 285 65 Z" fill="${hc('Back')}" class="muscle"/>
-                    <path d="M 315 65 Q 322 60 325 62 Q 340 100 320 148 L 302 153 Q 304 120 300 95 Q 305 80 315 65 Z" fill="${hc('Back')}" class="muscle"/>
-                    <path d="M 300 95 Q 304 120 302 153 L 298 153 Q 296 120 300 95 Z" fill="${hc('Back')}" class="muscle"/>
-                    <path d="M 258 92 Q 245 110 255 130 Q 265 130 268 105 Z" fill="${hc('Triceps')}" class="muscle"/>
-                    <path d="M 342 92 Q 355 110 345 130 Q 335 130 332 105 Z" fill="${hc('Triceps')}" class="muscle"/>
-                    <path d="M 254 133 Q 240 160 250 190 Q 260 190 262 140 Z" fill="#333333" class="muscle"/>
-                    <path d="M 346 133 Q 360 160 350 190 Q 340 190 338 140 Z" fill="#333333" class="muscle"/>
-                    <path d="M 274 148 Q 285 155 299 152 L 299 183 Q 270 175 274 148 Z" fill="${hc('Hamstrings')}" class="muscle"/>
-                    <path d="M 326 148 Q 315 155 301 152 L 301 183 Q 330 175 326 148 Z" fill="${hc('Hamstrings')}" class="muscle"/>
-                    <path d="M 276 182 Q 260 210 280 245 Q 290 245 295 210 L 297 185 Z" fill="${hc('Hamstrings')}" class="muscle"/>
-                    <path d="M 324 182 Q 340 210 320 245 Q 310 245 305 210 L 303 185 Z" fill="${hc('Hamstrings')}" class="muscle"/>
-                    <circle cx="287" cy="242" r="6" fill="#333333" class="muscle"/>
-                    <circle cx="313" cy="242" r="6" fill="#333333" class="muscle"/>
-                    <path d="M 278 250 Q 260 280 282 320 L 292 320 Q 298 280 292 250 Z" fill="${hc('Calves')}" class="muscle"/>
-                    <path d="M 322 250 Q 340 280 318 320 L 308 320 Q 302 280 308 250 Z" fill="${hc('Calves')}" class="muscle"/>
-                    <path d="M 281 322 C 270 330, 275 338, 290 338 C 295 338, 295 330, 293 322 Z" fill="#333333" class="muscle"/>
-                    <path d="M 319 322 C 330 330, 325 338, 310 338 C 305 338, 305 330, 307 322 Z" fill="#333333" class="muscle"/>
-                </g>
-            </svg>
+            <div class="heatmap-svg">
+                ${utils.renderAnatomySVG(heatMapColors, '100%', '250px')}
+            </div>
             <div style="display:flex; justify-content:center; flex-wrap:wrap; gap: 12px; font-size:10px; font-weight:bold; margin-top:16px;">
                 <div style="display:flex; align-items:center; gap:4px; color:var(--text-secondary);"><span style="display:inline-block; width:12px; height:12px; background:#333333; border-radius:3px;"></span> Untargeted</div>
                 <div style="display:flex; align-items:center; gap:4px;"><span style="display:inline-block; width:12px; height:12px; background:#2e86ab; border-radius:3px;"></span> 1-4</div>
@@ -862,7 +916,7 @@ const views = {
             let met = utils.checkGoalSuccess(viewDateStr, g); if (met) dayMetCount++; let label = ''; let isManual = false;
             if (g.type === 'workout') { label = `Complete ${g.count||1} Strength Session(s)`; } else if (g.type === 'weight') { label = `Log Bodyweight`; } else if (g.type === 'nutrition') { label = `Track Nutrition`; if (g.targetType === 'min') { label += `(Min ${g.calories} kcal)`; } else if (g.targetType === 'max') { label += `(Max ${g.calories} kcal)`; } } else if (g.type === 'cardio') { label = `Daily Cardio`; isManual = true; } else { isManual = true; label = g.type === 'custom' ? (g.title || 'Custom Goal') : `${g.type === 'water' ? 'Drink' : 'Read'} ${g.target || 'Goal'}`; }
             let rowStyle = isManual ? `cursor:pointer; background: ${met ? 'var(--success-dim)' : 'var(--pending-dim)'}; padding: 12px; border-radius: 12px; border: 1px solid ${met ? 'var(--success)' : 'var(--pending)'}; transition: all 0.2s;` : `padding: 12px 0; border-bottom: 1px solid var(--border);`;
-            html += `<div style="display:flex; align-items:center; gap:12px; ${rowStyle}" ${isManual ? `onclick="app.toggleGoal('${g.id}', '${viewDateStr}', '${g.type}')"` : ''}><div class="btn-check ${met ? 'completed' : ''}" style="width:32px; height:32px; display:flex; align-items:center; justify-content:center; border-radius:16px; border:2px solid ${met ? 'var(--success)' : 'var(--pending)'}; font-size:14px; background:${met ? 'var(--success)' : 'transparent'}; flex-shrink:0;"><i class="fas fa-check" style="color:${met ? 'var(--bg-color)' : 'transparent'};"></i></div><div style="display:flex; flex-direction:column; min-width:0; flex:1;"><span style="font-size:14px; color:${met ? 'var(--text-primary)' : 'var(--text-secondary)'}; font-weight:${met ? 'bold' : 'normal'}; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${label}</span>${isManual ? ` <span style="font-size:10px; color:var(--text-secondary);">${met ? 'Tap to unmark' : 'Tap to toggle entry'}</span> ` : ''}</div></div>`;
+            html += `<div style="display:flex; align-items:center; gap:12px; ${rowStyle}" ${isManual ?` onclick="app.toggleGoal('${g.id}', '${viewDateStr}', '${g.type}') `: ''}><div class="btn-check ${met ? 'completed' : ''}" style="width:32px; height:32px; display:flex; align-items:center; justify-content:center; border-radius:16px; border:2px solid ${met ? 'var(--success)' : 'var(--pending)'}; font-size:14px; background:${met ? 'var(--success)' : 'transparent'}; flex-shrink:0;"><i class="fas fa-check" style="color:${met ? 'var(--bg-color)' : 'transparent'};"></i></div><div style="display:flex; flex-direction:column; min-width:0; flex:1;"><span style="font-size:14px; color:${met ? 'var(--text-primary)' : 'var(--text-secondary)'}; font-weight:${met ? 'bold' : 'normal'}; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${label}</span>${isManual ?` <span style="font-size:10px; color:var(--text-secondary);">${met ? 'Tap to unmark' : 'Tap to toggle entry'}</span> `: ''}</div></div>`;
         });
         html += `</div>`; return html;
     },
@@ -887,17 +941,12 @@ const views = {
         if (app.isEditingProgram) return this.renderProgramEditor();
         const r = store.state.routines.find(x => x.id === app.viewingRoutineId);
         const isActive = r.id === store.state.activeRoutineId;
-
         let html = `<div class="page-header"><button class="btn btn-sm btn-icon" onclick="app.navigate('workout')"><i class="fas fa-arrow-left"></i></button><h2 style="margin:0; font-size:18px;">${r.name}</h2><button class="btn btn-sm btn-icon" onclick="app.toggleProgramEdit()"><i class="fas fa-pen"></i></button></div>`;
-
         if (!isActive) html += `<button class="btn btn-primary" style="margin-bottom:16px;" onclick="app.setRoutineActive('${r.id}')"><i class="fas fa-check"></i> SET AS ACTIVE SPLIT</button>`;
-
         const order = [1, 2, 3, 4, 5, 6, 0];
-
         order.forEach((dayIndex, position) => {
             const d = r.days.find(x => x.day === dayIndex) || { day: dayIndex, workouts: [] };
             const isToday = d.day === new Date().getDay() && isActive;
-
             // Generate Arrow Buttons for Mobile Ergonomics
             let arrowButtons = ``;
             if (position > 0) {
@@ -906,7 +955,6 @@ const views = {
             if (position < order.length - 1) {
                 arrowButtons += `<button class="btn-icon" style="width:32px; height:32px; font-size:14px; color:var(--text-secondary);" title="Move Down" onclick="app.swapAdjacentDays(${position}, ${position + 1})"><i class="fas fa-arrow-down"></i></button>`;
             }
-
             html += `<div class="card" style="${isToday ? 'border-color: var(--accent-color);' : ''}">
             <div class="flex-between" style="margin-bottom:8px;">
                 <span class="text-muted" style="font-size:12px; text-transform:uppercase; font-weight:bold;">${utils.getDayName(d.day)}</span>
@@ -915,12 +963,11 @@ const views = {
                     <div style="display:flex; gap:4px;">${arrowButtons}</div>
                 </div>
             </div>`;
-
             if (d.workouts.length === 0) {
                 html += `<div class="text-muted">Rest Day ${app.sym('rest')}</div>`;
             } else {
                 d.workouts.forEach(w => {
-                    html += `<div style="margin-top:8px; padding-top:8px; border-top:1px solid var(--border);"><div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;"><h4 style="margin:0;">${w.name}</h4>${w.isActivity ? ` <span class="text-accent" style="font-size:10px; border:1px solid var(--accent-color); padding:2px 4px; border-radius:4px;">ACTIVITY</span> ` : ''}</div>${w.exercises.map(e => `<div class="text-muted" style="font-size:14px; margin-bottom:2px;">• ${e.name} (${e.targetSets}x${e.targetReps})</div>`).join('')}</div>`;
+                    html += `<div style="margin-top:8px; padding-top:8px; border-top:1px solid var(--border);"><div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;"><h4 style="margin:0;">${w.name}</h4>${w.isActivity ?` <span class="text-accent" style="font-size:10px; border:1px solid var(--accent-color); padding:2px 4px; border-radius:4px;">ACTIVITY</span> `: ''}</div>${w.exercises.map(e =>` <div class="text-muted" style="font-size:14px; margin-bottom:2px;">• ${e.name} (${e.targetSets}x${e.targetReps})</div`).join('')}</div>`;
                 });
             }
             html += `</div>`;
@@ -928,17 +975,15 @@ const views = {
         return html;
     },
     renderProgramEditor() {
-        let html = `<div class="page-header" style="flex-direction:column; align-items:flex-start; gap:12px;"><div class="flex-between" style="width:100%;"><input class="edit-input" style="font-size:24px !important; font-weight:bold; color:var(--accent-color); border:none; background:transparent; padding:0; margin:0; flex:1; min-width:0;" value="${app.draftRoutine.name}" onchange="app.draftRoutine.name = this.value"><div style="display:flex; gap:8px; flex-shrink:0;"><button class="btn btn-sm btn-success" onclick="app.saveProgramEdit()"><i class="fas fa-save"></i> Save</button></div></div>${store.state.routines.length > 1 ? ` <button class="btn btn-sm" style="background:transparent; border:1px solid var(--accent-color); color:var(--accent-color); width:100%;" onclick="app.deleteCurrentRoutine()"><i class="fas fa-trash"></i> Delete This Split</button> ` : ''}</div>`;
+        let html = `<div class="page-header" style="flex-direction:column; align-items:flex-start; gap:12px;"><div class="flex-between" style="width:100%;"><input class="edit-input" style="font-size:24px !important; font-weight:bold; color:var(--accent-color); border:none; background:transparent; padding:0; margin:0; flex:1; min-width:0;" value="${app.draftRoutine.name}" onchange="app.draftRoutine.name = this.value"><div style="display:flex; gap:8px; flex-shrink:0;"><button class="btn btn-sm btn-success" onclick="app.saveProgramEdit()"><i class="fas fa-save"></i> Save</button></div></div>${store.state.routines.length > 1 ?` <button class="btn btn-sm" style="background:transparent; border:1px solid var(--accent-color); color:var(--accent-color); width:100%;" onclick="app.deleteCurrentRoutine()"><i class="fas fa-trash"></i> Delete This Split</button> `: ''}</div>`;
         let allWorkoutsMap = {}; store.state.routines.forEach(r => r.days.forEach(d => d.workouts.forEach(w => { if(!allWorkoutsMap[w.name]) { allWorkoutsMap[w.name] = w; } }))); let uniqueWorkouts = Object.values(allWorkoutsMap);
         [1, 2, 3, 4, 5, 6, 0].forEach((dayIndex) => {
             const dIdx = app.draftRoutine.days.findIndex(d => d.day === dayIndex); if(dIdx === -1) return; const day = app.draftRoutine.days[dIdx];
-
             html += `<div class="card" style="border: 2px dashed var(--accent-color); padding: 12px; transition: all 0.2s;">
             <div class="flex-between" style="margin-bottom: 12px;"><span class="text-muted" style="font-size:12px; text-transform:uppercase; font-weight:bold;">${utils.getDayName(day.day)}</span><select class="edit-input" style="padding: 4px 12px; font-size: 12px !important; margin: 0; background: var(--accent-color); border: none; font-weight: bold; color:var(--bg-color); border-radius:12px; width:auto; text-align:center;" onchange="app.addWorkoutToDay(${dIdx}, this.value); this.value='';"><option value="" disabled selected>+ ADD WORKOUT</option><option value="blank">📝 Blank Workout</option><option value="activity">${app.sym('activity')} Cardio / Activity</option><optgroup label="Import Saved Workout">${uniqueWorkouts.map(w => `<option value="${w.id}">${w.name}</option>`).join('')}</optgroup></select></div>`;
-
             if (day.workouts.length === 0) { html += `<div class="text-muted" style="font-size:14px; margin-bottom:8px;">Rest Day</div>`; } else {
                 day.workouts.forEach((w, wIdx) => {
-                    html += `<div style="background: var(--surface-elevated); border-radius: 8px; padding: 12px; margin-bottom: 12px;"><div class="flex-between" style="margin-bottom:8px;"><div style="display:flex; align-items:center; flex:1;"><input class="edit-input" style="font-size:16px !important; font-weight:bold; margin:0; padding:4px 8px; flex:1;" value="${w.name}" onchange="app.updateWorkoutName(${dIdx}, ${wIdx}, this.value)" placeholder="Workout Name">${w.isActivity ? ` <span class="text-accent" style="font-size:10px; margin-left:8px; border:1px solid var(--accent-color); padding:2px 4px; border-radius:4px;">ACTIVITY</span> ` : ''}</div><button class="btn-icon text-accent" style="width:28px; height:28px; flex-shrink:0; margin-left:8px;" onclick="app.removeWorkoutFromDay(${dIdx}, ${wIdx})"><i class="fas fa-trash"></i></button></div>`;
+                    html += `<div style="background: var(--surface-elevated); border-radius: 8px; padding: 12px; margin-bottom: 12px;"><div class="flex-between" style="margin-bottom:8px;"><div style="display:flex; align-items:center; flex:1;"><input class="edit-input" style="font-size:16px !important; font-weight:bold; margin:0; padding:4px 8px; flex:1;" value="${w.name}" onchange="app.updateWorkoutName(${dIdx}, ${wIdx}, this.value)" placeholder="Workout Name">${w.isActivity ?` <span class="text-accent" style="font-size:10px; margin-left:8px; border:1px solid var(--accent-color); padding:2px 4px; border-radius:4px;">ACTIVITY</span> `: ''}</div><button class="btn-icon text-accent" style="width:28px; height:28px; flex-shrink:0; margin-left:8px;" onclick="app.removeWorkoutFromDay(${dIdx}, ${wIdx})"><i class="fas fa-trash"></i></button></div>`;
                     w.exercises.forEach((ex, eIdx) => {
                         html += `<div class="editor-exercise-row" style="background: var(--bg-color);"><div style="flex:1;"><input class="edit-input" style="font-size:16px !important; margin-bottom:4px;" placeholder="Exercise Name" value="${ex.name}" onchange="app.updateEx(${dIdx}, ${wIdx}, ${eIdx}, 'name', this.value)"><div style="display:flex; gap:8px;"><input type="number" class="edit-input" style="font-size:16px !important; margin:0;" placeholder="Sets" value="${ex.targetSets}" onchange="app.updateEx(${dIdx}, ${wIdx}, ${eIdx}, 'targetSets', this.value)"><input class="edit-input" style="font-size:16px !important; margin:0;" placeholder="Reps (e.g. 8-12)" value="${ex.targetReps}" onchange="app.updateEx(${dIdx}, ${wIdx}, ${eIdx}, 'targetReps', this.value)"></div><input class="edit-input" style="font-size:14px !important; margin-top:8px; margin-bottom:0;" placeholder="Muscles (e.g. Quads, Hamstrings)" value="${(ex.muscles || [ex.muscle || 'Other']).join(', ')}" onchange="app.updateEx(${dIdx}, ${wIdx}, ${eIdx}, 'muscles', this.value.split(',').map(s=>s.trim()))"></div><div class="editor-controls" style="display:flex; flex-direction:column; gap:4px;"><button class="btn-icon" style="background:var(--surface-color); border:1px solid var(--border); border-radius:4px; height:36px; color:var(--text-secondary);" onclick="app.moveEx(${dIdx}, ${wIdx}, ${eIdx}, -1)"><i class="fas fa-chevron-up"></i></button><button class="btn-icon" style="background:var(--surface-color); border:1px solid var(--border); border-radius:4px; height:36px; color:var(--text-secondary);" onclick="app.moveEx(${dIdx}, ${wIdx}, ${eIdx}, 1)"><i class="fas fa-chevron-down"></i></button><button class="btn-icon text-accent" style="background:var(--surface-color); border:1px solid var(--border); border-radius:4px; height:36px;" onclick="app.deleteEx(${dIdx}, ${wIdx}, ${eIdx})"><i class="fas fa-times"></i></button></div></div>`;
                     });
@@ -1019,12 +1064,11 @@ const views = {
         let hyperHtml = `<div class="card" style="background:var(--surface-color); border:1px solid var(--info-dim);"><h3 style="margin:0; font-size:14px; margin-bottom:12px;"><i class="fas fa-bullseye text-info"></i> Weekly Hypertrophy Target</h3><p class="text-muted" style="font-size:11px; margin-bottom:12px;">Science recommends hitting 10 - 20 hard sets per muscle group each week to maximize muscle growth.</p><div style="display:flex; flex-direction:column; gap:8px;">`;
         HYPERTROPHY_GROUPS.forEach(m => { let sets = weekSets[m] || 0; let pct = (sets / 20) * 100; if (pct > 100) pct = 100; let color = sets >= 10 ? 'var(--success)' : 'var(--info)'; hyperHtml += `<div class="flex-between" style="font-size:12px; margin-bottom:2px;"><span style="font-weight:bold;">${m}</span><span class="text-muted">${sets} / 10-20 sets</span></div><div class="progress-bg" style="height:6px; margin:0;"><div class="progress-fill" style="width:${pct}%; background:${color};"></div></div>`; }); hyperHtml += `</div></div>`;
         html += qualityHtml + hyperHtml;
-        
-        // --- NEW BODYWEIGHT TREND MA COMPONENT LOGIC ---
+
         let goal = store.state.settings.weightGoal || 'maintaining';
         const sortedBw = store.state.history.bodyweight.filter(e => !isNaN(parseFloat(e.weight))).sort((a,b) => new Date(b.date) - new Date(a.date));
         let trendHtml = `<span style="font-size:12px; color:var(--text-secondary);"><i class="fas fa-info-circle"></i> Log 6+ days for 3-day MA trend</span>`;
-        
+
         if (sortedBw.length >= 6) {
             const avg1 = (parseFloat(sortedBw[0].weight) + parseFloat(sortedBw[1].weight) + parseFloat(sortedBw[2].weight)) / 3;
             const avg2 = (parseFloat(sortedBw[3].weight) + parseFloat(sortedBw[4].weight) + parseFloat(sortedBw[5].weight)) / 3;
@@ -1037,22 +1081,25 @@ const views = {
             const icon = diff > 0 ? 'fa-arrow-trend-up' : 'fa-arrow-trend-down';
             trendHtml = `<span style="background:var(--surface-elevated); border:1px solid ${color}; color:${color}; padding:4px 8px; border-radius:8px; font-weight:bold; font-size:12px;"><i class="fas ${icon}"></i> ${sign}${diff.toFixed(1)}kg (3d MA)</span>`;
         }
-
+        
+        // CALORIES AND BODYWEIGHT GRAPH
         html += `<div class="card" style="background: linear-gradient(145deg, var(--bw-bg1), var(--bw-bg2)); border-color: var(--warning); box-shadow: 0 4px 16px var(--warning-dim);">
             <div class="flex-between" style="margin-bottom: 12px;">
-                <h2 style="margin:0; color:var(--warning); font-style:italic;">${app.sym('bw')} BODYWEIGHT</h2>
+                <h2 style="margin:0; color:var(--warning); font-style:italic;">${app.sym('bw')} BODYWEIGHT & CALORIES</h2>
                 <select class="edit-input" style="width:auto; margin:0; padding:4px 8px; font-size:12px !important; font-weight:bold; background:var(--surface-elevated); color:var(--text-primary); border:1px solid var(--border);" onchange="store.state.settings.weightGoal = this.value; store.save(); app.navigate('progress');">
                     <option value="cutting" ${goal==='cutting'?'selected':''}>📉 Cutting</option>
                     <option value="maintaining" ${goal==='maintaining'?'selected':''}>⚖️ Maintaining</option>
                     <option value="gaining" ${goal==='gaining'?'selected':''}>📈 Gaining</option>
                 </select>
             </div>
-            <div style="margin-bottom: 16px;">${trendHtml}</div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 16px;">
+                ${trendHtml}
+                <span class="text-muted" style="font-size:10px;"><i class="fas fa-square" style="color:rgba(0,122,255,0.4)"></i> Daily Caloric Intake</span>
+            </div>
             <div style="background:var(--surface-color); padding: 12px; border-radius: calc(var(--card-radius) - 4px); border: 1px solid var(--warning-dim);">
                 <canvas id="bwTimeChart"></canvas>
             </div>
         </div>`;
-
         let volTableHtml = `<div class="card" style="margin-bottom:16px; background:var(--surface-color); border:1px solid var(--border); overflow-x:auto;">
             <h3 style="font-size:14px; margin-bottom:12px; white-space:nowrap;"><i class="fas fa-table text-accent"></i> 4-Week Muscle Volume (kg)</h3>
             <table style="width:100%; border-collapse:collapse; font-size:11px; text-align:right;"><thead><tr style="color:var(--text-secondary); border-bottom:1px solid var(--border);"><th style="text-align:left; padding:6px 4px;">Muscle</th><th style="padding:6px 4px;">W-3</th><th style="padding:6px 4px;">W-2</th><th style="padding:6px 4px;">W-1</th><th style="padding:6px 4px;">Current</th><th style="padding:6px 4px;">Trend</th></tr></thead><tbody>`;
@@ -1099,6 +1146,7 @@ const views = {
         const getXScale = (unit = 'day') => { let scale = { type: 'time', time: { unit: unit, displayFormats: { day: 'MMM d', week: 'MMM d', month: 'MMM yyyy' }, tooltipFormat: 'MMM d, yyyy' }, grid: { display: false, color: colorGrid }, ticks: { font: {family: ff}, color: colorTextSec, maxTicksLimit: 6 } }; if (minTime) scale.min = minTime; scale.max = now + 86400000; return scale; };
         const buildMADataset = (label, data, color) => ({ label: label, data: data, borderColor: color, backgroundColor: 'transparent', borderDash: [5, 5], pointRadius: 0, pointHoverRadius: 0, tension: 0.4, borderWidth: 2 });
         const buildBaseDataset = (label, data, color) => ({ label: label, data: data, borderColor: color, backgroundColor: color, tension: 0.3, borderWidth: 2, spanGaps: true });
+        
         const e1rmCtx = document.getElementById('e1rmChart');
         if(e1rmCtx) {
             if(window.e1rmChartInst) window.e1rmChartInst.destroy(); const e1Data = utils.getE1RMHistory(); const mapE1 = (arr) => arr.map(d => ({ x: d.ts, y: d.e1rm })); let datasets = [];
@@ -1107,13 +1155,37 @@ const views = {
             if(e1Data.deadlift.length > 0) { datasets.push(buildBaseDataset('Deadlift', mapE1(e1Data.deadlift), colorSuccess)); datasets.push(buildMADataset('Deadlift (MA)', utils.calculateSMA(mapE1(e1Data.deadlift), 3), colorSuccess)); }
             window.e1rmChartInst = new Chart(e1rmCtx, { type: 'line', data: { datasets: datasets }, options: { responsive: true, plugins: { legend: { position: 'top', labels: { color: colorTextSec, boxWidth: 12, font: {family: ff}, filter: function(item, chart) { return !item.text.includes('(MA)'); } } } }, scales: { y: { grid: { color: colorGrid }, ticks: {font: {family: ff}, color: colorTextSec} }, x: getXScale('day') } } });
         }
+        
         const bwCtx = document.getElementById('bwTimeChart');
         if(bwCtx) {
             if(window.bwChartInst) window.bwChartInst.destroy();
-            const rawBw = store.state.history.bodyweight.map(e => ({ x: new Date(e.date).getTime(), y: parseFloat(e.weight) })).filter(e => !isNaN(e.y)).sort((a,b) => a.x - b.x); let datasets = [];
-            if (rawBw.length > 0) { datasets.push(buildBaseDataset('Bodyweight (kg)', rawBw, colorWarning)); datasets.push(buildMADataset('Bodyweight (MA)', utils.calculateSMA(rawBw, 5), colorWarning)); }
-            window.bwChartInst = new Chart(bwCtx, { type: 'line', data: { datasets: datasets }, options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { grid: { color: colorGrid }, ticks: {font: {family: ff}, color: colorTextSec} }, x: getXScale('day') } } });
+            const rawBw = store.state.history.bodyweight.map(e => ({ x: new Date(e.date).getTime(), y: parseFloat(e.weight) })).filter(e => !isNaN(e.y)).sort((a,b) => a.x - b.x); 
+            // DUal Axis Calorie Implementation
+            const calDataRaw = store.state.history.nutrition.map(e => ({ x: new Date(e.date).getTime(), y: e.cal })).filter(e => e.y > 0).sort((a,b) => a.x - b.x);
+            let datasets = [];
+            if(calDataRaw.length > 0) {
+                datasets.push({
+                    label: 'Calories (kcal)', data: calDataRaw, type: 'bar', yAxisID: 'y1',
+                    backgroundColor: 'rgba(0, 122, 255, 0.4)', borderRadius: 4, barThickness: 'flex'
+                });
+            }
+            if (rawBw.length > 0) { 
+                datasets.push({ label: 'Bodyweight (kg)', data: rawBw, yAxisID: 'y', borderColor: colorWarning, backgroundColor: colorWarning, tension: 0.3, borderWidth: 2, spanGaps: true }); 
+                datasets.push({ label: 'Bodyweight (MA)', data: utils.calculateSMA(rawBw, 5), yAxisID: 'y', borderColor: colorWarning, borderDash: [5, 5], pointRadius: 0, tension: 0.4, borderWidth: 2 }); 
+            }
+            window.bwChartInst = new Chart(bwCtx, { 
+                type: 'line', data: { datasets: datasets }, 
+                options: { 
+                    responsive: true, plugins: { legend: { display: false } }, 
+                    scales: { 
+                        x: getXScale('day'),
+                        y: { type: 'linear', position: 'left', grid: { color: colorGrid }, ticks: {font: {family: ff}, color: colorTextSec} },
+                        y1: { type: 'linear', position: 'right', min: 0, grid: { drawOnChartArea: false }, ticks: {font: {family: ff}, color: '#007aff', callback: function(value) { return value + ' kcal'; }} }
+                    } 
+                } 
+            });
         }
+        
         const volCtx = document.getElementById('workoutTimeChart');
         if(volCtx) {
             if(window.volChartInst) window.volChartInst.destroy();
@@ -1125,6 +1197,7 @@ const views = {
         }
     }
 };
+
 const app = {
     isEditingProgram: false, viewingRoutineId: null, draftRoutine: null, activeDataTab: null, customDraftTitle: '', draftChallenge: null, currentView: 'home', editingPastWorkoutId: null, draftPastWorkout: null, challengeOffset: 0,
     activeMealType: 'Breakfast', mealSearchQuery: '',
@@ -1136,7 +1209,7 @@ const app = {
     renderCharts() { views.renderCharts(); },
     addWater(amount) { const todayStr = utils.getLocalISODate(new Date()); let nutEntry = store.state.history.nutrition.find(n => utils.getLocalISODate(n.date) === todayStr); if (!nutEntry) { nutEntry = { date: todayStr + 'T12:00:00', cal: 0, pro: 0, car: 0, fat: 0, loggedMeals: [], waterLog: [] }; store.state.history.nutrition.push(nutEntry); } if (!nutEntry.waterLog) nutEntry.waterLog = []; nutEntry.waterLog.push({ id: utils.generateId(), amount: amount, ts: Date.now() }); store.save(); this.navigate('nutrition'); },
     undoWater() { const todayStr = utils.getLocalISODate(new Date()); let nutEntry = store.state.history.nutrition.find(n => utils.getLocalISODate(n.date) === todayStr); if (nutEntry && nutEntry.waterLog && nutEntry.waterLog.length > 0) { nutEntry.waterLog.pop(); store.save(); this.navigate('nutrition'); } },
-    showStartOptions() { const activeRoutine = utils.getActiveRoutine(); const modal = document.getElementById('start-workout-modal'); let workoutsHtml = ''; [1, 2, 3, 4, 5, 6, 0].forEach(dayIndex => { const d = activeRoutine.days.find(x => x.day === dayIndex); if (d && d.workouts && d.workouts.length > 0) { d.workouts.forEach(w => { workoutsHtml += `<div class="card" style="border-color: var(--accent-color); cursor:pointer; margin-bottom:8px;" onclick="app.startWorkoutById('${w.id}')"><div class="flex-between"><h3 style="margin:0;">${w.name}</h3><i class="fas fa-play text-accent"></i></div><p class="text-muted" style="margin-top:4px; font-size:12px;">${utils.getDayName(d.day)} • ${w.isActivity ? 'Cardio / Activity' :` ${w.exercises.length} exerc`}</p></div>`; }); } }); let html = `<div class="page-header"><button class="btn btn-sm btn-icon" onclick="document.getElementById('start-workout-modal').style.display='none'"><i class="fas fa-times"></i></button><h2 style="margin:0; font-size:18px;">Start Session</h2><div style="width:36px;"></div></div><div style="padding: 16px; padding-bottom: 80px;"><h3 style="margin-bottom:12px; color:var(--text-secondary); font-size:14px; text-transform:uppercase;">Select Workout from Split</h3>${workoutsHtml}<div class="card" style="border: 2px dashed var(--border); cursor:pointer; text-align:center; padding: 16px; margin-top:16px;" onclick="app.logRestDay()"><h4 style="margin:0;">Log Rest Day ${app.sym('rest')}</h4></div><h3 style="margin-top:24px; margin-bottom:12px; color:var(--text-secondary); font-size:14px; text-transform:uppercase;">Custom Session</h3><div style="display:flex; flex-direction:column; gap:12px;"><button class="btn" style="background:var(--surface-elevated); font-size:16px; justify-content:flex-start; padding: 16px;" onclick="app.customFlow('B')"><span style="margin-right:12px; width:20px;">🔀</span> Mix Custom Exercises</button></div></div>`; modal.innerHTML = html; modal.style.display = 'flex'; },
+    showStartOptions() { const activeRoutine = utils.getActiveRoutine(); const modal = document.getElementById('start-workout-modal'); let workoutsHtml = ''; [1, 2, 3, 4, 5, 6, 0].forEach(dayIndex => { const d = activeRoutine.days.find(x => x.day === dayIndex); if (d && d.workouts && d.workouts.length > 0) { d.workouts.forEach(w => { workoutsHtml += `<div class="card" style="border-color: var(--accent-color); cursor:pointer; margin-bottom:8px;" onclick="app.startWorkoutById('${w.id}')"><div class="flex-between"><h3 style="margin:0;">${w.name}</h3><i class="fas fa-play text-accent"></i></div><p class="text-muted" style="margin-top:4px; font-size:12px;">${utils.getDayName(d.day)} • ${w.isActivity ? 'Cardio / Activity' :` ${w.exercises.length} exer`}</p></div>`; }); } }); let html = `<div class="page-header"><button class="btn btn-sm btn-icon" onclick="document.getElementById('start-workout-modal').style.display='none'"><i class="fas fa-times"></i></button><h2 style="margin:0; font-size:18px;">Start Session</h2><div style="width:36px;"></div></div><div style="padding: 16px; padding-bottom: 80px;"><h3 style="margin-bottom:12px; color:var(--text-secondary); font-size:14px; text-transform:uppercase;">Select Workout from Split</h3>${workoutsHtml}<div class="card" style="border: 2px dashed var(--border); cursor:pointer; text-align:center; padding: 16px; margin-top:16px;" onclick="app.logRestDay()"><h4 style="margin:0;">Log Rest Day ${app.sym('rest')}</h4></div><h3 style="margin-top:24px; margin-bottom:12px; color:var(--text-secondary); font-size:14px; text-transform:uppercase;">Custom Session</h3><div style="display:flex; flex-direction:column; gap:12px;"><button class="btn" style="background:var(--surface-elevated); font-size:16px; justify-content:flex-start; padding: 16px;" onclick="app.customFlow('B')"><span style="margin-right:12px; width:20px;">🔀</span> Mix Custom Exercises</button></div></div>`; modal.innerHTML = html; modal.style.display = 'flex'; },
     startWorkoutById(id) { if (store.state.activeSession) { if (!confirm("You have a workout in progress. Discard it to start a new one?")) return; workoutEngine.discard(true); } const activeRoutine = utils.getActiveRoutine(); let workoutToStart = null; activeRoutine.days.forEach(d => { d.workouts.forEach(w => { if (w.id === id) workoutToStart = w; }); }); if (workoutToStart) { document.getElementById('start-workout-modal').style.display = 'none'; workoutEngine.start(JSON.parse(JSON.stringify(workoutToStart))); } },
     logRestDay() { if (store.state.activeSession) { if (!confirm("Discard current workout to log a rest day?")) return; workoutEngine.discard(true); } document.getElementById('start-workout-modal').style.display = 'none'; const reason = prompt(`Log Rest Day! ${app.sym('rest')} (e.g. Recovering):`, "Rest"); if(reason !== null) { store.addWorkout({ id: utils.generateId(), date: new Date().toISOString(), name: `Rest Day - ${reason}`, isSkipped: true, duration: 0, exercises: [] }); app.navigate('home'); } },
     customFlow(type) { document.getElementById('start-workout-modal').style.display = 'none'; const title = prompt("Enter Title for Custom Workout:", "Custom Session"); if(!title) return; this.customDraftTitle = "Custom Workout - " + title; this.navigate('custom-b'); },
@@ -1149,14 +1222,11 @@ const app = {
     savePastWorkout() { const idx = store.state.history.workouts.findIndex(w => w.id === this.editingPastWorkoutId); if (idx > -1) { store.state.history.workouts[idx] = this.draftPastWorkout; store.save(); } this.editingPastWorkoutId = null; this.draftPastWorkout = null; this.navigate('data'); },
     editEntry(type, date, field, val) { if(type === 'bodyweight') store.updateBodyweight(date, val); else if (type === 'nutrition') store.updateNutrition(date, field, val); this.navigate('data'); }, deleteEntry(type, date) { if(confirm("Delete this entry forever?")) { store.deleteEntry(type, date); this.navigate('data'); } }, toggleDataTab(tabName) { this.activeDataTab = (this.activeDataTab === tabName) ? null : tabName; this.navigate('data'); }, resetData() { if(confirm("WARNING: This will delete all history and reset the app. Are you sure?")) { localStorage.removeItem('irontrack_state'); location.reload(); } },
     exportData() { const dataStr = JSON.stringify(store.state, null, 2); const blob = new Blob([dataStr], { type: "application/json" }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `IronTrack_Backup_${utils.getLocalISODate(new Date())}.json`; a.click(); URL.revokeObjectURL(url); }, importData(event) { const file = event.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = (e) => { try { const importedState = JSON.parse(e.target.result); if (importedState && importedState.history) { store.state = store.migrate(importedState); store.save(); alert("Data imported successfully! 🚀"); location.reload(); } else { alert("Invalid backup file."); } } catch (error) { alert("Error reading file."); } }; reader.readAsText(file); },
-
     viewRoutine(id) { this.viewingRoutineId = id; this.isEditingProgram = false; this.navigate('workout-detail'); },
     setRoutineActive(id) { store.state.activeRoutineId = id; store.save(); this.navigate('workout-detail'); },
     createNewRoutine() { const name = prompt("Enter name for new split:", "New Split"); if (!name) return; const newRoutine = { id: utils.generateId(), name: name, days: [1,2,3,4,5,6,0].map(d => ({ day: d, workouts: [] })) }; store.state.routines.push(newRoutine); store.state.activeRoutineId = newRoutine.id; store.save(); this.viewRoutine(newRoutine.id); },
     deleteCurrentRoutine() { if(store.state.routines.length <= 1) { alert("You must have at least one routine."); return; } if(confirm("Delete this routine permanently?")) { store.state.routines = store.state.routines.filter(r => r.id !== this.draftRoutine.id); store.state.activeRoutineId = store.state.routines[0].id; this.isEditingProgram = false; store.save(); this.navigate('workout'); } },
-
     toggleProgramEdit() { const r = store.state.routines.find(x => x.id === this.viewingRoutineId); this.draftRoutine = JSON.parse(JSON.stringify(r)); this.isEditingProgram = true; this.navigate('workout-detail'); },
-
     saveProgramEdit() {
         this.draftRoutine.days.forEach(d => d.workouts.forEach(w => w.exercises.forEach(e => { e.targetSets = parseInt(e.targetSets)||1; })));
         const idx = store.state.routines.findIndex(r => r.id === this.draftRoutine.id);
@@ -1165,34 +1235,24 @@ const app = {
         this.isEditingProgram = false;
         this.navigate('workout-detail');
     },
-
     /* NEW: Button-based Mobile Day Swapper */
     swapAdjacentDays(pos1, pos2) {
         const order = [1, 2, 3, 4, 5, 6, 0];
         if(pos1 < 0 || pos1 > 6 || pos2 < 0 || pos2 > 6) return;
-
         const day1 = order[pos1];
         const day2 = order[pos2];
-
         const r = store.state.routines.find(x => x.id === this.viewingRoutineId);
         if(!r) return;
-
         let d1 = r.days.find(d => d.day === day1);
         let d2 = r.days.find(d => d.day === day2);
-
-        // Ensure both day objects exist
         if(!d1) { d1 = { day: day1, workouts: [] }; r.days.push(d1); }
         if(!d2) { d2 = { day: day2, workouts: [] }; r.days.push(d2); }
-
-        // Swap workouts between the fixed days
         const temp = d1.workouts;
         d1.workouts = d2.workouts;
         d2.workouts = temp;
-
         store.save();
         this.navigate('workout-detail');
     },
-
     addWorkoutToDay(dIdx, templateId) { if (!templateId) return; let newWorkout = { id: utils.generateId(), name: 'New Workout', exercises: [] }; if (templateId === 'activity') { newWorkout.name = 'Morning Cardio'; newWorkout.isActivity = true; } else if (templateId !== 'blank') { let found = null; store.state.routines.forEach(r => r.days.forEach(d => d.workouts.forEach(w => { if(w.id === templateId) found = w; }))); if (found) { newWorkout.name = found.name; newWorkout.isActivity = found.isActivity || false; newWorkout.exercises = JSON.parse(JSON.stringify(found.exercises)); } } this.draftRoutine.days[dIdx].workouts.push(newWorkout); this.navigate('workout-detail'); }, removeWorkoutFromDay(dIdx, wIdx) { if(confirm("Remove this workout?")) { this.draftRoutine.days[dIdx].workouts.splice(wIdx, 1); this.navigate('workout-detail'); } }, updateWorkoutName(dIdx, wIdx, val) { this.draftRoutine.days[dIdx].workouts[wIdx].name = val; }, addEx(dIdx, wIdx) { this.draftRoutine.days[dIdx].workouts[wIdx].exercises.push({ name: 'New Exercise', targetSets: 3, targetReps: '8-12', muscle: 'Other' }); this.navigate('workout-detail'); }, updateEx(dIdx, wIdx, eIdx, field, val) { this.draftRoutine.days[dIdx].workouts[wIdx].exercises[eIdx][field] = val; }, moveEx(dIdx, wIdx, eIdx, dir) { const arr = this.draftRoutine.days[dIdx].workouts[wIdx].exercises; if(eIdx+dir < 0 || eIdx+dir >= arr.length) return; const temp = arr[eIdx]; arr[eIdx] = arr[eIdx+dir]; arr[eIdx+dir] = temp; this.navigate('workout-detail'); }, deleteEx(dIdx, wIdx, eIdx) { this.draftRoutine.days[dIdx].workouts[wIdx].exercises.splice(eIdx, 1); this.navigate('workout-detail'); },
     editChallenge() { const c = store.state.challenge; if (c && c.isActive) { this.draftChallenge = JSON.parse(JSON.stringify(c)); } else { const start = utils.getLocalISODate(new Date()); const endD = new Date(); endD.setDate(endD.getDate() + 74); const end = utils.getLocalISODate(endD); this.draftChallenge = { isActive: true, title: '', startDate: start, endDate: end, goals: [] }; } this.navigate('challenge-edit'); }, addChallengeGoal(type) { let g = { id: utils.generateId(), type, createdAt: utils.getLocalISODate(new Date()) }; if (type === 'workout') g.count = 1; if (type === 'nutrition') { g.targetType = 'none'; g.calories = 2500; } if (type === 'water' || type === 'reading') g.target = '10 Pages'; if (type === 'custom') g.title = 'New Goal'; this.draftChallenge.goals.push(g); this.navigate('challenge-edit'); }, removeChallengeGoal(idx) { this.draftChallenge.goals.splice(idx, 1); this.navigate('challenge-edit'); }, saveChallenge() { if (!this.draftChallenge.title || this.draftChallenge.goals.length === 0) return; store.state.challenge = this.draftChallenge; store.save(); this.navigate('challenge'); }, endChallenge() { if(confirm("End/Delete this challenge?")) { store.state.challenge = { isActive: false, title: '', startDate: '', endDate: '', goals: [] }; store.save(); this.navigate('challenge'); } },
     changeChallengeDay(dir) { this.challengeOffset += dir; if(this.challengeOffset > 0) this.challengeOffset = 0; this.navigate('challenge'); },
@@ -1214,7 +1274,7 @@ const app = {
     clearLegacyNutrition(dateStr) { let nutEntry = store.state.history.nutrition.find(n => utils.getLocalISODate(n.date) === dateStr); if (nutEntry) { nutEntry.cal = 0; nutEntry.pro = 0; nutEntry.car = 0; nutEntry.fat = 0; store.save(); this.navigate('nutrition'); } },
     showMealSearch(type) { this.activeMealType = type; this.mealSearchQuery = ''; const modal = document.getElementById('meal-search-modal'); modal.innerHTML = `<div class="page-header"> <button class="btn btn-sm btn-icon" onclick="document.getElementById('meal-search-modal').style.display='none'"><i class="fas fa-arrow-left"></i></button> <h2 style="margin:0; font-size:18px;">Add ${this.activeMealType}</h2> <div style="width:36px;"></div> </div> <div style="padding: 16px; padding-bottom: 80px;"> <input type="text" class="edit-input" style="width:100%; margin-bottom: 16px; text-align:left; font-size:18px !important; padding:12px;" placeholder="Search your meals..." oninput="app.mealSearchQuery=this.value; app.updateMealSearchList()"> <button class="btn btn-primary" style="margin-bottom: 24px;" onclick="app.showMealCreate()"><i class="fas fa-plus"></i> Create New Meal</button> <h3 style="font-size:14px; margin-bottom:12px; color:var(--text-secondary);">Saved Meals</h3> <div id="meal-list-container"></div> </div>` ; modal.style.display = 'flex'; this.updateMealSearchList(); },
     updateMealSearchList() { const container = document.getElementById('meal-list-container'); if (!container) return; let meals = store.state.savedMeals; if (this.mealSearchQuery) { const q = this.mealSearchQuery.toLowerCase(); meals = meals.filter(m => m.name.toLowerCase().includes(q)); } meals.sort((a, b) => (b.useCount?.[this.activeMealType] || 0) - (a.useCount?.[this.activeMealType] || 0)); container.innerHTML = meals.map(m => `<div class="data-row flex-between" style="padding:12px; background:var(--surface-color); border-radius:8px; border:1px solid var(--border); margin-bottom:8px; cursor:pointer;"> <div onclick="app.logSavedMeal('${m.id}')" style="flex:1;"> <div style="font-weight:bold; color:var(--text-primary); font-size: 16px;">${m.name}</div> <div class="text-muted" style="font-size:12px; margin-top:2px;">${Math.round(m.cal)} kcal • P:${Math.round(m.pro)}g C:${Math.round(m.car)}g F:${Math.round(m.fat)}g</div> </div> <div style="display:flex; gap:8px;"> <button class="btn-icon" style="background:var(--surface-elevated); border:1px solid var(--border); border-radius:50%;" onclick="app.showMealCreate('${m.id}')"><i class="fas fa-pen"></i></button> <button class="btn-icon text-accent" style="background:var(--surface-elevated); border:1px solid var(--border); border-radius:50%;" onclick="app.logSavedMeal('${m.id}')"><i class="fas fa-plus"></i></button> </div> </div>` ).join('') || '<p class="text-muted" style="text-align:center; padding:20px; font-style:italic;">No meals found. Create one above!</p>'; },
-    showMealCreate(mealId = null) { document.getElementById('meal-search-modal').style.display = 'none'; const modal = document.getElementById('meal-create-modal'); let m = { name: '', cal: '', pro: '', car: '', fat: '' }; let isEdit = false; if (mealId) { const found = store.state.savedMeals.find(x => x.id === mealId); if (found) { m = found; isEdit = true; } } modal.innerHTML = `<div class="page-header"> <button class="btn btn-sm btn-icon" onclick="document.getElementById('meal-create-modal').style.display='none'; document.getElementById('meal-search-modal').style.display='flex';"><i class="fas fa-arrow-left"></i></button> <h2 style="margin:0; font-size:18px;">${isEdit ? 'Edit Meal' : 'Create Meal'}</h2> <div style="width:36px;"> ${isEdit ? ` <button class="btn-icon text-pending" onclick="app.deleteSavedMeal('${mealId}')"><i class="fas fa-trash"></i></button> ` : ''} </div> </div> <div style="padding: 16px;"> <label class="text-muted" style="font-size:12px;">Meal Name</label> <input type="text" id="new-meal-name" class="edit-input" style="text-align:left; font-size: 18px !important; padding: 12px;" placeholder="e.g. Chicken & Rice" value="${m.name}"> <div class="card" style="margin-top: 16px;"> <div style="display:flex; flex-direction:column; gap:12px;"> <div> <label class="text-muted" style="font-size:12px;">Calories (kcal)</label> <input type="number" id="new-meal-cal" class="edit-input" style="font-size:24px !important; font-weight:bold; height:50px;" placeholder="kcal" value="${m.cal !== '' ? m.cal : ''}"> </div> <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:12px;"> <div> <label class="text-info" style="font-size:12px; font-weight:bold;">Protein (g)</label> <input type="number" id="new-meal-pro" class="edit-input" placeholder="0" value="${m.pro !== '' ? m.pro : ''}"> </div> <div> <label class="text-warning" style="font-size:12px; font-weight:bold;">Carbs (g)</label> <input type="number" id="new-meal-car" class="edit-input" placeholder="0" value="${m.car !== '' ? m.car : ''}"> </div> <div> <label class="text-pending" style="font-size:12px; font-weight:bold;">Fats (g)</label> <input type="number" id="new-meal-fat" class="edit-input" placeholder="0" value="${m.fat !== '' ? m.fat : ''}"> </div> </div> </div> </div> <button class="btn btn-success" style="margin-top:16px;" onclick="app.saveNewMeal('${isEdit ? mealId : ''}')"><i class="fas fa-save"></i> Save ${!isEdit ? ` & Log to ${this.activeMealType} ` : ''}</button> </div>` ; modal.style.display = 'flex'; },
+    showMealCreate(mealId = null) { document.getElementById('meal-search-modal').style.display = 'none'; const modal = document.getElementById('meal-create-modal'); let m = { name: '', cal: '', pro: '', car: '', fat: '' }; let isEdit = false; if (mealId) { const found = store.state.savedMeals.find(x => x.id === mealId); if (found) { m = found; isEdit = true; } } modal.innerHTML = `<div class="page-header"> <button class="btn btn-sm btn-icon" onclick="document.getElementById('meal-create-modal').style.display='none'; document.getElementById('meal-search-modal').style.display='flex';"><i class="fas fa-arrow-left"></i></button> <h2 style="margin:0; font-size:18px;">${isEdit ? 'Edit Meal' : 'Create Meal'}</h2> <div style="width:36px;"> ${isEdit ?` <button class="btn-icon text-pending" onclick="app.deleteSavedMeal('${mealId}')"><i class="fas fa-trash"></i></button> `: ''} </div> </div> <div style="padding: 16px;"> <label class="text-muted" style="font-size:12px;">Meal Name</label> <input type="text" id="new-meal-name" class="edit-input" style="text-align:left; font-size: 18px !important; padding: 12px;" placeholder="e.g. Chicken & Rice" value="${m.name}"> <div class="card" style="margin-top: 16px;"> <div style="display:flex; flex-direction:column; gap:12px;"> <div> <label class="text-muted" style="font-size:12px;">Calories (kcal)</label> <input type="number" id="new-meal-cal" class="edit-input" style="font-size:24px !important; font-weight:bold; height:50px;" placeholder="kcal" value="${m.cal !== '' ? m.cal : ''}"> </div> <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:12px;"> <div> <label class="text-info" style="font-size:12px; font-weight:bold;">Protein (g)</label> <input type="number" id="new-meal-pro" class="edit-input" placeholder="0" value="${m.pro !== '' ? m.pro : ''}"> </div> <div> <label class="text-warning" style="font-size:12px; font-weight:bold;">Carbs (g)</label> <input type="number" id="new-meal-car" class="edit-input" placeholder="0" value="${m.car !== '' ? m.car : ''}"> </div> <div> <label class="text-pending" style="font-size:12px; font-weight:bold;">Fats (g)</label> <input type="number" id="new-meal-fat" class="edit-input" placeholder="0" value="${m.fat !== '' ? m.fat : ''}"> </div> </div> </div> </div> <button class="btn btn-success" style="margin-top:16px;" onclick="app.saveNewMeal('${isEdit ? mealId : ''}')"><i class="fas fa-save"></i> Save ${!isEdit ?` & Log to ${this.activeMealType} `: ''}</button> </div>` ; modal.style.display = 'flex'; },
     deleteSavedMeal(mealId) { if(confirm("Delete this saved meal?")) { store.state.savedMeals = store.state.savedMeals.filter(m => m.id !== mealId); store.save(); document.getElementById('meal-create-modal').style.display='none'; this.showMealSearch(this.activeMealType); } },
     saveNewMeal(editId = '') { const name = document.getElementById('new-meal-name').value.trim(); const cal = Math.round(parseFloat(document.getElementById('new-meal-cal').value)) || 0; const pro = Math.round(parseFloat(document.getElementById('new-meal-pro').value)) || 0; const car = Math.round(parseFloat(document.getElementById('new-meal-car').value)) || 0; const fat = Math.round(parseFloat(document.getElementById('new-meal-fat').value)) || 0; if(!name) return alert("Please enter a meal name."); if (editId) { const m = store.state.savedMeals.find(x => x.id === editId); if (m) { m.name = name; m.cal = cal; m.pro = pro; m.car = car; m.fat = fat; store.save(); document.getElementById('meal-create-modal').style.display = 'none'; this.showMealSearch(this.activeMealType); } } else { const newMeal = { id: utils.generateId(), name, cal, pro, car, fat, useCount: { Breakfast:0, Lunch:0, Dinner:0, Snacks:0 } }; store.state.savedMeals.push(newMeal); store.save(); document.getElementById('meal-create-modal').style.display = 'none'; this.logSavedMeal(newMeal.id); } },
     logSavedMeal(mealId) { const meal = store.state.savedMeals.find(m => m.id === mealId); if(!meal) return; if(!meal.useCount) meal.useCount = { Breakfast:0, Lunch:0, Dinner:0, Snacks:0 }; meal.useCount[this.activeMealType] = (meal.useCount[this.activeMealType] || 0) + 1; const todayStr = utils.getLocalISODate(new Date()); let nutEntry = store.state.history.nutrition.find(n => utils.getLocalISODate(n.date) === todayStr); if (!nutEntry) { nutEntry = { date: todayStr + 'T12:00:00', cal: 0, pro: 0, car: 0, fat: 0, loggedMeals: [], waterLog:[] }; store.state.history.nutrition.push(nutEntry); } if(!nutEntry.loggedMeals) nutEntry.loggedMeals = []; nutEntry.loggedMeals.push({ logId: utils.generateId(), mealId: meal.id, name: meal.name, cal: meal.cal, pro: meal.pro, car: meal.car, fat: meal.fat, type: this.activeMealType, timestamp: Date.now() }); nutEntry.cal = Math.round((nutEntry.cal || 0) + meal.cal); nutEntry.pro = Math.round((nutEntry.pro || 0) + meal.pro); nutEntry.car = Math.round((nutEntry.car || 0) + meal.car); nutEntry.fat = Math.round((nutEntry.fat || 0) + meal.fat); store.save(); document.getElementById('meal-search-modal').style.display = 'none'; this.navigate('nutrition'); },
