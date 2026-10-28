@@ -169,8 +169,8 @@
         .r6-line-fill { position: absolute; top: 0; left: 0; height: 100%; border-radius: 4px; transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
         .r6-line-spark { position: absolute; top: 50%; transform: translate(-50%, -50%); width: 12px; height: 12px; border-radius: 50%; background: #ffffff; box-shadow: 0 0 12px 4px #ffffff; z-index: 3; }
         .r6-req-pill {
-            display: inline-block; background: #ff3b30; color: #ffffff; font-weight: 900; font-size: 13px;
-            padding: 3px 12px; transform: skewX(-15deg); box-shadow: 0 0 12px rgba(255, 59, 48, 0.55); letter-spacing: 0.5px;
+            display: inline-block; background: #34c759; color: #ffffff; font-weight: 900; font-size: 13px;
+            padding: 3px 12px; transform: skewX(-15deg); box-shadow: 0 0 12px rgba(52, 199, 89, 0.55); letter-spacing: 0.5px;
         }
         .r6-req-pill span { display: inline-block; transform: skewX(15deg); }
         .rp-contrib-card {
@@ -412,7 +412,6 @@ const utils = {
         let nextTierName = 'Beginner';
         let nextTargetKg = Math.round(anchors[0]);
         let barFill = 0;
-
         if (bestE1RM > 0) {
             if (bestE1RM <= anchors[0]) {
                 topPercent = 99 - ((bestE1RM / anchors[0]) * (99 - topPcts[0]));
@@ -457,8 +456,8 @@ const utils = {
         if (g.type === 'weight') return `Log Bodyweight`;
         if (g.type === 'nutrition') {
             let l = `Track Nutrition`;
-            if (g.targetType === 'min') l += ` (Min ${g.calories} kcal)`;
-            else if (g.targetType === 'max') l += ` (Max ${g.calories} kcal)`;
+            if (g.targetType === 'min') l += `(Min ${g.calories} kcal)`;
+            else if (g.targetType === 'max') l += `(Max ${g.calories} kcal)`;
             return l;
         }
         if (g.type === 'cardio') return `Daily Walk 🚶‍♂️`;
@@ -562,7 +561,6 @@ const utils = {
         const mon = utils.getMonday(now);
         const activeRoutine = utils.getActiveRoutine();
         const targetWorkouts = Math.max(1, activeRoutine.days.filter(d => d.workouts.length > 0).length);
-
         let strengthSessions = 0;
         let activitySessions = 0;
         let cardioDays = 0;
@@ -570,7 +568,6 @@ const utils = {
         let nutDays = 0;
         let waterLiters = 0;
         let challengeTasksMet = 0;
-
         for (let d = new Date(mon); d <= now; d.setDate(d.getDate() + 1)) {
             const dateStr = utils.getLocalISODate(d);
             const workouts = store.state.history.workouts.filter(w => utils.getLocalISODate(w.date) === dateStr && !w.isSkipped);
@@ -594,7 +591,6 @@ const utils = {
                 });
             }
         }
-
         const hyper = utils.getWeeklyHypertrophyStatus(mon);
         const workoutRP = (strengthSessions * 150) + (activitySessions * 50);
         const targetWorkoutRP = targetWorkouts * 150;
@@ -605,7 +601,6 @@ const utils = {
         const challengeRP = challengeTasksMet * 30;
         const activeChallengeGoalsCount = (store.state.challenge && store.state.challenge.isActive) ? store.state.challenge.goals.length : 0;
         const maxChallengeWeekly = Math.max(1, activeChallengeGoalsCount * 7);
-
         const getTierStyle = (ratio) => {
             const clamped = Math.max(0, Math.min(1, ratio || 0));
             const idx = Math.min(7, Math.floor(clamped * 7.99));
@@ -616,7 +611,6 @@ const utils = {
                 pct: Math.round(clamped * 100)
             };
         };
-
         const categories = [
             {
                 id: 'hypertrophy',
@@ -680,7 +674,6 @@ const utils = {
                 ratio: Math.min(1, (waterRP + cardioRP) / 420)
             }
         ];
-
         if (activeChallengeGoalsCount > 0 || challengeRP > 0) {
             categories.push({
                 id: 'challenge',
@@ -695,7 +688,6 @@ const utils = {
                 ratio: challengeTasksMet / maxChallengeWeekly
             });
         }
-
         categories.forEach(c => {
             const st = getTierStyle(c.ratio);
             c.tierIndex = st.tierIndex;
@@ -703,7 +695,6 @@ const utils = {
             c.color = st.color;
             c.pct = st.pct;
         });
-
         return categories;
     },
     getWeeklyRP: () => {
@@ -753,23 +744,19 @@ const utils = {
             minRP: 2100,
             maxRP: 2500
         });
-
         let ladderIdx = Math.min(35, Math.floor(rp / 60));
         let championLockedByHypertrophy = false;
         if (!hyperStatus.allCompleted && ladderIdx === 35) {
             ladderIdx = 34; // Cap at Diamond I until all 7 hypertrophy targets are completed
             championLockedByHypertrophy = true;
         }
-
         const curr = ladder[ladderIdx];
         const prev = ladderIdx > 0 ? ladder[ladderIdx - 1] : null;
         const next = ladderIdx < 35 ? ladder[ladderIdx + 1] : null;
-
         let rpInDiv = rp - curr.minRP;
         let maxDivRP = 60;
         let divProgress = 0;
         let rpNeededForNext = 0;
-
         if (ladderIdx === 35) {
             divProgress = 100;
             rpInDiv = rp - 2100;
@@ -779,11 +766,10 @@ const utils = {
             rpInDiv = 60;
             rpNeededForNext = 0;
         } else {
-            rpInDiv = rp % 60;
+            rpInDiv = rp - curr.minRP;
             divProgress = (rpInDiv / 60) * 100;
-            rpNeededForNext = 60 - rpInDiv;
+            rpNeededForNext = Math.max(0, curr.maxRP - rp);
         }
-
         return {
             name: curr.name,
             division: curr.division,
@@ -867,7 +853,6 @@ const utils = {
         store.state.routines.forEach(r => r.days.forEach(d => d.workouts.forEach(w => (w.exercises||[]).forEach(ex => registerEx(ex.name, '', ex)))));
         (store.state.customExercises || []).forEach(ex => registerEx(ex.name, '', ex));
         allWorkouts.forEach(w => (w.exercises || []).forEach(ex => registerEx(ex.name, ex.variation || '', ex)));
-
         let results = [];
         Object.values(exerciseMap).forEach(item => {
             if (muscleFilter && muscleFilter !== 'All' && !item.muscles.includes(muscleFilter)) return;
@@ -1143,7 +1128,7 @@ const workoutEngine = {
     renderActiveWorkout() {
         const container = document.getElementById('active-workout-view'); if (!this.activeWorkout) return;
         const scrollEl = document.getElementById('active-workout-scroll'); const scrollTop = scrollEl ? scrollEl.scrollTop : 0;
-        let html = `<div class="workout-header-sticky" style="flex-shrink:0;"><div><input type="text" class="edit-input" style="font-size:18px !important; font-weight:bold; margin:0; padding:0; border:none; background:transparent; color:var(--text-primary); max-width:200px;" value="${this.activeWorkout.name}" onchange="workoutEngine.activeWorkout.name=this.value; workoutEngine.sync()"></div>${!this.activeWorkout.isRest ? ` <button class="btn btn-sm btn-success" onclick="workoutEngine.finish()"><i class="fas fa-check"></i> FINISH</button> ` : ''}<button class="btn btn-sm btn-icon" onclick="workoutEngine.minimize()"><i class="fas fa-chevron-down"></i></button></div>`;
+        let html = `<div class="workout-header-sticky" style="flex-shrink:0;"><div><input type="text" class="edit-input" style="font-size:18px !important; font-weight:bold; margin:0; padding:0; border:none; background:transparent; color:var(--text-primary); max-width:200px;" value="${this.activeWorkout.name}" onchange="workoutEngine.activeWorkout.name=this.value; workoutEngine.sync()"></div>${!this.activeWorkout.isRest ? `<button class="btn btn-sm btn-success" onclick="workoutEngine.finish()"><i class="fas fa-check"></i> FINISH</button>` : ''}<button class="btn btn-sm btn-icon" onclick="workoutEngine.minimize()"><i class="fas fa-chevron-down"></i></button></div>`;
         html += `<div id="active-workout-scroll" style="flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 16px; padding-bottom: 40px;">`;
         if(this.activeWorkout.isActivity) { html += `<div style="text-align:center; padding: 60px 20px;"><div style="font-size:64px; margin-bottom:16px;">${app.sym('activity')}</div><h2>Activity in Progress</h2><p class="text-muted">Timer is running. Hit FINISH when done.</p></div>`; } else {
             html += `<button class="btn" style="background:var(--surface-color); border:1px dashed var(--accent-color); color:var(--accent-color); margin-bottom: 16px;" onclick="workoutEngine.skipWorkout()"><i class="fas fa-forward-step"></i> Skip / Log Rest Day</button>`;
@@ -1369,10 +1354,10 @@ const views = {
         <div class="card" style="text-align:center; border:1px solid ${r6Data.color}45; background: radial-gradient(circle at 50% -20%, ${r6Data.color}20 0%, var(--surface-color) 72%);">
             <h3 style="font-size:12px; margin-bottom:12px; color:var(--text-secondary); text-transform:uppercase; letter-spacing:1px;">Weekly Ranked Status</h3>
             <div style="font-size:48px; font-weight:900; line-height:1; color:${r6Data.color}; text-shadow: 0 0 20px ${r6Data.color}80; margin-bottom:14px; display:flex; justify-content:center; align-items:center; gap:16px;">
-                <i class="fas fa-shield-halved"></i>
+                ${utils.renderRankCrestSVG(r6Data.color, r6Data.division, 0.85, true)}
                 <div style="display:flex; flex-direction:column; align-items:flex-start; text-align:left;">
                     <div style="font-size:24px; letter-spacing:-0.5px; text-transform:uppercase;">${r6Data.name} ${r6Data.division}</div>
-                    <div style="font-size:11px; color:var(--text-secondary); font-weight:bold; letter-spacing:0.8px; margin-top:2px;">${r6Data.isMax ? `CHAMPION UNLOCKED (${r6Data.totalRP} RP)` : `${r6Data.rpInDiv} / ${r6Data.maxDivRP} RP • ${r6Data.totalRP} Total`}</div>
+                    <div style="font-size:11px; color:var(--text-secondary); font-weight:bold; letter-spacing:0.8px; margin-top:4px;">${r6Data.isMax ? `CHAMPION UNLOCKED (${r6Data.totalRP} RP)` : `${r6Data.rpInDiv} / ${r6Data.maxDivRP} RP • +${r6Data.rpNeededForNext} RP to Next`}</div>
                 </div>
             </div>
             <div class="progress-bg" style="height:8px; border-radius:4px; margin-top:8px; background:rgba(0,0,0,0.5);">
@@ -1398,14 +1383,12 @@ const views = {
         const prev = r6.prevRank;
         const next = r6.nextRank;
         const pct = Math.max(0, Math.min(100, r6.progress));
-
         let html = `
         <div class="page-header">
-            <button class="btn btn-sm btn-icon" onclick="app.navigate('home')"><i class="fas fa-arrow-left"></i></button>
-            <h2 style="margin:0; font-size:18px; letter-spacing:0.5px;">Ranked Points Breakdown</h2>
-            <div style="width:36px;"></div>
+            <button class="btn btn-sm btn-icon" style="flex-shrink:0;" onclick="app.navigate('home')"><i class="fas fa-arrow-left"></i></button>
+            <h2 style="margin:0; font-size:18px; letter-spacing:0.5px; flex:1; text-align:center;">Ranked Points Breakdown</h2>
+            <div style="width:36px; flex-shrink:0;"></div>
         </div>`;
-
         html += `
         <div class="r6-stage-card" style="border-color:${r6.color}60; box-shadow: 0 8px 28px rgba(0,0,0,0.45), inset 0 0 40px ${r6.color}15;">
             <div class="r6-rank-trio">
@@ -1425,7 +1408,6 @@ const views = {
                     <div style="font-size:13px; font-weight:900; font-style:italic; text-transform:uppercase; color:#ffffff; letter-spacing:0.5px;">${next ? next.fullName : 'MAX RANK'}</div>
                 </div>
             </div>
-
             <div style="display:flex; align-items:center; gap:8px; padding:0 4px;">
                 <span style="font-size:13px; font-weight:900; color:${r6.color}; font-variant-numeric:tabular-nums;">0</span>
                 <div class="r6-line-wrap" style="flex:1; margin:0;">
@@ -1434,33 +1416,29 @@ const views = {
                 </div>
                 <span style="font-size:13px; font-weight:900; color:${r6.color}; font-variant-numeric:tabular-nums;">${r6.maxDivRP}</span>
             </div>
-
             <div style="display:flex; justify-content:center; align-items:center; gap:14px; margin-top:14px;">
                 ${r6.isMax ? `
                     <div class="r6-req-pill" style="background:linear-gradient(135deg, #9d00ff, #00e5ff);"><span>CHAMPION UNLOCKED</span></div>
                     <span style="font-size:16px; font-weight:900; color:${r6.color};">${r6.totalRP} Total RP</span>
-                ` : r6.championLockedByHypertrophy ? `
+                 `: r6.championLockedByHypertrophy ?`
                     <div class="r6-req-pill" style="background:#ff9500;"><span>LOCKED: ${7 - r6.hyperCompleted} MUSCLES LEFT</span></div>
                     <span style="font-size:15px; font-weight:900; color:${r6.color};">${r6.totalRP} RP</span>
-                ` : `
-                    <div class="r6-req-pill" title="Points required to reach ${next ? next.fullName : 'Next Rank'}"><span>-${r6.rpNeededForNext} RP TO NEXT</span></div>
-                    <span style="font-size:16px; font-weight:900; color:${r6.color}; letter-spacing:0.5px;">${r6.rpInDiv} RP <span style="font-size:11px; color:var(--text-secondary); font-weight:700;">(${r6.totalRP} Wk Total)</span></span>
+                 `:`
+                    <div class="r6-req-pill" style="background:var(--success); box-shadow:0 0 12px var(--success-dim);" title="Points required to reach ${next ? next.fullName : 'Next Rank'}"><span>+${r6.rpNeededForNext} RP TO NEXT</span></div>
+                    <span style="font-size:16px; font-weight:900; color:${r6.color}; letter-spacing:0.5px;">${r6.rpInDiv} / ${r6.maxDivRP} RP <span style="font-size:11px; color:var(--text-secondary); font-weight:700;">(${r6.totalRP} Wk Total)</span></span>
                 `}
             </div>
         </div>`;
-
         html += `
         <div class="flex-between" style="margin-bottom:12px; padding:0 4px;">
             <h3 style="margin:0; font-size:12px; text-transform:uppercase; letter-spacing:1px; color:var(--text-secondary);">Weekly Point Contributions</h3>
             <span style="font-size:11px; font-weight:800; color:var(--text-secondary);">Tier Color Scaled</span>
         </div>`;
-
         categories.forEach(cat => {
             const scaleFont = 16 + Math.round(cat.tierIndex * 1.1);
             const countFont = 20 + Math.round(cat.tierIndex * 1.5);
             const borderGlow = cat.tierIndex >= 5 ? `0 0 ${10 + cat.tierIndex * 2}px ${cat.color}40` : `0 4px 12px rgba(0,0,0,0.25)`;
             const badgePulse = cat.tierIndex === 7 ? `animation: pulseTier4 1.5s infinite;` : '';
-
             html += `
             <div class="rp-contrib-card" style="background: radial-gradient(circle at 100% 0%, ${cat.color}22 0%, var(--surface-color) 70%); border: 1.5px solid ${cat.color}80; box-shadow: ${borderGlow};">
                 <div class="flex-between" style="align-items:flex-start; gap:10px;">
@@ -1499,7 +1477,6 @@ const views = {
                 </div>` : ''}
             </div>`;
         });
-
         html += `
         <div class="card" style="padding:12px 14px; background:var(--surface-elevated);">
             <div style="font-size:11px; font-weight:800; text-transform:uppercase; color:var(--text-secondary); margin-bottom:8px; letter-spacing:0.5px;">Rank Color Scale</div>
@@ -1507,7 +1484,6 @@ const views = {
                 ${RANK_NAMES.map((rn, idx) => `<span style="font-size:10px; font-weight:900; padding:3px 8px; border-radius:8px; background:${RANK_COLORS[idx]}25; border:1px solid ${RANK_COLORS[idx]}; color:${RANK_COLORS[idx]};">${rn}</span>`).join('')}
             </div>
         </div>`;
-
         return html;
     },
     renderHeatmap() {
@@ -1597,11 +1573,11 @@ const views = {
         return html;
     },
     renderChallenge() {
-        const c = store.state.challenge; if (!c || !c.isActive) { return `<div class="page-header"><button class="btn btn-sm btn-icon" onclick="app.navigate('home')"><i class="fas fa-arrow-left"></i></button><h2 style="margin:0; font-size:18px;">Goals & Challenges</h2><div style="width:36px;"></div></div><div class="card" style="text-align:center; padding:40px 20px;"><div style="font-size:48px; margin-bottom:16px;">${app.sym('cardGoal')}</div><h2>Set a New Goal</h2><p class="text-muted" style="margin-bottom:24px; font-size:14px;">Track your progress through a specific stage (like Bulking, 75 Hard, or Marathon prep) by setting specific daily streak requirements.</p><button class="btn btn-primary" onclick="app.editChallenge()"><i class="fas fa-plus"></i> Create Challenge</button></div>`; }
+        const c = store.state.challenge; if (!c || !c.isActive) { return `<div class="page-header"><button class="btn btn-sm btn-icon" style="flex-shrink:0;" onclick="app.navigate('home')"><i class="fas fa-arrow-left"></i></button><h2 style="margin:0; font-size:18px; flex:1; text-align:center;">Goals & Challenges</h2><div style="width:36px; flex-shrink:0;"></div></div><div class="card" style="text-align:center; padding:40px 20px;"><div style="font-size:48px; margin-bottom:16px;">${app.sym('cardGoal')}</div><h2>Set a New Goal</h2><p class="text-muted" style="margin-bottom:24px; font-size:14px;">Track your progress through a specific stage (like Bulking, 75 Hard, or Marathon prep) by setting specific daily streak requirements.</p><button class="btn btn-primary" onclick="app.editChallenge()"><i class="fas fa-plus"></i> Create Challenge</button></div>`; }
         const start = new Date(c.startDate + 'T00:00:00'); const end = new Date(c.endDate + 'T00:00:00'); let viewDate = new Date(); if (app.challengeOffset) viewDate.setDate(viewDate.getDate() + app.challengeOffset); viewDate.setHours(0,0,0,0);
         let viewDateStr = utils.getLocalISODate(viewDate); let todayStr = utils.getLocalISODate(new Date()); let dayTotal = Math.round((end - start) / (1000*60*60*24)) + 1; let dayCurrentTarget = Math.round((viewDate - start) / (1000*60*60*24)) + 1; let dayCurrentReal = Math.round((new Date().setHours(0,0,0,0) - start) / (1000*60*60*24)) + 1; let pct = (dayTotal > 0) ? (dayCurrentReal / dayTotal) * 100 : 0; if (pct > 100) pct = 100;
         let stats = utils.getChallengeStats();
-        let html = `<div class="page-header"><button class="btn btn-sm btn-icon" onclick="app.navigate('home')"><i class="fas fa-arrow-left"></i></button><h2 style="margin:0; font-size:18px;">Active Challenge</h2><button class="btn btn-sm btn-icon" onclick="app.editChallenge()"><i class="fas fa-pen"></i></button></div>`;
+        let html = `<div class="page-header"><button class="btn btn-sm btn-icon" style="flex-shrink:0;" onclick="app.navigate('home')"><i class="fas fa-arrow-left"></i></button><h2 style="margin:0; font-size:18px; flex:1; text-align:center;">Active Challenge</h2><button class="btn btn-sm btn-icon" style="flex-shrink:0;" onclick="app.editChallenge()"><i class="fas fa-pen"></i></button></div>`;
         html += `<div class="card"><div class="flex-between"><h2 style="font-size:24px; margin:0; color:var(--accent-color);">${c.title}</h2><div style="text-align:right;"><div style="font-size:18px; font-weight:bold; color: ${stats.successRate >= 75 ? 'var(--success)' : 'var(--warning)'};">${stats.successRate}%</div><div class="text-muted" style="font-size:10px;">SUCCESS RATE</div></div></div><div class="flex-between" style="font-size:12px; margin-bottom:12px; margin-top:8px;"><span class="text-muted">${utils.formatDateShort(new Date(c.startDate))} - ${utils.formatDateShort(new Date(c.endDate))}</span><span class="text-muted">${stats.metGoals} / ${stats.possibleGoals} tasks</span></div><div class="progress-bg"><div class="progress-fill" style="width:${pct}%"></div></div>`;
         html += `<div style="display:flex; justify-content:center; align-items:center; gap:20px; margin-top:24px; margin-bottom:8px;"><button class="btn-icon" style="width:44px; height:44px; font-size:20px;" onclick="app.changeChallengeDay(-1)"><i class="fas fa-chevron-left"></i></button><div style="text-align:center; min-width:140px;"><div style="font-size: 60px; font-weight: 900; line-height: 1; letter-spacing: -2px;">${dayCurrentTarget}<span style="color:var(--text-secondary); font-size: 32px; letter-spacing: 0;">/${dayTotal}</span></div><div class="text-accent" style="font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-top: 8px;">Day ${dayCurrentTarget} ${app.challengeOffset < 0 ? '(Past)' : ''}</div></div><button class="btn-icon" style="width:44px; height:44px; font-size:20px; ${app.challengeOffset >= 0 ? 'opacity:0.2' : ''}" onclick="app.changeChallengeDay(1)" ${app.challengeOffset >= 0 ? 'disabled' : ''}><i class="fas fa-chevron-right"></i></button></div></div>`;
         html += `<h3>Checklist for Day ${dayCurrentTarget}</h3><div class="card" style="display:flex; flex-direction:column; gap:12px;">`;
@@ -1615,7 +1591,7 @@ const views = {
         html += `</div>`; return html;
     },
     renderChallengeEditor() {
-        let c = app.draftChallenge; let html = `<div class="page-header"><button class="btn btn-sm btn-icon" onclick="app.navigate('challenge')"><i class="fas fa-arrow-left"></i></button><h2 style="margin:0; font-size:18px;">Edit Challenge</h2><button class="btn btn-sm btn-success" onclick="app.saveChallenge()"><i class="fas fa-save"></i> Save</button></div>`;
+        let c = app.draftChallenge; let html = `<div class="page-header"><button class="btn btn-sm btn-icon" style="flex-shrink:0;" onclick="app.navigate('challenge')"><i class="fas fa-arrow-left"></i></button><h2 style="margin:0; font-size:18px; flex:1; text-align:center;">Edit Challenge</h2><button class="btn btn-sm btn-success" style="flex-shrink:0;" onclick="app.saveChallenge()"><i class="fas fa-save"></i> Save</button></div>`;
         html += `<div class="card"><label class="text-muted" style="font-size:12px;">Challenge Title</label><input class="edit-input" value="${c.title}" onchange="app.draftChallenge.title=this.value" placeholder="e.g. 75 Hard, Winter Bulk"><div style="display:flex; gap:8px; margin-top:12px; flex-wrap:wrap;"><div style="flex:1; min-width:130px;"><label class="text-muted" style="font-size:12px;">Start Date</label><input type="date" class="edit-input" value="${c.startDate}" onchange="app.draftChallenge.startDate=this.value"></div><div style="flex:1; min-width:130px;"><label class="text-muted" style="font-size:12px;">End Date</label><input type="date" class="edit-input" value="${c.endDate}" onchange="app.draftChallenge.endDate=this.value"></div></div></div>`;
         html += `<h3>Goals List</h3><p class="text-muted" style="font-size:12px; margin-bottom:12px;">Select what needs to be tracked daily for your streak to continue. Pin important goals to Today's Action Plan on the Home screen.</p>`;
         c.goals.forEach((g, i) => {
@@ -1733,7 +1709,6 @@ const views = {
         let avgRir = thisWeekRirCount > 0 ? (thisWeekRirSum / thisWeekRirCount).toFixed(1) : '-'; let volDiff = lastWeekVol > 0 ? Math.round(((thisWeekVol - lastWeekVol) / lastWeekVol) * 100) : 0;
         let volDiffStr = lastWeekVol === 0 ? "No data last week" : volDiff >= 0 ? `↑ ${volDiff}% vs last week` : `↓ ${Math.abs(volDiff)}% vs last week`; let volDiffColor = lastWeekVol === 0 ? "var(--text-secondary)" : volDiff >= 0 ? "var(--success)" : "var(--pending)";
         let html = `<div class="page-header" style="flex-direction:row;"><h2 style="margin:0; font-size:18px;">${app.sym('analytics') || ''} Analytics</h2></div>`;
-
         // 7-Day Overload Tracker (e1RM) with Muscle Group Filter & All Exercises
         const activeOverloadFilter = store.state.settings.overloadMuscleFilter || 'All';
         const overloadData = utils.getOverloadData(activeOverloadFilter);
@@ -1778,7 +1753,6 @@ const views = {
             });
         }
         html += `</div></div>`;
-
         let qualityHtml = `<div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:16px;">
             <div class="card" style="display:flex; flex-direction:column; padding:12px; margin:0; cursor:default; align-items:flex-start;">
                 <span class="text-muted" style="font-size:11px;">Weekly Vol Load</span>
