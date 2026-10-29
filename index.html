@@ -177,6 +177,29 @@
             border-radius: var(--card-radius); padding: 16px; margin-bottom: 14px; position: relative; overflow: hidden;
             transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
+        /* Nutrition Dashboard Image-Matched Styles */
+        .nut-meal-carousel {
+            display: flex; gap: 14px; overflow-x: auto; padding: 4px 2px 14px 2px; margin-bottom: 12px; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+        }
+        .nut-meal-carousel::-webkit-scrollbar { display: none; }
+        .nut-meal-tile {
+            min-width: 138px; flex: 1; background: var(--surface-color); border-radius: 16px; overflow: hidden; border: var(--card-border);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.28); cursor: pointer; transition: transform 0.2s ease, border-color 0.2s ease; display: flex; flex-direction: column;
+        }
+        .nut-meal-tile:active { transform: scale(0.96); }
+        .nut-meal-tile-img { width: 100%; height: 105px; object-fit: cover; display: block; background: var(--surface-elevated); }
+        .nut-meal-tile-body { padding: 10px 12px; text-align: center; background: var(--surface-color); flex: 1; display: flex; flex-direction: column; justify-content: center; }
+        .nut-ring-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px; }
+        .nut-ring-card {
+            background: var(--surface-color); border-radius: 18px; padding: 16px; border: var(--card-border);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.22); display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+        }
+        .nut-insight-bullet {
+            display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border-radius: 10px; font-size: 12.5px; line-height: 1.4; margin-bottom: 8px;
+        }
+        .nut-insight-good { background: rgba(52, 199, 89, 0.12); border: 1px solid rgba(52, 199, 89, 0.45); color: #66ef88; }
+        .nut-insight-mid { background: rgba(255, 149, 0, 0.12); border: 1px solid rgba(255, 149, 0, 0.45); color: #ffb340; }
+        .nut-insight-bad { background: rgba(255, 59, 48, 0.12); border: 1px solid rgba(255, 59, 48, 0.45); color: #ff6961; }
     </style>
 </head>
 <body>
@@ -245,6 +268,155 @@ const THEME_MAP = {
     cyberpunk: { nav: ['fa-city', 'fa-robot', 'fa-network-wired', 'fa-capsules', 'fa-microchip'], symbols: { streak: '⚡', pr: '👾', bw: '🔋', vol: '💾', rest: '🔌', workout: '🦾', success: '💎', activity: '🏍️', cardGoal: '💠', analytics: '📡', nutrition: '🧪', data: '🖥️' } },
     tactical: { nav: ['fa-campground', 'fa-person-rifle', 'fa-crosshairs', 'fa-drumstick-bite', 'fa-box-archive'], symbols: { streak: '💥', pr: '🎖️', bw: '🪖', vol: '🔫', rest: '⛺', workout: '💣', success: '🎯', activity: '🚁', cardGoal: '🚩', analytics: '🛰️', nutrition: '🥩', data: '💾' } },
 };
+
+/* COMPREHENSIVE NZ ATHLETE RAW INGREDIENT REFERENCE DATABASE (per 100g) */
+const NZ_ATHLETE_FOODS = [
+    // 1. Poultry & Eggs
+    { id: 'f_chk_breast', name: 'Chicken breast, skinless raw', cat: 'Poultry & Eggs', cal: 110, pro: 23, car: 0, fat: 1.5, micros: 'B3, B6, Se, P; low Fe', notes: 'Gold-standard cut protein. Minimal fat for cuts. Fast digesting when plain. Train-day staple; pair with rice/potato post-workout. Low food-response risk.', tone: 'good' },
+    { id: 'f_chk_thigh_lean', name: 'Chicken thigh, skinless raw', cat: 'Poultry & Eggs', cal: 140, pro: 20, car: 0, fat: 6, micros: 'B vitamins, Se, Zn', notes: 'More flavour and satiety than breast; slight calorie bump. Good bulking/maintenance. Slightly slower gastric emptying with fat.', tone: 'good' },
+    { id: 'f_chk_thigh_skin', name: 'Chicken thigh, skin-on raw', cat: 'Poultry & Eggs', cal: 180, pro: 18, car: 0, fat: 12, micros: 'B vitamins, Se, Zn + fat-soluble flavour', notes: 'Use sparingly on aggressive cuts. Better for surplus phases. Crisp skin is palatable but easy to overeat calories.', tone: 'mid' },
+    { id: 'f_turkey_breast', name: 'Turkey breast, raw', cat: 'Poultry & Eggs', cal: 105, pro: 24, car: 0, fat: 1, micros: 'B3, B6, Se, Zn', notes: 'Very lean alternative to chicken. Excellent contest-prep protein.', tone: 'good' },
+    { id: 'f_egg_whole', name: 'Whole egg, raw', cat: 'Poultry & Eggs', cal: 140, pro: 13, car: 1, fat: 10, micros: 'Choline, B12, Vit D, Se, lutein; ~130 mg chol', notes: 'Nutrient-dense complete food. Yolks support hormones and choline for athletes. Great breakfast anchor.', tone: 'good' },
+    { id: 'f_egg_white', name: 'Egg white, raw', cat: 'Poultry & Eggs', cal: 50, pro: 11, car: 1, fat: 0, micros: 'Riboflavin; almost no fat/chol', notes: 'Pure protein filler on deep cuts. Low satiety vs whole egg. Combine with 1–2 yolks rather than whites-only long term.', tone: 'good' },
+    { id: 'f_duck_breast', name: 'Duck breast, skinless raw', cat: 'Poultry & Eggs', cal: 140, pro: 19, car: 0, fat: 7, micros: 'B vitamins, Fe, Se', notes: 'Richer flavour, moderate fat. Occasional variety protein. Not a daily cut staple for most.', tone: 'mid' },
+    { id: 'f_chk_liver', name: 'Chicken liver, raw', cat: 'Poultry & Eggs', cal: 120, pro: 17, car: 1, fat: 5, micros: 'Very high Vit A, B12, Fe, folate, Cu', notes: 'Micronutrient bomb 1–2x/week. Good for athletes with low iron intake. Do not mega-dose daily (vitamin A).', tone: 'good' },
+    // 2. Red Meat & Game
+    { id: 'f_beef_mince_5', name: 'Beef mince, lean ~5% fat', cat: 'Red Meat & Game', cal: 140, pro: 21, car: 0, fat: 5, micros: 'Fe (heme), Zn, B12, B3, Se, creatine', notes: 'NZ athlete workhorse. Lean grind for cuts; heme iron helps endurance and women athletes.', tone: 'good' },
+    { id: 'f_beef_mince_15', name: 'Beef mince, standard ~15% fat', cat: 'Red Meat & Game', cal: 200, pro: 19, car: 0, fat: 15, micros: 'Fe (heme), Zn, B12, creatine + more energy', notes: 'Better for bulking and flavour. Drain fat if cutting. Higher satiety from fat — watch portions.', tone: 'mid' },
+    { id: 'f_beef_rump', name: 'Beef rump/steak lean', cat: 'Red Meat & Game', cal: 140, pro: 22, car: 0, fat: 5, micros: 'Fe, Zn, B12, carnosine', notes: 'Steak meal-prep classic. Pair with kumara + greens. Excellent post-lift dinner protein.', tone: 'good' },
+    { id: 'f_beef_sirloin', name: 'Beef sirloin', cat: 'Red Meat & Game', cal: 160, pro: 22, car: 0, fat: 8, micros: 'Fe, Zn, B12', notes: 'Slightly fattier premium cut. Good reward meal within macros.', tone: 'good' },
+    { id: 'f_beef_eyefillet', name: 'Eye fillet / tenderloin', cat: 'Red Meat & Game', cal: 150, pro: 22, car: 0, fat: 7, micros: 'Fe, Zn, B12', notes: 'Lean-tender; special-meal protein, high iron and zinc support.', tone: 'good' },
+    { id: 'f_lamb_leg', name: 'Lamb leg, lean raw', cat: 'Red Meat & Game', cal: 160, pro: 20, car: 0, fat: 8, micros: 'Fe, Zn, B12, ALA small', notes: 'Kiwi staple. Strong flavour, solid micros. Moderate fat — portion on cuts.', tone: 'good' },
+    { id: 'f_lamb_mince', name: 'Lamb mince', cat: 'Red Meat & Game', cal: 200, pro: 18, car: 0, fat: 14, micros: 'Fe, Zn, B12', notes: 'Flavour-dense. Use 50/50 with beef mince or legumes to manage fat on cuts.', tone: 'mid' },
+    { id: 'f_lamb_chops', name: 'Lamb loin chops', cat: 'Red Meat & Game', cal: 220, pro: 18, car: 0, fat: 16, micros: 'Fe, Zn, B12', notes: 'Trim visible fat on cuts. Great occasional high-satisfaction protein.', tone: 'mid' },
+    { id: 'f_venison', name: 'Venison / deer, lean', cat: 'Red Meat & Game', cal: 120, pro: 23, car: 0, fat: 2, micros: 'High Fe, Zn, B12; low fat', notes: 'Ultra-lean game protein. Excellent cut option with high heme iron and zinc.', tone: 'good' },
+    { id: 'f_pork_loin', name: 'Pork loin, lean', cat: 'Red Meat & Game', cal: 140, pro: 22, car: 0, fat: 5, micros: 'B1 (thiamin), Se, B6, Zn', notes: 'Underrated lean protein rich in thiamin (B1) for carbohydrate metabolism.', tone: 'good' },
+    { id: 'f_pork_mince', name: 'Pork mince, lean', cat: 'Red Meat & Game', cal: 160, pro: 20, car: 0, fat: 9, micros: 'B1, Se, Zn', notes: 'Budget protein for meatballs/San choy bow. Choose lean labelled packs.', tone: 'good' },
+    { id: 'f_beef_liver', name: 'Beef liver', cat: 'Red Meat & Game', cal: 130, pro: 20, car: 4, fat: 4, micros: 'Extreme B12, Vit A, Cu, Fe, folate', notes: '1 serving/week covers many micronutrients. Limit frequency for Vitamin A.', tone: 'good' },
+    // 3. Seafood
+    { id: 'f_salmon_raw', name: 'Salmon, Atlantic raw', cat: 'Seafood', cal: 200, pro: 20, car: 0, fat: 13, micros: 'EPA/DHA high, Vit D, B12, Se', notes: 'Best whole-food omega-3 vehicle. 2–4x/week supports recovery and inflammation control.', tone: 'good' },
+    { id: 'f_salmon_smoked', name: 'Smoked salmon', cat: 'Seafood', cal: 180, pro: 22, car: 0, fat: 10, micros: 'Omega-3, Na high (600-1200mg), B12', notes: 'Convenient omega-3 source; high sodium — fine occasionally, watch if BP/sodium sensitive.', tone: 'mid' },
+    { id: 'f_salmon_king', name: 'Akaroa / NZ king salmon', cat: 'Seafood', cal: 200, pro: 20, car: 0, fat: 13, micros: 'EPA/DHA, Vit D', notes: 'Local premium option — high EPA/DHA omega-3 for recovery and inflammation control.', tone: 'good' },
+    { id: 'f_white_fish', name: 'White fish (tarakihi, gurnard, hoki) raw', cat: 'Seafood', cal: 90, pro: 19, car: 0, fat: 1, micros: 'Iodine, Se, B12; low fat', notes: 'Ultra-lean protein. Low calorie density for cuts, easy digestion and meal prep.', tone: 'good' },
+    { id: 'f_tuna_fresh', name: 'Tuna, fresh raw', cat: 'Seafood', cal: 110, pro: 24, car: 0, fat: 1, micros: 'Se, B12, niacin; mercury caution', notes: 'Very high protein. Rotate species to manage mercury exposure. Great poke-style bowls.', tone: 'good' },
+    { id: 'f_tuna_water', name: 'Tuna, canned in spring water (drained)', cat: 'Seafood', cal: 100, pro: 25, car: 0, fat: 1, micros: 'Se, B12; check Na', notes: 'Pantry athlete staple. Budget ultra-lean cut protein.', tone: 'good' },
+    { id: 'f_tuna_oil', name: 'Tuna, canned in oil (drained)', cat: 'Seafood', cal: 180, pro: 25, car: 0, fat: 8, micros: 'Se, B12 + oil calories', notes: 'Use on bulking or drain well. Higher calorie density than spring water tuna.', tone: 'mid' },
+    { id: 'f_sardines', name: 'Sardines, canned in spring water', cat: 'Seafood', cal: 170, pro: 20, car: 0, fat: 10, micros: 'EPA/DHA, Ca (bones), Vit D, B12', notes: 'Bone-in provides a calcium bonus plus budget EPA/DHA omega-3s.', tone: 'good' },
+    { id: 'f_mussels', name: 'Mussels, raw/green-lipped NZ', cat: 'Seafood', cal: 80, pro: 12, car: 3, fat: 2, micros: 'Fe, B12, Zn, omega-3, Se', notes: 'Iconic NZ seafood. Anti-inflammatory omega-3 profile and strong iron for endurance athletes.', tone: 'good' },
+    { id: 'f_prawns', name: 'Prawns / shrimp, raw', cat: 'Seafood', cal: 70, pro: 15, car: 0, fat: 1, micros: 'Se, B12, iodine; chol moderate', notes: 'Very lean protein with high satiety per calorie in stir-fries.', tone: 'good' },
+    { id: 'f_squid', name: 'Squid / calamari, raw', cat: 'Seafood', cal: 80, pro: 16, car: 1, fat: 1, micros: 'B12, Se, Cu', notes: 'Lean seafood protein; cook quickly to avoid rubberising.', tone: 'good' },
+    { id: 'f_cod', name: 'Cod / similar white fillet', cat: 'Seafood', cal: 80, pro: 18, car: 0, fat: 0.5, micros: 'Iodine, Se, B12', notes: 'Cut-friendly ultra-lean white fish protein base.', tone: 'good' },
+    // 4. Dairy
+    { id: 'f_gyog_0', name: 'Greek yoghurt, plain non-fat (~0%)', cat: 'Dairy', cal: 55, pro: 10, car: 4, fat: 0, micros: 'Ca, B12, K, probiotics', notes: 'Top cut snack. High protein, low calorie, casein-rich for overnight recovery.', tone: 'good' },
+    { id: 'f_gyog_2', name: 'Greek yoghurt, plain 2–5% fat', cat: 'Dairy', cal: 80, pro: 9, car: 4, fat: 4, micros: 'Ca, B12, probiotics', notes: 'Better taste and satiety; default maintenance choice. Flavour yourself with fruit.', tone: 'good' },
+    { id: 'f_gyog_full', name: 'Greek yoghurt, full fat', cat: 'Dairy', cal: 120, pro: 7, car: 4, fat: 8, micros: 'Ca, B12', notes: 'Good for bulking or high-satiety breakfasts. Whole-food dairy quality.', tone: 'good' },
+    { id: 'f_cottage_low', name: 'Cottage cheese, low-fat', cat: 'Dairy', cal: 75, pro: 12, car: 3, fat: 2, micros: 'Ca, B12, Se, P', notes: 'Slow-digesting casein — excellent pre-bed protein supply.', tone: 'good' },
+    { id: 'f_cottage_full', name: 'Cottage cheese, full-fat', cat: 'Dairy', cal: 100, pro: 11, car: 3, fat: 5, micros: 'Ca, B12', notes: 'More satisfying casein source; use when fat allowance permits.', tone: 'good' },
+    { id: 'f_milk_trim', name: 'Milk, trim / green top ~0.1–0.5%', cat: 'Dairy', cal: 40, pro: 4, car: 5, fat: 0.2, micros: 'Ca, B2, B12, iodine (NZ)', notes: 'Hydrating protein+carb drink. Good peri-workout base in smoothies.', tone: 'good' },
+    { id: 'f_milk_lite', name: 'Milk, light blue ~1.5%', cat: 'Dairy', cal: 50, pro: 4, car: 5, fat: 1.5, micros: 'Ca, B12', notes: 'Balanced everyday milk for cereal and oats.', tone: 'good' },
+    { id: 'f_milk_full', name: 'Milk, dark blue full-fat', cat: 'Dairy', cal: 65, pro: 3.5, car: 5, fat: 3.5, micros: 'Ca, B12, Vit A', notes: 'Good for bulking phases and creamier oats/coffee.', tone: 'good' },
+    { id: 'f_cheese_cheddar', name: 'Cheese, tasty/cheddar', cat: 'Dairy', cal: 400, pro: 25, car: 1, fat: 33, micros: 'Ca, B12, Zn, Na high', notes: 'Flavour accelerator, not a primary protein source. Weigh 20–30g portions strictly so fats do not blow out.', tone: 'mid' },
+    { id: 'f_cheese_mozz', name: 'Cheese, mozzarella (common)', cat: 'Dairy', cal: 280, pro: 22, car: 2, fat: 20, micros: 'Ca, Na', notes: 'Good for omelettes/meals with better macros than cheddar; still portion control.', tone: 'mid' },
+    { id: 'f_paneer', name: 'Cheese, cottage-style paneer', cat: 'Dairy', cal: 300, pro: 18, car: 2, fat: 25, micros: 'Ca', notes: 'Dense Indian-style cheese — track fat portions carefully.', tone: 'mid' },
+    { id: 'f_ricotta', name: 'Ricotta, smooth', cat: 'Dairy', cal: 150, pro: 10, car: 4, fat: 10, micros: 'Ca', notes: 'Softer macros than hard cheese; works well on toast or bakes.', tone: 'good' },
+    { id: 'f_kefir', name: 'Kefir, plain', cat: 'Dairy', cal: 55, pro: 3.5, car: 5, fat: 2, micros: 'Ca, probiotics', notes: 'Gut-support fermented drink that helps regularity under high protein intake.', tone: 'good' },
+    // 5. Plant Proteins
+    { id: 'f_tofu', name: 'Tofu, firm', cat: 'Plant Proteins', cal: 130, pro: 12, car: 3, fat: 8, micros: 'Ca (calcium-set), Fe, Fib ~1g', notes: 'Best plant protein for gym diets. Easy on the gut vs beans for many.', tone: 'good' },
+    { id: 'f_tempeh', name: 'Tempeh', cat: 'Plant Proteins', cal: 190, pro: 19, car: 9, fat: 11, micros: 'Fe, Mn, Fib ~5g; fermented', notes: 'Higher protein than tofu; fermentation aids digestion.', tone: 'good' },
+    { id: 'f_edamame', name: 'Edamame, shelled cooked', cat: 'Plant Proteins', cal: 120, pro: 12, car: 9, fat: 5, micros: 'Folate, Vit K, Fib ~5g', notes: 'Complete-ish soy snack with solid fibre and micronutrient density.', tone: 'good' },
+    { id: 'f_lentils', name: 'Lentils, cooked', cat: 'Plant Proteins', cal: 115, pro: 9, car: 20, fat: 0.4, micros: 'Fe, folate, K, Fib ~8g', notes: 'Budget bulk + high fibre (8g/100g) for steady carb release. Reduce near hard sessions if gut-sensitive.', tone: 'good' },
+    { id: 'f_chickpeas', name: 'Chickpeas, cooked', cat: 'Plant Proteins', cal: 140, pro: 8, car: 22, fat: 2.5, micros: 'Folate, Mn, Fib ~7g', notes: 'Good satiety and fibre. FODMAP caution for IBS athletes if eaten in large portions.', tone: 'good' },
+    { id: 'f_black_beans', name: 'Black beans, cooked', cat: 'Plant Proteins', cal: 130, pro: 9, car: 23, fat: 0.5, micros: 'Fe, Mg, Fib ~8g', notes: 'Great in Mexican bowls with mince/rice; high fibre volume food on cuts.', tone: 'good' },
+    { id: 'f_kidney_beans', name: 'Kidney beans, cooked', cat: 'Plant Proteins', cal: 125, pro: 9, car: 22, fat: 0.5, micros: 'Fe, Folate, Fib ~7g', notes: 'Chilli staple. Keep away from immediate pre-workout window due to high fibre.', tone: 'good' },
+    { id: 'f_cannellini', name: 'Cannellini / white beans cooked', cat: 'Plant Proteins', cal: 120, pro: 8, car: 21, fat: 0.5, micros: 'Fe, K, Fib ~6g', notes: 'High-protein lunch hack when paired with canned tuna.', tone: 'good' },
+    { id: 'f_split_peas', name: 'Split peas, cooked', cat: 'Plant Proteins', cal: 120, pro: 8, car: 21, fat: 0.4, micros: 'Fib ~8g, B vitamins', notes: 'High-volume soup base for winter cutting diets.', tone: 'good' },
+    { id: 'f_baked_beans', name: 'Baked beans, canned tomato', cat: 'Plant Proteins', cal: 90, pro: 5, car: 15, fat: 0.5, micros: 'Fib ~4g; Na + sugar vary', notes: 'Convenient emergency carb-protein, but check label for added sugar and sodium.', tone: 'mid' },
+    { id: 'f_falafel', name: 'Falafel (ready, approx baked)', cat: 'Plant Proteins', cal: 300, pro: 10, car: 30, fat: 15, micros: 'Fib varies', notes: 'Calorie-dense and often fried; homemade baked is better for cuts.', tone: 'mid' },
+    // 6. Starchy Carbohydrates
+    { id: 'f_potato_raw', name: 'Potato, white raw', cat: 'Starchy Carbs', cal: 75, pro: 2, car: 17, fat: 0.1, micros: 'K high, Vit C, Fib ~2g', notes: 'Cheapest high-volume carb in NZ. High satiety and potassium; great post-workout with lean protein.', tone: 'good' },
+    { id: 'f_potato_boiled', name: 'Potato, boiled flesh', cat: 'Starchy Carbs', cal: 80, pro: 2, car: 18, fat: 0.1, micros: 'K, Fib ~2g', notes: 'Easy-digesting training fuel; cooling then reheating increases resistant starch.', tone: 'good' },
+    { id: 'f_kumara_orange', name: 'Kumara, orange raw', cat: 'Starchy Carbs', cal: 85, pro: 1.5, car: 20, fat: 0.1, micros: 'Vit A (beta-carotene), Vit C, K, Fib ~3g', notes: 'NZ icon carb. Rich in beta-carotene and potassium; ideal pre-evening training carb.', tone: 'good' },
+    { id: 'f_kumara_gold', name: 'Kumara, gold/red', cat: 'Starchy Carbs', cal: 85, pro: 1.5, car: 20, fat: 0.1, micros: 'Vit A, Vit C, K, Fib ~3g', notes: 'Rotate kumara colours for diverse polyphenols and sustained glycogen fuel.', tone: 'good' },
+    { id: 'f_rice_white', name: 'Rice, white cooked', cat: 'Starchy Carbs', cal: 130, pro: 2.5, car: 28, fat: 0.3, micros: 'Low fibre; easy digest', notes: 'Default peri-workout carb for gut comfort and rapid glycogen replenishment.', tone: 'good' },
+    { id: 'f_rice_brown', name: 'Rice, brown cooked', cat: 'Starchy Carbs', cal: 110, pro: 2.5, car: 23, fat: 1, micros: 'Fib ~2g, Mg, Mn', notes: 'More micronutrients and satiety than white rice; eat further from hard sessions if fibre-sensitive.', tone: 'good' },
+    { id: 'f_rice_jasmine', name: 'Rice, jasmine cooked', cat: 'Starchy Carbs', cal: 130, pro: 2.5, car: 28, fat: 0.3, micros: 'Easy digest', notes: 'Fast-digesting peri-workout carb staple for meal prep.', tone: 'good' },
+    { id: 'f_oats_dry', name: 'Oats, rolled dry', cat: 'Starchy Carbs', cal: 380, pro: 13, car: 60, fat: 7, micros: 'Beta-glucan fibre ~10g, Mn, Mg, Fe', notes: 'Breakfast engine. Sustained energy 2–3h pre-training; pair with whey or yoghurt.', tone: 'good' },
+    { id: 'f_oats_cooked', name: 'Oats, cooked porridge (water)', cat: 'Starchy Carbs', cal: 90, pro: 3, car: 15, fat: 2, micros: 'Fib ~2g', notes: 'Sustained-release carbohydrate; gentle on digestion when soaked.', tone: 'good' },
+    { id: 'f_pasta_white', name: 'Pasta, white cooked', cat: 'Starchy Carbs', cal: 130, pro: 5, car: 25, fat: 1, micros: 'Fib ~1.5g', notes: 'Athlete carb classic with higher protein than rice; great for bulk meals with lean mince and passata.', tone: 'good' },
+    { id: 'f_pasta_whole', name: 'Pasta, wholemeal cooked', cat: 'Starchy Carbs', cal: 140, pro: 5, car: 26, fat: 1, micros: 'Fib ~4g', notes: 'Higher satiety and fibre than white pasta.', tone: 'good' },
+    { id: 'f_quinoa', name: 'Quinoa, cooked', cat: 'Starchy Carbs', cal: 120, pro: 4.5, car: 21, fat: 2, micros: 'Complete plant AA, Mg, Fe, Fib ~3g', notes: 'Gluten-free pseudo-grain with complete amino profile and magnesium.', tone: 'good' },
+    { id: 'f_couscous', name: 'Couscous, cooked', cat: 'Starchy Carbs', cal: 110, pro: 4, car: 23, fat: 0.2, micros: 'Se; low fibre', notes: 'Fast-cooking, easy-digesting travel and meal-prep carbohydrate.', tone: 'good' },
+    { id: 'f_corn', name: 'Corn, sweet kernels cooked', cat: 'Starchy Carbs', cal: 95, pro: 3, car: 21, fat: 1, micros: 'Fib ~2.5g, lutein', notes: 'Starchy veg side carb with lutein for eye/antioxidant support.', tone: 'good' },
+    { id: 'f_pumpkin', name: 'Pumpkin / squash cooked', cat: 'Starchy Carbs', cal: 30, pro: 1, car: 7, fat: 0.1, micros: 'Vit A, K, Fib ~1g', notes: 'Very low calorie volume carb-veg hybrid — fills the plate on aggressive cuts.', tone: 'good' },
+    { id: 'f_taro', name: 'Taro, cooked', cat: 'Starchy Carbs', cal: 140, pro: 1, car: 35, fat: 0.1, micros: 'K, Fib ~5g', notes: 'Dense Pacific carbohydrate staple with high potassium and fibre.', tone: 'good' },
+    { id: 'f_yam', name: 'Yam (NZ supermarket)', cat: 'Starchy Carbs', cal: 110, pro: 1.5, car: 27, fat: 0.1, micros: 'K, Fib', notes: 'Dense root veg carbohydrate to roast alongside meat.', tone: 'good' },
+    { id: 'f_bread_whole', name: 'Bread, wholegrain sandwich', cat: 'Starchy Carbs', cal: 250, pro: 10, car: 40, fat: 4, micros: 'Fib ~6g; Na varies', notes: 'Convenient plate staple providing carbs, fibre, and 10g protein per 100g.', tone: 'good' },
+    { id: 'f_wrap_whole', name: 'Wrap, wholemeal', cat: 'Starchy Carbs', cal: 280, pro: 9, car: 45, fat: 6, micros: 'Fib varies; Na', notes: 'Easy high-calorie delivery for burrito wraps and bulking lunches.', tone: 'good' },
+    { id: 'f_rice_cakes', name: 'Rice cakes (plain)', cat: 'Starchy Carbs', cal: 380, pro: 7, car: 80, fat: 1, micros: 'Low micronutrient', notes: 'Fast-digesting crisp pre-workout carb; pair with banana or honey near training.', tone: 'good' },
+    // 7. Fruit
+    { id: 'f_banana', name: 'Banana', cat: 'Fruit', cal: 90, pro: 1, car: 23, fat: 0.3, micros: 'K high, B6, Fib ~2.5g', notes: 'Best portable pre/intra/post workout carb. Ripe bananas give a faster glucose response.', tone: 'good' },
+    { id: 'f_kiwi_green', name: 'Kiwifruit, green', cat: 'Fruit', cal: 60, pro: 1, car: 15, fat: 0.5, micros: 'Vit C very high, Fib ~3g, actinidin enzyme', notes: 'NZ hero fruit. Actinidin enzyme aids protein digestion and Vitamin C boosts immunity & iron absorption.', tone: 'good' },
+    { id: 'f_kiwi_gold', name: 'Kiwifruit, gold', cat: 'Fruit', cal: 60, pro: 1, car: 15, fat: 0.4, micros: 'Vit C extremely high', notes: 'Sweeter NZ kiwi with extremely high Vitamin C to support recovery and non-heme iron uptake.', tone: 'good' },
+    { id: 'f_apple', name: 'Apple', cat: 'Fruit', cal: 50, pro: 0.3, car: 14, fat: 0.2, micros: 'Fib ~2.5g (skin), polyphenols', notes: 'Slow snack carb with high volume and low energy density for cuts.', tone: 'good' },
+    { id: 'f_pear', name: 'Pear', cat: 'Fruit', cal: 60, pro: 0.4, car: 15, fat: 0.1, micros: 'Fib ~3g', notes: 'Good fibre snack; higher FODMAP so trial away from training if IBS-prone.', tone: 'good' },
+    { id: 'f_orange', name: 'Orange', cat: 'Fruit', cal: 45, pro: 1, car: 12, fat: 0.1, micros: 'Vit C, folate, K', notes: 'Hydrating whole fruit carb that boosts iron absorption when eaten with meals.', tone: 'good' },
+    { id: 'f_mandarin', name: 'Mandarin', cat: 'Fruit', cal: 50, pro: 0.8, car: 13, fat: 0.2, micros: 'Vit C', notes: 'Easy portable NZ winter citrus snack for immunity.', tone: 'good' },
+    { id: 'f_berries', name: 'Berries, mixed / blueberry', cat: 'Fruit', cal: 55, pro: 0.7, car: 14, fat: 0.3, micros: 'Anthocyanins, Vit C, Fib ~2–4g', notes: 'Low calorie density, high antioxidant anthocyanins — ideal yoghurt or oats topping.', tone: 'good' },
+    { id: 'f_strawberries', name: 'Strawberries', cat: 'Fruit', cal: 30, pro: 0.7, car: 8, fat: 0.3, micros: 'Vit C, Fib ~2g', notes: 'Ultra-low-calorie volume fruit (30 kcal/100g) for sweet-tooth control on cuts.', tone: 'good' },
+    { id: 'f_raspberries', name: 'Raspberries', cat: 'Fruit', cal: 50, pro: 1, car: 12, fat: 0.7, micros: 'Fib ~7g very high', notes: 'Fibre king fruit (7g/100g) for great satiety on cuts.', tone: 'good' },
+    { id: 'f_feijoa', name: 'Feijoa', cat: 'Fruit', cal: 55, pro: 1, car: 13, fat: 0.4, micros: 'Vit C, fibre', notes: 'Seasonal NZ autumn fruit rich in Vitamin C and fibre.', tone: 'good' },
+    { id: 'f_grapes', name: 'Grapes', cat: 'Fruit', cal: 70, pro: 0.7, car: 18, fat: 0.2, micros: 'K, polyphenols', notes: 'Faster-digesting fruit carb; great around training.', tone: 'good' },
+    { id: 'f_mango', name: 'Mango', cat: 'Fruit', cal: 60, pro: 0.8, car: 15, fat: 0.4, micros: 'Vit A, C', notes: 'Tropical sweet carb for post-workout smoothies and bowls.', tone: 'good' },
+    { id: 'f_pineapple', name: 'Pineapple', cat: 'Fruit', cal: 50, pro: 0.5, car: 13, fat: 0.1, micros: 'Vit C, bromelain', notes: 'Contains bromelain enzyme; pairs well with cottage cheese.', tone: 'good' },
+    { id: 'f_watermelon', name: 'Watermelon', cat: 'Fruit', cal: 30, pro: 0.6, car: 8, fat: 0.2, micros: 'Citrulline (blood flow), K', notes: 'Hydrating peri-workout fruit with natural L-citrulline.', tone: 'good' },
+    { id: 'f_avocado', name: 'Avocado', cat: 'Fruit', cal: 160, pro: 2, car: 9, fat: 15, micros: 'K, folate, mono fat, Fib ~7g', notes: 'Nutrient-dense monounsaturated fat source; boosts carotenoid absorption from veggies.', tone: 'good' },
+    // 8. Vegetables
+    { id: 'f_broccoli', name: 'Broccoli', cat: 'Vegetables', cal: 35, pro: 3, car: 7, fat: 0.4, micros: 'Vit C, K, folate, Fib ~2.5g, sulforaphane', notes: 'Gym-diet classic with sulforaphane and high volume satiety.', tone: 'good' },
+    { id: 'f_spinach', name: 'Spinach, raw', cat: 'Vegetables', cal: 25, pro: 3, car: 4, fat: 0.4, micros: 'Vit K, A, folate, Mg, nitrates', notes: 'Dietary nitrates support blood flow and nitric oxide; high magnesium.', tone: 'good' },
+    { id: 'f_kale', name: 'Kale', cat: 'Vegetables', cal: 35, pro: 3, car: 6, fat: 1.5, micros: 'Vit K, C, A', notes: 'Hardy micronutrient-dense leafy green.', tone: 'good' },
+    { id: 'f_salad_leaves', name: 'Mixed salad leaves', cat: 'Vegetables', cal: 15, pro: 1, car: 2, fat: 0.2, micros: 'Folate, Vit K', notes: 'Zero-guilt volume filler under protein bowls.', tone: 'good' },
+    { id: 'f_capsicum_red', name: 'Capsicum, red', cat: 'Vegetables', cal: 30, pro: 1, car: 6, fat: 0.3, micros: 'Vit C extremely high, Fib ~2g', notes: 'Extremely high Vitamin C — pair with beef or lentils to maximise iron absorption.', tone: 'good' },
+    { id: 'f_capsicum_green', name: 'Capsicum, green/yellow', cat: 'Vegetables', cal: 25, pro: 1, car: 5, fat: 0.2, micros: 'Vit C high', notes: 'Crunchy low-calorie micronutrient volume for stir-fries and bowls.', tone: 'good' },
+    { id: 'f_tomato', name: 'Tomato', cat: 'Vegetables', cal: 20, pro: 1, car: 4, fat: 0.2, micros: 'Lycopene, Vit C, K', notes: 'Rich in antioxidant lycopene (absorption increases when cooked with healthy fat).', tone: 'good' },
+    { id: 'f_cucumber', name: 'Cucumber', cat: 'Vegetables', cal: 15, pro: 0.7, car: 4, fat: 0.1, micros: 'K, water', notes: 'High-hydration crunch volume for snacks and salads.', tone: 'good' },
+    { id: 'f_zucchini', name: 'Zucchini / courgette', cat: 'Vegetables', cal: 20, pro: 1.5, car: 3, fat: 0.3, micros: 'K, Vit C', notes: 'Great for bulking out pasta or mince meals on a cut.', tone: 'good' },
+    { id: 'f_carrot', name: 'Carrot', cat: 'Vegetables', cal: 40, pro: 1, car: 10, fat: 0.2, micros: 'Vit A high, Fib ~3g', notes: 'High beta-carotene (Vit A) and crunchy fibre.', tone: 'good' },
+    { id: 'f_green_beans', name: 'Green beans', cat: 'Vegetables', cal: 30, pro: 2, car: 7, fat: 0.1, micros: 'Vit C, K, Fib ~3g', notes: 'Classic low-calorie side veg for steak or chicken prep.', tone: 'good' },
+    { id: 'f_asparagus', name: 'Asparagus', cat: 'Vegetables', cal: 20, pro: 2, car: 4, fat: 0.1, micros: 'Folate, Vit K, prebiotic fibre', notes: 'Rich in folate and prebiotic fibre.', tone: 'good' },
+    { id: 'f_cauliflower', name: 'Cauliflower', cat: 'Vegetables', cal: 25, pro: 2, car: 5, fat: 0.3, micros: 'Vit C, K, Fib ~2g', notes: 'High-volume rice extender for cutting phases.', tone: 'good' },
+    { id: 'f_cabbage', name: 'Cabbage / coleslaw mix', cat: 'Vegetables', cal: 25, pro: 1.5, car: 6, fat: 0.1, micros: 'Vit C, K, Fib', notes: 'Cheap crunchy meal volume for bowls and wraps.', tone: 'good' },
+    { id: 'f_onion', name: 'Onion', cat: 'Vegetables', cal: 40, pro: 1, car: 9, fat: 0.1, micros: 'Quercetin, prebiotic Fib', notes: 'Flavour base rich in quercetin; watch big portions pre-event if FODMAP-sensitive.', tone: 'good' },
+    { id: 'f_garlic', name: 'Garlic', cat: 'Vegetables', cal: 150, pro: 6, car: 33, fat: 0.5, micros: 'Allicin compounds', notes: 'Potent allicin immune/cardiovascular compounds.', tone: 'good' },
+    { id: 'f_mushrooms', name: 'Mushrooms, button', cat: 'Vegetables', cal: 20, pro: 3, car: 3, fat: 0.3, micros: 'B vitamins, Se, ergothioneine; Vit D', notes: 'Umami meat extender with ultra-low calories.', tone: 'good' },
+    { id: 'f_beetroot', name: 'Beetroot, raw', cat: 'Vegetables', cal: 40, pro: 1.5, car: 10, fat: 0.1, micros: 'Nitrates, folate, betalains', notes: 'Dietary nitrate powerhouse — great 2–3h pre-workout for endurance and pump.', tone: 'good' },
+    { id: 'f_peas', name: 'Peas, green cooked', cat: 'Vegetables', cal: 80, pro: 5, car: 14, fat: 0.4, micros: 'Fib ~5g, Vit C, K', notes: 'High-protein vegetable freezer staple.', tone: 'good' },
+    { id: 'f_buk_choy', name: 'Buk choy / Asian greens', cat: 'Vegetables', cal: 15, pro: 1.5, car: 2, fat: 0.2, micros: 'Vit A, C, K, Ca', notes: 'Ultra-low calorie stir-fry green with bioavailable calcium.', tone: 'good' },
+    { id: 'f_silverbeet', name: 'Silverbeet / Swiss chard', cat: 'Vegetables', cal: 20, pro: 2, car: 4, fat: 0.2, micros: 'Vit K, A, Mg', notes: 'NZ garden staple rich in magnesium and Vitamin K.', tone: 'good' },
+    // 9. Nuts, Seeds & Nut Butters
+    { id: 'f_almonds', name: 'Almonds', cat: 'Nuts & Seeds', cal: 580, pro: 21, car: 20, fat: 50, micros: 'Vit E, Mg, Fib ~12g', notes: 'Rich in Vitamin E and magnesium; blunts glycaemic spike when paired with carbs. Weigh 20–30g portions.', tone: 'good' },
+    { id: 'f_peanuts', name: 'Peanuts', cat: 'Nuts & Seeds', cal: 560, pro: 26, car: 16, fat: 49, micros: 'Niacin, Mg, Fib ~8g', notes: 'Highest protein common nut; energy-dense so measure portions.', tone: 'good' },
+    { id: 'f_pb_natural', name: 'Peanut butter, natural', cat: 'Nuts & Seeds', cal: 590, pro: 25, car: 20, fat: 50, micros: 'Niacin, Mg, Vit E', notes: 'Classic athlete bulking tool. Energy-dense — weigh tablespoons strictly on cuts.', tone: 'mid' },
+    { id: 'f_walnuts', name: 'Walnuts', cat: 'Nuts & Seeds', cal: 650, pro: 15, car: 14, fat: 65, micros: 'ALA omega-3, Mn', notes: 'Top plant ALA omega-3 nut for brain and recovery diet quality.', tone: 'good' },
+    { id: 'f_cashews', name: 'Cashews', cat: 'Nuts & Seeds', cal: 550, pro: 18, car: 30, fat: 44, micros: 'Mg, Cu, Zn', notes: 'Great stir-fry crunch with magnesium and zinc; measure portions.', tone: 'good' },
+    { id: 'f_brazil_nuts', name: 'Brazil nuts', cat: 'Nuts & Seeds', cal: 650, pro: 14, car: 12, fat: 66, micros: 'Selenium extremely high', notes: '1–2 nuts/day covers selenium needs completely. Do not overconsume.', tone: 'good' },
+    { id: 'f_chia', name: 'Chia seeds', cat: 'Nuts & Seeds', cal: 480, pro: 17, car: 40, fat: 31, micros: 'ALA, Fib ~34g, Ca, Mg', notes: 'Massive soluble fibre (34g/100g) and omega-3 ALA for digestion and satiety.', tone: 'good' },
+    { id: 'f_flaxseed', name: 'Linseed / flaxseed ground', cat: 'Nuts & Seeds', cal: 530, pro: 18, car: 29, fat: 42, micros: 'ALA, Fib ~27g, lignans', notes: 'High fibre and plant omega-3s; great in morning oats.', tone: 'good' },
+    { id: 'f_pumpkin_seeds', name: 'Pumpkin seeds (pepitas)', cat: 'Nuts & Seeds', cal: 550, pro: 30, car: 10, fat: 45, micros: 'Mg, Zn, Fe, Fib ~6g', notes: '30g protein/100g plus high zinc and magnesium for hormone and recovery support.', tone: 'good' },
+    { id: 'f_sunflower_seeds', name: 'Sunflower seeds', cat: 'Nuts & Seeds', cal: 580, pro: 21, car: 20, fat: 51, micros: 'Vit E, Se, Fib', notes: 'High Vitamin E antioxidant support; portion control.', tone: 'good' },
+    { id: 'f_tahini', name: 'Sesame seeds / tahini', cat: 'Nuts & Seeds', cal: 600, pro: 18, car: 20, fat: 54, micros: 'Ca, Cu, Fib', notes: 'Calcium-rich dressing base; calorie-dense so measure teaspoons.', tone: 'mid' },
+    // 10. Other Whole Foods
+    { id: 'f_passata', name: 'Passata / crushed tomato', cat: 'Other Staples', cal: 30, pro: 1, car: 6, fat: 0.2, micros: 'Lycopene, K', notes: 'Low-calorie volume sauce base for mince and chicken.', tone: 'good' },
+    { id: 'f_tzatziki', name: 'Greek yoghurt tzatziki base', cat: 'Other Staples', cal: 60, pro: 6, car: 4, fat: 2, micros: 'Protein dip, Ca', notes: 'High-protein low-calorie dip that makes potatoes and veggies easy to eat.', tone: 'good' },
+    { id: 'f_hummus', name: 'Hummus', cat: 'Other Staples', cal: 160, pro: 7, car: 14, fat: 10, micros: 'Fib; chickpea + tahini', notes: 'Wholesome dip; measure 40–60g portions.', tone: 'good' },
+    { id: 'f_olives', name: 'Olives', cat: 'Other Staples', cal: 150, pro: 1, car: 4, fat: 15, micros: 'Na high, mono fat', notes: 'Salty monounsaturated fat flavour booster.', tone: 'good' },
+    { id: 'f_sauerkraut', name: 'Sauerkraut', cat: 'Other Staples', cal: 20, pro: 1, car: 4, fat: 0, micros: 'Probiotic if live; Na', notes: 'Fermented gut-health side for heavy meat meals.', tone: 'good' },
+    { id: 'f_kimchi', name: 'Kimchi', cat: 'Other Staples', cal: 20, pro: 2, car: 3, fat: 0.5, micros: 'Probiotic spice; Na', notes: 'Live probiotics and spice for meal-prep adherence.', tone: 'good' },
+    { id: 'f_coconut_flesh', name: 'Coconut flesh, fresh', cat: 'Other Staples', cal: 350, pro: 3, car: 15, fat: 33, micros: 'Mn, sat fat', notes: 'High saturated fat; use occasionally rather than as a daily staple.', tone: 'mid' },
+    { id: 'f_coconut_yog', name: 'Coconut yoghurt', cat: 'Other Staples', cal: 120, pro: 1, car: 8, fat: 10, micros: 'Low protein usually', notes: 'Low protein compared to Greek yoghurt — pair with whey or another protein source.', tone: 'mid' },
+    { id: 'f_dark_choc', name: 'Dark chocolate 70–85%', cat: 'Other Staples', cal: 550, pro: 8, car: 45, fat: 40, micros: 'Flavanols, Mg', notes: 'Polyphenol-rich adherence treat in 20–30g portions; high calorie density.', tone: 'mid' },
+    { id: 'f_honey', name: 'Honey (peri-workout drizzle)', cat: 'Other Staples', cal: 300, pro: 0, car: 80, fat: 0, micros: 'Rapid sugar', notes: 'Fast glucose/fructose carb best reserved for pre/post-workout teaspoons.', tone: 'mid' }
+];
+
 const store = {
     state: { user: { currentWeight: 90.0 }, routines: [], activeRoutineId: 'default_1', history: { workouts: [], bodyweight: [], nutrition: [], cardio: [], challengeLogs: {}, manualPRs: [] }, savedMeals: [], prs: { Bench: {weight:0, reps:0}, Squat: {weight:0, reps:0}, Deadlift: {weight:0, reps:0} }, settings: { restTimer: 120, theme: 'olympus', chartRange: '90', nutritionTargets: { cal: 2500, pro: 160, car: 250, fat: 70 }, lastVolFilter: '', weightGoal: 'maintaining', showCaloriesOnBwChart: true, overloadMuscleFilter: 'All' }, variations: {}, customExercises: [], challenge: { isActive: false, title: '', startDate: '', endDate: '', goals: [] }, activeSession: null },
     migrate(state) {
@@ -719,7 +891,6 @@ const utils = {
     getWeeklyRankData: () => {
         const rp = utils.getWeeklyRP();
         const hyperStatus = utils.getWeeklyHypertrophyStatus();
-        // Build all 36 sub-divisions (Copper V -> Champion)
         const divs = ['V', 'IV', 'III', 'II', 'I'];
         const ladder = [];
         for (let r = 0; r < 7; r++) {
@@ -747,7 +918,7 @@ const utils = {
         let ladderIdx = Math.min(35, Math.floor(rp / 60));
         let championLockedByHypertrophy = false;
         if (!hyperStatus.allCompleted && ladderIdx === 35) {
-            ladderIdx = 34; // Cap at Diamond I until all 7 hypertrophy targets are completed
+            ladderIdx = 34;
             championLockedByHypertrophy = true;
         }
         const curr = ladder[ladderIdx];
@@ -966,6 +1137,83 @@ const utils = {
                 <path d="M 319 322 C 330 330, 325 338, 310 338 C 305 338, 305 330, 307 322 Z" fill="#333333" class="muscle"/>
             </g>
         </svg>`;
+    },
+    getDailyNutritionInsights: (nutEntry, targets) => {
+        let insights = [];
+        const cal = Math.round(nutEntry.cal || 0);
+        const pro = Math.round(nutEntry.pro || 0);
+        const car = Math.round(nutEntry.car || 0);
+        const fat = Math.round(nutEntry.fat || 0);
+        const tCal = targets.cal || 2500;
+        const tPro = targets.pro || 160;
+        const tCar = targets.car || 250;
+        const tFat = targets.fat || 70;
+
+        if (cal === 0 && (!nutEntry.loggedMeals || nutEntry.loggedMeals.length === 0)) {
+            insights.push({
+                tone: 'bad',
+                text: 'No nutrition logged yet today — tap Breakfast, Lunch, Dinner, or Snacks above to log whole-food ingredients or saved meals.'
+            });
+            return insights;
+        }
+
+        // Protein assessment (Protein Anchor Rule from NZ Athlete Reference)
+        if (pro >= tPro * 0.95) {
+            insights.push({ tone: 'good', text: `Today you have hit your protein goal (${pro}g / ${tPro}g), which is great for building and retaining muscle.` });
+        } else if (pro >= tPro * 0.7) {
+            insights.push({ tone: 'mid', text: `You are close to your protein target (${pro}g / ${tPro}g) — anchor your next meal with 25–50g of lean protein (chicken breast, tuna, Greek yoghurt, or cottage cheese).` });
+        } else {
+            insights.push({ tone: 'bad', text: `Protein intake is currently low (${pro}g / ${tPro}g) — prioritise high biological value protein to protect muscle mass and recovery.` });
+        }
+
+        // Calorie assessment
+        const calDiff = Math.abs(cal - tCal);
+        if (calDiff <= tCal * 0.1) {
+            insights.push({ tone: 'good', text: `You have met your calorie goal for the day (${cal} / ${tCal} kcal).` });
+        } else if (cal < tCal * 0.75) {
+            insights.push({ tone: 'bad', text: `You have failed to hit your calorie goal for the day (${cal} / ${tCal} kcal) — low energy availability can impair training quality and recovery.` });
+        } else if (cal < tCal * 0.9) {
+            insights.push({ tone: 'mid', text: `You are slightly under your calorie goal (${cal} / ${tCal} kcal) — good for cutting, or add whole-food carbs/fats if maintaining.` });
+        } else {
+            insights.push({ tone: 'mid', text: `You are above your calorie target today (${cal} / ${tCal} kcal) — great for a bulking surplus, but watch energy-dense fats if cutting.` });
+        }
+
+        // Carbs assessment
+        if (car >= tCar * 0.85) {
+            insights.push({ tone: 'good', text: `You had a solid amount of carbs today (${car}g), which is great for fuelling your workouts and replenishing glycogen.` });
+        } else if (car >= tCar * 0.5) {
+            insights.push({ tone: 'mid', text: `Moderate carbohydrate intake today (${car}g / ${tCar}g) — place rice, potato, kumara, or ripe banana around training sessions for peak output.` });
+        } else {
+            insights.push({ tone: 'bad', text: `Carbohydrates are low today (${car}g / ${tCar}g) — glycogen stores may dip during hard lifting sessions.` });
+        }
+
+        // Fats assessment
+        if (fat > tFat * 1.25) {
+            insights.push({ tone: 'bad', text: `Dietary fat is high today (${fat}g / ${tFat}g) — measure energy-dense foods (nuts, peanut butter, cheddar, fattier mince) strictly and keep heavy fats away from hard sessions.` });
+        } else if (fat >= tFat * 0.7) {
+            insights.push({ tone: 'good', text: `Healthy fat intake is on target (${fat}g / ${tFat}g), supporting hormone health and fat-soluble vitamin absorption.` });
+        }
+
+        // Ingredient-specific micronutrient & food-response notes from logged foods
+        let loggedFoodIds = new Set();
+        (nutEntry.loggedMeals || []).forEach(m => {
+            if (m.foodId) loggedFoodIds.add(m.foodId);
+            if (m.ingredients && Array.isArray(m.ingredients)) {
+                m.ingredients.forEach(ing => { if (ing.foodId) loggedFoodIds.add(ing.foodId); });
+            }
+        });
+
+        loggedFoodIds.forEach(fid => {
+            const food = NZ_ATHLETE_FOODS.find(f => f.id === fid);
+            if (food) {
+                insights.push({
+                    tone: food.tone || 'good',
+                    text: `${food.name}: ${food.notes} (Micros: ${food.micros})`
+                });
+            }
+        });
+
+        return insights;
     }
 };
 const workoutEngine = {
@@ -1420,10 +1668,10 @@ const views = {
                 ${r6.isMax ? `
                     <div class="r6-req-pill" style="background:linear-gradient(135deg, #9d00ff, #00e5ff);"><span>CHAMPION UNLOCKED</span></div>
                     <span style="font-size:16px; font-weight:900; color:${r6.color};">${r6.totalRP} Total RP</span>
-                 `: r6.championLockedByHypertrophy ?`
+                ` : r6.championLockedByHypertrophy ? `
                     <div class="r6-req-pill" style="background:#ff9500;"><span>LOCKED: ${7 - r6.hyperCompleted} MUSCLES LEFT</span></div>
                     <span style="font-size:15px; font-weight:900; color:${r6.color};">${r6.totalRP} RP</span>
-                 `:`
+                ` : `
                     <div class="r6-req-pill" style="background:var(--success); box-shadow:0 0 12px var(--success-dim);" title="Points required to reach ${next ? next.fullName : 'Next Rank'}"><span>+${r6.rpNeededForNext} RP TO NEXT</span></div>
                     <span style="font-size:16px; font-weight:900; color:${r6.color}; letter-spacing:0.5px;">${r6.rpInDiv} / ${r6.maxDivRP} RP <span style="font-size:11px; color:var(--text-secondary); font-weight:700;">(${r6.totalRP} Wk Total)</span></span>
                 `}
@@ -1513,13 +1761,123 @@ const views = {
         const todayStr = utils.getLocalISODate(new Date());
         let nutEntry = store.state.history.nutrition.find(n => utils.getLocalISODate(n.date) === todayStr) || { cal:0, pro:0, car:0, fat:0, loggedMeals:[], waterLog:[] };
         const targets = store.state.settings.nutritionTargets;
-        const calPct = Math.min(100, (nutEntry.cal / targets.cal) * 100) || 0;
-        const proPct = Math.min(100, (nutEntry.pro / targets.pro) * 100) || 0;
-        const carPct = Math.min(100, (nutEntry.car / targets.car) * 100) || 0;
-        const fatPct = Math.min(100, (nutEntry.fat / targets.fat) * 100) || 0;
-        let totalWater = 0; if (nutEntry.waterLog) { totalWater = nutEntry.waterLog.reduce((s, e) => s + e.amount, 0); }
+        const calPct = Math.min(100, Math.round(((nutEntry.cal || 0) / (targets.cal || 2500)) * 100)) || 0;
+        const proPct = Math.min(100, Math.round(((nutEntry.pro || 0) / (targets.pro || 160)) * 100)) || 0;
+        const carPct = Math.min(100, Math.round(((nutEntry.car || 0) / (targets.car || 250)) * 100)) || 0;
+        const fatPct = Math.min(100, Math.round(((nutEntry.fat || 0) / (targets.fat || 70)) * 100)) || 0;
+
+        let totalWater = 0;
+        if (nutEntry.waterLog) { totalWater = nutEntry.waterLog.reduce((s, e) => s + e.amount, 0); }
         let waterPct = Math.min(100, (totalWater / 4000) * 100);
-        let html = `<h1>${app.sym('nutrition') || ''} Nutrition</h1>`;
+
+        const mealCards = [
+            { cat: 'Breakfast', img: 'https://images.unsplash.com/photo-1511690656952-34342bb7c2f2?auto=format&fit=crop&w=450&q=80' },
+            { cat: 'Lunch',     img: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=450&q=80' },
+            { cat: 'Dinner',    img: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=450&q=80' },
+            { cat: 'Snacks',    img: 'https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?auto=format&fit=crop&w=450&q=80' }
+        ];
+
+        const buildRingSVG = (pct, strokeColor, labelTop, labelSub) => {
+            const r = 42;
+            const c = 2 * Math.PI * r;
+            const offset = c - (Math.min(100, Math.max(0, pct)) / 100) * c;
+            return `
+            <div style="position:relative; width:108px; height:108px; margin:8px auto 4px auto; display:flex; align-items:center; justify-content:center;">
+                <svg width="108" height="108" viewBox="0 0 108 108" style="transform:rotate(-90deg);">
+                    <circle cx="54" cy="54" r="${r}" fill="none" stroke="${strokeColor}" stroke-opacity="0.18" stroke-width="9"></circle>
+                    <circle cx="54" cy="54" r="${r}" fill="none" stroke="${strokeColor}" stroke-width="9" stroke-linecap="round" stroke-dasharray="${c.toFixed(1)}" stroke-dashoffset="${offset.toFixed(1)}" style="transition: stroke-dashoffset 0.5s ease; filter: drop-shadow(0 0 6px ${strokeColor}60);"></circle>
+                </svg>
+                <div style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
+                    <div style="font-size:13px; font-weight:800; color:${strokeColor}; line-height:1.1;">${labelTop}</div>
+                    <div style="font-size:15px; font-weight:900; color:var(--text-primary); margin-top:2px;">${pct}%</div>
+                    <div style="font-size:9px; color:var(--text-secondary); margin-top:1px;">${labelSub}</div>
+                </div>
+            </div>`;
+        };
+
+        const insights = utils.getDailyNutritionInsights(nutEntry, targets);
+
+        let html = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top: calc(24px + var(--safe-top)); margin-bottom: 14px;">
+            <div>
+                <h1 style="margin:0; font-size:28px;">${app.sym('nutrition') || ''} Nutrition</h1>
+                <div class="text-muted" style="font-size:12px;">Tap a meal card to log ingredients or saved meals</div>
+            </div>
+            <div style="display:flex; gap:8px;">
+                <button class="btn btn-sm" style="background:var(--surface-elevated); border:1px solid var(--border); font-size:12px; padding:8px 10px;" onclick="app.showCopyFromDayModal()" title="Copy Entries from a Past Day"><i class="fas fa-copy text-info"></i> Copy Day</button>
+                <button class="btn btn-sm btn-icon" onclick="app.editMacroTargets()" title="Edit Macro Targets"><i class="fas fa-sliders"></i></button>
+            </div>
+        </div>`;
+
+        // Interactive Today's Meals Image Carousel (Breakfast, Lunch, Dinner, Snacks)
+        html += `
+        <div class="flex-between" style="margin-bottom:10px;">
+            <h2 style="margin:0; font-size:17px;">Today's Meals</h2>
+            <span style="font-size:12px; font-weight:bold; color:var(--info); cursor:pointer;" onclick="app.openMealModal('Breakfast')">Track Food <i class="fas fa-chevron-right" style="font-size:10px;"></i></span>
+        </div>
+        <div class="nut-meal-carousel">`;
+
+        mealCards.forEach(mc => {
+            const catMeals = (nutEntry.loggedMeals || []).filter(m => m.type === mc.cat);
+            const catCals = Math.round(catMeals.reduce((sum, m) => sum + (m.cal || 0), 0));
+            html += `
+            <div class="nut-meal-tile" onclick="app.openMealModal('${mc.cat}')">
+                <img src="${mc.img}" alt="${mc.cat}" class="nut-meal-tile-img" loading="lazy">
+                <div class="nut-meal-tile-body">
+                    <div style="font-weight:800; font-size:14px; color:var(--text-primary);">${mc.cat}</div>
+                    <div style="font-size:11px; color:${catCals > 0 ? 'var(--success)' : 'var(--text-secondary)'}; font-weight:700; margin-top:2px;">
+                        ${catCals > 0 ? `${catCals} kcal (${catMeals.length})` : 'Tap to add'}
+                    </div>
+                </div>
+            </div>`;
+        });
+        html += `</div>`;
+
+        // Daily Summary Card with 2x2 Circular Ring Cards (matching attached image) + Dynamic Green/Orange/Red Bullet Insights
+        html += `
+        <div class="card" style="margin-top:8px; margin-bottom:20px; padding:16px;">
+            <div class="flex-between" style="margin-bottom:14px;">
+                <div>
+                    <h2 style="margin:0; font-size:18px;">Daily Summary</h2>
+                    <div class="text-muted" style="font-size:11px;">Today's Macronutrients & Athlete Food Insights</div>
+                </div>
+                <button class="btn btn-sm btn-icon" onclick="app.editMacroTargets()"><i class="fas fa-pen"></i></button>
+            </div>
+            <div class="nut-ring-grid">
+                <div class="nut-ring-card">
+                    <div class="flex-between" style="width:100%;"><span style="font-size:13px; font-weight:700;">Calories</span><i class="fas fa-apple-whole" style="color:#4cd964;"></i></div>
+                    ${buildRingSVG(calPct, '#4cd964', 'Kcal', `${Math.round(nutEntry.cal)}/${targets.cal}`)}
+                </div>
+                <div class="nut-ring-card">
+                    <div class="flex-between" style="width:100%;"><span style="font-size:13px; font-weight:700;">Fats</span><i class="fas fa-Seedling" style="display:none;"></i><i class="fas fa-burger" style="color:#ff2d55;"></i></div>
+                    ${buildRingSVG(fatPct, '#ff2d55', 'Fats', `${Math.round(nutEntry.fat)}/${targets.fat}g`)}
+                </div>
+                <div class="nut-ring-card">
+                    <div class="flex-between" style="width:100%;"><span style="font-size:13px; font-weight:700;">Carbs</span><i class="fas fa-bowl-rice" style="color:#ff9500;"></i></div>
+                    ${buildRingSVG(carPct, '#ff9500', 'Carbs', `${Math.round(nutEntry.car)}/${targets.car}g`)}
+                </div>
+                <div class="nut-ring-card">
+                    <div class="flex-between" style="width:100%;"><span style="font-size:13px; font-weight:700;">Protein</span><i class="fas fa-dumbbell" style="color:#007aff;"></i></div>
+                    ${buildRingSVG(proPct, '#007aff', 'Protein', `${Math.round(nutEntry.pro)}/${targets.pro}g`)}
+                </div>
+            </div>
+            <div style="border-top:1px solid var(--border); padding-top:12px; margin-top:4px;">
+                <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.8px; color:var(--text-secondary); margin-bottom:8px;">
+                    <i class="fas fa-clipboard-check text-accent"></i> Daily Nutrition & Micronutrient Notes
+                </div>
+                <div style="max-height:240px; overflow-y:auto; padding-right:2px;">
+                    ${insights.map(ins => {
+                        const cls = ins.tone === 'good' ? 'nut-insight-good' : (ins.tone === 'mid' ? 'nut-insight-mid' : 'nut-insight-bad');
+                        return `<div class="nut-insight-bullet ${cls}">
+                            <span style="font-weight:900;">•</span>
+                            <span style="flex:1;">${ins.text}</span>
+                        </div>`;
+                    }).join('')}
+                </div>
+            </div>
+        </div>`;
+
+        // Daily Water Intake Tracker (Kept exact same as requested)
         html += `
         <div class="card" style="margin-bottom: 24px;">
            <div class="flex-between" style="margin-bottom:12px;">
@@ -1535,40 +1893,25 @@ const views = {
                <button class="btn" style="flex:1; background:rgba(0,229,255,0.1); border-color:#00e5ff; color:#00e5ff;" onclick="app.addWater(800)"><i class="fas fa-bottle-water"></i> +800ml Bottle</button>
            </div>
         </div>`;
-        html += `<div class="card" style="margin-bottom: 24px;">
-            <div class="flex-between" style="margin-bottom:12px;">
-                <h2 style="margin:0; font-size:18px;">Daily Summary</h2>
-                <button class="btn btn-sm btn-icon" onclick="app.editMacroTargets()"><i class="fas fa-pen"></i></button>
-            </div>
-            <div style="display:flex; justify-content:space-between; text-align:center; margin-bottom: 16px;">
-                <div style="flex:1;"><div class="text-accent" style="font-size:24px; font-weight:bold;">${Math.round(nutEntry.cal)}</div><div class="text-muted" style="font-size:10px; text-transform:uppercase;">Calories / ${targets.cal}</div></div>
-                <div style="flex:1;"><div class="text-info" style="font-size:18px; font-weight:bold;">${Math.round(nutEntry.pro)}g</div><div class="text-muted" style="font-size:10px; text-transform:uppercase;">Protein / ${targets.pro}g</div></div>
-                <div style="flex:1;"><div class="text-warning" style="font-size:18px; font-weight:bold;">${Math.round(nutEntry.car)}g</div><div class="text-muted" style="font-size:10px; text-transform:uppercase;">Carbs / ${targets.car}g</div></div>
-                <div style="flex:1;"><div class="text-pending" style="font-size:18px; font-weight:bold;">${Math.round(nutEntry.fat)}g</div><div class="text-muted" style="font-size:10px; text-transform:uppercase;">Fats / ${targets.fat}g</div></div>
-            </div>
-            <div style="display:flex; flex-direction:column; gap:8px;">
-                <div class="progress-bg" style="height:6px; margin:0;"><div class="progress-fill" style="width:${calPct}%; background:var(--accent-color);"></div></div>
-                <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:12px;">
-                    <div class="progress-bg" style="height:4px; margin:0;"><div class="progress-fill" style="width:${proPct}%; background:var(--info);"></div></div>
-                    <div class="progress-bg" style="height:4px; margin:0;"><div class="progress-fill" style="width:${carPct}%; background:var(--warning);"></div></div>
-                    <div class="progress-bg" style="height:4px; margin:0;"><div class="progress-fill" style="width:${fatPct}%; background:var(--pending);"></div></div>
-                </div>
-            </div>
-        </div>`;
-        const categories = ['Breakfast', 'Lunch', 'Dinner', 'Snacks'];
-        categories.forEach(cat => {
-            const catMeals = (nutEntry.loggedMeals || []).filter(m => m.type === cat); const catCals = catMeals.reduce((sum, m) => sum + m.cal, 0);
-            html += `<div class="card" style="margin-bottom:16px;"><div class="flex-between" style="margin-bottom: 12px;"><h3 style="margin:0; font-size:16px;">${cat}</h3><span class="text-muted" style="font-size:14px; font-weight:bold;">${Math.round(catCals)} kcal</span></div>`;
-            if (catMeals.length > 0) { catMeals.forEach(m => { html += `<div class="data-row flex-between" style="padding: 8px 0; border-bottom: 1px solid var(--border);"><div><div style="font-weight:bold; font-size:14px;">${m.name}</div><div class="text-muted" style="font-size:10px;">${Math.round(m.cal)} kcal • P:${Math.round(m.pro)} C:${Math.round(m.car)} F:${Math.round(m.fat)}</div></div><button class="btn-icon text-accent" style="width:28px; height:28px; font-size:12px;" onclick="app.removeLoggedMeal('${todayStr}', '${m.logId}')"><i class="fas fa-times"></i></button></div>`; }); }
-            html += `<button class="btn" style="margin-top:12px; border: 1px dashed var(--accent-color); color:var(--accent-color); background:transparent;" onclick="app.showMealSearch('${cat}')">+ Add to ${cat}</button></div>`;
-        });
+
         const legacyOnly = nutEntry.cal > 0 && (!nutEntry.loggedMeals || nutEntry.loggedMeals.length === 0);
-        if (legacyOnly) { html += `<div class="card"><h3 style="color:var(--warning);">Legacy Entry Detected</h3><p class="text-muted" style="font-size:12px;">You have unassigned macros logged today. Clear them to use the new meal system properly without duplicating stats.</p><button class="btn btn-sm btn-icon" style="color:var(--pending); width:100%; border:1px dashed var(--pending); margin-top:8px;" onclick="app.clearLegacyNutrition('${todayStr}')"><i class="fas fa-trash"></i> Clear Legacy Macros</button></div>`; }
+        if (legacyOnly) {
+            html += `<div class="card"><h3 style="color:var(--warning);">Legacy Entry Detected</h3><p class="text-muted" style="font-size:12px;">You have unassigned macros logged today. Clear them to use the new meal system properly without duplicating stats.</p><button class="btn btn-sm btn-icon" style="color:var(--pending); width:100%; border:1px dashed var(--pending); margin-top:8px;" onclick="app.clearLegacyNutrition('${todayStr}')"><i class="fas fa-trash"></i> Clear Legacy Macros</button></div>`;
+        }
+
+        // Bottom Meal Library & Saved Meals Management
         html += `
         <div class="card" style="margin-top:24px;">
-            <h3 style="margin:0; font-size:16px;">Meal Library</h3>
-            <p class="text-muted" style="font-size:12px; margin-bottom:12px;">Create and manage your saved custom meals.</p>
-            <button class="btn" style="border: 1px dashed var(--accent-color); color:var(--accent-color); background:transparent;" onclick="app.showMealSearch('Manage')"><i class="fas fa-list"></i> Edit My Meals</button>
+            <div class="flex-between" style="margin-bottom:6px;">
+                <h3 style="margin:0; font-size:16px;">Meal Library & Saved Meals</h3>
+                <span class="text-muted" style="font-size:11px; font-weight:bold;">${(store.state.savedMeals || []).length} Saved</span>
+            </div>
+            <p class="text-muted" style="font-size:12px; margin-bottom:12px;">Combine raw NZ athlete ingredients into saved meals, edit your saved meals on the fly, or copy entries from a past day.</p>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                <button class="btn btn-primary" style="flex:1; min-width:140px;" onclick="app.editSavedMeal(null)"><i class="fas fa-plus"></i> Create Meal</button>
+                <button class="btn" style="flex:1; min-width:140px; border: 1px dashed var(--accent-color); color:var(--accent-color); background:transparent;" onclick="app.showMealSearch('Manage', 'meals')"><i class="fas fa-list"></i> Edit My Meals</button>
+            </div>
+            <button class="btn" style="margin-top:8px; background:var(--surface-elevated); border:1px solid var(--border); font-size:14px;" onclick="app.showCopyFromDayModal()"><i class="fas fa-calendar-day text-info"></i> Copy Entries From Past Day</button>
         </div>`;
         return html;
     },
@@ -1709,7 +2052,6 @@ const views = {
         let avgRir = thisWeekRirCount > 0 ? (thisWeekRirSum / thisWeekRirCount).toFixed(1) : '-'; let volDiff = lastWeekVol > 0 ? Math.round(((thisWeekVol - lastWeekVol) / lastWeekVol) * 100) : 0;
         let volDiffStr = lastWeekVol === 0 ? "No data last week" : volDiff >= 0 ? `↑ ${volDiff}% vs last week` : `↓ ${Math.abs(volDiff)}% vs last week`; let volDiffColor = lastWeekVol === 0 ? "var(--text-secondary)" : volDiff >= 0 ? "var(--success)" : "var(--pending)";
         let html = `<div class="page-header" style="flex-direction:row;"><h2 style="margin:0; font-size:18px;">${app.sym('analytics') || ''} Analytics</h2></div>`;
-        // 7-Day Overload Tracker (e1RM) with Muscle Group Filter & All Exercises
         const activeOverloadFilter = store.state.settings.overloadMuscleFilter || 'All';
         const overloadData = utils.getOverloadData(activeOverloadFilter);
         const filterGroups = ['All', ...MUSCLE_GROUPS.filter(m => m !== 'Cardio')];
@@ -1941,7 +2283,7 @@ const views = {
 };
 const app = {
     isEditingProgram: false, viewingRoutineId: null, draftRoutine: null, activeDataTab: null, customDraftTitle: '', draftChallenge: null, currentView: 'home', editingPastWorkoutId: null, draftPastWorkout: null, challengeOffset: 0,
-    activeMealType: 'Breakfast', mealSearchQuery: '',
+    activeMealType: 'Breakfast', mealSearchQuery: '', mealSearchTab: 'ingredients', mealCategoryFilter: 'All', draftMealBuilder: null, builderSearchQuery: '',
     init() { store.load(); this.setTheme(store.state.settings.theme, false); this.navigate('home'); },
     sym(key) { const t = store.state.settings.theme; return THEME_MAP[t] ? THEME_MAP[t].symbols[key] || THEME_MAP['basic'].symbols[key] : THEME_MAP['basic'].symbols[key]; },
     renderNav() { const t = store.state.settings.theme; const icons = THEME_MAP[t] ? THEME_MAP[t].nav : THEME_MAP['basic'].nav; const viewsList = [ {id:'home', label:'Home', i:icons[0]}, {id:'workout', label:'Workout', i:icons[1]}, {id:'progress', label:'Analytics', i:icons[2]}, {id:'nutrition', label:'Nutrition', i:icons[3]}, {id:'data', label:'Data', i:icons[4]} ]; let navHtml = ''; viewsList.forEach(v => { const isActive = this.currentView === v.id || (v.id === 'workout' && this.currentView === 'workout-detail') || (v.id === 'home' && this.currentView === 'ranked-breakdown'); navHtml += `<div class="nav-item ${isActive ? 'active' : ''}" onclick="app.navigate('${v.id}')"><i class="fas ${v.i}"></i>${v.label}</div>`; }); document.getElementById('nav-bar').innerHTML = navHtml; },
@@ -2049,82 +2391,409 @@ const app = {
         store.state.settings.nutritionTargets = { cal: parseInt(cal)||0, pro: parseInt(pro)||0, car: parseInt(car)||0, fat: parseInt(fat)||0 };
         store.save(); this.navigate('nutrition');
     },
-    // MEAL MANAGEMENT (Edit My Meals)
-    showMealSearch(cat) {
-        this.activeMealType = cat; this.mealSearchQuery = '';
-        this.renderMealSearchModal();
-        document.getElementById('meal-search-modal').style.display = 'flex';
-    },
-    renderMealSearchModal() {
+    // STEP 1: Open Meal Category View (when tapping Breakfast, Lunch, Dinner, or Snacks image tile)
+    openMealModal(cat) {
+        this.activeMealType = cat;
+        const todayStr = utils.getLocalISODate(new Date());
+        const nutEntry = store.state.history.nutrition.find(n => utils.getLocalISODate(n.date) === todayStr) || { loggedMeals: [] };
+        const catMeals = (nutEntry.loggedMeals || []).filter(m => m.type === cat);
+        const catCals = Math.round(catMeals.reduce((sum, m) => sum + (m.cal || 0), 0));
+        const catPro = Math.round(catMeals.reduce((sum, m) => sum + (m.pro || 0), 0));
+        const catCar = Math.round(catMeals.reduce((sum, m) => sum + (m.car || 0), 0));
+        const catFat = Math.round(catMeals.reduce((sum, m) => sum + (m.fat || 0), 0));
         const modal = document.getElementById('meal-search-modal');
-        let q = this.mealSearchQuery.toLowerCase();
-        let matches = store.state.savedMeals.filter(m => m.name.toLowerCase().includes(q));
-        let html = `<div class="page-header"><button class="btn btn-sm btn-icon" onclick="document.getElementById('meal-search-modal').style.display='none'"><i class="fas fa-arrow-left"></i></button><h2 style="margin:0; font-size:18px;">${this.activeMealType === 'Manage' ? 'Manage Saved Meals' : 'Add to ' + this.activeMealType}</h2><button class="btn btn-sm btn-icon" onclick="app.editSavedMeal(null)"><i class="fas fa-plus"></i></button></div>`;
-        html += `<div style="padding: 0 16px;"><input type="text" class="edit-input" placeholder="Search saved meals..." value="${this.mealSearchQuery}" oninput="app.mealSearchQuery=this.value; app.renderMealSearchModal()"></div>`;
-        html += `<div style="padding: 16px;">`;
-        if (matches.length === 0) { html += `<p class="text-muted">No meals found. Create one using the + button.</p>`; }
-        matches.forEach(m => {
-            html += `<div class="card" style="margin-bottom:12px; padding:12px;">
-                <div class="flex-between">
-                    <div style="flex:1;">
-                        <div style="font-weight:bold; font-size:16px;">${m.name}</div>
-                        <div class="text-muted" style="font-size:12px; margin-top:4px;">${m.cal} kcal • P:${m.pro} C:${m.car} F:${m.fat}</div>
+
+        let html = `
+        <div class="page-header">
+            <button class="btn btn-sm btn-icon" onclick="document.getElementById('meal-search-modal').style.display='none'; app.navigate('nutrition');"><i class="fas fa-arrow-left"></i></button>
+            <h2 style="margin:0; font-size:18px;">${cat}</h2>
+            <button class="btn btn-sm btn-icon" title="Copy From Past Day" onclick="app.showCopyFromDayModal('${cat}')"><i class="fas fa-copy"></i></button>
+        </div>
+        <div style="padding:16px;">
+            <div class="card" style="margin-bottom:16px;">
+                <div class="flex-between" style="margin-bottom:12px;">
+                    <div>
+                        <h3 style="margin:0; font-size:16px; color:var(--text-primary);">Logged in ${cat}</h3>
+                        <div class="text-muted" style="font-size:11px;">P: ${catPro}g • C: ${catCar}g • F: ${catFat}g</div>
                     </div>
-                    <div style="display:flex; gap:8px;">
-                        ${this.activeMealType === 'Manage'
-                            ? `<button class="btn-icon" style="color:var(--info); border:1px solid var(--border);" onclick="app.editSavedMeal('${m.id}')"><i class="fas fa-pen"></i></button>
-                               <button class="btn-icon" style="color:var(--pending); border:1px solid var(--border);" onclick="app.deleteSavedMeal('${m.id}')"><i class="fas fa-trash"></i></button>`
-                            : `<button class="btn btn-sm btn-primary" onclick="app.addLoggedMeal('${utils.getLocalISODate(new Date())}', '${this.activeMealType}', '${m.id}')"><i class="fas fa-plus"></i> Add</button>`}
+                    <span class="text-accent" style="font-size:18px; font-weight:900;">${catCals} kcal</span>
+                </div>`;
+        if (catMeals.length === 0) {
+            html += `<p class="text-muted" style="font-size:13px; margin:8px 0;">Nothing logged for ${cat} yet today.</p>`;
+        } else {
+            catMeals.forEach(m => {
+                html += `
+                <div class="data-row flex-between" style="padding:10px 0; border-bottom:1px solid var(--border); gap:8px;">
+                    <div style="flex:1; min-width:0;">
+                        <div style="font-weight:bold; font-size:14px;">${m.name}</div>
+                        <div class="text-muted" style="font-size:11px;">${Math.round(m.cal)} kcal • P:${Math.round(m.pro)}g C:${Math.round(m.car)}g F:${Math.round(m.fat)}g</div>
+                        ${m.notes ? `<div style="font-size:10px; color:var(--info); margin-top:2px;">${m.notes}</div>` : ''}
                     </div>
-                </div>
-            </div>`;
-        });
-        html += `</div>`;
-        modal.innerHTML = html;
-    },
-    editSavedMeal(id) {
-        let m = id ? store.state.savedMeals.find(x => x.id === id) : { id: utils.generateId(), name: '', cal: 0, pro: 0, car: 0, fat: 0 };
-        if (!m) return;
-        const modal = document.getElementById('meal-create-modal');
-        let html = `<div class="page-header"><button class="btn btn-sm btn-icon" onclick="document.getElementById('meal-create-modal').style.display='none'"><i class="fas fa-arrow-left"></i></button><h2 style="margin:0; font-size:18px;">${id ? 'Edit Meal' : 'Create Meal'}</h2><div style="width:36px;"></div></div>`;
-        html += `<div style="padding: 16px;">
-            <div class="card">
-                <label class="text-muted" style="font-size:12px;">Meal Name</label>
-                <input type="text" id="cm-name" class="edit-input" value="${m.name}" placeholder="e.g. Chicken & Rice">
-                <div style="display:flex; gap:8px; margin-top:12px;">
-                    <div style="flex:1;"><label class="text-muted" style="font-size:12px;">Calories</label><input type="number" id="cm-cal" class="edit-input" value="${m.cal}"></div>
-                    <div style="flex:1;"><label class="text-muted" style="font-size:12px;">Protein (g)</label><input type="number" id="cm-pro" class="edit-input" value="${m.pro}"></div>
-                </div>
-                <div style="display:flex; gap:8px; margin-top:8px;">
-                    <div style="flex:1;"><label class="text-muted" style="font-size:12px;">Carbs (g)</label><input type="number" id="cm-car" class="edit-input" value="${m.car}"></div>
-                    <div style="flex:1;"><label class="text-muted" style="font-size:12px;">Fats (g)</label><input type="number" id="cm-fat" class="edit-input" value="${m.fat}"></div>
-                </div>
-                <button class="btn btn-success" style="width:100%; margin-top:24px;" onclick="app.saveCustomMeal('${m.id}')"><i class="fas fa-save"></i> Save Meal</button>
+                    <button class="btn-icon text-accent" style="width:30px; height:30px; font-size:12px; flex-shrink:0;" onclick="app.removeLoggedMeal('${todayStr}', '${m.logId}', true)"><i class="fas fa-times"></i></button>
+                </div>`;
+            });
+        }
+        html += `
+                <button class="btn btn-primary" style="margin-top:16px;" onclick="app.showMealSearch('${cat}', 'ingredients')">+ Add to ${cat}</button>
+                <button class="btn" style="margin-top:8px; background:var(--surface-elevated); border:1px solid var(--border); font-size:13px;" onclick="app.showCopyFromDayModal('${cat}')"><i class="fas fa-calendar-day text-info"></i> Copy ${cat} From Past Day</button>
             </div>
         </div>`;
         modal.innerHTML = html;
         modal.style.display = 'flex';
     },
-    saveCustomMeal(id) {
-        const name = document.getElementById('cm-name').value;
-        const cal = parseFloat(document.getElementById('cm-cal').value)||0;
-        const pro = parseFloat(document.getElementById('cm-pro').value)||0;
-        const car = parseFloat(document.getElementById('cm-car').value)||0;
-        const fat = parseFloat(document.getElementById('cm-fat').value)||0;
-        if(!name) { alert("Please enter a name."); return; }
-        let existingIdx = store.state.savedMeals.findIndex(x => x.id === id);
-        if (existingIdx > -1) { store.state.savedMeals[existingIdx] = { id, name, cal, pro, car, fat }; }
-        else { store.state.savedMeals.push({ id: id || utils.generateId(), name, cal, pro, car, fat }); }
+    // STEP 2: Two-Button Workflow (Ingredients OR Saved Meals) + Search Filter + Create Meal + Copy From Day
+    showMealSearch(cat, defaultTab = 'ingredients') {
+        this.activeMealType = cat;
+        this.mealSearchQuery = '';
+        this.mealSearchTab = (cat === 'Manage') ? 'meals' : defaultTab;
+        this.mealCategoryFilter = 'All';
+        this.renderMealSearchModal();
+        document.getElementById('meal-search-modal').style.display = 'flex';
+    },
+    renderMealSearchModal() {
+        const modal = document.getElementById('meal-search-modal');
+        const isManage = this.activeMealType === 'Manage';
+        const q = (this.mealSearchQuery || '').toLowerCase().trim();
+        const todayStr = utils.getLocalISODate(new Date());
+
+        let html = `
+        <div class="page-header">
+            <button class="btn btn-sm btn-icon" onclick="${isManage ? `document.getElementById('meal-search-modal').style.display='none'; app.navigate('nutrition');` : `app.openMealModal('${this.activeMealType}')`}"><i class="fas fa-arrow-left"></i></button>
+            <h2 style="margin:0; font-size:18px;">${isManage ? 'Saved Meals Library' : '+ Add to ' + this.activeMealType}</h2>
+            <button class="btn btn-sm btn-icon" title="Create New Meal" onclick="app.editSavedMeal(null)"><i class="fas fa-plus"></i></button>
+        </div>
+        <div style="padding: 0 16px;">
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-bottom:12px;">
+                <button class="btn btn-sm ${this.mealSearchTab === 'ingredients' ? 'btn-primary' : ''}" style="width:100%;" onclick="app.mealSearchTab='ingredients'; app.renderMealSearchModal();">
+                    <i class="fas fa-carrot"></i> Ingredients (${NZ_ATHLETE_FOODS.length})
+                </button>
+                <button class="btn btn-sm ${this.mealSearchTab === 'meals' ? 'btn-primary' : ''}" style="width:100%;" onclick="app.mealSearchTab='meals'; app.renderMealSearchModal();">
+                    <i class="fas fa-bowl-food"></i> Saved Meals (${(store.state.savedMeals||[]).length})
+                </button>
+            </div>
+            <div style="display:flex; gap:8px; margin-bottom:10px;">
+                <button class="btn btn-sm" style="flex:1; background:var(--surface-elevated); border:1px dashed var(--accent-color); color:var(--accent-color); font-size:12px;" onclick="app.editSavedMeal(null)">
+                    <i class="fas fa-layer-group"></i> Create / Combine Meal
+                </button>
+                <button class="btn btn-sm" style="flex:1; background:var(--surface-elevated); border:1px solid var(--border); font-size:12px;" onclick="app.showCopyFromDayModal('${isManage ? '' : this.activeMealType}')">
+                    <i class="fas fa-copy text-info"></i> Copy From Day
+                </button>
+            </div>
+            <input type="text" id="meal-modal-search-input" class="edit-input" placeholder="${this.mealSearchTab === 'ingredients' ? 'Search 100+ NZ athlete ingredients (e.g. chicken, kumara, kiwi)...' : 'Search your saved meals...'}" value="${this.mealSearchQuery}" oninput="app.updateMealSearchQuery(this.value)">
+        `;
+
+        if (this.mealSearchTab === 'ingredients') {
+            const cats = ['All', ...new Set(NZ_ATHLETE_FOODS.map(f => f.cat))];
+            html += `<div style="display:flex; gap:6px; overflow-x:auto; padding-bottom:8px; margin-bottom:8px; scrollbar-width:none;">
+                ${cats.map(c => `<button class="btn btn-sm" style="padding:5px 10px; font-size:11px; white-space:nowrap; background:${this.mealCategoryFilter === c ? 'var(--accent-color)' : 'var(--surface-elevated)'}; color:${this.mealCategoryFilter === c ? 'var(--bg-color)' : 'var(--text-primary)'}; border:none;" onclick="app.mealCategoryFilter='${c}'; app.renderMealSearchModal();">${c}</button>`).join('')}
+            </div>`;
+        }
+        html += `</div><div id="meal-search-results-container" style="padding: 8px 16px 60px 16px;">`;
+        html += this.buildMealSearchResultsHTML(q, todayStr, isManage);
+        html += `</div>`;
+        modal.innerHTML = html;
+    },
+    updateMealSearchQuery(val) {
+        this.mealSearchQuery = val;
+        const container = document.getElementById('meal-search-results-container');
+        if (container) {
+            const todayStr = utils.getLocalISODate(new Date());
+            const isManage = this.activeMealType === 'Manage';
+            container.innerHTML = this.buildMealSearchResultsHTML((val || '').toLowerCase().trim(), todayStr, isManage);
+        }
+    },
+    buildMealSearchResultsHTML(q, todayStr, isManage) {
+        let html = '';
+        if (this.mealSearchTab === 'ingredients') {
+            const matches = NZ_ATHLETE_FOODS.filter(f => {
+                const catOk = this.mealCategoryFilter === 'All' || f.cat === this.mealCategoryFilter;
+                const qOk = !q || f.name.toLowerCase().includes(q) || f.cat.toLowerCase().includes(q) || f.micros.toLowerCase().includes(q) || f.notes.toLowerCase().includes(q);
+                return catOk && qOk;
+            });
+            if (matches.length === 0) {
+                return `<p class="text-muted" style="text-align:center; padding:20px;">No matching ingredients found.</p>`;
+            }
+            matches.forEach(f => {
+                html += `
+                <div class="card" style="margin-bottom:10px; padding:12px;">
+                    <div class="flex-between" style="align-items:flex-start; gap:8px;">
+                        <div style="flex:1; min-width:0;">
+                            <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                                <span style="font-weight:800; font-size:15px; color:var(--text-primary);">${f.name}</span>
+                                <span style="font-size:10px; padding:2px 6px; border-radius:6px; background:var(--surface-elevated); color:var(--text-secondary); font-weight:bold;">${f.cat}</span>
+                            </div>
+                            <div style="font-size:12px; font-weight:bold; color:var(--accent-color); margin-top:4px;">
+                                Per 100g: ${f.cal} kcal • P: ${f.pro}g • C: ${f.car}g • F: ${f.fat}g
+                            </div>
+                            <div style="font-size:11px; color:var(--info); margin-top:3px;"><strong>Micros:</strong> ${f.micros}</div>
+                            <div class="text-muted" style="font-size:11px; margin-top:2px; line-height:1.35;">${f.notes}</div>
+                        </div>
+                        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:6px; flex-shrink:0;">
+                            <div style="display:flex; align-items:center; gap:4px;">
+                                <input type="number" id="ing-grams-${f.id}" value="100" min="1" step="10" class="edit-input" style="width:68px; margin:0; padding:6px; text-align:center; font-weight:bold; font-size:14px !important;">
+                                <span class="text-muted" style="font-size:11px; font-weight:bold;">g</span>
+                            </div>
+                            <button class="btn btn-sm btn-success" style="width:100%; padding:7px 12px;" onclick="app.addIngredientToDay('${f.id}', '${isManage ? 'Lunch' : this.activeMealType}')">
+                                <i class="fas fa-plus"></i> Add
+                            </button>
+                        </div>
+                    </div>
+                </div>`;
+            });
+        } else {
+            const matches = (store.state.savedMeals || []).filter(m => !q || m.name.toLowerCase().includes(q));
+            if (matches.length === 0) {
+                html += `<div class="card" style="text-align:center; padding:24px;">
+                    <p class="text-muted" style="margin-bottom:12px;">No saved meals yet. Combine raw ingredients into a reusable meal!</p>
+                    <button class="btn btn-primary" onclick="app.editSavedMeal(null)"><i class="fas fa-plus"></i> Create Saved Meal</button>
+                </div>`;
+                return html;
+            }
+            matches.forEach(m => {
+                const ingSummary = (m.ingredients && m.ingredients.length > 0)
+                    ? m.ingredients.map(i => `${i.name} (${i.grams}g)`).join(', ')
+                    : 'Custom macro entry';
+                html += `
+                <div class="card" style="margin-bottom:12px; padding:12px;">
+                    <div class="flex-between" style="align-items:flex-start; gap:8px;">
+                        <div style="flex:1; min-width:0;">
+                            <div style="font-weight:800; font-size:16px;">${m.name}</div>
+                            <div style="font-size:12px; font-weight:bold; color:var(--accent-color); margin-top:3px;">
+                                ${Math.round(m.cal)} kcal • P:${Math.round(m.pro)}g • C:${Math.round(m.car)}g • F:${Math.round(m.fat)}g
+                            </div>
+                            <div class="text-muted" style="font-size:11px; margin-top:4px; line-height:1.3;">${ingSummary}</div>
+                        </div>
+                        <div style="display:flex; gap:6px; flex-shrink:0; align-items:center;">
+                            ${!isManage ? `<button class="btn btn-sm btn-primary" onclick="app.addLoggedMeal('${todayStr}', '${this.activeMealType}', '${m.id}')"><i class="fas fa-plus"></i> Add</button>` : ''}
+                            <button class="btn-icon" style="color:var(--info); border:1px solid var(--border);" title="Edit Meal on the fly" onclick="app.editSavedMeal('${m.id}')"><i class="fas fa-pen"></i></button>
+                            <button class="btn-icon" style="color:var(--pending); border:1px solid var(--border);" title="Delete Saved Meal" onclick="app.deleteSavedMeal('${m.id}')"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                </div>`;
+            });
+        }
+        return html;
+    },
+    addIngredientToDay(foodId, mealCat) {
+        const food = NZ_ATHLETE_FOODS.find(f => f.id === foodId);
+        if (!food) return;
+        const gramInput = document.getElementById(`ing-grams-${foodId}`);
+        const grams = Math.max(1, parseFloat(gramInput ? gramInput.value : 100) || 100);
+        const ratio = grams / 100;
+        const todayStr = utils.getLocalISODate(new Date());
+        let nutEntry = store.state.history.nutrition.find(n => utils.getLocalISODate(n.date) === todayStr);
+        if (!nutEntry) {
+            nutEntry = { date: todayStr + 'T12:00:00', cal: 0, pro: 0, car: 0, fat: 0, loggedMeals: [], waterLog: [] };
+            store.state.history.nutrition.push(nutEntry);
+        }
+        if (!nutEntry.loggedMeals) nutEntry.loggedMeals = [];
+        const entryItem = {
+            logId: utils.generateId(),
+            foodId: food.id,
+            name: `${food.name} (${grams}g)`,
+            grams: grams,
+            type: mealCat || 'Lunch',
+            cal: Math.round(food.cal * ratio * 10) / 10,
+            pro: Math.round(food.pro * ratio * 10) / 10,
+            car: Math.round(food.car * ratio * 10) / 10,
+            fat: Math.round(food.fat * ratio * 10) / 10,
+            micros: food.micros,
+            notes: food.notes
+        };
+        nutEntry.loggedMeals.push(entryItem);
+        this.recalcDailyNutrition(nutEntry);
+        store.save();
+        this.openMealModal(mealCat || 'Lunch');
+        this.navigate('nutrition');
+    },
+    recalcDailyNutrition(nutEntry) {
+        let cal = 0, pro = 0, car = 0, fat = 0;
+        (nutEntry.loggedMeals || []).forEach(m => {
+            cal += parseFloat(m.cal) || 0;
+            pro += parseFloat(m.pro) || 0;
+            car += parseFloat(m.car) || 0;
+            fat += parseFloat(m.fat) || 0;
+        });
+        nutEntry.cal = Math.round(cal);
+        nutEntry.pro = Math.round(pro * 10) / 10;
+        nutEntry.car = Math.round(car * 10) / 10;
+        nutEntry.fat = Math.round(fat * 10) / 10;
+    },
+    // Multi-Ingredient Meal Builder & On-The-Fly Saved Meal Editor
+    editSavedMeal(id) {
+        const existing = id ? store.state.savedMeals.find(x => x.id === id) : null;
+        if (existing) {
+            this.draftMealBuilder = JSON.parse(JSON.stringify(existing));
+            if (!this.draftMealBuilder.ingredients) this.draftMealBuilder.ingredients = [];
+        } else {
+            this.draftMealBuilder = { id: utils.generateId(), name: '', cal: 0, pro: 0, car: 0, fat: 0, ingredients: [], isNew: true };
+        }
+        this.builderSearchQuery = '';
+        this.renderMealBuilderModal();
+        document.getElementById('meal-create-modal').style.display = 'flex';
+    },
+    recalcDraftMealBuilder() {
+        const b = this.draftMealBuilder;
+        if (!b || !b.ingredients || b.ingredients.length === 0) return;
+        let cal = 0, pro = 0, car = 0, fat = 0;
+        b.ingredients.forEach(ing => {
+            const food = NZ_ATHLETE_FOODS.find(f => f.id === ing.foodId);
+            if (food) {
+                const r = (parseFloat(ing.grams) || 0) / 100;
+                ing.cal = Math.round(food.cal * r);
+                ing.pro = Math.round(food.pro * r * 10) / 10;
+                ing.car = Math.round(food.car * r * 10) / 10;
+                ing.fat = Math.round(food.fat * r * 10) / 10;
+            }
+            cal += ing.cal || 0;
+            pro += ing.pro || 0;
+            car += ing.car || 0;
+            fat += ing.fat || 0;
+        });
+        b.cal = Math.round(cal);
+        b.pro = Math.round(pro * 10) / 10;
+        b.car = Math.round(car * 10) / 10;
+        b.fat = Math.round(fat * 10) / 10;
+    },
+    renderMealBuilderModal() {
+        const modal = document.getElementById('meal-create-modal');
+        const b = this.draftMealBuilder;
+        if (!b) return;
+        const q = (this.builderSearchQuery || '').toLowerCase().trim();
+        const matchingFoods = NZ_ATHLETE_FOODS.filter(f => !q || f.name.toLowerCase().includes(q) || f.cat.toLowerCase().includes(q)).slice(0, 35);
+
+        let html = `
+        <div class="page-header">
+            <button class="btn btn-sm btn-icon" onclick="document.getElementById('meal-create-modal').style.display='none'"><i class="fas fa-arrow-left"></i></button>
+            <h2 style="margin:0; font-size:18px;">${b.isNew ? 'Create Saved Meal' : 'Edit Saved Meal'}</h2>
+            <button class="btn btn-sm btn-success" onclick="app.saveCustomMeal()"><i class="fas fa-save"></i> Save</button>
+        </div>
+        <div style="padding: 16px; padding-bottom: 80px;">
+            <div class="card">
+                <label class="text-muted" style="font-size:12px;">Meal Name</label>
+                <input type="text" id="cm-name" class="edit-input" value="${b.name}" placeholder="e.g. Post-Workout Chicken & Kumara Bowl" oninput="app.draftMealBuilder.name=this.value">
+                <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:8px; margin-top:8px;">
+                    <div><label class="text-muted" style="font-size:10px;">Calories</label><input type="number" id="cm-cal" class="edit-input" style="margin:0; text-align:center; font-weight:bold;" value="${Math.round(b.cal)}" onchange="app.draftMealBuilder.cal=parseFloat(this.value)||0"></div>
+                    <div><label class="text-muted" style="font-size:10px;">Protein (g)</label><input type="number" id="cm-pro" class="edit-input" style="margin:0; text-align:center; font-weight:bold;" value="${b.pro}" onchange="app.draftMealBuilder.pro=parseFloat(this.value)||0"></div>
+                    <div><label class="text-muted" style="font-size:10px;">Carbs (g)</label><input type="number" id="cm-car" class="edit-input" style="margin:0; text-align:center; font-weight:bold;" value="${b.car}" onchange="app.draftMealBuilder.car=parseFloat(this.value)||0"></div>
+                    <div><label class="text-muted" style="font-size:10px;">Fats (g)</label><input type="number" id="cm-fat" class="edit-input" style="margin:0; text-align:center; font-weight:bold;" value="${b.fat}" onchange="app.draftMealBuilder.fat=parseFloat(this.value)||0"></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="flex-between" style="margin-bottom:8px;">
+                    <h3 style="margin:0; font-size:15px;">Combined Ingredients (${(b.ingredients||[]).length})</h3>
+                    <span class="text-muted" style="font-size:11px;">Auto-calculates macros</span>
+                </div>`;
+        if (!b.ingredients || b.ingredients.length === 0) {
+            html += `<p class="text-muted" style="font-size:12px;">Search and add raw ingredients below to group them into this meal.</p>`;
+        } else {
+            b.ingredients.forEach((ing, idx) => {
+                html += `
+                <div class="data-row flex-between" style="padding:8px 0; gap:8px;">
+                    <div style="flex:1; min-width:0;">
+                        <div style="font-weight:bold; font-size:13px;">${ing.name}</div>
+                        <div class="text-muted" style="font-size:10px;">${ing.cal} kcal • P:${ing.pro}g C:${ing.car}g F:${ing.fat}g</div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:6px;">
+                        <input type="number" class="inline-edit" style="width:64px;" value="${ing.grams}" onchange="app.updateBuilderIngGrams(${idx}, this.value)">
+                        <span class="text-muted" style="font-size:11px;">g</span>
+                        <button class="btn-icon text-accent" style="width:28px; height:28px; font-size:12px;" onclick="app.removeBuilderIng(${idx})"><i class="fas fa-times"></i></button>
+                    </div>
+                </div>`;
+            });
+        }
+        html += `</div>
+
+            <div class="card">
+                <h3 style="margin:0 0 8px 0; font-size:15px;">+ Add Raw Ingredients to Meal</h3>
+                <input type="text" class="edit-input" placeholder="Filter NZ athlete ingredients..." value="${this.builderSearchQuery}" oninput="app.builderSearchQuery=this.value; app.renderMealBuilderModal();">
+                <div style="max-height:280px; overflow-y:auto; display:flex; flex-direction:column; gap:6px; margin-top:8px;">
+                    ${matchingFoods.map(f => `
+                    <div class="flex-between" style="padding:8px 10px; background:var(--surface-elevated); border-radius:8px; border:1px solid var(--border); gap:8px;">
+                        <div style="flex:1; min-width:0;">
+                            <div style="font-weight:bold; font-size:13px;">${f.name}</div>
+                            <div class="text-muted" style="font-size:10px;">100g: ${f.cal} kcal | P:${f.pro}g C:${f.car}g F:${f.fat}g</div>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:4px; flex-shrink:0;">
+                            <input type="number" id="b-gram-${f.id}" value="100" class="inline-edit" style="width:55px; padding:4px;">
+                            <span class="text-muted" style="font-size:10px;">g</span>
+                            <button class="btn btn-sm btn-primary" style="padding:6px 10px;" onclick="app.addIngredientToBuilder('${f.id}')"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>`).join('')}
+                </div>
+            </div>
+            <button class="btn btn-success" style="width:100%; margin-top:12px;" onclick="app.saveCustomMeal()"><i class="fas fa-save"></i> Save Meal to Library</button>
+        </div>`;
+        modal.innerHTML = html;
+    },
+    addIngredientToBuilder(foodId) {
+        const food = NZ_ATHLETE_FOODS.find(f => f.id === foodId);
+        if (!food || !this.draftMealBuilder) return;
+        const gEl = document.getElementById(`b-gram-${foodId}`);
+        const grams = Math.max(1, parseFloat(gEl ? gEl.value : 100) || 100);
+        const r = grams / 100;
+        this.draftMealBuilder.ingredients.push({
+            foodId: food.id,
+            name: food.name,
+            grams: grams,
+            cal: Math.round(food.cal * r),
+            pro: Math.round(food.pro * r * 10) / 10,
+            car: Math.round(food.car * r * 10) / 10,
+            fat: Math.round(food.fat * r * 10) / 10
+        });
+        this.recalcDraftMealBuilder();
+        this.renderMealBuilderModal();
+    },
+    updateBuilderIngGrams(idx, val) {
+        if (!this.draftMealBuilder || !this.draftMealBuilder.ingredients[idx]) return;
+        this.draftMealBuilder.ingredients[idx].grams = Math.max(1, parseFloat(val) || 100);
+        this.recalcDraftMealBuilder();
+        this.renderMealBuilderModal();
+    },
+    removeBuilderIng(idx) {
+        if (!this.draftMealBuilder) return;
+        this.draftMealBuilder.ingredients.splice(idx, 1);
+        this.recalcDraftMealBuilder();
+        this.renderMealBuilderModal();
+    },
+    saveCustomMeal() {
+        const b = this.draftMealBuilder;
+        if (!b) return;
+        const nameEl = document.getElementById('cm-name');
+        const calEl = document.getElementById('cm-cal');
+        const proEl = document.getElementById('cm-pro');
+        const carEl = document.getElementById('cm-car');
+        const fatEl = document.getElementById('cm-fat');
+        const name = (nameEl ? nameEl.value : b.name).trim();
+        if (!name) { alert("Please enter a meal name."); return; }
+        const savedObj = {
+            id: b.id || utils.generateId(),
+            name: name,
+            cal: parseFloat(calEl ? calEl.value : b.cal) || 0,
+            pro: parseFloat(proEl ? proEl.value : b.pro) || 0,
+            car: parseFloat(carEl ? carEl.value : b.car) || 0,
+            fat: parseFloat(fatEl ? fatEl.value : b.fat) || 0,
+            ingredients: b.ingredients || []
+        };
+        const existingIdx = store.state.savedMeals.findIndex(x => x.id === savedObj.id);
+        if (existingIdx > -1) store.state.savedMeals[existingIdx] = savedObj;
+        else store.state.savedMeals.push(savedObj);
+
         store.save();
         document.getElementById('meal-create-modal').style.display = 'none';
-        this.renderMealSearchModal();
-        if(this.activeMealType === 'Manage') this.navigate('nutrition');
+        if (document.getElementById('meal-search-modal').style.display === 'flex') {
+            this.mealSearchTab = 'meals';
+            this.renderMealSearchModal();
+        }
+        this.navigate('nutrition');
     },
     deleteSavedMeal(id) {
         if(!confirm("Delete this meal from your saved meals?")) return;
         store.state.savedMeals = store.state.savedMeals.filter(m => m.id !== id);
         store.save();
         this.renderMealSearchModal();
+        if (this.currentView === 'nutrition') this.navigate('nutrition');
     },
     addLoggedMeal(todayStr, cat, mealId) {
         const mealDef = store.state.savedMeals.find(m => m.id === mealId); if(!mealDef) return;
@@ -2133,24 +2802,104 @@ const app = {
         if(!nutEntry.loggedMeals) nutEntry.loggedMeals = [];
         const newMeal = JSON.parse(JSON.stringify(mealDef)); newMeal.logId = utils.generateId(); newMeal.type = cat;
         nutEntry.loggedMeals.push(newMeal);
-        nutEntry.cal += newMeal.cal; nutEntry.pro += newMeal.pro; nutEntry.car += newMeal.car; nutEntry.fat += newMeal.fat;
-        store.save(); document.getElementById('meal-search-modal').style.display = 'none'; this.navigate('nutrition');
+        this.recalcDailyNutrition(nutEntry);
+        store.save();
+        this.openMealModal(cat);
+        this.navigate('nutrition');
     },
-    removeLoggedMeal(todayStr, logId) {
-        if(!confirm("Remove this meal?")) return;
+    removeLoggedMeal(todayStr, logId, stayInModal = false) {
+        if(!confirm("Remove this item?")) return;
         let nutEntry = store.state.history.nutrition.find(n => utils.getLocalISODate(n.date) === todayStr); if (!nutEntry || !nutEntry.loggedMeals) return;
         const mealIdx = nutEntry.loggedMeals.findIndex(m => m.logId === logId); if (mealIdx === -1) return;
-        const m = nutEntry.loggedMeals[mealIdx];
-        nutEntry.cal = Math.max(0, nutEntry.cal - m.cal); nutEntry.pro = Math.max(0, nutEntry.pro - m.pro); nutEntry.car = Math.max(0, nutEntry.car - m.car); nutEntry.fat = Math.max(0, nutEntry.fat - m.fat);
+        const removedType = nutEntry.loggedMeals[mealIdx].type;
         nutEntry.loggedMeals.splice(mealIdx, 1);
-        store.save(); this.navigate('nutrition');
+        this.recalcDailyNutrition(nutEntry);
+        store.save();
+        this.navigate('nutrition');
+        if (stayInModal) this.openMealModal(removedType || this.activeMealType);
+    },
+    // Copy Entries From Past Day Modal
+    showCopyFromDayModal(filterMealCat = '') {
+        const todayStr = utils.getLocalISODate(new Date());
+        const pastDays = (store.state.history.nutrition || [])
+            .filter(n => utils.getLocalISODate(n.date) !== todayStr && ((n.loggedMeals && n.loggedMeals.length > 0) || n.cal > 0))
+            .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        const modal = document.getElementById('meal-search-modal');
+        let html = `
+        <div class="page-header">
+            <button class="btn btn-sm btn-icon" onclick="document.getElementById('meal-search-modal').style.display='none'"><i class="fas fa-arrow-left"></i></button>
+            <h2 style="margin:0; font-size:18px;">Copy From Past Day</h2>
+            <div style="width:36px;"></div>
+        </div>
+        <div style="padding:16px;">
+            <p class="text-muted" style="font-size:12px; margin-bottom:16px;">Select a previous day below to copy ${filterMealCat ? `its <strong>${filterMealCat}</strong> entries` : 'all of its logged meals'} into today (${todayStr}).</p>`;
+
+        if (pastDays.length === 0) {
+            html += `<div class="card" style="text-align:center; padding:24px;"><p class="text-muted">No previous nutrition days with logged meals found yet.</p></div>`;
+        } else {
+            pastDays.forEach(dayEntry => {
+                const dStr = utils.getLocalISODate(dayEntry.date);
+                const mealsToCopy = filterMealCat
+                    ? (dayEntry.loggedMeals || []).filter(m => m.type === filterMealCat)
+                    : (dayEntry.loggedMeals || []);
+                if (filterMealCat && mealsToCopy.length === 0) return;
+                const previewNames = mealsToCopy.map(m => m.name).join(', ') || 'Raw Macro Entry';
+                html += `
+                <div class="card" style="margin-bottom:12px;">
+                    <div class="flex-between" style="gap:10px;">
+                        <div style="flex:1; min-width:0;">
+                            <div style="font-weight:800; font-size:15px;">${utils.formatDate(dayEntry.date)}</div>
+                            <div style="font-size:12px; color:var(--accent-color); font-weight:bold; margin-top:2px;">
+                                ${Math.round(dayEntry.cal)} kcal • P:${Math.round(dayEntry.pro)}g C:${Math.round(dayEntry.car)}g F:${Math.round(dayEntry.fat)}g
+                            </div>
+                            <div class="text-muted" style="font-size:11px; margin-top:4px;">${previewNames}</div>
+                        </div>
+                        <button class="btn btn-sm btn-primary" onclick="app.copyMealsFromDate('${dStr}', '${filterMealCat}')">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                    </div>
+                </div>`;
+            });
+        }
+        html += `</div>`;
+        modal.innerHTML = html;
+        modal.style.display = 'flex';
+    },
+    copyMealsFromDate(sourceDateStr, filterMealCat = '') {
+        const sourceEntry = store.state.history.nutrition.find(n => utils.getLocalISODate(n.date) === sourceDateStr);
+        if (!sourceEntry) return;
+        const todayStr = utils.getLocalISODate(new Date());
+        let todayEntry = store.state.history.nutrition.find(n => utils.getLocalISODate(n.date) === todayStr);
+        if (!todayEntry) {
+            todayEntry = { date: todayStr + 'T12:00:00', cal: 0, pro: 0, car: 0, fat: 0, loggedMeals: [], waterLog: [] };
+            store.state.history.nutrition.push(todayEntry);
+        }
+        if (!todayEntry.loggedMeals) todayEntry.loggedMeals = [];
+
+        const meals = (sourceEntry.loggedMeals || []).filter(m => !filterMealCat || m.type === filterMealCat);
+        if (meals.length > 0) {
+            meals.forEach(m => {
+                const clone = JSON.parse(JSON.stringify(m));
+                clone.logId = utils.generateId();
+                todayEntry.loggedMeals.push(clone);
+            });
+            this.recalcDailyNutrition(todayEntry);
+        } else if (!filterMealCat && sourceEntry.cal > 0) {
+            todayEntry.cal += sourceEntry.cal || 0;
+            todayEntry.pro += sourceEntry.pro || 0;
+            todayEntry.car += sourceEntry.car || 0;
+            todayEntry.fat += sourceEntry.fat || 0;
+        }
+        store.save();
+        document.getElementById('meal-search-modal').style.display = 'none';
+        this.navigate('nutrition');
     },
     clearLegacyNutrition(todayStr) {
         if(!confirm("Clear all unassigned macros for today? This cannot be undone.")) return;
         let nutEntry = store.state.history.nutrition.find(n => utils.getLocalISODate(n.date) === todayStr);
         if(nutEntry) {
-            nutEntry.cal = 0; nutEntry.pro = 0; nutEntry.car = 0; nutEntry.fat = 0;
-            (nutEntry.loggedMeals || []).forEach(m => { nutEntry.cal += m.cal; nutEntry.pro += m.pro; nutEntry.car += m.car; nutEntry.fat += m.fat; });
+            this.recalcDailyNutrition(nutEntry);
             store.save(); this.navigate('nutrition');
         }
     },
