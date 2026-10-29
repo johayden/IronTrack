@@ -268,157 +268,166 @@ const THEME_MAP = {
     cyberpunk: { nav: ['fa-city', 'fa-robot', 'fa-network-wired', 'fa-capsules', 'fa-microchip'], symbols: { streak: '⚡', pr: '👾', bw: '🔋', vol: '💾', rest: '🔌', workout: '🦾', success: '💎', activity: '🏍️', cardGoal: '💠', analytics: '📡', nutrition: '🧪', data: '🖥️' } },
     tactical: { nav: ['fa-campground', 'fa-person-rifle', 'fa-crosshairs', 'fa-drumstick-bite', 'fa-box-archive'], symbols: { streak: '💥', pr: '🎖️', bw: '🪖', vol: '🔫', rest: '⛺', workout: '💣', success: '🎯', activity: '🚁', cardGoal: '🚩', analytics: '🛰️', nutrition: '🥩', data: '💾' } },
 };
-
 /* COMPREHENSIVE NZ ATHLETE RAW INGREDIENT REFERENCE DATABASE (per 100g) */
 const NZ_ATHLETE_FOODS = [
+    // Requested Quick-Access Staples
+    { id: 'f_req_potatoes', name: 'Potatoes (whole / general)', cat: 'Starchy Carbs', cal: 77, pro: 2, car: 17, fat: 0.1, micros: 'K high, Vit C, Fib ~2g', notes: 'Cheapest high-volume carb in NZ [1]. High satiety and potassium; great post-workout with lean protein [1].', tone: 'good' },
+    { id: 'f_req_kumara', name: 'Kumara (sweet potato)', cat: 'Starchy Carbs', cal: 85, pro: 1.5, car: 20, fat: 0.1, micros: 'Vit A (beta-carotene), Vit C, K, Fib ~3g', notes: 'NZ icon carb [1]. Rich in beta-carotene and potassium; ideal pre-evening training carb [1].', tone: 'good' },
+    { id: 'f_req_cottage', name: 'Cottage cheese', cat: 'Dairy', cal: 85, pro: 12, car: 3, fat: 3, micros: 'Ca, B12, Se, P', notes: 'Slow-digesting casein — excellent pre-bed protein supply and high-satiety snack [1].', tone: 'good' },
+    { id: 'f_req_cream_cheese', name: 'Cream cheese (spreadable)', cat: 'Dairy', cal: 340, pro: 6, car: 4, fat: 34, micros: 'Vit A, Ca; high sat fat', notes: 'High-fat flavour addition for bagels/wraps; measure 15–30g portions carefully on cuts.', tone: 'mid' },
+    { id: 'f_req_light_cream_cheese', name: 'Cream cheese, light', cat: 'Dairy', cal: 200, pro: 8, car: 6, fat: 16, micros: 'Ca, Vit A', notes: 'Lower-calorie swap for standard cream cheese when adding creaminess to wraps or pasta.', tone: 'good' },
+    { id: 'f_req_beef', name: 'Beef (lean steak / mince)', cat: 'Red Meat & Game', cal: 145, pro: 22, car: 0, fat: 6, micros: 'Fe (heme), Zn, B12, Se, creatine', notes: 'High bioavailable heme iron, zinc, and natural creatine precursors for strength and recovery [1].', tone: 'good' },
+    { id: 'f_req_hot_sauce', name: 'Hot sauce / Sriracha / Frank\'s', cat: 'Other Staples', cal: 15, pro: 0.5, car: 3, fat: 0.1, micros: 'Capsaicin; Na high', notes: 'Near-zero calorie adherence booster for cutting plates (chicken, beef, eggs, potatoes) [1].', tone: 'good' },
+    { id: 'f_req_greek_yoghurt', name: 'Greek yoghurt', cat: 'Dairy', cal: 70, pro: 10, car: 4, fat: 2, micros: 'Ca, B12, K, probiotics', notes: 'NZ gym staple for high-protein breakfasts, dips, and casein-rich evening snacks [1].', tone: 'good' },
+    { id: 'f_req_eggs', name: 'Eggs (whole)', cat: 'Poultry & Eggs', cal: 140, pro: 13, car: 1, fat: 10, micros: 'Choline, B12, Vit D, Se, lutein', notes: 'Complete nutrient-dense protein; yolks provide choline and support hormone health [1].', tone: 'good' },
+    { id: 'f_req_fruits', name: 'Fruits (mixed fresh fruit salad)', cat: 'Fruit', cal: 55, pro: 0.8, car: 14, fat: 0.2, micros: 'Vit C, K, polyphenols, Fib ~2.5g', notes: 'Fast-to-moderate carbs, micronutrients, hydration, and diet adherence [1].', tone: 'good' },
     // 1. Poultry & Eggs
-    { id: 'f_chk_breast', name: 'Chicken breast, skinless raw', cat: 'Poultry & Eggs', cal: 110, pro: 23, car: 0, fat: 1.5, micros: 'B3, B6, Se, P; low Fe', notes: 'Gold-standard cut protein. Minimal fat for cuts. Fast digesting when plain. Train-day staple; pair with rice/potato post-workout. Low food-response risk.', tone: 'good' },
-    { id: 'f_chk_thigh_lean', name: 'Chicken thigh, skinless raw', cat: 'Poultry & Eggs', cal: 140, pro: 20, car: 0, fat: 6, micros: 'B vitamins, Se, Zn', notes: 'More flavour and satiety than breast; slight calorie bump. Good bulking/maintenance. Slightly slower gastric emptying with fat.', tone: 'good' },
-    { id: 'f_chk_thigh_skin', name: 'Chicken thigh, skin-on raw', cat: 'Poultry & Eggs', cal: 180, pro: 18, car: 0, fat: 12, micros: 'B vitamins, Se, Zn + fat-soluble flavour', notes: 'Use sparingly on aggressive cuts. Better for surplus phases. Crisp skin is palatable but easy to overeat calories.', tone: 'mid' },
-    { id: 'f_turkey_breast', name: 'Turkey breast, raw', cat: 'Poultry & Eggs', cal: 105, pro: 24, car: 0, fat: 1, micros: 'B3, B6, Se, Zn', notes: 'Very lean alternative to chicken. Excellent contest-prep protein.', tone: 'good' },
-    { id: 'f_egg_whole', name: 'Whole egg, raw', cat: 'Poultry & Eggs', cal: 140, pro: 13, car: 1, fat: 10, micros: 'Choline, B12, Vit D, Se, lutein; ~130 mg chol', notes: 'Nutrient-dense complete food. Yolks support hormones and choline for athletes. Great breakfast anchor.', tone: 'good' },
-    { id: 'f_egg_white', name: 'Egg white, raw', cat: 'Poultry & Eggs', cal: 50, pro: 11, car: 1, fat: 0, micros: 'Riboflavin; almost no fat/chol', notes: 'Pure protein filler on deep cuts. Low satiety vs whole egg. Combine with 1–2 yolks rather than whites-only long term.', tone: 'good' },
-    { id: 'f_duck_breast', name: 'Duck breast, skinless raw', cat: 'Poultry & Eggs', cal: 140, pro: 19, car: 0, fat: 7, micros: 'B vitamins, Fe, Se', notes: 'Richer flavour, moderate fat. Occasional variety protein. Not a daily cut staple for most.', tone: 'mid' },
-    { id: 'f_chk_liver', name: 'Chicken liver, raw', cat: 'Poultry & Eggs', cal: 120, pro: 17, car: 1, fat: 5, micros: 'Very high Vit A, B12, Fe, folate, Cu', notes: 'Micronutrient bomb 1–2x/week. Good for athletes with low iron intake. Do not mega-dose daily (vitamin A).', tone: 'good' },
+    { id: 'f_chk_breast', name: 'Chicken breast, skinless raw', cat: 'Poultry & Eggs', cal: 110, pro: 23, car: 0, fat: 1.5, micros: 'B3, B6, Se, P; low Fe', notes: 'Gold-standard cut protein [1]. Minimal fat for cuts. Fast digesting when plain. Train-day staple; pair with rice/potato post-workout [1]. Low food-response risk [1].', tone: 'good' },
+    { id: 'f_chk_thigh_lean', name: 'Chicken thigh, skinless raw', cat: 'Poultry & Eggs', cal: 140, pro: 20, car: 0, fat: 6, micros: 'B vitamins, Se, Zn', notes: 'More flavour and satiety than breast; slight calorie bump [1]. Good bulking/maintenance [1]. Slightly slower gastric emptying with fat [1].', tone: 'good' },
+    { id: 'f_chk_thigh_skin', name: 'Chicken thigh, skin-on raw', cat: 'Poultry & Eggs', cal: 180, pro: 18, car: 0, fat: 12, micros: 'B vitamins, Se, Zn + fat-soluble flavour', notes: 'Use sparingly on aggressive cuts [1]. Better for surplus phases [1]. Crisp skin is palatable but easy to overeat calories [1].', tone: 'mid' },
+    { id: 'f_turkey_breast', name: 'Turkey breast, raw', cat: 'Poultry & Eggs', cal: 105, pro: 24, car: 0, fat: 1, micros: 'B3, B6, Se, Zn', notes: 'Very lean alternative to chicken [1]. Excellent contest-prep protein [1].', tone: 'good' },
+    { id: 'f_egg_whole', name: 'Whole egg, raw', cat: 'Poultry & Eggs', cal: 140, pro: 13, car: 1, fat: 10, micros: 'Choline, B12, Vit D, Se, lutein; ~130 mg chol', notes: 'Nutrient-dense complete food [1]. Yolks support hormones and choline for athletes [1]. Great breakfast anchor [1].', tone: 'good' },
+    { id: 'f_egg_white', name: 'Egg white, raw', cat: 'Poultry & Eggs', cal: 50, pro: 11, car: 1, fat: 0, micros: 'Riboflavin; almost no fat/chol', notes: 'Pure protein filler on deep cuts [1]. Low satiety vs whole egg [1]. Combine with 1–2 yolks rather than whites-only long term [1].', tone: 'good' },
+    { id: 'f_duck_breast', name: 'Duck breast, skinless raw', cat: 'Poultry & Eggs', cal: 140, pro: 19, car: 0, fat: 7, micros: 'B vitamins, Fe, Se', notes: 'Richer flavour, moderate fat [1]. Occasional variety protein [1]. Not a daily cut staple for most [1].', tone: 'mid' },
+    { id: 'f_chk_liver', name: 'Chicken liver, raw', cat: 'Poultry & Eggs', cal: 120, pro: 17, car: 1, fat: 5, micros: 'Very high Vit A, B12, Fe, folate, Cu', notes: 'Micronutrient bomb 1–2x/week [1]. Good for athletes with low iron intake [1]. Do not mega-dose daily (vitamin A) [1].', tone: 'good' },
     // 2. Red Meat & Game
-    { id: 'f_beef_mince_5', name: 'Beef mince, lean ~5% fat', cat: 'Red Meat & Game', cal: 140, pro: 21, car: 0, fat: 5, micros: 'Fe (heme), Zn, B12, B3, Se, creatine', notes: 'NZ athlete workhorse. Lean grind for cuts; heme iron helps endurance and women athletes.', tone: 'good' },
-    { id: 'f_beef_mince_15', name: 'Beef mince, standard ~15% fat', cat: 'Red Meat & Game', cal: 200, pro: 19, car: 0, fat: 15, micros: 'Fe (heme), Zn, B12, creatine + more energy', notes: 'Better for bulking and flavour. Drain fat if cutting. Higher satiety from fat — watch portions.', tone: 'mid' },
-    { id: 'f_beef_rump', name: 'Beef rump/steak lean', cat: 'Red Meat & Game', cal: 140, pro: 22, car: 0, fat: 5, micros: 'Fe, Zn, B12, carnosine', notes: 'Steak meal-prep classic. Pair with kumara + greens. Excellent post-lift dinner protein.', tone: 'good' },
-    { id: 'f_beef_sirloin', name: 'Beef sirloin', cat: 'Red Meat & Game', cal: 160, pro: 22, car: 0, fat: 8, micros: 'Fe, Zn, B12', notes: 'Slightly fattier premium cut. Good reward meal within macros.', tone: 'good' },
-    { id: 'f_beef_eyefillet', name: 'Eye fillet / tenderloin', cat: 'Red Meat & Game', cal: 150, pro: 22, car: 0, fat: 7, micros: 'Fe, Zn, B12', notes: 'Lean-tender; special-meal protein, high iron and zinc support.', tone: 'good' },
-    { id: 'f_lamb_leg', name: 'Lamb leg, lean raw', cat: 'Red Meat & Game', cal: 160, pro: 20, car: 0, fat: 8, micros: 'Fe, Zn, B12, ALA small', notes: 'Kiwi staple. Strong flavour, solid micros. Moderate fat — portion on cuts.', tone: 'good' },
-    { id: 'f_lamb_mince', name: 'Lamb mince', cat: 'Red Meat & Game', cal: 200, pro: 18, car: 0, fat: 14, micros: 'Fe, Zn, B12', notes: 'Flavour-dense. Use 50/50 with beef mince or legumes to manage fat on cuts.', tone: 'mid' },
-    { id: 'f_lamb_chops', name: 'Lamb loin chops', cat: 'Red Meat & Game', cal: 220, pro: 18, car: 0, fat: 16, micros: 'Fe, Zn, B12', notes: 'Trim visible fat on cuts. Great occasional high-satisfaction protein.', tone: 'mid' },
-    { id: 'f_venison', name: 'Venison / deer, lean', cat: 'Red Meat & Game', cal: 120, pro: 23, car: 0, fat: 2, micros: 'High Fe, Zn, B12; low fat', notes: 'Ultra-lean game protein. Excellent cut option with high heme iron and zinc.', tone: 'good' },
-    { id: 'f_pork_loin', name: 'Pork loin, lean', cat: 'Red Meat & Game', cal: 140, pro: 22, car: 0, fat: 5, micros: 'B1 (thiamin), Se, B6, Zn', notes: 'Underrated lean protein rich in thiamin (B1) for carbohydrate metabolism.', tone: 'good' },
-    { id: 'f_pork_mince', name: 'Pork mince, lean', cat: 'Red Meat & Game', cal: 160, pro: 20, car: 0, fat: 9, micros: 'B1, Se, Zn', notes: 'Budget protein for meatballs/San choy bow. Choose lean labelled packs.', tone: 'good' },
-    { id: 'f_beef_liver', name: 'Beef liver', cat: 'Red Meat & Game', cal: 130, pro: 20, car: 4, fat: 4, micros: 'Extreme B12, Vit A, Cu, Fe, folate', notes: '1 serving/week covers many micronutrients. Limit frequency for Vitamin A.', tone: 'good' },
+    { id: 'f_beef_mince_5', name: 'Beef mince, lean ~5% fat', cat: 'Red Meat & Game', cal: 140, pro: 21, car: 0, fat: 5, micros: 'Fe (heme), Zn, B12, B3, Se, creatine', notes: 'NZ athlete workhorse [1]. Lean grind for cuts; heme iron helps endurance and women athletes [1].', tone: 'good' },
+    { id: 'f_beef_mince_15', name: 'Beef mince, standard ~15% fat', cat: 'Red Meat & Game', cal: 200, pro: 19, car: 0, fat: 15, micros: 'Fe (heme), Zn, B12, creatine + more energy', notes: 'Better for bulking and flavour [1]. Drain fat if cutting [1]. Higher satiety from fat — watch portions [1].', tone: 'mid' },
+    { id: 'f_beef_rump', name: 'Beef rump/steak lean', cat: 'Red Meat & Game', cal: 140, pro: 22, car: 0, fat: 5, micros: 'Fe, Zn, B12, carnosine', notes: 'Steak meal-prep classic [1]. Pair with kumara + greens [1]. Excellent post-lift dinner protein [1].', tone: 'good' },
+    { id: 'f_beef_sirloin', name: 'Beef sirloin', cat: 'Red Meat & Game', cal: 160, pro: 22, car: 0, fat: 8, micros: 'Fe, Zn, B12', notes: 'Slightly fattier premium cut [1]. Good reward meal within macros [1].', tone: 'good' },
+    { id: 'f_beef_eyefillet', name: 'Eye fillet / tenderloin', cat: 'Red Meat & Game', cal: 150, pro: 22, car: 0, fat: 7, micros: 'Fe, Zn, B12', notes: 'Lean-tender; special-meal protein, high iron and zinc support [1].', tone: 'good' },
+    { id: 'f_lamb_leg', name: 'Lamb leg, lean raw', cat: 'Red Meat & Game', cal: 160, pro: 20, car: 0, fat: 8, micros: 'Fe, Zn, B12, ALA small', notes: 'Kiwi staple [1]. Strong flavour, solid micros [1]. Moderate fat — portion on cuts [1].', tone: 'good' },
+    { id: 'f_lamb_mince', name: 'Lamb mince', cat: 'Red Meat & Game', cal: 200, pro: 18, car: 0, fat: 14, micros: 'Fe, Zn, B12', notes: 'Flavour-dense [1]. Use 50/50 with beef mince or legumes to manage fat on cuts [1].', tone: 'mid' },
+    { id: 'f_lamb_chops', name: 'Lamb loin chops', cat: 'Red Meat & Game', cal: 220, pro: 18, car: 0, fat: 16, micros: 'Fe, Zn, B12', notes: 'Trim visible fat on cuts [1]. Great occasional high-satisfaction protein [1].', tone: 'mid' },
+    { id: 'f_venison', name: 'Venison / deer, lean', cat: 'Red Meat & Game', cal: 120, pro: 23, car: 0, fat: 2, micros: 'High Fe, Zn, B12; low fat', notes: 'Ultra-lean game protein [1]. Excellent cut option with high heme iron and zinc [1].', tone: 'good' },
+    { id: 'f_pork_loin', name: 'Pork loin, lean', cat: 'Red Meat & Game', cal: 140, pro: 22, car: 0, fat: 5, micros: 'B1 (thiamin), Se, B6, Zn', notes: 'Underrated lean protein rich in thiamin (B1) for carbohydrate metabolism [1].', tone: 'good' },
+    { id: 'f_pork_mince', name: 'Pork mince, lean', cat: 'Red Meat & Game', cal: 160, pro: 20, car: 0, fat: 9, micros: 'B1, Se, Zn', notes: 'Budget protein for meatballs/San choy bow [1]. Choose lean labelled packs [1].', tone: 'good' },
+    { id: 'f_beef_liver', name: 'Beef liver', cat: 'Red Meat & Game', cal: 130, pro: 20, car: 4, fat: 4, micros: 'Extreme B12, Vit A, Cu, Fe, folate', notes: '1 serving/week covers many micronutrients [1]. Limit frequency for Vitamin A [1].', tone: 'good' },
     // 3. Seafood
-    { id: 'f_salmon_raw', name: 'Salmon, Atlantic raw', cat: 'Seafood', cal: 200, pro: 20, car: 0, fat: 13, micros: 'EPA/DHA high, Vit D, B12, Se', notes: 'Best whole-food omega-3 vehicle. 2–4x/week supports recovery and inflammation control.', tone: 'good' },
-    { id: 'f_salmon_smoked', name: 'Smoked salmon', cat: 'Seafood', cal: 180, pro: 22, car: 0, fat: 10, micros: 'Omega-3, Na high (600-1200mg), B12', notes: 'Convenient omega-3 source; high sodium — fine occasionally, watch if BP/sodium sensitive.', tone: 'mid' },
-    { id: 'f_salmon_king', name: 'Akaroa / NZ king salmon', cat: 'Seafood', cal: 200, pro: 20, car: 0, fat: 13, micros: 'EPA/DHA, Vit D', notes: 'Local premium option — high EPA/DHA omega-3 for recovery and inflammation control.', tone: 'good' },
-    { id: 'f_white_fish', name: 'White fish (tarakihi, gurnard, hoki) raw', cat: 'Seafood', cal: 90, pro: 19, car: 0, fat: 1, micros: 'Iodine, Se, B12; low fat', notes: 'Ultra-lean protein. Low calorie density for cuts, easy digestion and meal prep.', tone: 'good' },
-    { id: 'f_tuna_fresh', name: 'Tuna, fresh raw', cat: 'Seafood', cal: 110, pro: 24, car: 0, fat: 1, micros: 'Se, B12, niacin; mercury caution', notes: 'Very high protein. Rotate species to manage mercury exposure. Great poke-style bowls.', tone: 'good' },
-    { id: 'f_tuna_water', name: 'Tuna, canned in spring water (drained)', cat: 'Seafood', cal: 100, pro: 25, car: 0, fat: 1, micros: 'Se, B12; check Na', notes: 'Pantry athlete staple. Budget ultra-lean cut protein.', tone: 'good' },
-    { id: 'f_tuna_oil', name: 'Tuna, canned in oil (drained)', cat: 'Seafood', cal: 180, pro: 25, car: 0, fat: 8, micros: 'Se, B12 + oil calories', notes: 'Use on bulking or drain well. Higher calorie density than spring water tuna.', tone: 'mid' },
-    { id: 'f_sardines', name: 'Sardines, canned in spring water', cat: 'Seafood', cal: 170, pro: 20, car: 0, fat: 10, micros: 'EPA/DHA, Ca (bones), Vit D, B12', notes: 'Bone-in provides a calcium bonus plus budget EPA/DHA omega-3s.', tone: 'good' },
-    { id: 'f_mussels', name: 'Mussels, raw/green-lipped NZ', cat: 'Seafood', cal: 80, pro: 12, car: 3, fat: 2, micros: 'Fe, B12, Zn, omega-3, Se', notes: 'Iconic NZ seafood. Anti-inflammatory omega-3 profile and strong iron for endurance athletes.', tone: 'good' },
-    { id: 'f_prawns', name: 'Prawns / shrimp, raw', cat: 'Seafood', cal: 70, pro: 15, car: 0, fat: 1, micros: 'Se, B12, iodine; chol moderate', notes: 'Very lean protein with high satiety per calorie in stir-fries.', tone: 'good' },
-    { id: 'f_squid', name: 'Squid / calamari, raw', cat: 'Seafood', cal: 80, pro: 16, car: 1, fat: 1, micros: 'B12, Se, Cu', notes: 'Lean seafood protein; cook quickly to avoid rubberising.', tone: 'good' },
-    { id: 'f_cod', name: 'Cod / similar white fillet', cat: 'Seafood', cal: 80, pro: 18, car: 0, fat: 0.5, micros: 'Iodine, Se, B12', notes: 'Cut-friendly ultra-lean white fish protein base.', tone: 'good' },
+    { id: 'f_salmon_raw', name: 'Salmon, Atlantic raw', cat: 'Seafood', cal: 200, pro: 20, car: 0, fat: 13, micros: 'EPA/DHA high, Vit D, B12, Se', notes: 'Best whole-food omega-3 vehicle [1]. 2–4x/week supports recovery and inflammation control [1].', tone: 'good' },
+    { id: 'f_salmon_smoked', name: 'Smoked salmon', cat: 'Seafood', cal: 180, pro: 22, car: 0, fat: 10, micros: 'Omega-3, Na high (600-1200mg), B12', notes: 'Convenient omega-3 source; high sodium — fine occasionally, watch if BP/sodium sensitive [1].', tone: 'mid' },
+    { id: 'f_salmon_king', name: 'Akaroa / NZ king salmon', cat: 'Seafood', cal: 200, pro: 20, car: 0, fat: 13, micros: 'EPA/DHA, Vit D', notes: 'Local premium option — high EPA/DHA omega-3 for recovery and inflammation control [1].', tone: 'good' },
+    { id: 'f_white_fish', name: 'White fish (tarakihi, gurnard, hoki) raw', cat: 'Seafood', cal: 90, pro: 19, car: 0, fat: 1, micros: 'Iodine, Se, B12; low fat', notes: 'Ultra-lean protein [1]. Low calorie density for cuts, easy digestion and meal prep [1].', tone: 'good' },
+    { id: 'f_tuna_fresh', name: 'Tuna, fresh raw', cat: 'Seafood', cal: 110, pro: 24, car: 0, fat: 1, micros: 'Se, B12, niacin; mercury caution', notes: 'Very high protein [1]. Rotate species to manage mercury exposure [1]. Great poke-style bowls [1].', tone: 'good' },
+    { id: 'f_tuna_water', name: 'Tuna, canned in spring water (drained)', cat: 'Seafood', cal: 100, pro: 25, car: 0, fat: 1, micros: 'Se, B12; check Na', notes: 'Pantry athlete staple [1]. Budget ultra-lean cut protein [1].', tone: 'good' },
+    { id: 'f_tuna_oil', name: 'Tuna, canned in oil (drained)', cat: 'Seafood', cal: 180, pro: 25, car: 0, fat: 8, micros: 'Se, B12 + oil calories', notes: 'Use on bulking or drain well [1]. Higher calorie density than spring water tuna [1].', tone: 'mid' },
+    { id: 'f_sardines', name: 'Sardines, canned in spring water', cat: 'Seafood', cal: 170, pro: 20, car: 0, fat: 10, micros: 'EPA/DHA, Ca (bones), Vit D, B12', notes: 'Bone-in provides a calcium bonus plus budget EPA/DHA omega-3s [1].', tone: 'good' },
+    { id: 'f_mussels', name: 'Mussels, raw/green-lipped NZ', cat: 'Seafood', cal: 80, pro: 12, car: 3, fat: 2, micros: 'Fe, B12, Zn, omega-3, Se', notes: 'Iconic NZ seafood [1]. Anti-inflammatory omega-3 profile and strong iron for endurance athletes [1].', tone: 'good' },
+    { id: 'f_prawns', name: 'Prawns / shrimp, raw', cat: 'Seafood', cal: 70, pro: 15, car: 0, fat: 1, micros: 'Se, B12, iodine; chol moderate', notes: 'Very lean protein with high satiety per calorie in stir-fries [1].', tone: 'good' },
+    { id: 'f_squid', name: 'Squid / calamari, raw', cat: 'Seafood', cal: 80, pro: 16, car: 1, fat: 1, micros: 'B12, Se, Cu', notes: 'Lean seafood protein; cook quickly to avoid rubberising [1].', tone: 'good' },
+    { id: 'f_cod', name: 'Cod / similar white fillet', cat: 'Seafood', cal: 80, pro: 18, car: 0, fat: 0.5, micros: 'Iodine, Se, B12', notes: 'Cut-friendly ultra-lean white fish protein base [1].', tone: 'good' },
     // 4. Dairy
-    { id: 'f_gyog_0', name: 'Greek yoghurt, plain non-fat (~0%)', cat: 'Dairy', cal: 55, pro: 10, car: 4, fat: 0, micros: 'Ca, B12, K, probiotics', notes: 'Top cut snack. High protein, low calorie, casein-rich for overnight recovery.', tone: 'good' },
-    { id: 'f_gyog_2', name: 'Greek yoghurt, plain 2–5% fat', cat: 'Dairy', cal: 80, pro: 9, car: 4, fat: 4, micros: 'Ca, B12, probiotics', notes: 'Better taste and satiety; default maintenance choice. Flavour yourself with fruit.', tone: 'good' },
-    { id: 'f_gyog_full', name: 'Greek yoghurt, full fat', cat: 'Dairy', cal: 120, pro: 7, car: 4, fat: 8, micros: 'Ca, B12', notes: 'Good for bulking or high-satiety breakfasts. Whole-food dairy quality.', tone: 'good' },
-    { id: 'f_cottage_low', name: 'Cottage cheese, low-fat', cat: 'Dairy', cal: 75, pro: 12, car: 3, fat: 2, micros: 'Ca, B12, Se, P', notes: 'Slow-digesting casein — excellent pre-bed protein supply.', tone: 'good' },
-    { id: 'f_cottage_full', name: 'Cottage cheese, full-fat', cat: 'Dairy', cal: 100, pro: 11, car: 3, fat: 5, micros: 'Ca, B12', notes: 'More satisfying casein source; use when fat allowance permits.', tone: 'good' },
-    { id: 'f_milk_trim', name: 'Milk, trim / green top ~0.1–0.5%', cat: 'Dairy', cal: 40, pro: 4, car: 5, fat: 0.2, micros: 'Ca, B2, B12, iodine (NZ)', notes: 'Hydrating protein+carb drink. Good peri-workout base in smoothies.', tone: 'good' },
-    { id: 'f_milk_lite', name: 'Milk, light blue ~1.5%', cat: 'Dairy', cal: 50, pro: 4, car: 5, fat: 1.5, micros: 'Ca, B12', notes: 'Balanced everyday milk for cereal and oats.', tone: 'good' },
-    { id: 'f_milk_full', name: 'Milk, dark blue full-fat', cat: 'Dairy', cal: 65, pro: 3.5, car: 5, fat: 3.5, micros: 'Ca, B12, Vit A', notes: 'Good for bulking phases and creamier oats/coffee.', tone: 'good' },
-    { id: 'f_cheese_cheddar', name: 'Cheese, tasty/cheddar', cat: 'Dairy', cal: 400, pro: 25, car: 1, fat: 33, micros: 'Ca, B12, Zn, Na high', notes: 'Flavour accelerator, not a primary protein source. Weigh 20–30g portions strictly so fats do not blow out.', tone: 'mid' },
-    { id: 'f_cheese_mozz', name: 'Cheese, mozzarella (common)', cat: 'Dairy', cal: 280, pro: 22, car: 2, fat: 20, micros: 'Ca, Na', notes: 'Good for omelettes/meals with better macros than cheddar; still portion control.', tone: 'mid' },
-    { id: 'f_paneer', name: 'Cheese, cottage-style paneer', cat: 'Dairy', cal: 300, pro: 18, car: 2, fat: 25, micros: 'Ca', notes: 'Dense Indian-style cheese — track fat portions carefully.', tone: 'mid' },
-    { id: 'f_ricotta', name: 'Ricotta, smooth', cat: 'Dairy', cal: 150, pro: 10, car: 4, fat: 10, micros: 'Ca', notes: 'Softer macros than hard cheese; works well on toast or bakes.', tone: 'good' },
-    { id: 'f_kefir', name: 'Kefir, plain', cat: 'Dairy', cal: 55, pro: 3.5, car: 5, fat: 2, micros: 'Ca, probiotics', notes: 'Gut-support fermented drink that helps regularity under high protein intake.', tone: 'good' },
+    { id: 'f_gyog_0', name: 'Greek yoghurt, plain non-fat (~0%)', cat: 'Dairy', cal: 55, pro: 10, car: 4, fat: 0, micros: 'Ca, B12, K, probiotics', notes: 'Top cut snack [1]. High protein, low calorie, casein-rich for overnight recovery [1].', tone: 'good' },
+    { id: 'f_gyog_2', name: 'Greek yoghurt, plain 2–5% fat', cat: 'Dairy', cal: 80, pro: 9, car: 4, fat: 4, micros: 'Ca, B12, probiotics', notes: 'Better taste and satiety; default maintenance choice [1]. Flavour yourself with fruit [1].', tone: 'good' },
+    { id: 'f_gyog_full', name: 'Greek yoghurt, full fat', cat: 'Dairy', cal: 120, pro: 7, car: 4, fat: 8, micros: 'Ca, B12', notes: 'Good for bulking or high-satiety breakfasts [1]. Whole-food dairy quality [1].', tone: 'good' },
+    { id: 'f_cottage_low', name: 'Cottage cheese, low-fat', cat: 'Dairy', cal: 75, pro: 12, car: 3, fat: 2, micros: 'Ca, B12, Se, P', notes: 'Slow-digesting casein — excellent pre-bed protein supply [1].', tone: 'good' },
+    { id: 'f_cottage_full', name: 'Cottage cheese, full-fat', cat: 'Dairy', cal: 100, pro: 11, car: 3, fat: 5, micros: 'Ca, B12', notes: 'More satisfying casein source; use when fat allowance permits [1].', tone: 'good' },
+    { id: 'f_milk_trim', name: 'Milk, trim / green top ~0.1–0.5%', cat: 'Dairy', cal: 40, pro: 4, car: 5, fat: 0.2, micros: 'Ca, B2, B12, iodine (NZ)', notes: 'Hydrating protein+carb drink [1]. Good peri-workout base in smoothies [1].', tone: 'good' },
+    { id: 'f_milk_lite', name: 'Milk, light blue ~1.5%', cat: 'Dairy', cal: 50, pro: 4, car: 5, fat: 1.5, micros: 'Ca, B12', notes: 'Balanced everyday milk for cereal and oats [1].', tone: 'good' },
+    { id: 'f_milk_full', name: 'Milk, dark blue full-fat', cat: 'Dairy', cal: 65, pro: 3.5, car: 5, fat: 3.5, micros: 'Ca, B12, Vit A', notes: 'Good for bulking phases and creamier oats/coffee [1].', tone: 'good' },
+    { id: 'f_cheese_cheddar', name: 'Cheese, tasty/cheddar', cat: 'Dairy', cal: 400, pro: 25, car: 1, fat: 33, micros: 'Ca, B12, Zn, Na high', notes: 'Flavour accelerator, not a primary protein source [1]. Weigh 20–30g portions strictly so fats do not blow out [1].', tone: 'mid' },
+    { id: 'f_cheese_mozz', name: 'Cheese, mozzarella (common)', cat: 'Dairy', cal: 280, pro: 22, car: 2, fat: 20, micros: 'Ca, Na', notes: 'Good for omelettes/meals with better macros than cheddar; still portion control [1].', tone: 'mid' },
+    { id: 'f_paneer', name: 'Cheese, cottage-style paneer', cat: 'Dairy', cal: 300, pro: 18, car: 2, fat: 25, micros: 'Ca', notes: 'Dense Indian-style cheese — track fat portions carefully [1].', tone: 'mid' },
+    { id: 'f_ricotta', name: 'Ricotta, smooth', cat: 'Dairy', cal: 150, pro: 10, car: 4, fat: 10, micros: 'Ca', notes: 'Softer macros than hard cheese; works well on toast or bakes [1].', tone: 'good' },
+    { id: 'f_kefir', name: 'Kefir, plain', cat: 'Dairy', cal: 55, pro: 3.5, car: 5, fat: 2, micros: 'Ca, probiotics', notes: 'Gut-support fermented drink that helps regularity under high protein intake [1].', tone: 'good' },
     // 5. Plant Proteins
-    { id: 'f_tofu', name: 'Tofu, firm', cat: 'Plant Proteins', cal: 130, pro: 12, car: 3, fat: 8, micros: 'Ca (calcium-set), Fe, Fib ~1g', notes: 'Best plant protein for gym diets. Easy on the gut vs beans for many.', tone: 'good' },
-    { id: 'f_tempeh', name: 'Tempeh', cat: 'Plant Proteins', cal: 190, pro: 19, car: 9, fat: 11, micros: 'Fe, Mn, Fib ~5g; fermented', notes: 'Higher protein than tofu; fermentation aids digestion.', tone: 'good' },
-    { id: 'f_edamame', name: 'Edamame, shelled cooked', cat: 'Plant Proteins', cal: 120, pro: 12, car: 9, fat: 5, micros: 'Folate, Vit K, Fib ~5g', notes: 'Complete-ish soy snack with solid fibre and micronutrient density.', tone: 'good' },
-    { id: 'f_lentils', name: 'Lentils, cooked', cat: 'Plant Proteins', cal: 115, pro: 9, car: 20, fat: 0.4, micros: 'Fe, folate, K, Fib ~8g', notes: 'Budget bulk + high fibre (8g/100g) for steady carb release. Reduce near hard sessions if gut-sensitive.', tone: 'good' },
-    { id: 'f_chickpeas', name: 'Chickpeas, cooked', cat: 'Plant Proteins', cal: 140, pro: 8, car: 22, fat: 2.5, micros: 'Folate, Mn, Fib ~7g', notes: 'Good satiety and fibre. FODMAP caution for IBS athletes if eaten in large portions.', tone: 'good' },
-    { id: 'f_black_beans', name: 'Black beans, cooked', cat: 'Plant Proteins', cal: 130, pro: 9, car: 23, fat: 0.5, micros: 'Fe, Mg, Fib ~8g', notes: 'Great in Mexican bowls with mince/rice; high fibre volume food on cuts.', tone: 'good' },
-    { id: 'f_kidney_beans', name: 'Kidney beans, cooked', cat: 'Plant Proteins', cal: 125, pro: 9, car: 22, fat: 0.5, micros: 'Fe, Folate, Fib ~7g', notes: 'Chilli staple. Keep away from immediate pre-workout window due to high fibre.', tone: 'good' },
-    { id: 'f_cannellini', name: 'Cannellini / white beans cooked', cat: 'Plant Proteins', cal: 120, pro: 8, car: 21, fat: 0.5, micros: 'Fe, K, Fib ~6g', notes: 'High-protein lunch hack when paired with canned tuna.', tone: 'good' },
-    { id: 'f_split_peas', name: 'Split peas, cooked', cat: 'Plant Proteins', cal: 120, pro: 8, car: 21, fat: 0.4, micros: 'Fib ~8g, B vitamins', notes: 'High-volume soup base for winter cutting diets.', tone: 'good' },
-    { id: 'f_baked_beans', name: 'Baked beans, canned tomato', cat: 'Plant Proteins', cal: 90, pro: 5, car: 15, fat: 0.5, micros: 'Fib ~4g; Na + sugar vary', notes: 'Convenient emergency carb-protein, but check label for added sugar and sodium.', tone: 'mid' },
-    { id: 'f_falafel', name: 'Falafel (ready, approx baked)', cat: 'Plant Proteins', cal: 300, pro: 10, car: 30, fat: 15, micros: 'Fib varies', notes: 'Calorie-dense and often fried; homemade baked is better for cuts.', tone: 'mid' },
+    { id: 'f_tofu', name: 'Tofu, firm', cat: 'Plant Proteins', cal: 130, pro: 12, car: 3, fat: 8, micros: 'Ca (calcium-set), Fe, Fib ~1g', notes: 'Best plant protein for gym diets [1]. Easy on the gut vs beans for many [1].', tone: 'good' },
+    { id: 'f_tempeh', name: 'Tempeh', cat: 'Plant Proteins', cal: 190, pro: 19, car: 9, fat: 11, micros: 'Fe, Mn, Fib ~5g; fermented', notes: 'Higher protein than tofu; fermentation aids digestion [1].', tone: 'good' },
+    { id: 'f_edamame', name: 'Edamame, shelled cooked', cat: 'Plant Proteins', cal: 120, pro: 12, car: 9, fat: 5, micros: 'Folate, Vit K, Fib ~5g', notes: 'Complete-ish soy snack with solid fibre and micronutrient density [1].', tone: 'good' },
+    { id: 'f_lentils', name: 'Lentils, cooked', cat: 'Plant Proteins', cal: 115, pro: 9, car: 20, fat: 0.4, micros: 'Fe, folate, K, Fib ~8g', notes: 'Budget bulk + high fibre (8g/100g) for steady carb release [1]. Reduce near hard sessions if gut-sensitive [1].', tone: 'good' },
+    { id: 'f_chickpeas', name: 'Chickpeas, cooked', cat: 'Plant Proteins', cal: 140, pro: 8, car: 22, fat: 2.5, micros: 'Folate, Mn, Fib ~7g', notes: 'Good satiety and fibre [1]. FODMAP caution for IBS athletes if eaten in large portions [1].', tone: 'good' },
+    { id: 'f_black_beans', name: 'Black beans, cooked', cat: 'Plant Proteins', cal: 130, pro: 9, car: 23, fat: 0.5, micros: 'Fe, Mg, Fib ~8g', notes: 'Great in Mexican bowls with mince/rice; high fibre volume food on cuts [1].', tone: 'good' },
+    { id: 'f_kidney_beans', name: 'Kidney beans, cooked', cat: 'Plant Proteins', cal: 125, pro: 9, car: 22, fat: 0.5, micros: 'Fe, Folate, Fib ~7g', notes: 'Chilli staple [1]. Keep away from immediate pre-workout window due to high fibre [1].', tone: 'good' },
+    { id: 'f_cannellini', name: 'Cannellini / white beans cooked', cat: 'Plant Proteins', cal: 120, pro: 8, car: 21, fat: 0.5, micros: 'Fe, K, Fib ~6g', notes: 'High-protein lunch hack when paired with canned tuna [1].', tone: 'good' },
+    { id: 'f_split_peas', name: 'Split peas, cooked', cat: 'Plant Proteins', cal: 120, pro: 8, car: 21, fat: 0.4, micros: 'Fib ~8g, B vitamins', notes: 'High-volume soup base for winter cutting diets [1].', tone: 'good' },
+    { id: 'f_baked_beans', name: 'Baked beans, canned tomato', cat: 'Plant Proteins', cal: 90, pro: 5, car: 15, fat: 0.5, micros: 'Fib ~4g; Na + sugar vary', notes: 'Convenient emergency carb-protein, but check label for added sugar and sodium [1].', tone: 'mid' },
+    { id: 'f_falafel', name: 'Falafel (ready, approx baked)', cat: 'Plant Proteins', cal: 300, pro: 10, car: 30, fat: 15, micros: 'Fib varies', notes: 'Calorie-dense and often fried; homemade baked is better for cuts [1].', tone: 'mid' },
     // 6. Starchy Carbohydrates
-    { id: 'f_potato_raw', name: 'Potato, white raw', cat: 'Starchy Carbs', cal: 75, pro: 2, car: 17, fat: 0.1, micros: 'K high, Vit C, Fib ~2g', notes: 'Cheapest high-volume carb in NZ. High satiety and potassium; great post-workout with lean protein.', tone: 'good' },
-    { id: 'f_potato_boiled', name: 'Potato, boiled flesh', cat: 'Starchy Carbs', cal: 80, pro: 2, car: 18, fat: 0.1, micros: 'K, Fib ~2g', notes: 'Easy-digesting training fuel; cooling then reheating increases resistant starch.', tone: 'good' },
-    { id: 'f_kumara_orange', name: 'Kumara, orange raw', cat: 'Starchy Carbs', cal: 85, pro: 1.5, car: 20, fat: 0.1, micros: 'Vit A (beta-carotene), Vit C, K, Fib ~3g', notes: 'NZ icon carb. Rich in beta-carotene and potassium; ideal pre-evening training carb.', tone: 'good' },
-    { id: 'f_kumara_gold', name: 'Kumara, gold/red', cat: 'Starchy Carbs', cal: 85, pro: 1.5, car: 20, fat: 0.1, micros: 'Vit A, Vit C, K, Fib ~3g', notes: 'Rotate kumara colours for diverse polyphenols and sustained glycogen fuel.', tone: 'good' },
-    { id: 'f_rice_white', name: 'Rice, white cooked', cat: 'Starchy Carbs', cal: 130, pro: 2.5, car: 28, fat: 0.3, micros: 'Low fibre; easy digest', notes: 'Default peri-workout carb for gut comfort and rapid glycogen replenishment.', tone: 'good' },
-    { id: 'f_rice_brown', name: 'Rice, brown cooked', cat: 'Starchy Carbs', cal: 110, pro: 2.5, car: 23, fat: 1, micros: 'Fib ~2g, Mg, Mn', notes: 'More micronutrients and satiety than white rice; eat further from hard sessions if fibre-sensitive.', tone: 'good' },
-    { id: 'f_rice_jasmine', name: 'Rice, jasmine cooked', cat: 'Starchy Carbs', cal: 130, pro: 2.5, car: 28, fat: 0.3, micros: 'Easy digest', notes: 'Fast-digesting peri-workout carb staple for meal prep.', tone: 'good' },
-    { id: 'f_oats_dry', name: 'Oats, rolled dry', cat: 'Starchy Carbs', cal: 380, pro: 13, car: 60, fat: 7, micros: 'Beta-glucan fibre ~10g, Mn, Mg, Fe', notes: 'Breakfast engine. Sustained energy 2–3h pre-training; pair with whey or yoghurt.', tone: 'good' },
-    { id: 'f_oats_cooked', name: 'Oats, cooked porridge (water)', cat: 'Starchy Carbs', cal: 90, pro: 3, car: 15, fat: 2, micros: 'Fib ~2g', notes: 'Sustained-release carbohydrate; gentle on digestion when soaked.', tone: 'good' },
-    { id: 'f_pasta_white', name: 'Pasta, white cooked', cat: 'Starchy Carbs', cal: 130, pro: 5, car: 25, fat: 1, micros: 'Fib ~1.5g', notes: 'Athlete carb classic with higher protein than rice; great for bulk meals with lean mince and passata.', tone: 'good' },
-    { id: 'f_pasta_whole', name: 'Pasta, wholemeal cooked', cat: 'Starchy Carbs', cal: 140, pro: 5, car: 26, fat: 1, micros: 'Fib ~4g', notes: 'Higher satiety and fibre than white pasta.', tone: 'good' },
-    { id: 'f_quinoa', name: 'Quinoa, cooked', cat: 'Starchy Carbs', cal: 120, pro: 4.5, car: 21, fat: 2, micros: 'Complete plant AA, Mg, Fe, Fib ~3g', notes: 'Gluten-free pseudo-grain with complete amino profile and magnesium.', tone: 'good' },
-    { id: 'f_couscous', name: 'Couscous, cooked', cat: 'Starchy Carbs', cal: 110, pro: 4, car: 23, fat: 0.2, micros: 'Se; low fibre', notes: 'Fast-cooking, easy-digesting travel and meal-prep carbohydrate.', tone: 'good' },
-    { id: 'f_corn', name: 'Corn, sweet kernels cooked', cat: 'Starchy Carbs', cal: 95, pro: 3, car: 21, fat: 1, micros: 'Fib ~2.5g, lutein', notes: 'Starchy veg side carb with lutein for eye/antioxidant support.', tone: 'good' },
-    { id: 'f_pumpkin', name: 'Pumpkin / squash cooked', cat: 'Starchy Carbs', cal: 30, pro: 1, car: 7, fat: 0.1, micros: 'Vit A, K, Fib ~1g', notes: 'Very low calorie volume carb-veg hybrid — fills the plate on aggressive cuts.', tone: 'good' },
-    { id: 'f_taro', name: 'Taro, cooked', cat: 'Starchy Carbs', cal: 140, pro: 1, car: 35, fat: 0.1, micros: 'K, Fib ~5g', notes: 'Dense Pacific carbohydrate staple with high potassium and fibre.', tone: 'good' },
-    { id: 'f_yam', name: 'Yam (NZ supermarket)', cat: 'Starchy Carbs', cal: 110, pro: 1.5, car: 27, fat: 0.1, micros: 'K, Fib', notes: 'Dense root veg carbohydrate to roast alongside meat.', tone: 'good' },
-    { id: 'f_bread_whole', name: 'Bread, wholegrain sandwich', cat: 'Starchy Carbs', cal: 250, pro: 10, car: 40, fat: 4, micros: 'Fib ~6g; Na varies', notes: 'Convenient plate staple providing carbs, fibre, and 10g protein per 100g.', tone: 'good' },
-    { id: 'f_wrap_whole', name: 'Wrap, wholemeal', cat: 'Starchy Carbs', cal: 280, pro: 9, car: 45, fat: 6, micros: 'Fib varies; Na', notes: 'Easy high-calorie delivery for burrito wraps and bulking lunches.', tone: 'good' },
-    { id: 'f_rice_cakes', name: 'Rice cakes (plain)', cat: 'Starchy Carbs', cal: 380, pro: 7, car: 80, fat: 1, micros: 'Low micronutrient', notes: 'Fast-digesting crisp pre-workout carb; pair with banana or honey near training.', tone: 'good' },
+    { id: 'f_potato_raw', name: 'Potato, white raw', cat: 'Starchy Carbs', cal: 75, pro: 2, car: 17, fat: 0.1, micros: 'K high, Vit C, Fib ~2g', notes: 'Cheapest high-volume carb in NZ [1]. High satiety and potassium; great post-workout with lean protein [1].', tone: 'good' },
+    { id: 'f_potato_boiled', name: 'Potato, boiled flesh', cat: 'Starchy Carbs', cal: 80, pro: 2, car: 18, fat: 0.1, micros: 'K, Fib ~2g', notes: 'Easy-digesting training fuel; cooling then reheating increases resistant starch [1].', tone: 'good' },
+    { id: 'f_kumara_orange', name: 'Kumara, orange raw', cat: 'Starchy Carbs', cal: 85, pro: 1.5, car: 20, fat: 0.1, micros: 'Vit A (beta-carotene), Vit C, K, Fib ~3g', notes: 'NZ icon carb [1]. Rich in beta-carotene and potassium; ideal pre-evening training carb [1].', tone: 'good' },
+    { id: 'f_kumara_gold', name: 'Kumara, gold/red', cat: 'Starchy Carbs', cal: 85, pro: 1.5, car: 20, fat: 0.1, micros: 'Vit A, Vit C, K, Fib ~3g', notes: 'Rotate kumara colours for diverse polyphenols and sustained glycogen fuel [1].', tone: 'good' },
+    { id: 'f_rice_white', name: 'Rice, white cooked', cat: 'Starchy Carbs', cal: 130, pro: 2.5, car: 28, fat: 0.3, micros: 'Low fibre; easy digest', notes: 'Default peri-workout carb for gut comfort and rapid glycogen replenishment [1].', tone: 'good' },
+    { id: 'f_rice_brown', name: 'Rice, brown cooked', cat: 'Starchy Carbs', cal: 110, pro: 2.5, car: 23, fat: 1, micros: 'Fib ~2g, Mg, Mn', notes: 'More micronutrients and satiety than white rice; eat further from hard sessions if fibre-sensitive [1].', tone: 'good' },
+    { id: 'f_rice_jasmine', name: 'Rice, jasmine cooked', cat: 'Starchy Carbs', cal: 130, pro: 2.5, car: 28, fat: 0.3, micros: 'Easy digest', notes: 'Fast-digesting peri-workout carb staple for meal prep [1].', tone: 'good' },
+    { id: 'f_oats_dry', name: 'Oats, rolled dry', cat: 'Starchy Carbs', cal: 380, pro: 13, car: 60, fat: 7, micros: 'Beta-glucan fibre ~10g, Mn, Mg, Fe', notes: 'Breakfast engine [1]. Sustained energy 2–3h pre-training; pair with whey or yoghurt [1].', tone: 'good' },
+    { id: 'f_oats_cooked', name: 'Oats, cooked porridge (water)', cat: 'Starchy Carbs', cal: 90, pro: 3, car: 15, fat: 2, micros: 'Fib ~2g', notes: 'Sustained-release carbohydrate; gentle on digestion when soaked [1].', tone: 'good' },
+    { id: 'f_pasta_white', name: 'Pasta, white cooked', cat: 'Starchy Carbs', cal: 130, pro: 5, car: 25, fat: 1, micros: 'Fib ~1.5g', notes: 'Athlete carb classic with higher protein than rice; great for bulk meals with lean mince and passata [1].', tone: 'good' },
+    { id: 'f_pasta_whole', name: 'Pasta, wholemeal cooked', cat: 'Starchy Carbs', cal: 140, pro: 5, car: 26, fat: 1, micros: 'Fib ~4g', notes: 'Higher satiety and fibre than white pasta [1].', tone: 'good' },
+    { id: 'f_quinoa', name: 'Quinoa, cooked', cat: 'Starchy Carbs', cal: 120, pro: 4.5, car: 21, fat: 2, micros: 'Complete plant AA, Mg, Fe, Fib ~3g', notes: 'Gluten-free pseudo-grain with complete amino profile and magnesium [1].', tone: 'good' },
+    { id: 'f_couscous', name: 'Couscous, cooked', cat: 'Starchy Carbs', cal: 110, pro: 4, car: 23, fat: 0.2, micros: 'Se; low fibre', notes: 'Fast-cooking, easy-digesting travel and meal-prep carbohydrate [1].', tone: 'good' },
+    { id: 'f_corn', name: 'Corn, sweet kernels cooked', cat: 'Starchy Carbs', cal: 95, pro: 3, car: 21, fat: 1, micros: 'Fib ~2.5g, lutein', notes: 'Starchy veg side carb with lutein for eye/antioxidant support [1].', tone: 'good' },
+    { id: 'f_pumpkin', name: 'Pumpkin / squash cooked', cat: 'Starchy Carbs', cal: 30, pro: 1, car: 7, fat: 0.1, micros: 'Vit A, K, Fib ~1g', notes: 'Very low calorie volume carb-veg hybrid — fills the plate on aggressive cuts [1].', tone: 'good' },
+    { id: 'f_taro', name: 'Taro, cooked', cat: 'Starchy Carbs', cal: 140, pro: 1, car: 35, fat: 0.1, micros: 'K, Fib ~5g', notes: 'Dense Pacific carbohydrate staple with high potassium and fibre [1].', tone: 'good' },
+    { id: 'f_yam', name: 'Yam (NZ supermarket)', cat: 'Starchy Carbs', cal: 110, pro: 1.5, car: 27, fat: 0.1, micros: 'K, Fib', notes: 'Dense root veg carbohydrate to roast alongside meat [1].', tone: 'good' },
+    { id: 'f_bread_whole', name: 'Bread, wholegrain sandwich', cat: 'Starchy Carbs', cal: 250, pro: 10, car: 40, fat: 4, micros: 'Fib ~6g; Na varies', notes: 'Convenient plate staple providing carbs, fibre, and 10g protein per 100g [1].', tone: 'good' },
+    { id: 'f_wrap_whole', name: 'Wrap, wholemeal', cat: 'Starchy Carbs', cal: 280, pro: 9, car: 45, fat: 6, micros: 'Fib varies; Na', notes: 'Easy high-calorie delivery for burrito wraps and bulking lunches [1].', tone: 'good' },
+    { id: 'f_rice_cakes', name: 'Rice cakes (plain)', cat: 'Starchy Carbs', cal: 380, pro: 7, car: 80, fat: 1, micros: 'Low micronutrient', notes: 'Fast-digesting crisp pre-workout carb; pair with banana or honey near training [1].', tone: 'good' },
     // 7. Fruit
-    { id: 'f_banana', name: 'Banana', cat: 'Fruit', cal: 90, pro: 1, car: 23, fat: 0.3, micros: 'K high, B6, Fib ~2.5g', notes: 'Best portable pre/intra/post workout carb. Ripe bananas give a faster glucose response.', tone: 'good' },
-    { id: 'f_kiwi_green', name: 'Kiwifruit, green', cat: 'Fruit', cal: 60, pro: 1, car: 15, fat: 0.5, micros: 'Vit C very high, Fib ~3g, actinidin enzyme', notes: 'NZ hero fruit. Actinidin enzyme aids protein digestion and Vitamin C boosts immunity & iron absorption.', tone: 'good' },
-    { id: 'f_kiwi_gold', name: 'Kiwifruit, gold', cat: 'Fruit', cal: 60, pro: 1, car: 15, fat: 0.4, micros: 'Vit C extremely high', notes: 'Sweeter NZ kiwi with extremely high Vitamin C to support recovery and non-heme iron uptake.', tone: 'good' },
-    { id: 'f_apple', name: 'Apple', cat: 'Fruit', cal: 50, pro: 0.3, car: 14, fat: 0.2, micros: 'Fib ~2.5g (skin), polyphenols', notes: 'Slow snack carb with high volume and low energy density for cuts.', tone: 'good' },
-    { id: 'f_pear', name: 'Pear', cat: 'Fruit', cal: 60, pro: 0.4, car: 15, fat: 0.1, micros: 'Fib ~3g', notes: 'Good fibre snack; higher FODMAP so trial away from training if IBS-prone.', tone: 'good' },
-    { id: 'f_orange', name: 'Orange', cat: 'Fruit', cal: 45, pro: 1, car: 12, fat: 0.1, micros: 'Vit C, folate, K', notes: 'Hydrating whole fruit carb that boosts iron absorption when eaten with meals.', tone: 'good' },
-    { id: 'f_mandarin', name: 'Mandarin', cat: 'Fruit', cal: 50, pro: 0.8, car: 13, fat: 0.2, micros: 'Vit C', notes: 'Easy portable NZ winter citrus snack for immunity.', tone: 'good' },
-    { id: 'f_berries', name: 'Berries, mixed / blueberry', cat: 'Fruit', cal: 55, pro: 0.7, car: 14, fat: 0.3, micros: 'Anthocyanins, Vit C, Fib ~2–4g', notes: 'Low calorie density, high antioxidant anthocyanins — ideal yoghurt or oats topping.', tone: 'good' },
-    { id: 'f_strawberries', name: 'Strawberries', cat: 'Fruit', cal: 30, pro: 0.7, car: 8, fat: 0.3, micros: 'Vit C, Fib ~2g', notes: 'Ultra-low-calorie volume fruit (30 kcal/100g) for sweet-tooth control on cuts.', tone: 'good' },
-    { id: 'f_raspberries', name: 'Raspberries', cat: 'Fruit', cal: 50, pro: 1, car: 12, fat: 0.7, micros: 'Fib ~7g very high', notes: 'Fibre king fruit (7g/100g) for great satiety on cuts.', tone: 'good' },
-    { id: 'f_feijoa', name: 'Feijoa', cat: 'Fruit', cal: 55, pro: 1, car: 13, fat: 0.4, micros: 'Vit C, fibre', notes: 'Seasonal NZ autumn fruit rich in Vitamin C and fibre.', tone: 'good' },
-    { id: 'f_grapes', name: 'Grapes', cat: 'Fruit', cal: 70, pro: 0.7, car: 18, fat: 0.2, micros: 'K, polyphenols', notes: 'Faster-digesting fruit carb; great around training.', tone: 'good' },
-    { id: 'f_mango', name: 'Mango', cat: 'Fruit', cal: 60, pro: 0.8, car: 15, fat: 0.4, micros: 'Vit A, C', notes: 'Tropical sweet carb for post-workout smoothies and bowls.', tone: 'good' },
-    { id: 'f_pineapple', name: 'Pineapple', cat: 'Fruit', cal: 50, pro: 0.5, car: 13, fat: 0.1, micros: 'Vit C, bromelain', notes: 'Contains bromelain enzyme; pairs well with cottage cheese.', tone: 'good' },
-    { id: 'f_watermelon', name: 'Watermelon', cat: 'Fruit', cal: 30, pro: 0.6, car: 8, fat: 0.2, micros: 'Citrulline (blood flow), K', notes: 'Hydrating peri-workout fruit with natural L-citrulline.', tone: 'good' },
-    { id: 'f_avocado', name: 'Avocado', cat: 'Fruit', cal: 160, pro: 2, car: 9, fat: 15, micros: 'K, folate, mono fat, Fib ~7g', notes: 'Nutrient-dense monounsaturated fat source; boosts carotenoid absorption from veggies.', tone: 'good' },
+    { id: 'f_banana', name: 'Banana', cat: 'Fruit', cal: 90, pro: 1, car: 23, fat: 0.3, micros: 'K high, B6, Fib ~2.5g', notes: 'Best portable pre/intra/post workout carb [1]. Ripe bananas give a faster glucose response [1].', tone: 'good' },
+    { id: 'f_kiwi_green', name: 'Kiwifruit, green', cat: 'Fruit', cal: 60, pro: 1, car: 15, fat: 0.5, micros: 'Vit C very high, Fib ~3g, actinidin enzyme', notes: 'NZ hero fruit [1]. Actinidin enzyme aids protein digestion and Vitamin C boosts immunity & iron absorption [1].', tone: 'good' },
+    { id: 'f_kiwi_gold', name: 'Kiwifruit, gold', cat: 'Fruit', cal: 60, pro: 1, car: 15, fat: 0.4, micros: 'Vit C extremely high', notes: 'Sweeter NZ kiwi with extremely high Vitamin C to support recovery and non-heme iron uptake [1].', tone: 'good' },
+    { id: 'f_apple', name: 'Apple', cat: 'Fruit', cal: 50, pro: 0.3, car: 14, fat: 0.2, micros: 'Fib ~2.5g (skin), polyphenols', notes: 'Slow snack carb with high volume and low energy density for cuts [1].', tone: 'good' },
+    { id: 'f_pear', name: 'Pear', cat: 'Fruit', cal: 60, pro: 0.4, car: 15, fat: 0.1, micros: 'Fib ~3g', notes: 'Good fibre snack; higher FODMAP so trial away from training if IBS-prone [1].', tone: 'good' },
+    { id: 'f_orange', name: 'Orange', cat: 'Fruit', cal: 45, pro: 1, car: 12, fat: 0.1, micros: 'Vit C, folate, K', notes: 'Hydrating whole fruit carb that boosts iron absorption when eaten with meals [1].', tone: 'good' },
+    { id: 'f_mandarin', name: 'Mandarin', cat: 'Fruit', cal: 50, pro: 0.8, car: 13, fat: 0.2, micros: 'Vit C', notes: 'Easy portable NZ winter citrus snack for immunity [1].', tone: 'good' },
+    { id: 'f_berries', name: 'Berries, mixed / blueberry', cat: 'Fruit', cal: 55, pro: 0.7, car: 14, fat: 0.3, micros: 'Anthocyanins, Vit C, Fib ~2–4g', notes: 'Low calorie density, high antioxidant anthocyanins — ideal yoghurt or oats topping [1].', tone: 'good' },
+    { id: 'f_strawberries', name: 'Strawberries', cat: 'Fruit', cal: 30, pro: 0.7, car: 8, fat: 0.3, micros: 'Vit C, Fib ~2g', notes: 'Ultra-low-calorie volume fruit (30 kcal/100g) for sweet-tooth control on cuts [1].', tone: 'good' },
+    { id: 'f_raspberries', name: 'Raspberries', cat: 'Fruit', cal: 50, pro: 1, car: 12, fat: 0.7, micros: 'Fib ~7g very high', notes: 'Fibre king fruit (7g/100g) for great satiety on cuts [1].', tone: 'good' },
+    { id: 'f_feijoa', name: 'Feijoa', cat: 'Fruit', cal: 55, pro: 1, car: 13, fat: 0.4, micros: 'Vit C, fibre', notes: 'Seasonal NZ autumn fruit rich in Vitamin C and fibre [1].', tone: 'good' },
+    { id: 'f_grapes', name: 'Grapes', cat: 'Fruit', cal: 70, pro: 0.7, car: 18, fat: 0.2, micros: 'K, polyphenols', notes: 'Faster-digesting fruit carb; great around training [1].', tone: 'good' },
+    { id: 'f_mango', name: 'Mango', cat: 'Fruit', cal: 60, pro: 0.8, car: 15, fat: 0.4, micros: 'Vit A, C', notes: 'Tropical sweet carb for post-workout smoothies and bowls [1].', tone: 'good' },
+    { id: 'f_pineapple', name: 'Pineapple', cat: 'Fruit', cal: 50, pro: 0.5, car: 13, fat: 0.1, micros: 'Vit C, bromelain', notes: 'Contains bromelain enzyme; pairs well with cottage cheese [1].', tone: 'good' },
+    { id: 'f_watermelon', name: 'Watermelon', cat: 'Fruit', cal: 30, pro: 0.6, car: 8, fat: 0.2, micros: 'Citrulline (blood flow), K', notes: 'Hydrating peri-workout fruit with natural L-citrulline [1].', tone: 'good' },
+    { id: 'f_avocado', name: 'Avocado', cat: 'Fruit', cal: 160, pro: 2, car: 9, fat: 15, micros: 'K, folate, mono fat, Fib ~7g', notes: 'Nutrient-dense monounsaturated fat source; boosts carotenoid absorption from veggies [1].', tone: 'good' },
     // 8. Vegetables
-    { id: 'f_broccoli', name: 'Broccoli', cat: 'Vegetables', cal: 35, pro: 3, car: 7, fat: 0.4, micros: 'Vit C, K, folate, Fib ~2.5g, sulforaphane', notes: 'Gym-diet classic with sulforaphane and high volume satiety.', tone: 'good' },
-    { id: 'f_spinach', name: 'Spinach, raw', cat: 'Vegetables', cal: 25, pro: 3, car: 4, fat: 0.4, micros: 'Vit K, A, folate, Mg, nitrates', notes: 'Dietary nitrates support blood flow and nitric oxide; high magnesium.', tone: 'good' },
-    { id: 'f_kale', name: 'Kale', cat: 'Vegetables', cal: 35, pro: 3, car: 6, fat: 1.5, micros: 'Vit K, C, A', notes: 'Hardy micronutrient-dense leafy green.', tone: 'good' },
-    { id: 'f_salad_leaves', name: 'Mixed salad leaves', cat: 'Vegetables', cal: 15, pro: 1, car: 2, fat: 0.2, micros: 'Folate, Vit K', notes: 'Zero-guilt volume filler under protein bowls.', tone: 'good' },
-    { id: 'f_capsicum_red', name: 'Capsicum, red', cat: 'Vegetables', cal: 30, pro: 1, car: 6, fat: 0.3, micros: 'Vit C extremely high, Fib ~2g', notes: 'Extremely high Vitamin C — pair with beef or lentils to maximise iron absorption.', tone: 'good' },
-    { id: 'f_capsicum_green', name: 'Capsicum, green/yellow', cat: 'Vegetables', cal: 25, pro: 1, car: 5, fat: 0.2, micros: 'Vit C high', notes: 'Crunchy low-calorie micronutrient volume for stir-fries and bowls.', tone: 'good' },
-    { id: 'f_tomato', name: 'Tomato', cat: 'Vegetables', cal: 20, pro: 1, car: 4, fat: 0.2, micros: 'Lycopene, Vit C, K', notes: 'Rich in antioxidant lycopene (absorption increases when cooked with healthy fat).', tone: 'good' },
-    { id: 'f_cucumber', name: 'Cucumber', cat: 'Vegetables', cal: 15, pro: 0.7, car: 4, fat: 0.1, micros: 'K, water', notes: 'High-hydration crunch volume for snacks and salads.', tone: 'good' },
-    { id: 'f_zucchini', name: 'Zucchini / courgette', cat: 'Vegetables', cal: 20, pro: 1.5, car: 3, fat: 0.3, micros: 'K, Vit C', notes: 'Great for bulking out pasta or mince meals on a cut.', tone: 'good' },
-    { id: 'f_carrot', name: 'Carrot', cat: 'Vegetables', cal: 40, pro: 1, car: 10, fat: 0.2, micros: 'Vit A high, Fib ~3g', notes: 'High beta-carotene (Vit A) and crunchy fibre.', tone: 'good' },
-    { id: 'f_green_beans', name: 'Green beans', cat: 'Vegetables', cal: 30, pro: 2, car: 7, fat: 0.1, micros: 'Vit C, K, Fib ~3g', notes: 'Classic low-calorie side veg for steak or chicken prep.', tone: 'good' },
-    { id: 'f_asparagus', name: 'Asparagus', cat: 'Vegetables', cal: 20, pro: 2, car: 4, fat: 0.1, micros: 'Folate, Vit K, prebiotic fibre', notes: 'Rich in folate and prebiotic fibre.', tone: 'good' },
-    { id: 'f_cauliflower', name: 'Cauliflower', cat: 'Vegetables', cal: 25, pro: 2, car: 5, fat: 0.3, micros: 'Vit C, K, Fib ~2g', notes: 'High-volume rice extender for cutting phases.', tone: 'good' },
-    { id: 'f_cabbage', name: 'Cabbage / coleslaw mix', cat: 'Vegetables', cal: 25, pro: 1.5, car: 6, fat: 0.1, micros: 'Vit C, K, Fib', notes: 'Cheap crunchy meal volume for bowls and wraps.', tone: 'good' },
-    { id: 'f_onion', name: 'Onion', cat: 'Vegetables', cal: 40, pro: 1, car: 9, fat: 0.1, micros: 'Quercetin, prebiotic Fib', notes: 'Flavour base rich in quercetin; watch big portions pre-event if FODMAP-sensitive.', tone: 'good' },
-    { id: 'f_garlic', name: 'Garlic', cat: 'Vegetables', cal: 150, pro: 6, car: 33, fat: 0.5, micros: 'Allicin compounds', notes: 'Potent allicin immune/cardiovascular compounds.', tone: 'good' },
-    { id: 'f_mushrooms', name: 'Mushrooms, button', cat: 'Vegetables', cal: 20, pro: 3, car: 3, fat: 0.3, micros: 'B vitamins, Se, ergothioneine; Vit D', notes: 'Umami meat extender with ultra-low calories.', tone: 'good' },
-    { id: 'f_beetroot', name: 'Beetroot, raw', cat: 'Vegetables', cal: 40, pro: 1.5, car: 10, fat: 0.1, micros: 'Nitrates, folate, betalains', notes: 'Dietary nitrate powerhouse — great 2–3h pre-workout for endurance and pump.', tone: 'good' },
-    { id: 'f_peas', name: 'Peas, green cooked', cat: 'Vegetables', cal: 80, pro: 5, car: 14, fat: 0.4, micros: 'Fib ~5g, Vit C, K', notes: 'High-protein vegetable freezer staple.', tone: 'good' },
-    { id: 'f_buk_choy', name: 'Buk choy / Asian greens', cat: 'Vegetables', cal: 15, pro: 1.5, car: 2, fat: 0.2, micros: 'Vit A, C, K, Ca', notes: 'Ultra-low calorie stir-fry green with bioavailable calcium.', tone: 'good' },
-    { id: 'f_silverbeet', name: 'Silverbeet / Swiss chard', cat: 'Vegetables', cal: 20, pro: 2, car: 4, fat: 0.2, micros: 'Vit K, A, Mg', notes: 'NZ garden staple rich in magnesium and Vitamin K.', tone: 'good' },
+    { id: 'f_broccoli', name: 'Broccoli', cat: 'Vegetables', cal: 35, pro: 3, car: 7, fat: 0.4, micros: 'Vit C, K, folate, Fib ~2.5g, sulforaphane', notes: 'Gym-diet classic with sulforaphane and high volume satiety [1].', tone: 'good' },
+    { id: 'f_spinach', name: 'Spinach, raw', cat: 'Vegetables', cal: 25, pro: 3, car: 4, fat: 0.4, micros: 'Vit K, A, folate, Mg, nitrates', notes: 'Dietary nitrates support blood flow and nitric oxide; high magnesium [1].', tone: 'good' },
+    { id: 'f_kale', name: 'Kale', cat: 'Vegetables', cal: 35, pro: 3, car: 6, fat: 1.5, micros: 'Vit K, C, A', notes: 'Hardy micronutrient-dense leafy green [1].', tone: 'good' },
+    { id: 'f_salad_leaves', name: 'Mixed salad leaves', cat: 'Vegetables', cal: 15, pro: 1, car: 2, fat: 0.2, micros: 'Folate, Vit K', notes: 'Zero-guilt volume filler under protein bowls [1].', tone: 'good' },
+    { id: 'f_capsicum_red', name: 'Capsicum, red', cat: 'Vegetables', cal: 30, pro: 1, car: 6, fat: 0.3, micros: 'Vit C extremely high, Fib ~2g', notes: 'Extremely high Vitamin C — pair with beef or lentils to maximise iron absorption [1].', tone: 'good' },
+    { id: 'f_capsicum_green', name: 'Capsicum, green/yellow', cat: 'Vegetables', cal: 25, pro: 1, car: 5, fat: 0.2, micros: 'Vit C high', notes: 'Crunchy low-calorie micronutrient volume for stir-fries and bowls [1].', tone: 'good' },
+    { id: 'f_tomato', name: 'Tomato', cat: 'Vegetables', cal: 20, pro: 1, car: 4, fat: 0.2, micros: 'Lycopene, Vit C, K', notes: 'Rich in antioxidant lycopene (absorption increases when cooked with healthy fat) [1].', tone: 'good' },
+    { id: 'f_cucumber', name: 'Cucumber', cat: 'Vegetables', cal: 15, pro: 0.7, car: 4, fat: 0.1, micros: 'K, water', notes: 'High-hydration crunch volume for snacks and salads [1].', tone: 'good' },
+    { id: 'f_zucchini', name: 'Zucchini / courgette', cat: 'Vegetables', cal: 20, pro: 1.5, car: 3, fat: 0.3, micros: 'K, Vit C', notes: 'Great for bulking out pasta or mince meals on a cut [1].', tone: 'good' },
+    { id: 'f_carrot', name: 'Carrot', cat: 'Vegetables', cal: 40, pro: 1, car: 10, fat: 0.2, micros: 'Vit A high, Fib ~3g', notes: 'High beta-carotene (Vit A) and crunchy fibre [1].', tone: 'good' },
+    { id: 'f_green_beans', name: 'Green beans', cat: 'Vegetables', cal: 30, pro: 2, car: 7, fat: 0.1, micros: 'Vit C, K, Fib ~3g', notes: 'Classic low-calorie side veg for steak or chicken prep [1].', tone: 'good' },
+    { id: 'f_asparagus', name: 'Asparagus', cat: 'Vegetables', cal: 20, pro: 2, car: 4, fat: 0.1, micros: 'Folate, Vit K, prebiotic fibre', notes: 'Rich in folate and prebiotic fibre [1].', tone: 'good' },
+    { id: 'f_cauliflower', name: 'Cauliflower', cat: 'Vegetables', cal: 25, pro: 2, car: 5, fat: 0.3, micros: 'Vit C, K, Fib ~2g', notes: 'High-volume rice extender for cutting phases [1].', tone: 'good' },
+    { id: 'f_cabbage', name: 'Cabbage / coleslaw mix', cat: 'Vegetables', cal: 25, pro: 1.5, car: 6, fat: 0.1, micros: 'Vit C, K, Fib', notes: 'Cheap crunchy meal volume for bowls and wraps [1].', tone: 'good' },
+    { id: 'f_onion', name: 'Onion', cat: 'Vegetables', cal: 40, pro: 1, car: 9, fat: 0.1, micros: 'Quercetin, prebiotic Fib', notes: 'Flavour base rich in quercetin; watch big portions pre-event if FODMAP-sensitive [1].', tone: 'good' },
+    { id: 'f_garlic', name: 'Garlic', cat: 'Vegetables', cal: 150, pro: 6, car: 33, fat: 0.5, micros: 'Allicin compounds', notes: 'Potent allicin immune/cardiovascular compounds [1].', tone: 'good' },
+    { id: 'f_mushrooms', name: 'Mushrooms, button', cat: 'Vegetables', cal: 20, pro: 3, car: 3, fat: 0.3, micros: 'B vitamins, Se, ergothioneine; Vit D', notes: 'Umami meat extender with ultra-low calories [1].', tone: 'good' },
+    { id: 'f_beetroot', name: 'Beetroot, raw', cat: 'Vegetables', cal: 40, pro: 1.5, car: 10, fat: 0.1, micros: 'Nitrates, folate, betalains', notes: 'Dietary nitrate powerhouse — great 2–3h pre-workout for endurance and pump [1].', tone: 'good' },
+    { id: 'f_peas', name: 'Peas, green cooked', cat: 'Vegetables', cal: 80, pro: 5, car: 14, fat: 0.4, micros: 'Fib ~5g, Vit C, K', notes: 'High-protein vegetable freezer staple [1].', tone: 'good' },
+    { id: 'f_buk_choy', name: 'Buk choy / Asian greens', cat: 'Vegetables', cal: 15, pro: 1.5, car: 2, fat: 0.2, micros: 'Vit A, C, K, Ca', notes: 'Ultra-low calorie stir-fry green with bioavailable calcium [1].', tone: 'good' },
+    { id: 'f_silverbeet', name: 'Silverbeet / Swiss chard', cat: 'Vegetables', cal: 20, pro: 2, car: 4, fat: 0.2, micros: 'Vit K, A, Mg', notes: 'NZ garden staple rich in magnesium and Vitamin K [1].', tone: 'good' },
     // 9. Nuts, Seeds & Nut Butters
-    { id: 'f_almonds', name: 'Almonds', cat: 'Nuts & Seeds', cal: 580, pro: 21, car: 20, fat: 50, micros: 'Vit E, Mg, Fib ~12g', notes: 'Rich in Vitamin E and magnesium; blunts glycaemic spike when paired with carbs. Weigh 20–30g portions.', tone: 'good' },
-    { id: 'f_peanuts', name: 'Peanuts', cat: 'Nuts & Seeds', cal: 560, pro: 26, car: 16, fat: 49, micros: 'Niacin, Mg, Fib ~8g', notes: 'Highest protein common nut; energy-dense so measure portions.', tone: 'good' },
-    { id: 'f_pb_natural', name: 'Peanut butter, natural', cat: 'Nuts & Seeds', cal: 590, pro: 25, car: 20, fat: 50, micros: 'Niacin, Mg, Vit E', notes: 'Classic athlete bulking tool. Energy-dense — weigh tablespoons strictly on cuts.', tone: 'mid' },
-    { id: 'f_walnuts', name: 'Walnuts', cat: 'Nuts & Seeds', cal: 650, pro: 15, car: 14, fat: 65, micros: 'ALA omega-3, Mn', notes: 'Top plant ALA omega-3 nut for brain and recovery diet quality.', tone: 'good' },
-    { id: 'f_cashews', name: 'Cashews', cat: 'Nuts & Seeds', cal: 550, pro: 18, car: 30, fat: 44, micros: 'Mg, Cu, Zn', notes: 'Great stir-fry crunch with magnesium and zinc; measure portions.', tone: 'good' },
-    { id: 'f_brazil_nuts', name: 'Brazil nuts', cat: 'Nuts & Seeds', cal: 650, pro: 14, car: 12, fat: 66, micros: 'Selenium extremely high', notes: '1–2 nuts/day covers selenium needs completely. Do not overconsume.', tone: 'good' },
-    { id: 'f_chia', name: 'Chia seeds', cat: 'Nuts & Seeds', cal: 480, pro: 17, car: 40, fat: 31, micros: 'ALA, Fib ~34g, Ca, Mg', notes: 'Massive soluble fibre (34g/100g) and omega-3 ALA for digestion and satiety.', tone: 'good' },
-    { id: 'f_flaxseed', name: 'Linseed / flaxseed ground', cat: 'Nuts & Seeds', cal: 530, pro: 18, car: 29, fat: 42, micros: 'ALA, Fib ~27g, lignans', notes: 'High fibre and plant omega-3s; great in morning oats.', tone: 'good' },
-    { id: 'f_pumpkin_seeds', name: 'Pumpkin seeds (pepitas)', cat: 'Nuts & Seeds', cal: 550, pro: 30, car: 10, fat: 45, micros: 'Mg, Zn, Fe, Fib ~6g', notes: '30g protein/100g plus high zinc and magnesium for hormone and recovery support.', tone: 'good' },
-    { id: 'f_sunflower_seeds', name: 'Sunflower seeds', cat: 'Nuts & Seeds', cal: 580, pro: 21, car: 20, fat: 51, micros: 'Vit E, Se, Fib', notes: 'High Vitamin E antioxidant support; portion control.', tone: 'good' },
-    { id: 'f_tahini', name: 'Sesame seeds / tahini', cat: 'Nuts & Seeds', cal: 600, pro: 18, car: 20, fat: 54, micros: 'Ca, Cu, Fib', notes: 'Calcium-rich dressing base; calorie-dense so measure teaspoons.', tone: 'mid' },
+    { id: 'f_almonds', name: 'Almonds', cat: 'Nuts & Seeds', cal: 580, pro: 21, car: 20, fat: 50, micros: 'Vit E, Mg, Fib ~12g', notes: 'Rich in Vitamin E and magnesium; blunts glycaemic spike when paired with carbs [1]. Weigh 20–30g portions [1].', tone: 'good' },
+    { id: 'f_peanuts', name: 'Peanuts', cat: 'Nuts & Seeds', cal: 560, pro: 26, car: 16, fat: 49, micros: 'Niacin, Mg, Fib ~8g', notes: 'Highest protein common nut; energy-dense so measure portions [1].', tone: 'good' },
+    { id: 'f_pb_natural', name: 'Peanut butter, natural', cat: 'Nuts & Seeds', cal: 590, pro: 25, car: 20, fat: 50, micros: 'Niacin, Mg, Vit E', notes: 'Classic athlete bulking tool [1]. Energy-dense — weigh tablespoons strictly on cuts [1].', tone: 'mid' },
+    { id: 'f_walnuts', name: 'Walnuts', cat: 'Nuts & Seeds', cal: 650, pro: 15, car: 14, fat: 65, micros: 'ALA omega-3, Mn', notes: 'Top plant ALA omega-3 nut for brain and recovery diet quality [1].', tone: 'good' },
+    { id: 'f_cashews', name: 'Cashews', cat: 'Nuts & Seeds', cal: 550, pro: 18, car: 30, fat: 44, micros: 'Mg, Cu, Zn', notes: 'Great stir-fry crunch with magnesium and zinc; measure portions [1].', tone: 'good' },
+    { id: 'f_brazil_nuts', name: 'Brazil nuts', cat: 'Nuts & Seeds', cal: 650, pro: 14, car: 12, fat: 66, micros: 'Selenium extremely high', notes: '1–2 nuts/day covers selenium needs completely [1]. Do not overconsume [1].', tone: 'good' },
+    { id: 'f_chia', name: 'Chia seeds', cat: 'Nuts & Seeds', cal: 480, pro: 17, car: 40, fat: 31, micros: 'ALA, Fib ~34g, Ca, Mg', notes: 'Massive soluble fibre (34g/100g) and omega-3 ALA for digestion and satiety [1].', tone: 'good' },
+    { id: 'f_flaxseed', name: 'Linseed / flaxseed ground', cat: 'Nuts & Seeds', cal: 530, pro: 18, car: 29, fat: 42, micros: 'ALA, Fib ~27g, lignans', notes: 'High fibre and plant omega-3s; great in morning oats [1].', tone: 'good' },
+    { id: 'f_pumpkin_seeds', name: 'Pumpkin seeds (pepitas)', cat: 'Nuts & Seeds', cal: 550, pro: 30, car: 10, fat: 45, micros: 'Mg, Zn, Fe, Fib ~6g', notes: '30g protein/100g plus high zinc and magnesium for hormone and recovery support [1].', tone: 'good' },
+    { id: 'f_sunflower_seeds', name: 'Sunflower seeds', cat: 'Nuts & Seeds', cal: 580, pro: 21, car: 20, fat: 51, micros: 'Vit E, Se, Fib', notes: 'High Vitamin E antioxidant support; portion control [1].', tone: 'good' },
+    { id: 'f_tahini', name: 'Sesame seeds / tahini', cat: 'Nuts & Seeds', cal: 600, pro: 18, car: 20, fat: 54, micros: 'Ca, Cu, Fib', notes: 'Calcium-rich dressing base; calorie-dense so measure teaspoons [1].', tone: 'mid' },
     // 10. Other Whole Foods
-    { id: 'f_passata', name: 'Passata / crushed tomato', cat: 'Other Staples', cal: 30, pro: 1, car: 6, fat: 0.2, micros: 'Lycopene, K', notes: 'Low-calorie volume sauce base for mince and chicken.', tone: 'good' },
-    { id: 'f_tzatziki', name: 'Greek yoghurt tzatziki base', cat: 'Other Staples', cal: 60, pro: 6, car: 4, fat: 2, micros: 'Protein dip, Ca', notes: 'High-protein low-calorie dip that makes potatoes and veggies easy to eat.', tone: 'good' },
-    { id: 'f_hummus', name: 'Hummus', cat: 'Other Staples', cal: 160, pro: 7, car: 14, fat: 10, micros: 'Fib; chickpea + tahini', notes: 'Wholesome dip; measure 40–60g portions.', tone: 'good' },
-    { id: 'f_olives', name: 'Olives', cat: 'Other Staples', cal: 150, pro: 1, car: 4, fat: 15, micros: 'Na high, mono fat', notes: 'Salty monounsaturated fat flavour booster.', tone: 'good' },
-    { id: 'f_sauerkraut', name: 'Sauerkraut', cat: 'Other Staples', cal: 20, pro: 1, car: 4, fat: 0, micros: 'Probiotic if live; Na', notes: 'Fermented gut-health side for heavy meat meals.', tone: 'good' },
-    { id: 'f_kimchi', name: 'Kimchi', cat: 'Other Staples', cal: 20, pro: 2, car: 3, fat: 0.5, micros: 'Probiotic spice; Na', notes: 'Live probiotics and spice for meal-prep adherence.', tone: 'good' },
-    { id: 'f_coconut_flesh', name: 'Coconut flesh, fresh', cat: 'Other Staples', cal: 350, pro: 3, car: 15, fat: 33, micros: 'Mn, sat fat', notes: 'High saturated fat; use occasionally rather than as a daily staple.', tone: 'mid' },
-    { id: 'f_coconut_yog', name: 'Coconut yoghurt', cat: 'Other Staples', cal: 120, pro: 1, car: 8, fat: 10, micros: 'Low protein usually', notes: 'Low protein compared to Greek yoghurt — pair with whey or another protein source.', tone: 'mid' },
-    { id: 'f_dark_choc', name: 'Dark chocolate 70–85%', cat: 'Other Staples', cal: 550, pro: 8, car: 45, fat: 40, micros: 'Flavanols, Mg', notes: 'Polyphenol-rich adherence treat in 20–30g portions; high calorie density.', tone: 'mid' },
-    { id: 'f_honey', name: 'Honey (peri-workout drizzle)', cat: 'Other Staples', cal: 300, pro: 0, car: 80, fat: 0, micros: 'Rapid sugar', notes: 'Fast glucose/fructose carb best reserved for pre/post-workout teaspoons.', tone: 'mid' }
+    { id: 'f_passata', name: 'Passata / crushed tomato', cat: 'Other Staples', cal: 30, pro: 1, car: 6, fat: 0.2, micros: 'Lycopene, K', notes: 'Low-calorie volume sauce base for mince and chicken [1].', tone: 'good' },
+    { id: 'f_tzatziki', name: 'Greek yoghurt tzatziki base', cat: 'Other Staples', cal: 60, pro: 6, car: 4, fat: 2, micros: 'Protein dip, Ca', notes: 'High-protein low-calorie dip that makes potatoes and veggies easy to eat [1].', tone: 'good' },
+    { id: 'f_hummus', name: 'Hummus', cat: 'Other Staples', cal: 160, pro: 7, car: 14, fat: 10, micros: 'Fib; chickpea + tahini', notes: 'Wholesome dip; measure 40–60g portions [1].', tone: 'good' },
+    { id: 'f_olives', name: 'Olives', cat: 'Other Staples', cal: 150, pro: 1, car: 4, fat: 15, micros: 'Na high, mono fat', notes: 'Salty monounsaturated fat flavour booster [1].', tone: 'good' },
+    { id: 'f_sauerkraut', name: 'Sauerkraut', cat: 'Other Staples', cal: 20, pro: 1, car: 4, fat: 0, micros: 'Probiotic if live; Na', notes: 'Fermented gut-health side for heavy meat meals [1].', tone: 'good' },
+    { id: 'f_kimchi', name: 'Kimchi', cat: 'Other Staples', cal: 20, pro: 2, car: 3, fat: 0.5, micros: 'Probiotic spice; Na', notes: 'Live probiotics and spice for meal-prep adherence [1].', tone: 'good' },
+    { id: 'f_coconut_flesh', name: 'Coconut flesh, fresh', cat: 'Other Staples', cal: 350, pro: 3, car: 15, fat: 33, micros: 'Mn, sat fat', notes: 'High saturated fat; use occasionally rather than as a daily staple [1].', tone: 'mid' },
+    { id: 'f_coconut_yog', name: 'Coconut yoghurt', cat: 'Other Staples', cal: 120, pro: 1, car: 8, fat: 10, micros: 'Low protein usually', notes: 'Low protein compared to Greek yoghurt — pair with whey or another protein source [1].', tone: 'mid' },
+    { id: 'f_dark_choc', name: 'Dark chocolate 70–85%', cat: 'Other Staples', cal: 550, pro: 8, car: 45, fat: 40, micros: 'Flavanols, Mg', notes: 'Polyphenol-rich adherence treat in 20–30g portions; high calorie density [1].', tone: 'mid' },
+    { id: 'f_honey', name: 'Honey (peri-workout drizzle)', cat: 'Other Staples', cal: 300, pro: 0, car: 80, fat: 0, micros: 'Rapid sugar', notes: 'Fast glucose/fructose carb best reserved for pre/post-workout teaspoons [1].', tone: 'mid' }
 ];
-
 const store = {
-    state: { user: { currentWeight: 90.0 }, routines: [], activeRoutineId: 'default_1', history: { workouts: [], bodyweight: [], nutrition: [], cardio: [], challengeLogs: {}, manualPRs: [] }, savedMeals: [], prs: { Bench: {weight:0, reps:0}, Squat: {weight:0, reps:0}, Deadlift: {weight:0, reps:0} }, settings: { restTimer: 120, theme: 'olympus', chartRange: '90', nutritionTargets: { cal: 2500, pro: 160, car: 250, fat: 70 }, lastVolFilter: '', weightGoal: 'maintaining', showCaloriesOnBwChart: true, overloadMuscleFilter: 'All' }, variations: {}, customExercises: [], challenge: { isActive: false, title: '', startDate: '', endDate: '', goals: [] }, activeSession: null },
+    state: { user: { currentWeight: 90.0 }, routines: [], activeRoutineId: 'default_1', history: { workouts: [], bodyweight: [], nutrition: [], cardio: [], challengeLogs: {}, manualPRs: [] }, savedMeals: [], prs: { Bench: {weight:0, reps:0}, Squat: {weight:0, reps:0}, Deadlift: {weight:0, reps:0} }, settings: { restTimer: 120, theme: 'olympus', chartRange: '90', nutritionTargets: { cal: 2500, pro: 160, car: 250, fat: 70 }, lastVolFilter: 'total', weightGoal: 'maintaining', showCaloriesOnBwChart: true, overloadMuscleFilter: 'All' }, variations: {}, customExercises: [], challenge: { isActive: false, title: '', startDate: '', endDate: '', goals: [] }, activeSession: null },
     migrate(state) {
         if(!state.settings) state.settings = { restTimer: 120, theme: 'olympus', chartRange: '90' };
         if(!state.settings.chartRange) state.settings.chartRange = '90';
@@ -426,6 +435,7 @@ const store = {
         if(!state.settings.weightGoal) state.settings.weightGoal = 'maintaining';
         if(state.settings.showCaloriesOnBwChart === undefined) state.settings.showCaloriesOnBwChart = true;
         if(!state.settings.overloadMuscleFilter) state.settings.overloadMuscleFilter = 'All';
+        if(!state.settings.lastVolFilter) state.settings.lastVolFilter = 'total';
         if(!state.history.cardio) state.history.cardio = [];
         if(!state.history.manualPRs) state.history.manualPRs = [];
         if(!state.prs) { state.prs = { Bench: {weight:0, reps:0}, Squat: {weight:0, reps:0}, Deadlift: {weight:0, reps:0} }; }
@@ -528,10 +538,15 @@ const utils = {
     getWeeklyData: (dataset) => { let weekly = {}; dataset.forEach(entry => { const mon = utils.getMonday(entry.date); if (!weekly[mon]) weekly[mon] = { entries: [] }; weekly[mon].entries.push(entry); }); return weekly; },
     getWorkoutVolumeHistory: () => {
         const muscles = {};
+        const total = {};
         store.state.history.workouts.forEach(w => {
             if(w.isSkipped || w.isActivity) return; const dateStr = utils.getLocalISODate(w.date); const ts = new Date(w.date).setHours(0,0,0,0);
             (w.exercises||[]).forEach(ex => {
                 let exVol = utils.calcVolume(ex.sets);
+                if (exVol > 0) {
+                    if(!total[dateStr]) total[dateStr] = { x: ts, y: 0 };
+                    total[dateStr].y += exVol;
+                }
                 let mNames = utils.getMuscles(ex);
                 mNames.forEach(mName => {
                     if(!muscles[mName]) muscles[mName] = {};
@@ -540,7 +555,9 @@ const utils = {
                 });
             });
         });
-        const musclesArr = {}; Object.keys(muscles).forEach(m => { musclesArr[m] = Object.values(muscles[m]).sort((a,b)=>a.x-b.x); }); return { muscles: musclesArr };
+        const musclesArr = {}; Object.keys(muscles).forEach(m => { musclesArr[m] = Object.values(muscles[m]).sort((a,b)=>a.x-b.x); });
+        const totalArr = Object.values(total).sort((a,b)=>a.x-b.x);
+        return { muscles: musclesArr, total: totalArr };
     },
     getE1RMHistory: () => {
         let history = { bench: [], squat: [], deadlift: [] };
@@ -1138,6 +1155,127 @@ const utils = {
             </g>
         </svg>`;
     },
+    getNutritionScore: (nutEntry, targets) => {
+        const cal = parseFloat(nutEntry.cal) || 0;
+        const pro = parseFloat(nutEntry.pro) || 0;
+        const car = parseFloat(nutEntry.car) || 0;
+        const fat = parseFloat(nutEntry.fat) || 0;
+        const tCal = Math.max(1, parseFloat(targets.cal) || 2500);
+        const tPro = Math.max(1, parseFloat(targets.pro) || 160);
+        const tCar = Math.max(1, parseFloat(targets.car) || 250);
+        const tFat = Math.max(1, parseFloat(targets.fat) || 70);
+
+        let totalWater = 0;
+        if (nutEntry.waterLog) totalWater = nutEntry.waterLog.reduce((s, e) => s + e.amount, 0);
+
+        if (cal === 0 && (!nutEntry.loggedMeals || nutEntry.loggedMeals.length === 0) && totalWater === 0) {
+            return {
+                totalScore: 0,
+                grade: 'UNSCORED',
+                color: 'var(--text-secondary)',
+                factors: [
+                    { name: 'Calorie Precision', score: 0, max: 25, desc: 'No calories logged yet' },
+                    { name: 'Protein Anchor', score: 0, max: 25, desc: '0g / ' + tPro + 'g target' },
+                    { name: 'Carb & Fat Balance', score: 0, max: 20, desc: 'No macros logged yet' },
+                    { name: 'Whole-Food Quality & Variety', score: 0, max: 20, desc: 'Log whole foods/saved meals' },
+                    { name: 'Hydration & Meal Structure', score: 0, max: 10, desc: '0ml water • 0 meals' }
+                ]
+            };
+        }
+
+        // 1. Calorie Precision (0-25 pts): Scales smoothly based on proximity to target calories
+        const calDev = Math.abs(cal - tCal) / tCal;
+        let calScore = 0;
+        if (cal > 0) {
+            if (calDev <= 0.05) calScore = 25;
+            else if (calDev >= 0.50) calScore = Math.max(2, Math.round(25 * (1 - calDev)));
+            else calScore = Math.round(25 * (1 - ((calDev - 0.05) / 0.45) * 0.85));
+        }
+        calScore = Math.max(0, Math.min(25, calScore));
+
+        // 2. Protein Anchor & Efficiency (0-25 pts): Scales with hitting protein target + protein-to-calorie density
+        const proRatio = pro / tPro;
+        let proHitScore = 0;
+        if (proRatio >= 0.95 && proRatio <= 1.30) proHitScore = 20;
+        else if (proRatio < 0.95) proHitScore = Math.round(20 * Math.pow(proRatio / 0.95, 1.15));
+        else proHitScore = Math.max(12, Math.round(20 - ((proRatio - 1.30) * 15)));
+        const targetProDensity = (tPro * 4) / tCal;
+        const actualProDensity = cal > 0 ? ((pro * 4) / cal) : 0;
+        const densityBonus = actualProDensity >= targetProDensity * 0.9 ? 5 : Math.round(5 * (actualProDensity / Math.max(0.05, targetProDensity * 0.9)));
+        const proScore = Math.max(0, Math.min(25, proHitScore + densityBonus));
+
+        // 3. Carb & Fat Macro Fit (0-20 pts): 10 pts Carbs + 10 pts Fats
+        const carDev = Math.abs(car - tCar) / tCar;
+        const fatDev = Math.abs(fat - tFat) / tFat;
+        const carSub = car > 0 ? Math.max(0, Math.min(10, Math.round(10 * Math.max(0, 1 - Math.max(0, carDev - 0.08) / 0.65)))) : 0;
+        const fatSub = fat > 0 ? Math.max(0, Math.min(10, Math.round(10 * Math.max(0, 1 - Math.max(0, fatDev - 0.08) / 0.55)))) : 0;
+        const macroBalanceScore = carSub + fatSub;
+
+        // 4. Whole-Food Quality & Micronutrient Variety (0-20 pts)
+        let foodItems = [];
+        (nutEntry.loggedMeals || []).forEach(m => {
+            if (m.foodId) {
+                const f = NZ_ATHLETE_FOODS.find(x => x.id === m.foodId);
+                if (f) foodItems.push({ food: f, cals: m.cal || f.cal });
+            }
+            if (m.ingredients && Array.isArray(m.ingredients)) {
+                m.ingredients.forEach(ing => {
+                    const f = NZ_ATHLETE_FOODS.find(x => x.id === ing.foodId);
+                    if (f) foodItems.push({ food: f, cals: ing.cal || f.cal });
+                });
+            }
+        });
+        let qualityScore = 0;
+        let uniqueCats = new Set();
+        let uniqueFoods = new Set();
+        if (foodItems.length > 0) {
+            let weightedSum = 0;
+            let totalWeightCals = 0;
+            foodItems.forEach(item => {
+                const w = Math.max(10, item.cals || 50);
+                const toneVal = item.food.tone === 'good' ? 1.0 : (item.food.tone === 'mid' ? 0.68 : 0.35);
+                weightedSum += toneVal * w;
+                totalWeightCals += w;
+                uniqueCats.add(item.food.cat);
+                uniqueFoods.add(item.food.id);
+            });
+            const avgQuality = totalWeightCals > 0 ? (weightedSum / totalWeightCals) : 0.75;
+            const tonePts = Math.round(avgQuality * 12); // up to 12 pts for whole-food quality
+            const diversityPts = Math.min(8, uniqueFoods.size + uniqueCats.size); // up to 8 pts for food & category diversity
+            qualityScore = Math.min(20, tonePts + diversityPts);
+        } else if ((nutEntry.loggedMeals || []).length > 0 || cal > 0) {
+            // Custom macro meals without specific raw ingredient links get neutral baseline
+            qualityScore = Math.min(14, 8 + (nutEntry.loggedMeals || []).length * 2);
+        }
+
+        // 5. Hydration & Meal Structure (0-10 pts): 5 pts Water (scales to 3000-4000ml) + 5 pts Meal Timing/Distribution
+        const waterPts = Math.min(5, Math.round((totalWater / 3500) * 5));
+        const mealTypesLogged = new Set((nutEntry.loggedMeals || []).map(m => m.type)).size;
+        const structurePts = Math.min(5, Math.round((mealTypesLogged / 3) * 5));
+        const hydrationTimingScore = waterPts + structurePts;
+
+        const totalScore = Math.max(0, Math.min(100, calScore + proScore + macroBalanceScore + qualityScore + hydrationTimingScore));
+        let grade = 'C';
+        let color = 'var(--warning)';
+        if (totalScore >= 90) { grade = 'S+ OPTIMAL'; color = '#00e5ff'; }
+        else if (totalScore >= 80) { grade = 'A • ATHLETE'; color = 'var(--success)'; }
+        else if (totalScore >= 65) { grade = 'B • SOLID'; color = '#4cd964'; }
+        else if (totalScore >= 50) { grade = 'C • BUILDING'; color = 'var(--warning)'; }
+        else { grade = 'D • NEEDS FUEL'; color = 'var(--pending)'; }
+
+        return {
+            totalScore,
+            grade,
+            color,
+            factors: [
+                { name: 'Calorie Fit & Energy Availability', score: calScore, max: 25, desc: `${Math.round(cal)} / ${tCal} kcal (${Math.round((cal/tCal)*100)}% of target)` },
+                { name: 'Protein Anchor & Density', score: proScore, max: 25, desc: `${Math.round(pro)}g / ${tPro}g (${cal > 0 ? Math.round((pro*4/cal)*100) : 0}% protein cals)` },
+                { name: 'Carb & Fat Macro Alignment', score: macroBalanceScore, max: 20, desc: `Carbs ${carSub}/10 (${Math.round(car)}g) • Fats ${fatSub}/10 (${Math.round(fat)}g)` },
+                { name: 'Whole-Food Quality & Diversity', score: qualityScore, max: 20, desc: `${uniqueFoods.size} whole foods across ${uniqueCats.size} food groups` },
+                { name: 'Hydration & Meal Distribution', score: hydrationTimingScore, max: 10, desc: `${totalWater}ml water (${waterPts}/5) • ${mealTypesLogged} meal windows (${structurePts}/5)` }
+            ]
+        };
+    },
     getDailyNutritionInsights: (nutEntry, targets) => {
         let insights = [];
         const cal = Math.round(nutEntry.cal || 0);
@@ -1148,52 +1286,46 @@ const utils = {
         const tPro = targets.pro || 160;
         const tCar = targets.car || 250;
         const tFat = targets.fat || 70;
-
         if (cal === 0 && (!nutEntry.loggedMeals || nutEntry.loggedMeals.length === 0)) {
             insights.push({
                 tone: 'bad',
-                text: 'No nutrition logged yet today — tap Breakfast, Lunch, Dinner, or Snacks above to log whole-food ingredients or saved meals.'
+                text: 'No nutrition logged yet today — tap Breakfast, Lunch, Dinner, or Snacks above to log your saved meals.'
             });
             return insights;
         }
-
         // Protein assessment (Protein Anchor Rule from NZ Athlete Reference)
         if (pro >= tPro * 0.95) {
             insights.push({ tone: 'good', text: `Today you have hit your protein goal (${pro}g / ${tPro}g), which is great for building and retaining muscle.` });
         } else if (pro >= tPro * 0.7) {
-            insights.push({ tone: 'mid', text: `You are close to your protein target (${pro}g / ${tPro}g) — anchor your next meal with 25–50g of lean protein (chicken breast, tuna, Greek yoghurt, or cottage cheese).` });
+            insights.push({ tone: 'mid', text: `You are close to your protein target (${pro}g / ${tPro}g) — anchor your next meal with 25–50g of lean protein (chicken breast, tuna, Greek yoghurt, or cottage cheese) [1].` });
         } else {
-            insights.push({ tone: 'bad', text: `Protein intake is currently low (${pro}g / ${tPro}g) — prioritise high biological value protein to protect muscle mass and recovery.` });
+            insights.push({ tone: 'bad', text: `Protein intake is currently low (${pro}g / ${tPro}g) — prioritise high biological value protein to protect muscle mass and recovery [1].` });
         }
-
         // Calorie assessment
         const calDiff = Math.abs(cal - tCal);
         if (calDiff <= tCal * 0.1) {
             insights.push({ tone: 'good', text: `You have met your calorie goal for the day (${cal} / ${tCal} kcal).` });
         } else if (cal < tCal * 0.75) {
-            insights.push({ tone: 'bad', text: `You have failed to hit your calorie goal for the day (${cal} / ${tCal} kcal) — low energy availability can impair training quality and recovery.` });
+            insights.push({ tone: 'bad', text: `You have failed to hit your calorie goal for the day (${cal} / ${tCal} kcal) — low energy availability can impair training quality and recovery [1].` });
         } else if (cal < tCal * 0.9) {
-            insights.push({ tone: 'mid', text: `You are slightly under your calorie goal (${cal} / ${tCal} kcal) — good for cutting, or add whole-food carbs/fats if maintaining.` });
+            insights.push({ tone: 'mid', text: `You are slightly under your calorie goal (${cal} / ${tCal} kcal) — good for cutting, or add whole-food carbs/fats if maintaining [1].` });
         } else {
-            insights.push({ tone: 'mid', text: `You are above your calorie target today (${cal} / ${tCal} kcal) — great for a bulking surplus, but watch energy-dense fats if cutting.` });
+            insights.push({ tone: 'mid', text: `You are above your calorie target today (${cal} / ${tCal} kcal) — great for a bulking surplus, but watch energy-dense fats if cutting [1].` });
         }
-
         // Carbs assessment
         if (car >= tCar * 0.85) {
-            insights.push({ tone: 'good', text: `You had a solid amount of carbs today (${car}g), which is great for fuelling your workouts and replenishing glycogen.` });
+            insights.push({ tone: 'good', text: `You had a solid amount of carbs today (${car}g), which is great for fuelling your workouts and replenishing glycogen [1].` });
         } else if (car >= tCar * 0.5) {
-            insights.push({ tone: 'mid', text: `Moderate carbohydrate intake today (${car}g / ${tCar}g) — place rice, potato, kumara, or ripe banana around training sessions for peak output.` });
+            insights.push({ tone: 'mid', text: `Moderate carbohydrate intake today (${car}g / ${tCar}g) — place rice, potato, kumara, or ripe banana around training sessions for peak output [1].` });
         } else {
             insights.push({ tone: 'bad', text: `Carbohydrates are low today (${car}g / ${tCar}g) — glycogen stores may dip during hard lifting sessions.` });
         }
-
         // Fats assessment
         if (fat > tFat * 1.25) {
-            insights.push({ tone: 'bad', text: `Dietary fat is high today (${fat}g / ${tFat}g) — measure energy-dense foods (nuts, peanut butter, cheddar, fattier mince) strictly and keep heavy fats away from hard sessions.` });
+            insights.push({ tone: 'bad', text: `Dietary fat is high today (${fat}g / ${tFat}g) — measure energy-dense foods (nuts, peanut butter, cheddar, fattier mince) strictly and keep heavy fats away from hard sessions [1].` });
         } else if (fat >= tFat * 0.7) {
-            insights.push({ tone: 'good', text: `Healthy fat intake is on target (${fat}g / ${tFat}g), supporting hormone health and fat-soluble vitamin absorption.` });
+            insights.push({ tone: 'good', text: `Healthy fat intake is on target (${fat}g / ${tFat}g), supporting hormone health and fat-soluble vitamin absorption [1].` });
         }
-
         // Ingredient-specific micronutrient & food-response notes from logged foods
         let loggedFoodIds = new Set();
         (nutEntry.loggedMeals || []).forEach(m => {
@@ -1202,7 +1334,6 @@ const utils = {
                 m.ingredients.forEach(ing => { if (ing.foodId) loggedFoodIds.add(ing.foodId); });
             }
         });
-
         loggedFoodIds.forEach(fid => {
             const food = NZ_ATHLETE_FOODS.find(f => f.id === fid);
             if (food) {
@@ -1212,7 +1343,6 @@ const utils = {
                 });
             }
         });
-
         return insights;
     }
 };
@@ -1765,18 +1895,15 @@ const views = {
         const proPct = Math.min(100, Math.round(((nutEntry.pro || 0) / (targets.pro || 160)) * 100)) || 0;
         const carPct = Math.min(100, Math.round(((nutEntry.car || 0) / (targets.car || 250)) * 100)) || 0;
         const fatPct = Math.min(100, Math.round(((nutEntry.fat || 0) / (targets.fat || 70)) * 100)) || 0;
-
         let totalWater = 0;
         if (nutEntry.waterLog) { totalWater = nutEntry.waterLog.reduce((s, e) => s + e.amount, 0); }
         let waterPct = Math.min(100, (totalWater / 4000) * 100);
-
         const mealCards = [
             { cat: 'Breakfast', img: 'https://images.unsplash.com/photo-1511690656952-34342bb7c2f2?auto=format&fit=crop&w=450&q=80' },
             { cat: 'Lunch',     img: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=450&q=80' },
             { cat: 'Dinner',    img: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=450&q=80' },
             { cat: 'Snacks',    img: 'https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?auto=format&fit=crop&w=450&q=80' }
         ];
-
         const buildRingSVG = (pct, strokeColor, labelTop, labelSub) => {
             const r = 42;
             const c = 2 * Math.PI * r;
@@ -1794,14 +1921,17 @@ const views = {
                 </div>
             </div>`;
         };
-
         const insights = utils.getDailyNutritionInsights(nutEntry, targets);
+        const nutScore = utils.getNutritionScore(nutEntry, targets);
+        const scoreRingRadius = 46;
+        const scoreRingCirc = 2 * Math.PI * scoreRingRadius;
+        const scoreRingOffset = scoreRingCirc - (Math.min(100, Math.max(0, nutScore.totalScore)) / 100) * scoreRingCirc;
 
         let html = `
         <div style="display:flex; justify-content:space-between; align-items:center; margin-top: calc(24px + var(--safe-top)); margin-bottom: 14px;">
             <div>
                 <h1 style="margin:0; font-size:28px;">${app.sym('nutrition') || ''} Nutrition</h1>
-                <div class="text-muted" style="font-size:12px;">Tap a meal card to log ingredients or saved meals</div>
+                <div class="text-muted" style="font-size:12px;">Tap a meal card to log saved meals or ingredients</div>
             </div>
             <div style="display:flex; gap:8px;">
                 <button class="btn btn-sm" style="background:var(--surface-elevated); border:1px solid var(--border); font-size:12px; padding:8px 10px;" onclick="app.showCopyFromDayModal()" title="Copy Entries from a Past Day"><i class="fas fa-copy text-info"></i> Copy Day</button>
@@ -1816,7 +1946,6 @@ const views = {
             <span style="font-size:12px; font-weight:bold; color:var(--info); cursor:pointer;" onclick="app.openMealModal('Breakfast')">Track Food <i class="fas fa-chevron-right" style="font-size:10px;"></i></span>
         </div>
         <div class="nut-meal-carousel">`;
-
         mealCards.forEach(mc => {
             const catMeals = (nutEntry.loggedMeals || []).filter(m => m.type === mc.cat);
             const catCals = Math.round(catMeals.reduce((sum, m) => sum + (m.cal || 0), 0));
@@ -1833,7 +1962,52 @@ const views = {
         });
         html += `</div>`;
 
-        // Daily Summary Card with 2x2 Circular Ring Cards (matching attached image) + Dynamic Green/Orange/Red Bullet Insights
+        // Daily Nutrition Score Card (Scalable Multi-Factor Scoring)
+        html += `
+        <div class="card" style="margin-top:8px; margin-bottom:16px; border:1px solid ${nutScore.color}65; background: radial-gradient(circle at 100% 0%, ${nutScore.color}18 0%, var(--surface-color) 75%);">
+            <div class="flex-between" style="margin-bottom:12px;">
+                <div>
+                    <h2 style="margin:0; font-size:18px; display:flex; align-items:center; gap:8px;">
+                        <i class="fas fa-award" style="color:${nutScore.color};"></i> Daily Nutrition Score
+                    </h2>
+                    <div class="text-muted" style="font-size:11px;">Scored on Calorie Fit, Protein Anchor, Macro Balance, Food Quality & Hydration</div>
+                </div>
+                <span style="font-size:11px; font-weight:900; padding:4px 10px; border-radius:12px; background:${nutScore.color}25; border:1px solid ${nutScore.color}; color:${nutScore.color}; letter-spacing:0.6px;">
+                    ${nutScore.grade}
+                </span>
+            </div>
+            <div style="display:flex; align-items:center; gap:16px; flex-wrap:wrap;">
+                <div style="position:relative; width:114px; height:114px; flex-shrink:0; margin:0 auto; display:flex; align-items:center; justify-content:center;">
+                    <svg width="114" height="114" viewBox="0 0 114 114" style="transform:rotate(-90deg);">
+                        <circle cx="57" cy="57" r="${scoreRingRadius}" fill="none" stroke="${nutScore.color}" stroke-opacity="0.18" stroke-width="10"></circle>
+                        <circle cx="57" cy="57" r="${scoreRingRadius}" fill="none" stroke="${nutScore.color}" stroke-width="10" stroke-linecap="round" stroke-dasharray="${scoreRingCirc.toFixed(1)}" stroke-dashoffset="${scoreRingOffset.toFixed(1)}" style="transition: stroke-dashoffset 0.5s ease; filter: drop-shadow(0 0 8px ${nutScore.color}70);"></circle>
+                    </svg>
+                    <div style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
+                        <div style="font-size:28px; font-weight:900; color:var(--text-primary); line-height:1;">${nutScore.totalScore}</div>
+                        <div style="font-size:10px; font-weight:800; color:var(--text-secondary); margin-top:2px;">/ 100 PTS</div>
+                    </div>
+                </div>
+                <div style="flex:1; min-width:210px; display:flex; flex-direction:column; gap:8px;">
+                    ${nutScore.factors.map(f => {
+                        const fPct = Math.round((f.score / f.max) * 100);
+                        const fCol = fPct >= 80 ? 'var(--success)' : (fPct >= 50 ? 'var(--warning)' : 'var(--pending)');
+                        return `
+                        <div>
+                            <div class="flex-between" style="font-size:11px; margin-bottom:2px;">
+                                <span style="font-weight:800; color:var(--text-primary);">${f.name}</span>
+                                <span style="font-weight:900; color:${fCol};">${f.score} / ${f.max}</span>
+                            </div>
+                            <div class="progress-bg" style="height:5px; margin:0; background:rgba(0,0,0,0.4);">
+                                <div class="progress-fill" style="width:${fPct}%; background:${fCol};"></div>
+                            </div>
+                            <div class="text-muted" style="font-size:9.5px; margin-top:1px;">${f.desc}</div>
+                        </div>`;
+                    }).join('')}
+                </div>
+            </div>
+        </div>`;
+
+        // Daily Summary Card with 2x2 Circular Ring Cards + Dynamic Green/Orange/Red Bullet Insights
         html += `
         <div class="card" style="margin-top:8px; margin-bottom:20px; padding:16px;">
             <div class="flex-between" style="margin-bottom:14px;">
@@ -1849,7 +2023,7 @@ const views = {
                     ${buildRingSVG(calPct, '#4cd964', 'Kcal', `${Math.round(nutEntry.cal)}/${targets.cal}`)}
                 </div>
                 <div class="nut-ring-card">
-                    <div class="flex-between" style="width:100%;"><span style="font-size:13px; font-weight:700;">Fats</span><i class="fas fa-Seedling" style="display:none;"></i><i class="fas fa-burger" style="color:#ff2d55;"></i></div>
+                    <div class="flex-between" style="width:100%;"><span style="font-size:13px; font-weight:700;">Fats</span><i class="fas fa-burger" style="color:#ff2d55;"></i></div>
                     ${buildRingSVG(fatPct, '#ff2d55', 'Fats', `${Math.round(nutEntry.fat)}/${targets.fat}g`)}
                 </div>
                 <div class="nut-ring-card">
@@ -1893,12 +2067,10 @@ const views = {
                <button class="btn" style="flex:1; background:rgba(0,229,255,0.1); border-color:#00e5ff; color:#00e5ff;" onclick="app.addWater(800)"><i class="fas fa-bottle-water"></i> +800ml Bottle</button>
            </div>
         </div>`;
-
         const legacyOnly = nutEntry.cal > 0 && (!nutEntry.loggedMeals || nutEntry.loggedMeals.length === 0);
         if (legacyOnly) {
             html += `<div class="card"><h3 style="color:var(--warning);">Legacy Entry Detected</h3><p class="text-muted" style="font-size:12px;">You have unassigned macros logged today. Clear them to use the new meal system properly without duplicating stats.</p><button class="btn btn-sm btn-icon" style="color:var(--pending); width:100%; border:1px dashed var(--pending); margin-top:8px;" onclick="app.clearLegacyNutrition('${todayStr}')"><i class="fas fa-trash"></i> Clear Legacy Macros</button></div>`;
         }
-
         // Bottom Meal Library & Saved Meals Management
         html += `
         <div class="card" style="margin-top:24px;">
@@ -2052,6 +2224,46 @@ const views = {
         let avgRir = thisWeekRirCount > 0 ? (thisWeekRirSum / thisWeekRirCount).toFixed(1) : '-'; let volDiff = lastWeekVol > 0 ? Math.round(((thisWeekVol - lastWeekVol) / lastWeekVol) * 100) : 0;
         let volDiffStr = lastWeekVol === 0 ? "No data last week" : volDiff >= 0 ? `↑ ${volDiff}% vs last week` : `↓ ${Math.abs(volDiff)}% vs last week`; let volDiffColor = lastWeekVol === 0 ? "var(--text-secondary)" : volDiff >= 0 ? "var(--success)" : "var(--pending)";
         let html = `<div class="page-header" style="flex-direction:row;"><h2 style="margin:0; font-size:18px;">${app.sym('analytics') || ''} Analytics</h2></div>`;
+
+        // MOVED TO TOP OF ANALYTICS: PROGRESSIVE OVERLOAD GRAPH + TOTAL TRAINING VOLUME & INDIVIDUAL MUSCLE BUTTONS
+        const volData = utils.getWorkoutVolumeHistory();
+        const availableMuscles = Object.keys(volData.muscles).sort();
+        const allButtonsList = MUSCLE_GROUPS.filter(m => m !== 'Cardio' && m !== 'Other');
+        availableMuscles.forEach(m => { if (!allButtonsList.includes(m)) allButtonsList.push(m); });
+        const curVolFilter = store.state.settings.lastVolFilter || 'total';
+        let volOptions = `<option value="total" ${curVolFilter === 'total' ? 'selected' : ''}>Total Training Volume</option>`;
+        allButtonsList.forEach(m => {
+            volOptions += `<option value="m_${m}" ${curVolFilter === 'm_' + m ? 'selected' : ''}>${m}</option>`;
+        });
+
+        html += `
+        <div class="card" style="background: linear-gradient(145deg, var(--vol-bg1), var(--vol-bg2)); border-color: var(--info); box-shadow: 0 4px 16px var(--info-dim); margin-bottom: 16px;">
+            <div class="flex-between" style="margin-bottom:8px;">
+                <h2 style="margin:0; color:var(--info); font-style:italic;">${app.sym('vol')} PROGRESSIVE OVERLOAD</h2>
+                <select id="chart-time-filter" class="edit-input" style="width:auto; margin:0; padding:4px 8px; font-size:12px !important; text-align:center;" onchange="app.renderCharts()">
+                    <option value="7" ${store.state.settings.chartRange=='7'?'selected':''}>1W</option>
+                    <option value="30" ${store.state.settings.chartRange=='30'?'selected':''}>1M</option>
+                    <option value="90" ${store.state.settings.chartRange=='90'?'selected':''}>3M</option>
+                    <option value="180" ${store.state.settings.chartRange=='180'?'selected':''}>6M</option>
+                    <option value="365" ${store.state.settings.chartRange=='365'?'selected':''}>1Y</option>
+                    <option value="all" ${store.state.settings.chartRange=='all'?'selected':''}>All</option>
+                </select>
+            </div>
+            <div style="background:var(--surface-color); padding: 12px; border-radius: calc(var(--card-radius) - 4px); border: 1px solid var(--info-dim);">
+                <div style="display:flex; gap:6px; overflow-x:auto; padding-bottom:8px; margin-bottom:10px; scrollbar-width:none;">
+                    <button class="btn btn-sm vol-filter-btn" data-val="total" style="padding:6px 12px; font-size:11px; white-space:nowrap; background:${curVolFilter === 'total' ? 'var(--info)' : 'var(--surface-elevated)'}; color:${curVolFilter === 'total' ? '#fff' : 'var(--text-primary)'}; border:1px solid ${curVolFilter === 'total' ? 'var(--info)' : 'var(--border)'};" onclick="app.selectVolFilter('total')">
+                        <i class="fas fa-layer-group"></i> Total Volume
+                    </button>
+                    ${allButtonsList.map(m => {
+                        const isSel = curVolFilter === 'm_' + m;
+                        return `<button class="btn btn-sm vol-filter-btn" data-val="m_${m}" style="padding:6px 11px; font-size:11px; white-space:nowrap; background:${isSel ? 'var(--info)' : 'var(--surface-elevated)'}; color:${isSel ? '#fff' : 'var(--text-primary)'}; border:1px solid ${isSel ? 'var(--info)' : 'var(--border)'};" onclick="app.selectVolFilter('m_${m}')">${m}</button>`;
+                    }).join('')}
+                </div>
+                <select id="vol-metric-filter" class="edit-input" style="margin:0 0 8px 0; font-size:13px !important; font-weight:bold; background:var(--surface-elevated);" onchange="app.selectVolFilter(this.value)">${volOptions}</select>
+                <canvas id="workoutTimeChart"></canvas>
+            </div>
+        </div>`;
+
         const activeOverloadFilter = store.state.settings.overloadMuscleFilter || 'All';
         const overloadData = utils.getOverloadData(activeOverloadFilter);
         const filterGroups = ['All', ...MUSCLE_GROUPS.filter(m => m !== 'Cardio')];
@@ -2159,8 +2371,6 @@ const views = {
         Object.keys(tableData).forEach(m => { const d = tableData[m]; if (d.w0 === 0 && d.w1 === 0 && d.w2 === 0 && d.w3 === 0) return; const avg3W = (d.w1 + d.w2 + d.w3) / 3; let trendStr = "-"; let trendColor = "var(--text-secondary)"; if (avg3W > 0) { const pct = Math.round(((d.w0 - avg3W) / avg3W) * 100); if (pct > 0) { trendStr = `+${pct}%`; trendColor = "var(--success)"; } else if (pct < 0) { trendStr = `${pct}%`; trendColor = "var(--pending)"; } else { trendStr = `0%`; } } else if (d.w0 > 0) { trendStr = "NEW"; trendColor = "var(--info)"; } tableRows.push({ m: m, w3: d.w3 > 0 ? formatV(d.w3) : '-', w2: d.w2 > 0 ? formatV(d.w2) : '-', w1: d.w1 > 0 ? formatV(d.w1) : '-', w0: d.w0 > 0 ? formatV(d.w0) : '-', trendStr, trendColor, total: d.w0 + d.w1 + d.w2 + d.w3 }); });
         tableRows.sort((a,b) => b.total - a.total); if (tableRows.length === 0) { volTableHtml += `<tr><td colspan="6" style="text-align:center; padding:12px; color:var(--text-secondary);">No volume data last 4 weeks</td></tr>`; } else { tableRows.forEach(r => { volTableHtml += `<tr style="border-bottom:1px solid var(--surface-elevated);"><td style="text-align:left; padding:8px 4px; font-weight:bold; color:var(--text-primary); white-space:nowrap;">${r.m}</td><td style="padding:8px 4px; color:var(--text-secondary);">${r.w3}</td><td style="padding:8px 4px; color:var(--text-secondary);">${r.w2}</td><td style="padding:8px 4px; color:var(--text-secondary);">${r.w1}</td><td style="padding:8px 4px; font-weight:bold; color:var(--text-primary);">${r.w0}</td><td style="padding:8px 4px; font-weight:bold; color:${r.trendColor};">${r.trendStr}</td></tr>`; }); }
         volTableHtml += `</tbody></table></div>`; html += volTableHtml;
-        const volData = utils.getWorkoutVolumeHistory(); let volOptions = ''; if (Object.keys(volData.muscles).length > 0) { Object.keys(volData.muscles).sort().forEach(m => volOptions += `<option value="m_${m}" ${store.state.settings.lastVolFilter === 'm_'+m ? 'selected' : ''}>${m}</option>`); } else { volOptions = `<option value="">No data yet</option>`; }
-        html += `<div class="card" style="background: linear-gradient(145deg, var(--vol-bg1), var(--vol-bg2)); border-color: var(--info); box-shadow: 0 4px 16px var(--info-dim);"><h2 style="margin:0; color:var(--info); font-style:italic; margin-bottom: 8px;">${app.sym('vol')} PROGRESSIVE OVERLOAD</h2><div style="background:var(--surface-color); padding: 12px; border-radius: calc(var(--card-radius) - 4px); border: 1px solid var(--info-dim);"><div style="display:flex; gap:8px; margin-bottom:12px;"><select id="vol-metric-filter" class="edit-input" style="flex:2; margin:0; font-size:14px !important; font-weight:bold; background:var(--surface-elevated);" onchange="app.renderCharts()">${volOptions}</select><select id="chart-time-filter" class="edit-input" style="flex:1; margin:0; font-size:12px !important; text-align:center;" onchange="app.renderCharts()"><option value="7" ${store.state.settings.chartRange=='7'?'selected':''}>1W</option><option value="30" ${store.state.settings.chartRange=='30'?'selected':''}>1M</option><option value="90" ${store.state.settings.chartRange=='90'?'selected':''}>3M</option><option value="180" ${store.state.settings.chartRange=='180'?'selected':''}>6M</option><option value="365" ${store.state.settings.chartRange=='365'?'selected':''}>1Y</option><option value="all" ${store.state.settings.chartRange=='all'?'selected':''}>All</option></select></div><canvas id="workoutTimeChart"></canvas></div></div>`;
         const benchWorld = utils.getLiftWorldStats('Bench');
         const squatWorld = utils.getLiftWorldStats('Squat');
         const deadliftWorld = utils.getLiftWorldStats('Deadlift');
@@ -2273,9 +2483,17 @@ const views = {
         const volCtx = document.getElementById('workoutTimeChart');
         if(volCtx) {
             if(window.volChartInst) window.volChartInst.destroy();
-            const volFilterEl = document.getElementById('vol-metric-filter'); let selected = volFilterEl ? volFilterEl.value : null; if (volFilterEl) { store.state.settings.lastVolFilter = selected; store.save(); }
+            const volFilterEl = document.getElementById('vol-metric-filter');
+            let selected = volFilterEl ? volFilterEl.value : (store.state.settings.lastVolFilter || 'total');
+            store.state.settings.lastVolFilter = selected; store.save();
             const volData = utils.getWorkoutVolumeHistory(); let plotData = []; let labelName = 'Volume';
-            if (selected && selected.startsWith('m_')) { labelName = selected.substring(2); plotData = volData.muscles[labelName] || []; } else { const firstM = Object.keys(volData.muscles).sort()[0]; if (firstM) { labelName = firstM; plotData = volData.muscles[firstM]; } }
+            if (selected === 'total' || !selected) {
+                labelName = 'Total Training';
+                plotData = volData.total || [];
+            } else if (selected.startsWith('m_')) {
+                labelName = selected.substring(2);
+                plotData = volData.muscles[labelName] || [];
+            }
             let datasets = []; if (plotData.length > 0) { datasets.push(buildBaseDataset(labelName + ' Volume (kg)', plotData, colorInfo)); datasets.push(buildMADataset(labelName + ' (MA)', utils.calculateSMA(plotData, 3), colorInfo)); }
             window.volChartInst = new Chart(volCtx, { type: 'line', data: { datasets: datasets }, options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { grid: { color: colorGrid }, ticks: {font: {family: ff}, color: colorTextSec} }, x: getXScale('day') } } });
         }
@@ -2283,13 +2501,26 @@ const views = {
 };
 const app = {
     isEditingProgram: false, viewingRoutineId: null, draftRoutine: null, activeDataTab: null, customDraftTitle: '', draftChallenge: null, currentView: 'home', editingPastWorkoutId: null, draftPastWorkout: null, challengeOffset: 0,
-    activeMealType: 'Breakfast', mealSearchQuery: '', mealSearchTab: 'ingredients', mealCategoryFilter: 'All', draftMealBuilder: null, builderSearchQuery: '',
+    activeMealType: 'Breakfast', mealSearchQuery: '', mealSearchTab: 'meals', mealCategoryFilter: 'All', draftMealBuilder: null, builderSearchQuery: '',
     init() { store.load(); this.setTheme(store.state.settings.theme, false); this.navigate('home'); },
     sym(key) { const t = store.state.settings.theme; return THEME_MAP[t] ? THEME_MAP[t].symbols[key] || THEME_MAP['basic'].symbols[key] : THEME_MAP['basic'].symbols[key]; },
     renderNav() { const t = store.state.settings.theme; const icons = THEME_MAP[t] ? THEME_MAP[t].nav : THEME_MAP['basic'].nav; const viewsList = [ {id:'home', label:'Home', i:icons[0]}, {id:'workout', label:'Workout', i:icons[1]}, {id:'progress', label:'Analytics', i:icons[2]}, {id:'nutrition', label:'Nutrition', i:icons[3]}, {id:'data', label:'Data', i:icons[4]} ]; let navHtml = ''; viewsList.forEach(v => { const isActive = this.currentView === v.id || (v.id === 'workout' && this.currentView === 'workout-detail') || (v.id === 'home' && this.currentView === 'ranked-breakdown'); navHtml += `<div class="nav-item ${isActive ? 'active' : ''}" onclick="app.navigate('${v.id}')"><i class="fas ${v.i}"></i>${v.label}</div>`; }); document.getElementById('nav-bar').innerHTML = navHtml; },
     navigate(viewId) { this.currentView = viewId; this.renderNav(); const c = document.getElementById('main-content'); if(viewId==='home') { this.challengeOffset = 0; c.innerHTML = views.renderHome(); } else if(viewId==='ranked-breakdown') c.innerHTML = views.renderRankedBreakdown(); else if(viewId==='workout') c.innerHTML = views.renderWorkoutList(); else if(viewId==='workout-detail') c.innerHTML = views.renderWorkoutDetail(); else if(viewId==='nutrition') c.innerHTML = views.renderNutrition(); else if(viewId==='progress') c.innerHTML = views.renderProgress(); else if(viewId==='data') c.innerHTML = views.renderData(); else if(viewId==='custom-b') c.innerHTML = views.renderCustomB(); else if(viewId==='challenge') c.innerHTML = views.renderChallenge(); else if(viewId==='challenge-edit') c.innerHTML = views.renderChallengeEditor(); else if(viewId==='workout-edit') c.innerHTML = views.renderPastWorkoutEditor(); window.scrollTo(0,0); },
     setTheme(themeName, render = true) { store.state.settings.theme = themeName; store.save(); document.documentElement.setAttribute('data-theme', themeName); if(render) { this.navigate(this.currentView); } },
     renderCharts() { views.renderCharts(); },
+    selectVolFilter(val) {
+        store.state.settings.lastVolFilter = val;
+        store.save();
+        const selectEl = document.getElementById('vol-metric-filter');
+        if (selectEl) selectEl.value = val;
+        document.querySelectorAll('.vol-filter-btn').forEach(btn => {
+            const isSel = btn.getAttribute('data-val') === val;
+            btn.style.background = isSel ? 'var(--info)' : 'var(--surface-elevated)';
+            btn.style.color = isSel ? '#fff' : 'var(--text-primary)';
+            btn.style.borderColor = isSel ? 'var(--info)' : 'var(--border)';
+        });
+        this.renderCharts();
+    },
     toggleBwCalories() {
         store.state.settings.showCaloriesOnBwChart = store.state.settings.showCaloriesOnBwChart === false ? true : false;
         store.save();
@@ -2402,7 +2633,6 @@ const app = {
         const catCar = Math.round(catMeals.reduce((sum, m) => sum + (m.car || 0), 0));
         const catFat = Math.round(catMeals.reduce((sum, m) => sum + (m.fat || 0), 0));
         const modal = document.getElementById('meal-search-modal');
-
         let html = `
         <div class="page-header">
             <button class="btn btn-sm btn-icon" onclick="document.getElementById('meal-search-modal').style.display='none'; app.navigate('nutrition');"><i class="fas fa-arrow-left"></i></button>
@@ -2434,18 +2664,18 @@ const app = {
             });
         }
         html += `
-                <button class="btn btn-primary" style="margin-top:16px;" onclick="app.showMealSearch('${cat}', 'ingredients')">+ Add to ${cat}</button>
+                <button class="btn btn-primary" style="margin-top:16px;" onclick="app.showMealSearch('${cat}', 'meals')">+ Add to ${cat}</button>
                 <button class="btn" style="margin-top:8px; background:var(--surface-elevated); border:1px solid var(--border); font-size:13px;" onclick="app.showCopyFromDayModal('${cat}')"><i class="fas fa-calendar-day text-info"></i> Copy ${cat} From Past Day</button>
             </div>
         </div>`;
         modal.innerHTML = html;
         modal.style.display = 'flex';
     },
-    // STEP 2: Two-Button Workflow (Ingredients OR Saved Meals) + Search Filter + Create Meal + Copy From Day
-    showMealSearch(cat, defaultTab = 'ingredients') {
+    // STEP 2: Two-Button Workflow (Saved Meals Default, Ingredients Secondary) + Search Filter + Create Meal + Copy From Day
+    showMealSearch(cat, defaultTab = 'meals') {
         this.activeMealType = cat;
         this.mealSearchQuery = '';
-        this.mealSearchTab = (cat === 'Manage') ? 'meals' : defaultTab;
+        this.mealSearchTab = (cat === 'Manage') ? 'meals' : (defaultTab || 'meals');
         this.mealCategoryFilter = 'All';
         this.renderMealSearchModal();
         document.getElementById('meal-search-modal').style.display = 'flex';
@@ -2455,7 +2685,6 @@ const app = {
         const isManage = this.activeMealType === 'Manage';
         const q = (this.mealSearchQuery || '').toLowerCase().trim();
         const todayStr = utils.getLocalISODate(new Date());
-
         let html = `
         <div class="page-header">
             <button class="btn btn-sm btn-icon" onclick="${isManage ? `document.getElementById('meal-search-modal').style.display='none'; app.navigate('nutrition');` : `app.openMealModal('${this.activeMealType}')`}"><i class="fas fa-arrow-left"></i></button>
@@ -2464,11 +2693,11 @@ const app = {
         </div>
         <div style="padding: 0 16px;">
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-bottom:12px;">
-                <button class="btn btn-sm ${this.mealSearchTab === 'ingredients' ? 'btn-primary' : ''}" style="width:100%;" onclick="app.mealSearchTab='ingredients'; app.renderMealSearchModal();">
-                    <i class="fas fa-carrot"></i> Ingredients (${NZ_ATHLETE_FOODS.length})
-                </button>
                 <button class="btn btn-sm ${this.mealSearchTab === 'meals' ? 'btn-primary' : ''}" style="width:100%;" onclick="app.mealSearchTab='meals'; app.renderMealSearchModal();">
                     <i class="fas fa-bowl-food"></i> Saved Meals (${(store.state.savedMeals||[]).length})
+                </button>
+                <button class="btn btn-sm ${this.mealSearchTab === 'ingredients' ? 'btn-primary' : ''}" style="width:100%;" onclick="app.mealSearchTab='ingredients'; app.renderMealSearchModal();">
+                    <i class="fas fa-carrot"></i> Raw Ingredients (${NZ_ATHLETE_FOODS.length})
                 </button>
             </div>
             <div style="display:flex; gap:8px; margin-bottom:10px;">
@@ -2479,9 +2708,8 @@ const app = {
                     <i class="fas fa-copy text-info"></i> Copy From Day
                 </button>
             </div>
-            <input type="text" id="meal-modal-search-input" class="edit-input" placeholder="${this.mealSearchTab === 'ingredients' ? 'Search 100+ NZ athlete ingredients (e.g. chicken, kumara, kiwi)...' : 'Search your saved meals...'}" value="${this.mealSearchQuery}" oninput="app.updateMealSearchQuery(this.value)">
+            <input type="text" id="meal-modal-search-input" class="edit-input" placeholder="${this.mealSearchTab === 'meals' ? 'Search your saved meals...' : 'Search 110+ NZ athlete ingredients (e.g. potatoes, kumara, beef, eggs)...'}" value="${this.mealSearchQuery}" oninput="app.updateMealSearchQuery(this.value)">
         `;
-
         if (this.mealSearchTab === 'ingredients') {
             const cats = ['All', ...new Set(NZ_ATHLETE_FOODS.map(f => f.cat))];
             html += `<div style="display:flex; gap:6px; overflow-x:auto; padding-bottom:8px; margin-bottom:8px; scrollbar-width:none;">
@@ -2544,7 +2772,7 @@ const app = {
             const matches = (store.state.savedMeals || []).filter(m => !q || m.name.toLowerCase().includes(q));
             if (matches.length === 0) {
                 html += `<div class="card" style="text-align:center; padding:24px;">
-                    <p class="text-muted" style="margin-bottom:12px;">No saved meals yet. Combine raw ingredients into a reusable meal!</p>
+                    <p class="text-muted" style="margin-bottom:12px;">No saved meals found. Combine raw ingredients into a reusable meal!</p>
                     <button class="btn btn-primary" onclick="app.editSavedMeal(null)"><i class="fas fa-plus"></i> Create Saved Meal</button>
                 </div>`;
                 return html;
@@ -2619,7 +2847,7 @@ const app = {
         nutEntry.car = Math.round(car * 10) / 10;
         nutEntry.fat = Math.round(fat * 10) / 10;
     },
-    // Multi-Ingredient Meal Builder & On-The-Fly Saved Meal Editor
+    // Multi-Ingredient Meal Builder & On-The-Fly Saved Meal Editor (with non-rerendering search input so keyboard stays open)
     editSavedMeal(id) {
         const existing = id ? store.state.savedMeals.find(x => x.id === id) : null;
         if (existing) {
@@ -2655,13 +2883,36 @@ const app = {
         b.car = Math.round(car * 10) / 10;
         b.fat = Math.round(fat * 10) / 10;
     },
+    buildBuilderFoodResultsHTML(q) {
+        const matchingFoods = NZ_ATHLETE_FOODS.filter(f => !q || f.name.toLowerCase().includes(q) || f.cat.toLowerCase().includes(q)).slice(0, 45);
+        if (matchingFoods.length === 0) {
+            return `<p class="text-muted" style="font-size:12px; text-align:center; padding:12px;">No matching ingredients found.</p>`;
+        }
+        return matchingFoods.map(f => `
+        <div class="flex-between" style="padding:8px 10px; background:var(--surface-elevated); border-radius:8px; border:1px solid var(--border); gap:8px;">
+            <div style="flex:1; min-width:0;">
+                <div style="font-weight:bold; font-size:13px;">${f.name}</div>
+                <div class="text-muted" style="font-size:10px;">100g: ${f.cal} kcal | P:${f.pro}g C:${f.car}g F:${f.fat}g</div>
+            </div>
+            <div style="display:flex; align-items:center; gap:4px; flex-shrink:0;">
+                <input type="number" id="b-gram-${f.id}" value="100" class="inline-edit" style="width:55px; padding:4px;">
+                <span class="text-muted" style="font-size:10px;">g</span>
+                <button class="btn btn-sm btn-primary" style="padding:6px 10px;" onclick="app.addIngredientToBuilder('${f.id}')"><i class="fas fa-plus"></i></button>
+            </div>
+        </div>`).join('');
+    },
+    updateBuilderSearchQuery(val) {
+        this.builderSearchQuery = val;
+        const listEl = document.getElementById('builder-food-results-list');
+        if (listEl) {
+            listEl.innerHTML = this.buildBuilderFoodResultsHTML((val || '').toLowerCase().trim());
+        }
+    },
     renderMealBuilderModal() {
         const modal = document.getElementById('meal-create-modal');
         const b = this.draftMealBuilder;
         if (!b) return;
         const q = (this.builderSearchQuery || '').toLowerCase().trim();
-        const matchingFoods = NZ_ATHLETE_FOODS.filter(f => !q || f.name.toLowerCase().includes(q) || f.cat.toLowerCase().includes(q)).slice(0, 35);
-
         let html = `
         <div class="page-header">
             <button class="btn btn-sm btn-icon" onclick="document.getElementById('meal-create-modal').style.display='none'"><i class="fas fa-arrow-left"></i></button>
@@ -2673,13 +2924,12 @@ const app = {
                 <label class="text-muted" style="font-size:12px;">Meal Name</label>
                 <input type="text" id="cm-name" class="edit-input" value="${b.name}" placeholder="e.g. Post-Workout Chicken & Kumara Bowl" oninput="app.draftMealBuilder.name=this.value">
                 <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:8px; margin-top:8px;">
-                    <div><label class="text-muted" style="font-size:10px;">Calories</label><input type="number" id="cm-cal" class="edit-input" style="margin:0; text-align:center; font-weight:bold;" value="${Math.round(b.cal)}" onchange="app.draftMealBuilder.cal=parseFloat(this.value)||0"></div>
-                    <div><label class="text-muted" style="font-size:10px;">Protein (g)</label><input type="number" id="cm-pro" class="edit-input" style="margin:0; text-align:center; font-weight:bold;" value="${b.pro}" onchange="app.draftMealBuilder.pro=parseFloat(this.value)||0"></div>
-                    <div><label class="text-muted" style="font-size:10px;">Carbs (g)</label><input type="number" id="cm-car" class="edit-input" style="margin:0; text-align:center; font-weight:bold;" value="${b.car}" onchange="app.draftMealBuilder.car=parseFloat(this.value)||0"></div>
-                    <div><label class="text-muted" style="font-size:10px;">Fats (g)</label><input type="number" id="cm-fat" class="edit-input" style="margin:0; text-align:center; font-weight:bold;" value="${b.fat}" onchange="app.draftMealBuilder.fat=parseFloat(this.value)||0"></div>
+                    <div><label class="text-muted" style="font-size:10px;">Calories</label><input type="number" id="cm-cal" class="edit-input" style="margin:0; text-align:center; font-weight:bold;" value="${Math.round(b.cal)}" oninput="app.draftMealBuilder.cal=parseFloat(this.value)||0"></div>
+                    <div><label class="text-muted" style="font-size:10px;">Protein (g)</label><input type="number" id="cm-pro" class="edit-input" style="margin:0; text-align:center; font-weight:bold;" value="${b.pro}" oninput="app.draftMealBuilder.pro=parseFloat(this.value)||0"></div>
+                    <div><label class="text-muted" style="font-size:10px;">Carbs (g)</label><input type="number" id="cm-car" class="edit-input" style="margin:0; text-align:center; font-weight:bold;" value="${b.car}" oninput="app.draftMealBuilder.car=parseFloat(this.value)||0"></div>
+                    <div><label class="text-muted" style="font-size:10px;">Fats (g)</label><input type="number" id="cm-fat" class="edit-input" style="margin:0; text-align:center; font-weight:bold;" value="${b.fat}" oninput="app.draftMealBuilder.fat=parseFloat(this.value)||0"></div>
                 </div>
             </div>
-
             <div class="card">
                 <div class="flex-between" style="margin-bottom:8px;">
                     <h3 style="margin:0; font-size:15px;">Combined Ingredients (${(b.ingredients||[]).length})</h3>
@@ -2704,23 +2954,11 @@ const app = {
             });
         }
         html += `</div>
-
             <div class="card">
                 <h3 style="margin:0 0 8px 0; font-size:15px;">+ Add Raw Ingredients to Meal</h3>
-                <input type="text" class="edit-input" placeholder="Filter NZ athlete ingredients..." value="${this.builderSearchQuery}" oninput="app.builderSearchQuery=this.value; app.renderMealBuilderModal();">
-                <div style="max-height:280px; overflow-y:auto; display:flex; flex-direction:column; gap:6px; margin-top:8px;">
-                    ${matchingFoods.map(f => `
-                    <div class="flex-between" style="padding:8px 10px; background:var(--surface-elevated); border-radius:8px; border:1px solid var(--border); gap:8px;">
-                        <div style="flex:1; min-width:0;">
-                            <div style="font-weight:bold; font-size:13px;">${f.name}</div>
-                            <div class="text-muted" style="font-size:10px;">100g: ${f.cal} kcal | P:${f.pro}g C:${f.car}g F:${f.fat}g</div>
-                        </div>
-                        <div style="display:flex; align-items:center; gap:4px; flex-shrink:0;">
-                            <input type="number" id="b-gram-${f.id}" value="100" class="inline-edit" style="width:55px; padding:4px;">
-                            <span class="text-muted" style="font-size:10px;">g</span>
-                            <button class="btn btn-sm btn-primary" style="padding:6px 10px;" onclick="app.addIngredientToBuilder('${f.id}')"><i class="fas fa-plus"></i></button>
-                        </div>
-                    </div>`).join('')}
+                <input type="text" id="builder-search-input" class="edit-input" placeholder="Search ingredients (potatoes, kumara, beef, cottage cheese, eggs)..." value="${this.builderSearchQuery}" oninput="app.updateBuilderSearchQuery(this.value)">
+                <div id="builder-food-results-list" style="max-height:280px; overflow-y:auto; display:flex; flex-direction:column; gap:6px; margin-top:8px;">
+                    ${this.buildBuilderFoodResultsHTML(q)}
                 </div>
             </div>
             <button class="btn btn-success" style="width:100%; margin-top:12px;" onclick="app.saveCustomMeal()"><i class="fas fa-save"></i> Save Meal to Library</button>
@@ -2779,7 +3017,6 @@ const app = {
         const existingIdx = store.state.savedMeals.findIndex(x => x.id === savedObj.id);
         if (existingIdx > -1) store.state.savedMeals[existingIdx] = savedObj;
         else store.state.savedMeals.push(savedObj);
-
         store.save();
         document.getElementById('meal-create-modal').style.display = 'none';
         if (document.getElementById('meal-search-modal').style.display === 'flex') {
@@ -2824,7 +3061,6 @@ const app = {
         const pastDays = (store.state.history.nutrition || [])
             .filter(n => utils.getLocalISODate(n.date) !== todayStr && ((n.loggedMeals && n.loggedMeals.length > 0) || n.cal > 0))
             .sort((a, b) => new Date(b.date) - new Date(a.date));
-
         const modal = document.getElementById('meal-search-modal');
         let html = `
         <div class="page-header">
@@ -2834,7 +3070,6 @@ const app = {
         </div>
         <div style="padding:16px;">
             <p class="text-muted" style="font-size:12px; margin-bottom:16px;">Select a previous day below to copy ${filterMealCat ? `its <strong>${filterMealCat}</strong> entries` : 'all of its logged meals'} into today (${todayStr}).</p>`;
-
         if (pastDays.length === 0) {
             html += `<div class="card" style="text-align:center; padding:24px;"><p class="text-muted">No previous nutrition days with logged meals found yet.</p></div>`;
         } else {
@@ -2876,7 +3111,6 @@ const app = {
             store.state.history.nutrition.push(todayEntry);
         }
         if (!todayEntry.loggedMeals) todayEntry.loggedMeals = [];
-
         const meals = (sourceEntry.loggedMeals || []).filter(m => !filterMealCat || m.type === filterMealCat);
         if (meals.length > 0) {
             meals.forEach(m => {
