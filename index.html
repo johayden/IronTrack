@@ -177,7 +177,7 @@
             border-radius: var(--card-radius); padding: 16px; margin-bottom: 14px; position: relative; overflow: hidden;
             transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        /* Nutrition Dashboard Image-Matched Styles */
+        /* Nutrition & Workout Dashboard Image-Matched Styles */
         .nut-meal-carousel {
             display: flex; gap: 14px; overflow-x: auto; padding: 4px 2px 14px 2px; margin-bottom: 12px; -webkit-overflow-scrolling: touch; scrollbar-width: none;
         }
@@ -228,38 +228,57 @@ const DEFAULT_PROGRAM = [
     { day: 6, workouts: [{ id: 'w6', name: 'Upper Body', exercises: [ { name: 'Bench Press', targetSets: 3, targetReps: '8-10' }, { name: 'Incline DB Press', targetSets: 3, targetReps: '8-10' }, { name: 'Lat Pulldown', targetSets: 3, targetReps: '8-12' }, { name: 'Cable Lateral Raise', targetSets: 3, targetReps: '12-15' }, { name: 'Seated Curl', targetSets: 3, targetReps: '10-12' }, { name: 'Dips', targetSets: 3, targetReps: 'AMRAP' } ] }] }
 ];
 const EXERCISE_DB = {
-    'Bench Press': { muscles: ['Chest', 'Shoulders', 'Triceps'] },
-    'Squat': { muscles: ['Quads', 'Hamstrings'] },
-    'Deadlift': { muscles: ['Hamstrings', 'Back'] },
-    'Incline DB Press': { muscles: ['Chest', 'Shoulders', 'Triceps'] },
-    'Pec Deck': { muscles: ['Chest'] },
-    'Flat Machine Press': { muscles: ['Chest', 'Triceps'] },
-    'Dips': { muscles: ['Chest', 'Triceps'] },
-    'Lat Pulldown': { muscles: ['Back', 'Biceps'] },
-    'Chest Supported Row': { muscles: ['Back', 'Biceps'] },
-    'Pull-Ups': { muscles: ['Back', 'Biceps'] },
-    'Cable Lateral Raise': { muscles: ['Shoulders'] },
-    'Rear Delt Fly': { muscles: ['Shoulders'] },
-    'Preacher Curl': { muscles: ['Biceps'] },
-    'Hammer Curl': { muscles: ['Biceps'] },
-    'Seated Curl': { muscles: ['Biceps'] },
-    'Tricep Pushdown': { muscles: ['Triceps'] },
-    'Overhead Extension': { muscles: ['Triceps'] },
-    'Hack Squat': { muscles: ['Quads'] },
-    'Leg Press': { muscles: ['Quads'] },
-    'Leg Extension': { muscles: ['Quads'] },
-    'Bulgarian Split Squat': { muscles: ['Quads', 'Hamstrings'] },
-    'Unilateral Leg Extension': { muscles: ['Quads'] },
-    'Romanian Deadlift': { muscles: ['Hamstrings', 'Back'] },
-    'Seated Hamstring Leg Curl': { muscles: ['Hamstrings'] },
-    'Seated Leg Curl': { muscles: ['Hamstrings'] },
-    'Standing Calf Raise': { muscles: ['Calves'] },
-    'Weighted Crunch': { muscles: ['Abs'] },
-    'Hanging Leg Raise': { muscles: ['Abs'] },
-    'Incline Treadmill Walk': { muscles: ['Cardio'] }
+    'Bench Press': { muscles: ['Chest', 'Shoulders', 'Triceps'], targetSets: 3, targetReps: '5-8' },
+    'Squat': { muscles: ['Quads', 'Hamstrings'], targetSets: 3, targetReps: '5-8' },
+    'Deadlift': { muscles: ['Hamstrings', 'Back'], targetSets: 3, targetReps: '5-8' },
+    'Incline DB Press': { muscles: ['Chest', 'Shoulders', 'Triceps'], targetSets: 3, targetReps: '8-12' },
+    'Pec Deck': { muscles: ['Chest'], targetSets: 3, targetReps: '10-15' },
+    'Flat Machine Press': { muscles: ['Chest', 'Triceps'], targetSets: 3, targetReps: '8-12' },
+    'Dips': { muscles: ['Chest', 'Triceps'], targetSets: 3, targetReps: 'AMRAP' },
+    'Lat Pulldown': { muscles: ['Back', 'Biceps'], targetSets: 3, targetReps: '8-12' },
+    'Chest Supported Row': { muscles: ['Back', 'Biceps'], targetSets: 3, targetReps: '8-12' },
+    'Pull-Ups': { muscles: ['Back', 'Biceps'], targetSets: 3, targetReps: 'AMRAP' },
+    'Cable Lateral Raise': { muscles: ['Shoulders'], targetSets: 4, targetReps: '12-15' },
+    'Rear Delt Fly': { muscles: ['Shoulders'], targetSets: 3, targetReps: '12-15' },
+    'Preacher Curl': { muscles: ['Biceps'], targetSets: 3, targetReps: '8-12' },
+    'Hammer Curl': { muscles: ['Biceps'], targetSets: 3, targetReps: '10-12' },
+    'Seated Curl': { muscles: ['Biceps'], targetSets: 3, targetReps: '10-12' },
+    'Tricep Pushdown': { muscles: ['Triceps'], targetSets: 3, targetReps: '10-15' },
+    'Overhead Extension': { muscles: ['Triceps'], targetSets: 3, targetReps: '10-15' },
+    'Hack Squat': { muscles: ['Quads'], targetSets: 3, targetReps: '8-10' },
+    'Leg Press': { muscles: ['Quads'], targetSets: 3, targetReps: '10-12' },
+    'Leg Extension': { muscles: ['Quads'], targetSets: 3, targetReps: '12-15' },
+    'Bulgarian Split Squat': { muscles: ['Quads', 'Hamstrings'], targetSets: 3, targetReps: '8-12' },
+    'Unilateral Leg Extension': { muscles: ['Quads'], targetSets: 3, targetReps: '10-15' },
+    'Romanian Deadlift': { muscles: ['Hamstrings', 'Back'], targetSets: 3, targetReps: '8-10' },
+    'Seated Hamstring Leg Curl': { muscles: ['Hamstrings'], targetSets: 3, targetReps: '8-12' },
+    'Seated Leg Curl': { muscles: ['Hamstrings'], targetSets: 3, targetReps: '10-12' },
+    'Standing Calf Raise': { muscles: ['Calves'], targetSets: 4, targetReps: '10-15' },
+    'Weighted Crunch': { muscles: ['Abs'], targetSets: 3, targetReps: '10-15' },
+    'Hanging Leg Raise': { muscles: ['Abs'], targetSets: 4, targetReps: '10-15' },
+    'Incline Treadmill Walk': { muscles: ['Cardio'], targetSets: 1, targetReps: '30m' }
 };
 const MUSCLE_GROUPS = ['Chest', 'Back', 'Shoulders', 'Biceps', 'Triceps', 'Quads', 'Hamstrings', 'Abs', 'Calves', 'Cardio', 'Other'];
 const HYPERTROPHY_GROUPS = ['Chest', 'Back', 'Shoulders', 'Biceps', 'Triceps', 'Quads', 'Hamstrings'];
+const MUSCLE_IMAGES = {
+    'Chest': 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=450&q=80',
+    'Back': 'https://images.unsplash.com/photo-1605296867304-46d5465a13f1?auto=format&fit=crop&w=450&q=80',
+    'Shoulders': 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=450&q=80',
+    'Biceps': 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=450&q=80',
+    'Triceps': 'https://images.unsplash.com/photo-1530822847156-5df684ec5ee1?auto=format&fit=crop&w=450&q=80',
+    'Quads': 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?auto=format&fit=crop&w=450&q=80',
+    'Hamstrings': 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=450&q=80',
+    'Abs': 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=450&q=80',
+    'Calves': 'https://images.unsplash.com/photo-1434608519344-49d77a699e1d?auto=format&fit=crop&w=450&q=80',
+    'Cardio': 'https://images.unsplash.com/photo-1538805060514-97d9cc17730c?auto=format&fit=crop&w=450&q=80',
+    'Other': 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=450&q=80'
+};
+const SPLIT_IMAGES = [
+    'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=450&q=80',
+    'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=450&q=80',
+    'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=450&q=80',
+    'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=450&q=80'
+];
 const RANK_NAMES = ['Copper', 'Bronze', 'Silver', 'Gold', 'Platinum', 'Emerald', 'Diamond', 'Champion'];
 const RANK_COLORS = ['#a32626', '#8c5129', '#a0a3a8', '#d4af37', '#007aff', '#2fa869', '#00e5ff', '#9d00ff'];
 const THEME_MAP = {
@@ -427,7 +446,7 @@ const NZ_ATHLETE_FOODS = [
     { id: 'f_honey', name: 'Honey (peri-workout drizzle)', cat: 'Other Staples', cal: 300, pro: 0, car: 80, fat: 0, micros: 'Rapid sugar', notes: 'Fast glucose/fructose carb best reserved for pre/post-workout teaspoons [1].', tone: 'mid' }
 ];
 const store = {
-    state: { user: { currentWeight: 90.0 }, routines: [], activeRoutineId: 'default_1', history: { workouts: [], bodyweight: [], nutrition: [], cardio: [], challengeLogs: {}, manualPRs: [] }, savedMeals: [], prs: { Bench: {weight:0, reps:0}, Squat: {weight:0, reps:0}, Deadlift: {weight:0, reps:0} }, settings: { restTimer: 120, theme: 'olympus', chartRange: '90', nutritionTargets: { cal: 2500, pro: 160, car: 250, fat: 70 }, lastVolFilter: 'total', weightGoal: 'maintaining', showCaloriesOnBwChart: true, overloadMuscleFilter: 'All' }, variations: {}, customExercises: [], challenge: { isActive: false, title: '', startDate: '', endDate: '', goals: [] }, activeSession: null },
+    state: { user: { currentWeight: 90.0 }, routines: [], activeRoutineId: 'default_1', history: { workouts: [], bodyweight: [], nutrition: [], cardio: [], challengeLogs: {}, manualPRs: [] }, savedMeals: [], prs: { Bench: {weight:0, reps:0}, Squat: {weight:0, reps:0}, Deadlift: {weight:0, reps:0} }, settings: { restTimer: 120, theme: 'olympus', chartRange: '90', nutritionTargets: { cal: 2500, pro: 160, car: 250, fat: 70 }, lastVolFilter: 'total', weightGoal: 'maintaining', showCaloriesOnBwChart: true, overloadMuscleFilter: 'All' }, variations: {}, customExercises: [], customMuscleGroups: [], challenge: { isActive: false, title: '', startDate: '', endDate: '', goals: [] }, activeSession: null },
     migrate(state) {
         if(!state.settings) state.settings = { restTimer: 120, theme: 'olympus', chartRange: '90' };
         if(!state.settings.chartRange) state.settings.chartRange = '90';
@@ -443,6 +462,36 @@ const store = {
         if(state.activeSession === undefined) state.activeSession = null;
         if(!state.savedMeals) state.savedMeals = [];
         if(!state.customExercises) state.customExercises = [];
+        if(!state.customMuscleGroups) state.customMuscleGroups = [];
+        // Seed master exercise catalog into customExercises so all exercises are top-level editable & live-synced
+        Object.keys(EXERCISE_DB).forEach(exName => {
+            if (!state.customExercises.find(c => c.name === exName)) {
+                state.customExercises.push({
+                    name: exName,
+                    muscles: [...EXERCISE_DB[exName].muscles],
+                    muscle: EXERCISE_DB[exName].muscles[0],
+                    targetSets: EXERCISE_DB[exName].targetSets || 3,
+                    targetReps: EXERCISE_DB[exName].targetReps || '8-12'
+                });
+            }
+        });
+        (state.routines || []).forEach(r => (r.days || []).forEach(d => (d.workouts || []).forEach(w => (w.exercises || []).forEach(rx => {
+            let existing = state.customExercises.find(c => c.name === rx.name);
+            if (!existing) {
+                const mList = (rx.muscles && rx.muscles.length) ? rx.muscles : (rx.muscle ? [rx.muscle] : (EXERCISE_DB[rx.name] ? EXERCISE_DB[rx.name].muscles : ['Other']));
+                state.customExercises.push({
+                    name: rx.name,
+                    muscles: mList,
+                    muscle: mList[0] || 'Other',
+                    targetSets: parseInt(rx.targetSets) || 3,
+                    targetReps: rx.targetReps || '8-12'
+                });
+            } else {
+                if (!existing.muscles || !existing.muscles.length) existing.muscles = existing.muscle ? [existing.muscle] : ['Other'];
+                if (!existing.targetSets) existing.targetSets = parseInt(rx.targetSets) || 3;
+                if (!existing.targetReps) existing.targetReps = rx.targetReps || '8-12';
+            }
+        }))));
         if(state.challenge && state.challenge.goals) {
             state.challenge.goals.forEach(g => {
                 if (g.showInActionPlan === undefined) g.showInActionPlan = (g.type === 'cardio');
@@ -459,7 +508,11 @@ const store = {
     load() {
         const saved = localStorage.getItem('irontrack_state');
         if (saved) { this.state = this.migrate(JSON.parse(saved)); }
-        else { this.state.routines = [{ id: 'default_1', name: 'Main Split', days: JSON.parse(JSON.stringify(DEFAULT_PROGRAM)) }]; this.save(); }
+        else {
+            this.state.routines = [{ id: 'default_1', name: 'Main Split', days: JSON.parse(JSON.stringify(DEFAULT_PROGRAM)) }];
+            this.state = this.migrate(this.state);
+            this.save();
+        }
     },
     save() { localStorage.setItem('irontrack_state', JSON.stringify(this.state)); },
     addWorkout(workoutData) { this.state.history.workouts.push(workoutData); this.save(); },
@@ -479,14 +532,131 @@ const store = {
         return history;
     },
     getPeakSet(exerciseName, variationStr = '') {
-        const thirtyDaysAgo = new Date().getTime() - (30 * 24 * 60 * 60 * 1000);
+        const fourWeeksAgo = new Date().getTime() - (28 * 24 * 60 * 60 * 1000);
         let peak = null;
         this.state.history.workouts.forEach(w => {
-            if (w.isSkipped || w.isActivity || new Date(w.date).getTime() < thirtyDaysAgo) return;
+            if (w.isSkipped || w.isActivity || new Date(w.date).getTime() < fourWeeksAgo) return;
             const ex = (w.exercises||[]).find(e => e.name === exerciseName && (e.variation || '') === variationStr);
             if (ex) { ex.sets.forEach(s => { if (s.completed && s.weight > 0 && s.reps > 0) { if (!peak || s.weight > peak.weight || (s.weight === peak.weight && s.reps > peak.reps)) { peak = { weight: s.weight, reps: s.reps }; } } }); }
         });
         return peak;
+    },
+    // Live Global Sync for Exercises, Muscle Groups, Sets & Reps across all splits, active workout, and history
+    syncExerciseGlobally(oldName, updatedData) {
+        const cleanOld = (oldName || '').trim();
+        const newName = (updatedData.name || cleanOld).trim();
+        if (!newName) return;
+        const muscles = (updatedData.muscles && updatedData.muscles.length)
+            ? updatedData.muscles.filter(Boolean)
+            : (updatedData.muscle ? [updatedData.muscle] : utils.getMuscles({ name: cleanOld }));
+        const primaryMuscle = muscles[0] || 'Other';
+        muscles.forEach(m => {
+            if (!MUSCLE_GROUPS.includes(m) && !this.state.customMuscleGroups.includes(m)) {
+                this.state.customMuscleGroups.push(m);
+            }
+        });
+        const targetSets = parseInt(updatedData.targetSets) || 3;
+        const targetReps = String(updatedData.targetReps || '8-12').trim();
+
+        // 1. Update Master Exercise Library (customExercises & EXERCISE_DB runtime)
+        let masterIdx = this.state.customExercises.findIndex(c => c.name === cleanOld);
+        if (masterIdx > -1) {
+            this.state.customExercises[masterIdx] = {
+                ...this.state.customExercises[masterIdx],
+                name: newName,
+                muscles: muscles,
+                muscle: primaryMuscle,
+                targetSets: targetSets,
+                targetReps: targetReps
+            };
+        } else {
+            this.state.customExercises.push({
+                name: newName,
+                muscles: muscles,
+                muscle: primaryMuscle,
+                targetSets: targetSets,
+                targetReps: targetReps
+            });
+        }
+        // Deduplicate if renamed to another existing entry
+        this.state.customExercises = this.state.customExercises.filter((item, idx, arr) =>
+            arr.findIndex(x => x.name === item.name) === idx
+        );
+        if (EXERCISE_DB[cleanOld] && cleanOld !== newName) {
+            delete EXERCISE_DB[cleanOld];
+        }
+        EXERCISE_DB[newName] = { muscles: muscles, targetSets: targetSets, targetReps: targetReps };
+
+        // 2. Update All Saved Splits / Routines Live
+        this.state.routines.forEach(r => (r.days || []).forEach(d => (d.workouts || []).forEach(w => (w.exercises || []).forEach(ex => {
+            if (ex.name === cleanOld || ex.name === newName) {
+                ex.name = newName;
+                ex.muscles = [...muscles];
+                ex.muscle = primaryMuscle;
+                if (updatedData.targetSets !== undefined) ex.targetSets = targetSets;
+                if (updatedData.targetReps !== undefined) ex.targetReps = targetReps;
+            }
+        }))));
+
+        // 3. Update Draft Routine if Program Editor is currently open
+        if (window.app && app.draftRoutine) {
+            (app.draftRoutine.days || []).forEach(d => (d.workouts || []).forEach(w => (w.exercises || []).forEach(ex => {
+                if (ex.name === cleanOld || ex.name === newName) {
+                    ex.name = newName;
+                    ex.muscles = [...muscles];
+                    ex.muscle = primaryMuscle;
+                    if (updatedData.targetSets !== undefined) ex.targetSets = targetSets;
+                    if (updatedData.targetReps !== undefined) ex.targetReps = targetReps;
+                }
+            })));
+        }
+
+        // 4. Update Variations key if renamed
+        if (cleanOld !== newName && this.state.variations[cleanOld]) {
+            if (!this.state.variations[newName]) this.state.variations[newName] = [];
+            this.state.variations[cleanOld].forEach(v => {
+                if (!this.state.variations[newName].includes(v)) this.state.variations[newName].push(v);
+            });
+            delete this.state.variations[cleanOld];
+        }
+
+        // 5. Update All Logged History Workouts so all muscle graphs, heatmaps, and 4-week maxes update live
+        this.state.history.workouts.forEach(w => (w.exercises || []).forEach(pastEx => {
+            if (pastEx.name === cleanOld || pastEx.name === newName) {
+                pastEx.name = newName;
+                pastEx.muscles = [...muscles];
+                pastEx.muscle = primaryMuscle;
+            }
+        }));
+
+        // 6. Update Active Session in Progress Live (including set count reductions/additions & target reps)
+        const syncSessionObj = (sess) => {
+            if (!sess || !sess.exercises) return;
+            sess.exercises.forEach(actEx => {
+                if (actEx.name === cleanOld || actEx.name === newName) {
+                    actEx.name = newName;
+                    actEx.muscles = [...muscles];
+                    actEx.muscle = primaryMuscle;
+                    if (updatedData.targetReps !== undefined) actEx.targetReps = targetReps;
+                    if (updatedData.targetSets !== undefined) {
+                        actEx.targetSets = targetSets;
+                        // Adjust uncompleted sets live to match new targetSets
+                        while (actEx.sets.length > targetSets && !actEx.sets[actEx.sets.length - 1].completed) {
+                            actEx.sets.pop();
+                        }
+                        while (actEx.sets.length < targetSets) {
+                            const last = actEx.sets[actEx.sets.length - 1] || { weight: 0, reps: 0, rir: 2, prevWeight: 0, prevReps: 0, l3Weight: 0, l3Reps: 0 };
+                            actEx.sets.push({ ...last, completed: false });
+                        }
+                    }
+                }
+            });
+        };
+        syncSessionObj(this.state.activeSession);
+        if (window.workoutEngine && workoutEngine.activeWorkout && workoutEngine.activeWorkout !== this.state.activeSession) {
+            syncSessionObj(workoutEngine.activeWorkout);
+        }
+        this.save();
     }
 };
 const utils = {
@@ -509,20 +679,72 @@ const utils = {
     getDayName: (dayIndex) => ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayIndex],
     getActiveRoutine: () => store.state.routines.find(r => r.id === store.state.activeRoutineId) || store.state.routines[0],
     getTodayProgram: () => { const d = new Date().getDay(); const active = utils.getActiveRoutine(); return active.days.find(p => p.day === d) || { day: d, workouts: [] }; },
+    getAllMuscleGroups: () => {
+        const list = [...MUSCLE_GROUPS];
+        (store.state.customMuscleGroups || []).forEach(m => {
+            if (m && !list.includes(m)) list.push(m);
+        });
+        (store.state.customExercises || []).forEach(ex => {
+            const ms = ex.muscles || (ex.muscle ? [ex.muscle] : []);
+            ms.forEach(m => { if (m && !list.includes(m)) list.push(m); });
+        });
+        store.state.routines.forEach(r => (r.days || []).forEach(d => (d.workouts || []).forEach(w => (w.exercises || []).forEach(ex => {
+            const ms = ex.muscles || (ex.muscle ? [ex.muscle] : []);
+            ms.forEach(m => { if (m && !list.includes(m)) list.push(m); });
+        }))));
+        return list;
+    },
+    getHypertrophyGroups: () => {
+        const base = [...HYPERTROPHY_GROUPS];
+        (store.state.customMuscleGroups || []).forEach(m => {
+            if (m && m !== 'Cardio' && m !== 'Other' && !base.includes(m)) base.push(m);
+        });
+        return base;
+    },
+    getMuscleImage: (muscleName) => {
+        return MUSCLE_IMAGES[muscleName] || MUSCLE_IMAGES['Other'];
+    },
+    getMasterExercise: (name) => {
+        let custom = (store.state.customExercises || []).find(c => c.name === name);
+        if (custom) return custom;
+        if (EXERCISE_DB[name]) {
+            return {
+                name: name,
+                muscles: [...EXERCISE_DB[name].muscles],
+                muscle: EXERCISE_DB[name].muscles[0],
+                targetSets: EXERCISE_DB[name].targetSets || 3,
+                targetReps: EXERCISE_DB[name].targetReps || '8-12'
+            };
+        }
+        let fromRoutine = null;
+        store.state.routines.forEach(r => (r.days || []).forEach(d => (d.workouts || []).forEach(w => (w.exercises || []).forEach(rx => {
+            if (rx.name === name && !fromRoutine) fromRoutine = rx;
+        }))));
+        if (fromRoutine) {
+            const ms = (fromRoutine.muscles && fromRoutine.muscles.length) ? fromRoutine.muscles : (fromRoutine.muscle ? [fromRoutine.muscle] : ['Other']);
+            return {
+                name: name,
+                muscles: ms,
+                muscle: ms[0] || 'Other',
+                targetSets: parseInt(fromRoutine.targetSets) || 3,
+                targetReps: fromRoutine.targetReps || '8-12'
+            };
+        }
+        return { name: name, muscles: ['Other'], muscle: 'Other', targetSets: 3, targetReps: '8-12' };
+    },
     getMuscles: (ex) => {
+        if (!ex) return ['Other'];
+        const custom = (store.state.customExercises || []).find(c => c.name === ex.name);
+        if (custom) {
+            if (custom.muscles && Array.isArray(custom.muscles) && custom.muscles.length) return custom.muscles;
+            if (custom.muscle && custom.muscle !== 'Other') return [custom.muscle];
+        }
         let m = [];
         if(ex.muscles && Array.isArray(ex.muscles) && ex.muscles.length) m = ex.muscles;
         else if(ex.muscle && ex.muscle !== 'Other') m = [ex.muscle];
         else if(EXERCISE_DB[ex.name]) {
             if (EXERCISE_DB[ex.name].muscles) m = EXERCISE_DB[ex.name].muscles;
             else if (EXERCISE_DB[ex.name].muscle) m = [EXERCISE_DB[ex.name].muscle];
-        }
-        if (m.length === 0) {
-            const custom = (store.state.customExercises||[]).find(c => c.name === ex.name);
-            if(custom) {
-                if (custom.muscles && custom.muscles.length) m = custom.muscles;
-                else if (custom.muscle) m = [custom.muscle];
-            }
         }
         if (m.length === 0) {
             store.state.routines.forEach(r => r.days.forEach(d => d.workouts.forEach(w => (w.exercises||[]).forEach(rx => {
@@ -559,10 +781,13 @@ const utils = {
         const totalArr = Object.values(total).sort((a,b)=>a.x-b.x);
         return { muscles: musclesArr, total: totalArr };
     },
-    getE1RMHistory: () => {
+    getE1RMHistory: (daysLimit = 28) => {
+        const cutoff = daysLimit ? (new Date().getTime() - (daysLimit * 86400000)) : 0;
         let history = { bench: [], squat: [], deadlift: [] };
         store.state.history.workouts.forEach(w => {
-            if (w.isSkipped || w.isActivity) return; let sessionBench = 0, sessionSquat = 0, sessionDeadlift = 0;
+            const wTs = new Date(w.date).getTime();
+            if (w.isSkipped || w.isActivity || (cutoff && wTs < cutoff)) return;
+            let sessionBench = 0, sessionSquat = 0, sessionDeadlift = 0;
             (w.exercises||[]).forEach(ex => {
                 let n = ex.name.toLowerCase(); let isBench = n.includes('bench press') && !n.includes('dumbbell') && !n.includes('db'); let isSquat = n.includes('squat') && !n.includes('split') && !n.includes('hack') && !n.includes('goblet'); let isDeadlift = n.includes('deadlift') && !n.includes('romanian') && !n.includes('rdl') && !n.includes('stiff');
                 if (isBench || isSquat || isDeadlift) {
@@ -570,20 +795,57 @@ const utils = {
                     if (isBench && maxE1RM > sessionBench) sessionBench = maxE1RM; if (isSquat && maxE1RM > sessionSquat) sessionSquat = maxE1RM; if (isDeadlift && maxE1RM > sessionDeadlift) sessionDeadlift = maxE1RM;
                 }
             });
-            if (sessionBench > 0) history.bench.push({ e1rm: sessionBench, ts: new Date(w.date).getTime() }); if (sessionSquat > 0) history.squat.push({ e1rm: sessionSquat, ts: new Date(w.date).getTime() }); if (sessionDeadlift > 0) history.deadlift.push({ e1rm: sessionDeadlift, ts: new Date(w.date).getTime() });
+            if (sessionBench > 0) history.bench.push({ e1rm: sessionBench, ts: wTs }); if (sessionSquat > 0) history.squat.push({ e1rm: sessionSquat, ts: wTs }); if (sessionDeadlift > 0) history.deadlift.push({ e1rm: sessionDeadlift, ts: wTs });
         });
         (store.state.history.manualPRs||[]).forEach(m => {
-            if(m.lift === 'Bench') history.bench.push({ e1rm: m.e1rm, ts: new Date(m.date).getTime() });
-            if(m.lift === 'Squat') history.squat.push({ e1rm: m.e1rm, ts: new Date(m.date).getTime() });
-            if(m.lift === 'Deadlift') history.deadlift.push({ e1rm: m.e1rm, ts: new Date(m.date).getTime() });
+            const mTs = new Date(m.date).getTime();
+            if (cutoff && mTs < cutoff) return;
+            if(m.lift === 'Bench') history.bench.push({ e1rm: m.e1rm, ts: mTs });
+            if(m.lift === 'Squat') history.squat.push({ e1rm: m.e1rm, ts: mTs });
+            if(m.lift === 'Deadlift') history.deadlift.push({ e1rm: m.e1rm, ts: mTs });
         });
         history.bench.sort((a,b)=>a.ts-b.ts); history.squat.sort((a,b)=>a.ts-b.ts); history.deadlift.sort((a,b)=>a.ts-b.ts); return history;
     },
+    getRecent4WeekPR: (liftName) => {
+        const fourWeeksAgo = new Date().getTime() - (28 * 86400000);
+        let best = { weight: 0, reps: 0, e1rm: 0 };
+        store.state.history.workouts.forEach(w => {
+            const wTs = new Date(w.date).getTime();
+            if (w.isSkipped || w.isActivity || wTs < fourWeeksAgo) return;
+            (w.exercises || []).forEach(ex => {
+                const n = ex.name.toLowerCase();
+                let matchLift = null;
+                if (n.includes('bench press') && !n.includes('dumbbell') && !n.includes('db')) matchLift = 'Bench';
+                if (n.includes('squat') && !n.includes('split') && !n.includes('hack') && !n.includes('goblet')) matchLift = 'Squat';
+                if (n.includes('deadlift') && !n.includes('romanian') && !n.includes('rdl') && !n.includes('stiff')) matchLift = 'Deadlift';
+                if (matchLift === liftName) {
+                    (ex.sets || []).forEach(s => {
+                        if (s.completed && s.weight > 0 && s.reps > 0) {
+                            const e1rm = s.reps === 1 ? s.weight : s.weight * (1 + s.reps / 30);
+                            if (e1rm > best.e1rm || (e1rm === best.e1rm && s.weight > best.weight)) {
+                                best = { weight: s.weight, reps: s.reps, e1rm: e1rm };
+                            }
+                        }
+                    });
+                }
+            });
+        });
+        (store.state.history.manualPRs || []).forEach(m => {
+            const mTs = new Date(m.date).getTime();
+            if (m.lift === liftName && mTs >= fourWeeksAgo) {
+                const e1rm = m.reps === 1 ? m.weight : m.weight * (1 + m.reps / 30);
+                if (e1rm > best.e1rm) {
+                    best = { weight: m.weight, reps: m.reps, e1rm: e1rm };
+                }
+            }
+        });
+        return best;
+    },
     getLiftWorldStats: (liftName) => {
         const bw = parseFloat(store.state.user.currentWeight) || 90;
-        const prObj = store.state.prs[liftName] || { weight: 0, reps: 0 };
-        let bestE1RM = (prObj.weight > 0 && prObj.reps > 0) ? (prObj.reps === 1 ? prObj.weight : prObj.weight * (1 + prObj.reps / 30)) : 0;
-        const e1Hist = utils.getE1RMHistory();
+        const recent4w = utils.getRecent4WeekPR(liftName);
+        let bestE1RM = recent4w.e1rm || 0;
+        const e1Hist = utils.getE1RMHistory(28);
         const key = liftName.toLowerCase();
         if (e1Hist[key] && e1Hist[key].length > 0) {
             e1Hist[key].forEach(entry => { if (entry.e1rm > bestE1RM) bestE1RM = entry.e1rm; });
@@ -630,6 +892,8 @@ const utils = {
         return {
             lift: liftName,
             e1rm: Math.round(bestE1RM * 10) / 10,
+            weight: recent4w.weight,
+            reps: recent4w.reps,
             topPercent: formattedPct,
             tier: tier,
             nextTierName: nextTierName,
@@ -706,15 +970,24 @@ const utils = {
     },
     getCssVar: (varName, defaultHex) => { const val = getComputedStyle(document.documentElement).getPropertyValue(varName).trim(); return val ? val : defaultHex; },
     getGroupedExercises: () => {
-        let allExercises = []; store.state.routines.forEach(r => r.days.forEach(d => d.workouts.forEach(w => w.exercises.forEach(ex => { if(!allExercises.find(e => e.name === ex.name)) allExercises.push(ex); }))));
+        let allExercises = [];
         (store.state.customExercises||[]).forEach(ex => { if(!allExercises.find(e => e.name === ex.name)) allExercises.push(ex); });
-        let grouped = {}; allExercises.forEach(ex => { let muscle = utils.getPrimaryMuscle(ex).toUpperCase(); if(!grouped[muscle]) grouped[muscle] = []; grouped[muscle].push(ex); }); return grouped;
+        store.state.routines.forEach(r => r.days.forEach(d => d.workouts.forEach(w => w.exercises.forEach(ex => { if(!allExercises.find(e => e.name === ex.name)) allExercises.push(ex); }))));
+        let grouped = {};
+        allExercises.forEach(ex => {
+            const master = utils.getMasterExercise(ex.name);
+            let muscle = utils.getPrimaryMuscle(master).toUpperCase();
+            if(!grouped[muscle]) grouped[muscle] = [];
+            grouped[muscle].push(master);
+        });
+        return grouped;
     },
     getWeeklyHypertrophyStatus: (mondayTimestamp = null) => {
         const mon = mondayTimestamp !== null ? mondayTimestamp : utils.getMonday(new Date());
         const nextMon = mon + (7 * 86400000);
+        const hGroups = utils.getHypertrophyGroups();
         let weekSets = {};
-        HYPERTROPHY_GROUPS.forEach(m => weekSets[m] = 0);
+        hGroups.forEach(m => weekSets[m] = 0);
         store.state.history.workouts.forEach(w => {
             if (w.isSkipped || w.isActivity) return;
             const wTs = new Date(w.date).getTime();
@@ -731,7 +1004,7 @@ const utils = {
         let completedGroups = 0;
         let hypertrophyRP = 0;
         let totalCappedSets = 0;
-        HYPERTROPHY_GROUPS.forEach(m => {
+        hGroups.forEach(m => {
             const s = weekSets[m] || 0;
             const capped = Math.min(20, s);
             totalCappedSets += capped;
@@ -741,9 +1014,9 @@ const utils = {
                 hypertrophyRP += 50;
             }
         });
-        const allCompleted = completedGroups === HYPERTROPHY_GROUPS.length;
+        const allCompleted = completedGroups >= HYPERTROPHY_GROUPS.length;
         if (allCompleted) hypertrophyRP += 150;
-        return { weekSets, completedGroups, totalGroups: HYPERTROPHY_GROUPS.length, allCompleted, hypertrophyRP, totalCappedSets };
+        return { weekSets, completedGroups, totalGroups: hGroups.length, allCompleted, hypertrophyRP, totalCappedSets };
     },
     getWeeklyRPBreakdown: () => {
         const now = new Date();
@@ -781,6 +1054,7 @@ const utils = {
             }
         }
         const hyper = utils.getWeeklyHypertrophyStatus(mon);
+        const hGroups = utils.getHypertrophyGroups();
         const workoutRP = (strengthSessions * 150) + (activitySessions * 50);
         const targetWorkoutRP = targetWorkouts * 150;
         const nutRP = nutDays * 50;
@@ -804,15 +1078,15 @@ const utils = {
             {
                 id: 'hypertrophy',
                 title: 'Hypertrophy Targets',
-                subtitle: '10–20 hard sets across all 7 muscle groups (Required for Champion)',
+                subtitle: `10–20 hard sets across ${hGroups.length} muscle groups (Required for Champion)`,
                 icon: 'fa-dumbbell',
                 current: hyper.completedGroups,
                 total: hyper.totalGroups,
                 unit: 'Muscles',
                 rpEarned: hyper.hypertrophyRP,
                 rpMax: 1200,
-                ratio: (hyper.completedGroups / hyper.totalGroups) * 0.7 + (Math.min(1200, hyper.hypertrophyRP) / 1200) * 0.3,
-                subMetrics: HYPERTROPHY_GROUPS.map(m => ({ name: m, sets: hyper.weekSets[m] || 0, met: (hyper.weekSets[m] || 0) >= 10 }))
+                ratio: (hyper.completedGroups / Math.max(1, hyper.totalGroups)) * 0.7 + (Math.min(1200, hyper.hypertrophyRP) / 1200) * 0.3,
+                subMetrics: hGroups.map(m => ({ name: m, sets: hyper.weekSets[m] || 0, met: (hyper.weekSets[m] || 0) >= 10 }))
             },
             {
                 id: 'workouts',
@@ -1028,7 +1302,10 @@ const utils = {
     },
     getOverloadData: (muscleFilter = 'All') => {
         const sevenDaysAgo = new Date().getTime() - (7 * 86400000);
-        const allWorkouts = store.state.history.workouts.filter(w => !w.isSkipped && !w.isActivity).sort((a,b) => new Date(b.date) - new Date(a.date));
+        const fourWeeksAgo = new Date().getTime() - (28 * 86400000);
+        const allWorkouts = store.state.history.workouts
+            .filter(w => !w.isSkipped && !w.isActivity && new Date(w.date).getTime() >= fourWeeksAgo)
+            .sort((a,b) => new Date(b.date) - new Date(a.date));
         let exerciseMap = {};
         const registerEx = (name, variation = '', exObj = null) => {
             const key = name + '||' + (variation || '');
@@ -1037,9 +1314,9 @@ const utils = {
                 exerciseMap[key] = { name, variation: variation || '', muscles };
             }
         };
+        (store.state.customExercises || []).forEach(ex => registerEx(ex.name, '', ex));
         Object.keys(EXERCISE_DB).forEach(name => registerEx(name, '', { name, muscles: EXERCISE_DB[name].muscles }));
         store.state.routines.forEach(r => r.days.forEach(d => d.workouts.forEach(w => (w.exercises||[]).forEach(ex => registerEx(ex.name, '', ex)))));
-        (store.state.customExercises || []).forEach(ex => registerEx(ex.name, '', ex));
         allWorkouts.forEach(w => (w.exercises || []).forEach(ex => registerEx(ex.name, ex.variation || '', ex)));
         let results = [];
         Object.values(exerciseMap).forEach(item => {
@@ -1084,7 +1361,7 @@ const utils = {
         return results;
     },
     getMuscleHeatColor: (muscleName) => {
-        let sets = 0; const cutoff = new Date().getTime() - (30 * 86400000);
+        let sets = 0; const cutoff = new Date().getTime() - (28 * 86400000);
         store.state.history.workouts.forEach(w => {
             if(w.isSkipped || w.isActivity || new Date(w.date).getTime() < cutoff) return;
             (w.exercises||[]).forEach(ex => { if(utils.getMuscles(ex).includes(muscleName)) sets += ex.sets.filter(s=>s.completed).length; });
@@ -1164,10 +1441,8 @@ const utils = {
         const tPro = Math.max(1, parseFloat(targets.pro) || 160);
         const tCar = Math.max(1, parseFloat(targets.car) || 250);
         const tFat = Math.max(1, parseFloat(targets.fat) || 70);
-
         let totalWater = 0;
         if (nutEntry.waterLog) totalWater = nutEntry.waterLog.reduce((s, e) => s + e.amount, 0);
-
         if (cal === 0 && (!nutEntry.loggedMeals || nutEntry.loggedMeals.length === 0) && totalWater === 0) {
             return {
                 totalScore: 0,
@@ -1182,7 +1457,6 @@ const utils = {
                 ]
             };
         }
-
         // 1. Calorie Precision (0-25 pts): Scales smoothly based on proximity to target calories
         const calDev = Math.abs(cal - tCal) / tCal;
         let calScore = 0;
@@ -1192,7 +1466,6 @@ const utils = {
             else calScore = Math.round(25 * (1 - ((calDev - 0.05) / 0.45) * 0.85));
         }
         calScore = Math.max(0, Math.min(25, calScore));
-
         // 2. Protein Anchor & Efficiency (0-25 pts): Scales with hitting protein target + protein-to-calorie density
         const proRatio = pro / tPro;
         let proHitScore = 0;
@@ -1203,14 +1476,12 @@ const utils = {
         const actualProDensity = cal > 0 ? ((pro * 4) / cal) : 0;
         const densityBonus = actualProDensity >= targetProDensity * 0.9 ? 5 : Math.round(5 * (actualProDensity / Math.max(0.05, targetProDensity * 0.9)));
         const proScore = Math.max(0, Math.min(25, proHitScore + densityBonus));
-
         // 3. Carb & Fat Macro Fit (0-20 pts): 10 pts Carbs + 10 pts Fats
         const carDev = Math.abs(car - tCar) / tCar;
         const fatDev = Math.abs(fat - tFat) / tFat;
         const carSub = car > 0 ? Math.max(0, Math.min(10, Math.round(10 * Math.max(0, 1 - Math.max(0, carDev - 0.08) / 0.65)))) : 0;
         const fatSub = fat > 0 ? Math.max(0, Math.min(10, Math.round(10 * Math.max(0, 1 - Math.max(0, fatDev - 0.08) / 0.55)))) : 0;
         const macroBalanceScore = carSub + fatSub;
-
         // 4. Whole-Food Quality & Micronutrient Variety (0-20 pts)
         let foodItems = [];
         (nutEntry.loggedMeals || []).forEach(m => {
@@ -1247,13 +1518,11 @@ const utils = {
             // Custom macro meals without specific raw ingredient links get neutral baseline
             qualityScore = Math.min(14, 8 + (nutEntry.loggedMeals || []).length * 2);
         }
-
         // 5. Hydration & Meal Structure (0-10 pts): 5 pts Water (scales to 3000-4000ml) + 5 pts Meal Timing/Distribution
         const waterPts = Math.min(5, Math.round((totalWater / 3500) * 5));
         const mealTypesLogged = new Set((nutEntry.loggedMeals || []).map(m => m.type)).size;
         const structurePts = Math.min(5, Math.round((mealTypesLogged / 3) * 5));
         const hydrationTimingScore = waterPts + structurePts;
-
         const totalScore = Math.max(0, Math.min(100, calScore + proScore + macroBalanceScore + qualityScore + hydrationTimingScore));
         let grade = 'C';
         let color = 'var(--warning)';
@@ -1262,7 +1531,6 @@ const utils = {
         else if (totalScore >= 65) { grade = 'B • SOLID'; color = '#4cd964'; }
         else if (totalScore >= 50) { grade = 'C • BUILDING'; color = 'var(--warning)'; }
         else { grade = 'D • NEEDS FUEL'; color = 'var(--pending)'; }
-
         return {
             totalScore,
             grade,
@@ -1349,7 +1617,25 @@ const utils = {
 const workoutEngine = {
     activeWorkout: null, timerInterval: null, manualTimerInterval: null, manualTimerSeconds: 0, manualTimerRunning: false,
     sync() { store.state.activeSession = this.activeWorkout; store.save(); },
-    start(workoutObj) { this.activeWorkout = { id: utils.generateId(), startTime: new Date().getTime(), name: workoutObj.name, isActivity: workoutObj.isActivity || false, isRest: (workoutObj.exercises||[]).length === 0 && !workoutObj.isActivity, exercises: (workoutObj.exercises||[]).map(ex => this.buildExerciseData(ex.name, ex.targetSets, ex.targetReps)) }; this.sync(); document.getElementById('active-workout-view').style.display = 'flex'; this.renderActiveWorkout(); },
+    start(workoutObj) {
+        this.activeWorkout = {
+            id: utils.generateId(),
+            startTime: new Date().getTime(),
+            name: workoutObj.name,
+            isActivity: workoutObj.isActivity || false,
+            isRest: (workoutObj.exercises||[]).length === 0 && !workoutObj.isActivity,
+            exercises: (workoutObj.exercises||[]).map(ex => {
+                // Pull latest top-level exercise config so any saved exercise edits filter straight into newly started workouts
+                const master = utils.getMasterExercise(ex.name);
+                const setsCount = parseInt(ex.targetSets) || master.targetSets || 3;
+                const repsTarget = ex.targetReps || master.targetReps || '8-12';
+                return this.buildExerciseData(master.name, setsCount, repsTarget);
+            })
+        };
+        this.sync();
+        document.getElementById('active-workout-view').style.display = 'flex';
+        this.renderActiveWorkout();
+    },
     resume() { if (!store.state.activeSession) return; this.activeWorkout = store.state.activeSession; document.getElementById('active-workout-view').style.display = 'flex'; this.renderActiveWorkout(); },
     buildExerciseData(name, targetSets, targetReps, variation = '') { const pastEx = store.getExerciseHistory(name, variation); const historySets = pastEx.map(ex => ex.sets); let prevNotes = pastEx[0] && pastEx[0].notes ? pastEx[0].notes : ''; let startingSets = []; for (let i = 0; i < targetSets; i++) { let prevW = historySets[0] && historySets[0][i] ? parseFloat(historySets[0][i].weight) : 0; let prevR = historySets[0] && historySets[0][i] ? parseFloat(historySets[0][i].reps) : 0; let sumW = 0, sumR = 0, count = 0; historySets.forEach(h => { if (h[i]) { sumW += parseFloat(h[i].weight)||0; sumR += parseFloat(h[i].reps)||0; count++; } }); let l3W = count ? (sumW / count).toFixed(1) : 0; let l3R = count ? Math.round(sumR / count) : 0; startingSets.push({ weight: prevW, reps: prevR, rir: 2, completed: false, prevWeight: prevW, prevReps: prevR, l3Weight: l3W, l3Reps: l3R }); } return { name: name, variation: variation, targetSets: targetSets, targetReps: targetReps, muscles: utils.getMuscles({ name }), sets: startingSets, notes: prevNotes }; },
     updatePrefills(ex) { const pastEx = store.getExerciseHistory(ex.name, ex.variation || ''); const historySets = pastEx.map(e => e.sets); ex.sets.forEach((set, i) => { let prevW = historySets[0] && historySets[0][i] ? parseFloat(historySets[0][i].weight) : 0; let prevR = historySets[0] && historySets[0][i] ? parseFloat(historySets[0][i].reps) : 0; let sumW = 0, sumR = 0, count = 0; historySets.forEach(h => { if (h[i]) { sumW += parseFloat(h[i].weight)||0; sumR += parseFloat(h[i].reps)||0; count++; } }); set.prevWeight = prevW; set.prevReps = prevR; set.l3Weight = count ? (sumW / count).toFixed(1) : 0; set.l3Reps = count ? Math.round(sumR / count) : 0; if(!set.completed && set.weight === 0 && set.reps === 0) { set.weight = prevW; set.reps = prevR; } }); },
@@ -1359,38 +1645,18 @@ const workoutEngine = {
         const trimmed = (newName || '').trim();
         if(!trimmed || trimmed === oldName) { this.renderActiveWorkout(); return; }
         const preservedMuscles = utils.getMuscles(ex);
-        ex.name = trimmed;
-        ex.muscles = preservedMuscles;
-        store.state.routines.forEach(r => r.days.forEach(d => d.workouts.forEach(w => (w.exercises||[]).forEach(e => {
-            if (e.name === oldName) {
-                e.name = trimmed;
-                if (!e.muscles || e.muscles.length === 0) e.muscles = preservedMuscles;
-            }
-        }))));
-        if (store.state.variations[oldName]) {
-            if (!store.state.variations[trimmed]) store.state.variations[trimmed] = [];
-            store.state.variations[oldName].forEach(v => {
-                if (!store.state.variations[trimmed].includes(v)) store.state.variations[trimmed].push(v);
-            });
-            delete store.state.variations[oldName];
-        }
-        (store.state.customExercises || []).forEach(c => {
-            if (c.name === oldName) { c.name = trimmed; c.muscles = preservedMuscles; }
+        store.syncExerciseGlobally(oldName, {
+            name: trimmed,
+            muscles: preservedMuscles,
+            targetSets: ex.sets ? ex.sets.length : (ex.targetSets || 3),
+            targetReps: ex.targetReps || '8-12'
         });
-        if (!EXERCISE_DB[trimmed] && !(store.state.customExercises || []).find(c => c.name === trimmed)) {
-            store.state.customExercises.push({ name: trimmed, muscles: preservedMuscles, targetSets: ex.targetSets || 3, targetReps: ex.targetReps || '8-12' });
-        }
-        store.state.history.workouts.forEach(w => (w.exercises || []).forEach(pastEx => {
-            if (pastEx.name === oldName) {
-                pastEx.name = trimmed;
-                if (!pastEx.muscles) pastEx.muscles = preservedMuscles;
-            }
-        }));
-        store.save(); this.sync(); this.renderActiveWorkout();
+        this.sync();
+        this.renderActiveWorkout();
     },
     promptRenameExercise(exIdx) {
         const ex = this.activeWorkout.exercises[exIdx];
-        const newName = prompt("Edit Exercise Title (updates across workout splits):", ex.name);
+        const newName = prompt("Edit Exercise Title (updates live across all splits & workouts):", ex.name);
         if (newName !== null && newName.trim() !== '') {
             this.updateExerciseName(exIdx, newName.trim());
         }
@@ -1435,10 +1701,58 @@ const workoutEngine = {
         if (val === '__NEW__') { const newVar = prompt("Enter new variation for " + ex.name + ":"); if (!newVar) { this.renderActiveWorkout(); return; } if (!store.state.variations[ex.name]) store.state.variations[ex.name] = []; if (!store.state.variations[ex.name].includes(newVar)) { store.state.variations[ex.name].push(newVar); store.save(); } val = newVar; }
         ex.variation = val; const pastEx = store.getExerciseHistory(ex.name, val); ex.notes = pastEx[0] && pastEx[0].notes ? pastEx[0].notes : ''; ex.sets.forEach(s => { if(!s.completed) { s.weight = 0; s.reps = 0; }}); this.updatePrefills(ex); this.sync(); this.renderActiveWorkout();
     },
-    inputChange(exIdx, setIdx, field, value) { this.activeWorkout.exercises[exIdx].sets[setIdx][field] = parseFloat(value) || 0; this.sync(); }, updateNotes(exIdx, val) { this.activeWorkout.exercises[exIdx].notes = val; this.sync(); }, toggleSet(exIdx, setIdx) { const set = this.activeWorkout.exercises[exIdx].sets[setIdx]; set.completed = !set.completed; if (set.completed) this.startRestTimer(store.state.settings.restTimer); this.sync(); this.renderActiveWorkout(); }, addSet(exIdx) { const sets = this.activeWorkout.exercises[exIdx].sets; const last = sets[sets.length-1] || { weight: 0, reps: 0, rir: 2, prevWeight:0, prevReps:0, l3Weight:0, l3Reps:0 }; sets.push({ ...last, completed: false }); this.sync(); this.renderActiveWorkout(); }, removeSet(exIdx) { const sets = this.activeWorkout.exercises[exIdx].sets; if(sets.length > 1) { sets.pop(); this.sync(); this.renderActiveWorkout(); } else { alert("Cannot remove the last set."); } }, removeExercise(exIdx) { if(confirm("Remove this exercise?")) { this.activeWorkout.exercises.splice(exIdx, 1); this.sync(); this.renderActiveWorkout(); } },
-    showAddExerciseModal() { const modal = document.getElementById('exercise-selection-modal'); let grouped = utils.getGroupedExercises(); let html = `<div class="page-header"><button class="btn btn-sm btn-icon" onclick="document.getElementById('exercise-selection-modal').style.display='none'"><i class="fas fa-times"></i></button><h2 style="margin:0; font-size:18px;">Add Exercise</h2><div style="width:36px;"></div></div><div style="padding:0 16px;"><button class="btn btn-primary" style="width:100%; margin-bottom:16px;" onclick="workoutEngine.createCustomExercise()"><i class="fas fa-plus"></i> Create Custom Exercise</button></div><p class="text-muted" style="margin-bottom:16px; font-size:12px; padding:0 16px;">Select an exercise to append to your active workout.</p><div style="padding:0 16px;">`; Object.keys(grouped).sort().forEach(muscle => { html += `<h3 style="margin-top:16px; color:var(--text-secondary); font-size:14px;">${muscle}</h3><div style="display:flex; flex-direction:column; gap:8px;">`; grouped[muscle].sort((a,b) => a.name.localeCompare(b.name)).forEach(ex => { html += `<div class="data-row flex-between" style="padding:12px; background:var(--surface-color); border-radius:8px; border:1px solid var(--border); cursor:pointer;" onclick="workoutEngine.appendExercise('${ex.name}', ${ex.targetSets}, '${ex.targetReps}')"><div><div style="font-weight:bold;">${ex.name}</div><div class="text-muted" style="font-size:12px;">Def: ${ex.targetSets}x${ex.targetReps}</div></div><i class="fas fa-plus text-accent"></i></div>`; }); html += `</div>`; }); html += `</div>`; modal.innerHTML = html; modal.style.display = 'flex'; },
-    createCustomExercise() { const name = prompt("Enter Custom Exercise Name:"); if (!name) return; const muscle = prompt("Enter Primary Muscle Group (Chest, Back, Shoulders, Biceps, Triceps, Quads, Hamstrings, Abs, Calves, Cardio):", "Other") || "Other"; if (!store.state.customExercises) store.state.customExercises = []; store.state.customExercises.push({ name, muscle, targetSets: 3, targetReps: '8-12' }); store.save(); this.appendExercise(name, 3, '8-12'); },
-    appendExercise(name, targetSets, targetReps) { this.activeWorkout.exercises.push(this.buildExerciseData(name, targetSets, targetReps)); this.sync(); document.getElementById('exercise-selection-modal').style.display='none'; this.renderActiveWorkout(); },
+    inputChange(exIdx, setIdx, field, value) { this.activeWorkout.exercises[exIdx].sets[setIdx][field] = parseFloat(value) || 0; this.sync(); },
+    updateNotes(exIdx, val) { this.activeWorkout.exercises[exIdx].notes = val; this.sync(); },
+    toggleSet(exIdx, setIdx) { const set = this.activeWorkout.exercises[exIdx].sets[setIdx]; set.completed = !set.completed; if (set.completed) this.startRestTimer(store.state.settings.restTimer); this.sync(); this.renderActiveWorkout(); },
+    addSet(exIdx) {
+        const ex = this.activeWorkout.exercises[exIdx];
+        const sets = ex.sets;
+        const last = sets[sets.length-1] || { weight: 0, reps: 0, rir: 2, prevWeight:0, prevReps:0, l3Weight:0, l3Reps:0 };
+        sets.push({ ...last, completed: false });
+        ex.targetSets = sets.length;
+        store.syncExerciseGlobally(ex.name, { name: ex.name, muscles: utils.getMuscles(ex), targetSets: sets.length, targetReps: ex.targetReps });
+        this.sync();
+        this.renderActiveWorkout();
+    },
+    removeSet(exIdx) {
+        const ex = this.activeWorkout.exercises[exIdx];
+        const sets = ex.sets;
+        if(sets.length > 1) {
+            sets.pop();
+            ex.targetSets = sets.length;
+            store.syncExerciseGlobally(ex.name, { name: ex.name, muscles: utils.getMuscles(ex), targetSets: sets.length, targetReps: ex.targetReps });
+            this.sync();
+            this.renderActiveWorkout();
+        } else {
+            alert("Cannot remove the last set.");
+        }
+    },
+    removeExercise(exIdx) { if(confirm("Remove this exercise?")) { this.activeWorkout.exercises.splice(exIdx, 1); this.sync(); this.renderActiveWorkout(); } },
+    showAddExerciseModal() {
+        const modal = document.getElementById('exercise-selection-modal');
+        let grouped = utils.getGroupedExercises();
+        let html = `<div class="page-header"><button class="btn btn-sm btn-icon" onclick="document.getElementById('exercise-selection-modal').style.display='none'"><i class="fas fa-times"></i></button><h2 style="margin:0; font-size:18px;">Add Exercise</h2><div style="width:36px;"></div></div><div style="padding:0 16px;"><button class="btn btn-primary" style="width:100%; margin-bottom:16px;" onclick="app.openCreateExerciseModal('active-workout')"><i class="fas fa-plus"></i> Create Custom Exercise</button></div><p class="text-muted" style="margin-bottom:16px; font-size:12px; padding:0 16px;">Select an exercise to append to your active workout.</p><div style="padding:0 16px;">`;
+        Object.keys(grouped).sort().forEach(muscle => {
+            html += `<h3 style="margin-top:16px; color:var(--text-secondary); font-size:14px;">${muscle}</h3><div style="display:flex; flex-direction:column; gap:8px;">`;
+            grouped[muscle].sort((a,b) => a.name.localeCompare(b.name)).forEach(ex => {
+                html += `<div class="data-row flex-between" style="padding:12px; background:var(--surface-color); border-radius:8px; border:1px solid var(--border); cursor:pointer;" onclick="workoutEngine.appendExercise('${ex.name.replace(/'/g, "\\'")}', ${ex.targetSets}, '${ex.targetReps}')"><div><div style="font-weight:bold;">${ex.name}</div><div class="text-muted" style="font-size:12px;">Def: ${ex.targetSets}x${ex.targetReps} • ${utils.getMuscles(ex).join(', ')}</div></div><i class="fas fa-plus text-accent"></i></div>`;
+            });
+            html += `</div>`;
+        });
+        html += `</div>`;
+        modal.innerHTML = html;
+        modal.style.display = 'flex';
+    },
+    createCustomExercise() {
+        app.openCreateExerciseModal('active-workout');
+    },
+    appendExercise(name, targetSets, targetReps) {
+        const master = utils.getMasterExercise(name);
+        this.activeWorkout.exercises.push(this.buildExerciseData(master.name, targetSets || master.targetSets || 3, targetReps || master.targetReps || '8-12'));
+        this.sync();
+        document.getElementById('exercise-selection-modal').style.display='none';
+        this.renderActiveWorkout();
+    },
     startRestTimer(seconds) { clearInterval(this.timerInterval); const display = document.getElementById('rest-timer-display'); const overlay = document.getElementById('rest-timer-overlay'); let remaining = seconds; overlay.style.display = 'flex'; this.timerInterval = setInterval(() => { remaining--; let m = Math.floor(remaining / 60), s = remaining % 60; display.innerText = `${m}:${s < 10 ? '0' : ''}${s}`; if (remaining <= 0) { this.stopRestTimer(); if(navigator.vibrate) navigator.vibrate([200, 100, 200]); } }, 1000); }, stopRestTimer() { clearInterval(this.timerInterval); document.getElementById('rest-timer-overlay').style.display = 'none'; },
     toggleManualTimer() {
         if(this.manualTimerRunning) {
@@ -1512,7 +1826,7 @@ const workoutEngine = {
             html += `<button class="btn" style="background:var(--surface-color); border:1px dashed var(--accent-color); color:var(--accent-color); margin-bottom: 16px;" onclick="workoutEngine.skipWorkout()"><i class="fas fa-forward-step"></i> Skip / Log Rest Day</button>`;
             this.activeWorkout.exercises.forEach((ex, exIdx) => {
                 this.updatePrefills(ex); const varList = store.state.variations[ex.name] || []; const peak = store.getPeakSet(ex.name, ex.variation || '');
-                const peakHtml = peak ? `<div style="color: var(--pending); font-size: 11px; font-weight: bold; margin-top: 4px; text-align: right; display:flex; align-items:center; justify-content:flex-end; gap:4px;"><i class="fas fa-fire"></i> 30d Peak: ${peak.weight}kg × ${peak.reps}</div>` : '';
+                const peakHtml = peak ? `<div style="color: var(--pending); font-size: 11px; font-weight: bold; margin-top: 4px; text-align: right; display:flex; align-items:center; justify-content:flex-end; gap:4px;"><i class="fas fa-fire"></i> 4w Peak: ${peak.weight}kg × ${peak.reps}</div>` : '';
                 const mNames = utils.getMuscles(ex); let colorMap = {}; mNames.forEach(m => colorMap[m] = 'var(--accent-color)');
                 let recHtml = '';
                 const pastEx = store.getExerciseHistory(ex.name, ex.variation || '');
@@ -1522,10 +1836,39 @@ const workoutEngine = {
                     if (bestSet) {
                         let recWeight = bestSet.weight; let recReps = bestSet.reps; let topR = 10, botR = 8;
                         if (ex.targetReps) { const match = String(ex.targetReps).match(/(\d+)(?:-(\d+))?/); if (match) { botR = parseInt(match[1]); topR = match[2] ? parseInt(match[2]) : botR; } }
-                        if (bestSet.reps >= topR) { recWeight = parseFloat((bestSet.weight + 2.5).toFixed(1)); recReps = botR; }
-                        else if (bestSet.reps < botR) { recReps = botR; }
-                        else { recReps = bestSet.reps + 1; if (recReps > topR) recReps = topR; }
-                        recHtml = `<div style="background: rgba(10, 132, 255, 0.1); border: 1px solid var(--info); color: var(--info); padding: 8px 12px; border-radius: 8px; font-size: 12px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;"><div><div style="font-weight:bold; margin-bottom:2px;"><i class="fas fa-lightbulb"></i> Recommended Top Set</div><div style="font-size:14px;">${recWeight}kg × ${recReps} reps</div></div><div style="text-align:right; font-size:10px; opacity:0.8;">Last best:<br>${bestSet.weight}kg × ${bestSet.reps}</div></div>`;
+                        let recNote = 'Maintain weight & push for +1 rep within target range';
+                        let recBoxBorder = 'var(--info)';
+                        let recBoxBg = 'rgba(10, 132, 255, 0.1)';
+                        let recBoxColor = 'var(--info)';
+                        let recIcon = 'fa-lightbulb';
+                        if (bestSet.reps > topR) {
+                            recWeight = parseFloat((bestSet.weight + 2.5).toFixed(1));
+                            recReps = botR;
+                            recNote = `Exceeded max rep target (${bestSet.reps} > ${topR}) — Increase weight +2.5kg!`;
+                            recBoxBorder = 'var(--success)';
+                            recBoxBg = 'rgba(52, 199, 89, 0.14)';
+                            recBoxColor = 'var(--success)';
+                            recIcon = 'fa-arrow-up-right-dots';
+                        } else if (bestSet.reps === topR) {
+                            recWeight = parseFloat((bestSet.weight + 2.5).toFixed(1));
+                            recReps = botR;
+                            recNote = `Hit top of rep range (${topR} reps) — Ready to increase weight +2.5kg!`;
+                            recBoxBorder = 'var(--success)';
+                            recBoxBg = 'rgba(52, 199, 89, 0.14)';
+                            recBoxColor = 'var(--success)';
+                            recIcon = 'fa-arrow-up-right-dots';
+                        } else if (bestSet.reps < botR) {
+                            recWeight = Math.max(0, parseFloat((bestSet.weight - 2.5).toFixed(1)));
+                            recReps = botR;
+                            recNote = `Below min rep target (${bestSet.reps} < ${botR}) — Reduce weight -2.5kg to hit ${botR}–${topR} reps`;
+                            recBoxBorder = 'var(--warning)';
+                            recBoxBg = 'rgba(255, 149, 0, 0.14)';
+                            recBoxColor = 'var(--warning)';
+                            recIcon = 'fa-arrow-down-wide-short';
+                        } else {
+                            recReps = Math.min(topR, bestSet.reps + 1);
+                        }
+                        recHtml = `<div style="background: ${recBoxBg}; border: 1px solid ${recBoxBorder}; color: ${recBoxColor}; padding: 10px 12px; border-radius: 8px; font-size: 12px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; gap: 8px;"><div><div style="font-weight:800; margin-bottom:2px;"><i class="fas ${recIcon}"></i> Recommended Top Set: ${recWeight}kg × ${recReps} reps</div><div style="font-size:11px; opacity:0.95;">${recNote}</div></div><div style="text-align:right; font-size:10px; opacity:0.85; flex-shrink:0;">Last best:<br><strong>${bestSet.weight}kg × ${bestSet.reps}</strong></div></div>`;
                     }
                 }
                 html += `
@@ -1799,7 +2142,7 @@ const views = {
                     <div class="r6-req-pill" style="background:linear-gradient(135deg, #9d00ff, #00e5ff);"><span>CHAMPION UNLOCKED</span></div>
                     <span style="font-size:16px; font-weight:900; color:${r6.color};">${r6.totalRP} Total RP</span>
                 ` : r6.championLockedByHypertrophy ? `
-                    <div class="r6-req-pill" style="background:#ff9500;"><span>LOCKED: ${7 - r6.hyperCompleted} MUSCLES LEFT</span></div>
+                    <div class="r6-req-pill" style="background:#ff9500;"><span>LOCKED: ${Math.max(0, 7 - r6.hyperCompleted)} MUSCLES LEFT</span></div>
                     <span style="font-size:15px; font-weight:900; color:${r6.color};">${r6.totalRP} RP</span>
                 ` : `
                     <div class="r6-req-pill" style="background:var(--success); box-shadow:0 0 12px var(--success-dim);" title="Points required to reach ${next ? next.fullName : 'Next Rank'}"><span>+${r6.rpNeededForNext} RP TO NEXT</span></div>
@@ -1865,13 +2208,13 @@ const views = {
         return html;
     },
     renderHeatmap() {
-        let heatMapColors = {}; MUSCLE_GROUPS.forEach(m => { heatMapColors[m] = utils.getMuscleHeatColor(m); });
+        let heatMapColors = {}; utils.getAllMuscleGroups().forEach(m => { heatMapColors[m] = utils.getMuscleHeatColor(m); });
         return `
         <div class="card" style="text-align:center; padding-bottom: 24px; overflow:hidden;">
             <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 16px;">
                 <div>
                     <h3 style="font-size:12px; margin:0; color:var(--text-secondary); text-transform:uppercase; letter-spacing:1px; text-align:left;">Anatomical Breakdown</h3>
-                    <p class="text-muted" style="font-size:10px; margin:0; text-align:left;">Volume over the last 30 days</p>
+                    <p class="text-muted" style="font-size:10px; margin:0; text-align:left;">Volume over the last 4 weeks</p>
                 </div>
             </div>
             <div class="heatmap-svg">
@@ -1926,7 +2269,6 @@ const views = {
         const scoreRingRadius = 46;
         const scoreRingCirc = 2 * Math.PI * scoreRingRadius;
         const scoreRingOffset = scoreRingCirc - (Math.min(100, Math.max(0, nutScore.totalScore)) / 100) * scoreRingCirc;
-
         let html = `
         <div style="display:flex; justify-content:space-between; align-items:center; margin-top: calc(24px + var(--safe-top)); margin-bottom: 14px;">
             <div>
@@ -1938,7 +2280,6 @@ const views = {
                 <button class="btn btn-sm btn-icon" onclick="app.editMacroTargets()" title="Edit Macro Targets"><i class="fas fa-sliders"></i></button>
             </div>
         </div>`;
-
         // Interactive Today's Meals Image Carousel (Breakfast, Lunch, Dinner, Snacks)
         html += `
         <div class="flex-between" style="margin-bottom:10px;">
@@ -1961,7 +2302,6 @@ const views = {
             </div>`;
         });
         html += `</div>`;
-
         // Daily Nutrition Score Card (Scalable Multi-Factor Scoring)
         html += `
         <div class="card" style="margin-top:8px; margin-bottom:16px; border:1px solid ${nutScore.color}65; background: radial-gradient(circle at 100% 0%, ${nutScore.color}18 0%, var(--surface-color) 75%);">
@@ -2006,7 +2346,6 @@ const views = {
                 </div>
             </div>
         </div>`;
-
         // Daily Summary Card with 2x2 Circular Ring Cards + Dynamic Green/Orange/Red Bullet Insights
         html += `
         <div class="card" style="margin-top:8px; margin-bottom:20px; padding:16px;">
@@ -2050,7 +2389,6 @@ const views = {
                 </div>
             </div>
         </div>`;
-
         // Daily Water Intake Tracker (Kept exact same as requested)
         html += `
         <div class="card" style="margin-bottom: 24px;">
@@ -2135,9 +2473,121 @@ const views = {
         if(store.state.challenge && store.state.challenge.isActive) { html += `<button class="btn" style="background:transparent; border:1px solid var(--accent-color); color:var(--accent-color); margin-top:24px;" onclick="app.endChallenge()">End / Delete Challenge</button>`; } return html;
     },
     renderWorkoutList() {
-        let html = `<h1>Your Splits</h1><p class="text-muted mb-4">Select a program to view or edit, or create a new one.</p>`;
-        store.state.routines.forEach(r => { const isActive = r.id === store.state.activeRoutineId; html += `<div class="card" style="cursor:pointer; border-color: ${isActive ? 'var(--accent-color)' : 'var(--border)'}; padding: 20px;" onclick="app.viewRoutine('${r.id}')"><div class="flex-between"><h3 style="margin:0">${r.name}</h3>${isActive ? '<span class="text-accent" style="font-size:12px; font-weight:bold;">ACTIVE</span>' : ''}</div></div>`; });
-        html += `<button class="btn" style="border:1px dashed var(--accent-color); color:var(--accent-color); background:transparent;" onclick="app.createNewRoutine()">+ Create New Split</button>`; return html;
+        const grouped = utils.getGroupedExercises();
+        const totalSavedExercises = (store.state.customExercises || []).length;
+        const allMuscles = utils.getAllMuscleGroups().filter(m => m !== 'Other');
+        const activeRoutine = utils.getActiveRoutine();
+
+        let html = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top: calc(24px + var(--safe-top)); margin-bottom: 14px;">
+            <div>
+                <h1 style="margin:0; font-size:28px;">${app.sym('workout') || ''} Training Hub</h1>
+                <div class="text-muted" style="font-size:12px;">Manage splits, saved exercises & muscle groups live</div>
+            </div>
+            <div style="display:flex; gap:8px;">
+                <button class="btn btn-sm" style="background:var(--surface-elevated); border:1px solid var(--border); font-size:12px; padding:8px 10px;" onclick="app.openExerciseLibrary('All')" title="Saved Exercises"><i class="fas fa-dumbbell text-accent"></i> Exercises</button>
+                <button class="btn btn-sm btn-icon" onclick="app.createNewRoutine()" title="Create New Split"><i class="fas fa-plus"></i></button>
+            </div>
+        </div>`;
+
+        // 1. Saved Splits Image Carousel (Functioning like Nutrition Today's Meals Carousel)
+        html += `
+        <div class="flex-between" style="margin-bottom:10px;">
+            <h2 style="margin:0; font-size:17px;">Your Training Splits</h2>
+            <span style="font-size:12px; font-weight:bold; color:var(--accent-color); cursor:pointer;" onclick="app.createNewRoutine()">+ New Split <i class="fas fa-chevron-right" style="font-size:10px;"></i></span>
+        </div>
+        <div class="nut-meal-carousel">`;
+        store.state.routines.forEach((r, idx) => {
+            const isActive = r.id === store.state.activeRoutineId;
+            const activeDays = (r.days || []).filter(d => d.workouts && d.workouts.length > 0).length;
+            const totalEx = (r.days || []).reduce((sum, d) => sum + (d.workouts || []).reduce((s2, w) => s2 + (w.exercises || []).length, 0), 0);
+            const imgUrl = SPLIT_IMAGES[idx % SPLIT_IMAGES.length];
+            html += `
+            <div class="nut-meal-tile" style="min-width:165px; border-color:${isActive ? 'var(--accent-color)' : 'var(--border)'};" onclick="app.viewRoutine('${r.id}')">
+                <div style="position:relative;">
+                    <img src="${imgUrl}" alt="${r.name}" class="nut-meal-tile-img" loading="lazy">
+                    ${isActive ? `<span style="position:absolute; top:8px; right:8px; background:var(--accent-color); color:var(--bg-color); font-size:9px; font-weight:900; padding:2px 7px; border-radius:8px; letter-spacing:0.5px;">ACTIVE</span>` : ''}
+                </div>
+                <div class="nut-meal-tile-body">
+                    <div style="font-weight:800; font-size:14px; color:var(--text-primary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${r.name}</div>
+                    <div style="font-size:11px; color:${isActive ? 'var(--success)' : 'var(--text-secondary)'}; font-weight:700; margin-top:2px;">
+                        ${activeDays} Days • ${totalEx} Exercises
+                    </div>
+                </div>
+            </div>`;
+        });
+        html += `</div>`;
+
+        // 2. Muscle Group Exercise Explorer Carousel (With Sourced Images)
+        html += `
+        <div class="flex-between" style="margin-top:8px; margin-bottom:10px;">
+            <h2 style="margin:0; font-size:17px;">Saved Exercises by Muscle</h2>
+            <span style="font-size:12px; font-weight:bold; color:var(--info); cursor:pointer;" onclick="app.openExerciseLibrary('All')">View All (${totalSavedExercises}) <i class="fas fa-chevron-right" style="font-size:10px;"></i></span>
+        </div>
+        <div class="nut-meal-carousel">`;
+        allMuscles.forEach(m => {
+            const count = (grouped[m.toUpperCase()] || []).length;
+            const img = utils.getMuscleImage(m);
+            html += `
+            <div class="nut-meal-tile" onclick="app.openExerciseLibrary('${m}')">
+                <img src="${img}" alt="${m}" class="nut-meal-tile-img" loading="lazy">
+                <div class="nut-meal-tile-body">
+                    <div style="font-weight:800; font-size:14px; color:var(--text-primary);">${m}</div>
+                    <div style="font-size:11px; color:${count > 0 ? 'var(--info)' : 'var(--text-secondary)'}; font-weight:700; margin-top:2px;">
+                        ${count} Exercise${count === 1 ? '' : 's'}
+                    </div>
+                </div>
+            </div>`;
+        });
+        html += `</div>`;
+
+        // 3. Top-Level Saved Exercises & Splits Manager Card (Nutrition Library Style)
+        html += `
+        <div class="card" style="margin-top:12px; border:1px solid var(--accent-dim); background: radial-gradient(circle at 100% 0%, var(--accent-dim) 0%, var(--surface-color) 75%);">
+            <div class="flex-between" style="margin-bottom:6px;">
+                <h3 style="margin:0; font-size:16px;"><i class="fas fa-dumbbell text-accent"></i> Saved Exercises & Splits Library</h3>
+                <span class="text-muted" style="font-size:11px; font-weight:bold;">${totalSavedExercises} Saved Exercises</span>
+            </div>
+            <p class="text-muted" style="font-size:12px; margin-bottom:12px;">Update exercise names, default sets, target rep ranges, or muscle groups from one top-level menu. All edits update live across every split, active workout, and analytics graph.</p>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                <button class="btn btn-primary" style="flex:1; min-width:140px;" onclick="app.openExerciseLibrary('All')"><i class="fas fa-sliders"></i> Saved Exercises</button>
+                <button class="btn" style="flex:1; min-width:140px; border: 1px dashed var(--accent-color); color:var(--accent-color); background:transparent;" onclick="app.openCreateExerciseModal('library')"><i class="fas fa-plus"></i> New Exercise</button>
+            </div>
+            <div style="display:flex; gap:8px; margin-top:8px; flex-wrap:wrap;">
+                <button class="btn" style="flex:1; background:var(--surface-elevated); border:1px solid var(--border); font-size:13px;" onclick="app.promptAddMuscleGroup()"><i class="fas fa-dna text-info"></i> + Add Muscle Group</button>
+                <button class="btn" style="flex:1; background:var(--surface-elevated); border:1px solid var(--border); font-size:13px;" onclick="app.createNewRoutine()"><i class="fas fa-calendar-plus text-success"></i> + New Split</button>
+            </div>
+        </div>`;
+
+        // 4. Active Split Quick Overview Card
+        if (activeRoutine) {
+            html += `
+            <div class="card" style="margin-top:16px;">
+                <div class="flex-between" style="margin-bottom:12px;">
+                    <div>
+                        <span style="font-size:10px; font-weight:900; color:var(--accent-color); text-transform:uppercase; letter-spacing:1px;">Active Split Schedule</span>
+                        <h3 style="margin:2px 0 0 0; font-size:18px; color:var(--text-primary);">${activeRoutine.name}</h3>
+                    </div>
+                    <button class="btn btn-sm" style="background:var(--surface-elevated); border:1px solid var(--border);" onclick="app.viewRoutine('${activeRoutine.id}')"><i class="fas fa-pen"></i> Manage Split</button>
+                </div>`;
+            [1, 2, 3, 4, 5, 6, 0].forEach(dayIndex => {
+                const d = activeRoutine.days.find(x => x.day === dayIndex) || { day: dayIndex, workouts: [] };
+                const isToday = dayIndex === new Date().getDay();
+                const summary = d.workouts.length === 0
+                    ? `Rest Day ${app.sym('rest')}`
+                    : d.workouts.map(w => `${w.name} (${(w.exercises||[]).length} ex)`).join(' • ');
+                html += `
+                <div class="data-row flex-between" style="padding:10px 0; cursor:pointer;" onclick="app.viewRoutine('${activeRoutine.id}')">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <span style="font-weight:800; font-size:13px; color:${isToday ? 'var(--accent-color)' : 'var(--text-primary)'}; width:88px;">${utils.getDayName(dayIndex)}</span>
+                        <span class="text-muted" style="font-size:12px;">${summary}</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-muted" style="font-size:11px;"></i>
+                </div>`;
+            });
+            html += `</div>`;
+        }
+        return html;
     },
     renderWorkoutDetail() {
         if (app.isEditingProgram) return this.renderProgramEditor();
@@ -2160,13 +2610,14 @@ const views = {
                     <div style="display:flex; gap:4px;">${arrowButtons}</div>
                 </div>
             </div>`;
-            if (d.workouts.length === 0) { html += `<div class="text-muted">Rest Day ${app.sym('rest')}</div>`; } else { d.workouts.forEach(w => { html += `<div style="margin-top:8px; padding-top:8px; border-top:1px solid var(--border);"><div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;"><h4 style="margin:0;">${w.name}</h4>${w.isActivity ? `<span class="text-accent" style="font-size:10px; border:1px solid var(--accent-color); padding:2px 4px; border-radius:4px;">ACTIVITY</span>` : ''}</div>${w.exercises.map(e => `<div class="text-muted" style="font-size:14px; margin-bottom:2px;">• ${e.name} (${e.targetSets}x${e.targetReps})</div>`).join('')}</div>`; }); }
+            if (d.workouts.length === 0) { html += `<div class="text-muted">Rest Day ${app.sym('rest')}</div>`; } else { d.workouts.forEach(w => { html += `<div style="margin-top:8px; padding-top:8px; border-top:1px solid var(--border);"><div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;"><h4 style="margin:0;">${w.name}</h4>${w.isActivity ? `<span class="text-accent" style="font-size:10px; border:1px solid var(--accent-color); padding:2px 4px; border-radius:4px;">ACTIVITY</span>` : ''}</div>${w.exercises.map(e => `<div class="text-muted" style="font-size:14px; margin-bottom:2px;">• ${e.name} (${e.targetSets}x${e.targetReps}) <span style="font-size:11px; color:var(--accent-color);">[${utils.getMuscles(e).join(', ')}]</span></div>`).join('')}</div>`; }); }
             html += `</div>`;
         });
         return html;
     },
     renderProgramEditor() {
-        let html = `<div class="page-header" style="flex-direction:column; align-items:flex-start; gap:12px;"><div class="flex-between" style="width:100%;"><input class="edit-input" style="font-size:24px !important; font-weight:bold; color:var(--accent-color); border:none; background:transparent; padding:0; margin:0; flex:1; min-width:0;" value="${app.draftRoutine.name}" onchange="app.draftRoutine.name = this.value"><div style="display:flex; gap:8px; flex-shrink:0;"><button class="btn btn-sm btn-success" onclick="app.saveProgramEdit()"><i class="fas fa-save"></i> Save</button></div></div>${store.state.routines.length > 1 ? `<button class="btn btn-sm" style="background:transparent; border:1px solid var(--accent-color); color:var(--accent-color); width:100%;" onclick="app.deleteCurrentRoutine()"><i class="fas fa-trash"></i> Delete This Split</button>` : ''}</div>`;
+        const allMuscleOptions = utils.getAllMuscleGroups();
+        let html = `<div class="page-header" style="flex-direction:column; align-items:flex-start; gap:12px;"><div class="flex-between" style="width:100%;"><input class="edit-input" style="font-size:24px !important; font-weight:bold; color:var(--accent-color); border:none; background:transparent; padding:0; margin:0; flex:1; min-width:0;" value="${app.draftRoutine.name}" onchange="app.draftRoutine.name = this.value; app.commitDraftLive();"><div style="display:flex; gap:8px; flex-shrink:0;"><button class="btn btn-sm btn-success" onclick="app.saveProgramEdit()"><i class="fas fa-save"></i> Done</button></div></div>${store.state.routines.length > 1 ? `<button class="btn btn-sm" style="background:transparent; border:1px solid var(--accent-color); color:var(--accent-color); width:100%;" onclick="app.deleteCurrentRoutine()"><i class="fas fa-trash"></i> Delete This Split</button>` : ''}</div>`;
         let allWorkoutsMap = {}; store.state.routines.forEach(r => r.days.forEach(d => d.workouts.forEach(w => { if(!allWorkoutsMap[w.name]) { allWorkoutsMap[w.name] = w; } }))); let uniqueWorkouts = Object.values(allWorkoutsMap);
         [1, 2, 3, 4, 5, 6, 0].forEach((dayIndex) => {
             const dIdx = app.draftRoutine.days.findIndex(d => d.day === dayIndex); if(dIdx === -1) return; const day = app.draftRoutine.days[dIdx];
@@ -2176,9 +2627,30 @@ const views = {
                 day.workouts.forEach((w, wIdx) => {
                     html += `<div style="background: var(--surface-elevated); border-radius: 8px; padding: 12px; margin-bottom: 12px;"><div class="flex-between" style="margin-bottom:8px;"><div style="display:flex; align-items:center; flex:1;"><input class="edit-input" style="font-size:16px !important; font-weight:bold; margin:0; padding:4px 8px; flex:1;" value="${w.name}" onchange="app.updateWorkoutName(${dIdx}, ${wIdx}, this.value)" placeholder="Workout Name">${w.isActivity ? `<span class="text-accent" style="font-size:10px; margin-left:8px; border:1px solid var(--accent-color); padding:2px 4px; border-radius:4px;">ACTIVITY</span>` : ''}</div><button class="btn-icon text-accent" style="width:28px; height:28px; flex-shrink:0; margin-left:8px;" onclick="app.removeWorkoutFromDay(${dIdx}, ${wIdx})"><i class="fas fa-trash"></i></button></div>`;
                     w.exercises.forEach((ex, eIdx) => {
-                        html += `<div class="editor-exercise-row" style="background: var(--bg-color);"><div style="flex:1;"><input class="edit-input" style="font-size:16px !important; margin-bottom:4px;" placeholder="Exercise Name" value="${ex.name}" onchange="app.updateEx(${dIdx}, ${wIdx}, ${eIdx}, 'name', this.value)"><div style="display:flex; gap:8px;"><input type="number" class="edit-input" style="font-size:16px !important; margin:0;" placeholder="Sets" value="${ex.targetSets}" onchange="app.updateEx(${dIdx}, ${wIdx}, ${eIdx}, 'targetSets', this.value)"><input class="edit-input" style="font-size:16px !important; margin:0;" placeholder="Reps (e.g. 8-12)" value="${ex.targetReps}" onchange="app.updateEx(${dIdx}, ${wIdx}, ${eIdx}, 'targetReps', this.value)"></div><input class="edit-input" style="font-size:14px !important; margin-top:8px; margin-bottom:0;" placeholder="Muscles (e.g. Quads, Hamstrings)" value="${(ex.muscles || [ex.muscle || 'Other']).join(', ')}" onchange="app.updateEx(${dIdx}, ${wIdx}, ${eIdx}, 'muscles', this.value.split(',').map(s=>s.trim()))"></div><div class="editor-controls" style="display:flex; flex-direction:column; gap:4px;"><button class="btn-icon" style="background:var(--surface-color); border:1px solid var(--border); border-radius:4px; height:36px; color:var(--text-secondary);" onclick="app.moveEx(${dIdx}, ${wIdx}, ${eIdx}, -1)"><i class="fas fa-chevron-up"></i></button><button class="btn-icon" style="background:var(--surface-color); border:1px solid var(--border); border-radius:4px; height:36px; color:var(--text-secondary);" onclick="app.moveEx(${dIdx}, ${wIdx}, ${eIdx}, 1)"><i class="fas fa-chevron-down"></i></button><button class="btn-icon text-accent" style="background:var(--surface-color); border:1px solid var(--border); border-radius:4px; height:36px;" onclick="app.deleteEx(${dIdx}, ${wIdx}, ${eIdx})"><i class="fas fa-times"></i></button></div></div>`;
+                        const exMuscles = utils.getMuscles(ex);
+                        const primaryM = exMuscles[0] || 'Other';
+                        html += `<div class="editor-exercise-row" style="background: var(--bg-color);">
+                            <div style="flex:1;">
+                                <input class="edit-input" style="font-size:16px !important; margin-bottom:6px; font-weight:bold;" placeholder="Exercise Name" value="${ex.name}" onchange="app.updateEx(${dIdx}, ${wIdx}, ${eIdx}, 'name', this.value)">
+                                <div style="display:flex; gap:8px; margin-bottom:6px;">
+                                    <div style="flex:1;"><label class="text-muted" style="font-size:10px;">Sets</label><input type="number" class="edit-input" style="font-size:15px !important; margin:0;" placeholder="Sets" value="${ex.targetSets}" onchange="app.updateEx(${dIdx}, ${wIdx}, ${eIdx}, 'targetSets', this.value)"></div>
+                                    <div style="flex:1;"><label class="text-muted" style="font-size:10px;">Target Reps</label><input class="edit-input" style="font-size:15px !important; margin:0;" placeholder="Reps (e.g. 8-12)" value="${ex.targetReps}" onchange="app.updateEx(${dIdx}, ${wIdx}, ${eIdx}, 'targetReps', this.value)"></div>
+                                </div>
+                                <label class="text-muted" style="font-size:10px;">Primary Muscle Group</label>
+                                <select class="edit-input" style="font-size:14px !important; margin:0;" onchange="app.handleProgramExMuscleSelect(${dIdx}, ${wIdx}, ${eIdx}, this.value)">
+                                    ${allMuscleOptions.map(m => `<option value="${m}" ${primaryM === m ? 'selected' : ''}>${m}</option>`).join('')}
+                                    <option value="__ADD_NEW__">+ Add New Muscle Group...</option>
+                                </select>
+                            </div>
+                            <div class="editor-controls" style="display:flex; flex-direction:column; gap:4px;">
+                                <button class="btn-icon" style="background:var(--surface-color); border:1px solid var(--border); border-radius:4px; height:36px; color:var(--text-secondary);" onclick="app.moveEx(${dIdx}, ${wIdx}, ${eIdx}, -1)"><i class="fas fa-chevron-up"></i></button>
+                                <button class="btn-icon" style="background:var(--surface-color); border:1px solid var(--border); border-radius:4px; height:36px; color:var(--text-secondary);" onclick="app.moveEx(${dIdx}, ${wIdx}, ${eIdx}, 1)"><i class="fas fa-chevron-down"></i></button>
+                                <button class="btn-icon text-accent" style="background:var(--surface-color); border:1px solid var(--border); border-radius:4px; height:36px;" onclick="app.deleteEx(${dIdx}, ${wIdx}, ${eIdx})"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>`;
                     });
-                    if (!w.isActivity) html += `<button class="btn btn-sm" style="margin-top:8px; width:100%; border:1px dashed var(--border); background:transparent;" onclick="app.addEx(${dIdx}, ${wIdx})">+ Add Exercise</button>`; html += `</div>`;
+                    if (!w.isActivity) html += `<div style="display:flex; gap:8px; margin-top:8px;"><button class="btn btn-sm" style="flex:1; border:1px dashed var(--border); background:transparent;" onclick="app.addEx(${dIdx}, ${wIdx})">+ Add Saved Exercise</button><button class="btn btn-sm" style="flex:1; border:1px dashed var(--accent-color); color:var(--accent-color); background:transparent;" onclick="app.openCreateExerciseModal('program-day', ${dIdx}, ${wIdx})">+ New Exercise</button></div>`;
+                    html += `</div>`;
                 });
             } html += `</div>`;
         }); return html;
@@ -2195,11 +2667,14 @@ const views = {
     },
     renderCustomB() { let grouped = utils.getGroupedExercises(); let html = `<div class="page-header"><button class="btn btn-sm btn-icon" onclick="app.navigate('home')"><i class="fas fa-arrow-left"></i></button><h2 style="margin:0; font-size:18px;">Mix Exercises</h2><button class="btn btn-sm btn-success" onclick="app.startCustomMix()">START</button></div>`; Object.keys(grouped).sort().forEach(muscle => { html += `<h3 style="margin-top:16px; color:var(--text-secondary); font-size:14px;">${muscle}</h3><div style="display:flex; flex-direction:column; gap:8px;">`; grouped[muscle].sort((a,b) => a.name.localeCompare(b.name)).forEach(ex => { html += `<label class="data-row flex-between" style="padding:12px; background:var(--surface-color); border-radius:8px; border:1px solid var(--border);"><div><div style="font-weight:bold;">${ex.name}</div><div class="text-muted" style="font-size:12px;">Def: ${ex.targetSets}x${ex.targetReps}</div></div><input type="checkbox" class="cx-checkbox" value="${ex.name}" data-sets="${ex.targetSets}" data-reps="${ex.targetReps}" style="width:24px; height:24px;"></label>`; }); html += `</div>`; }); return html; },
     renderProgress() {
-        let weekSets = { Chest:0, Back:0, Triceps:0, Biceps:0, Shoulders:0, Quads:0, Hamstrings:0 };
+        const hGroups = utils.getHypertrophyGroups();
+        const allMuscleGroups = utils.getAllMuscleGroups();
+        let weekSets = {};
+        hGroups.forEach(m => weekSets[m] = 0);
         let thisWeekVol = 0; let lastWeekVol = 0; let thisWeekRirSum = 0; let thisWeekRirCount = 0;
         const now = new Date(); const mon = utils.getMonday(now); const lastMon = mon - (7 * 86400000);
         const w0Mon = mon; const w1Mon = w0Mon - 7*86400000; const w2Mon = w0Mon - 14*86400000; const w3Mon = w0Mon - 21*86400000;
-        let tableData = {}; MUSCLE_GROUPS.forEach(m => tableData[m] = { w0:0, w1:0, w2:0, w3:0 });
+        let tableData = {}; allMuscleGroups.forEach(m => tableData[m] = { w0:0, w1:0, w2:0, w3:0 });
         store.state.history.workouts.forEach(w => {
             if (w.isSkipped || w.isActivity) return; const wTs = new Date(w.date).getTime(); const wMon = utils.getMonday(wTs);
             let weekKey = null; if (wMon === w0Mon) weekKey = 'w0'; else if (wMon === w1Mon) weekKey = 'w1'; else if (wMon === w2Mon) weekKey = 'w2'; else if (wMon === w3Mon) weekKey = 'w3';
@@ -2209,7 +2684,7 @@ const views = {
                     mNames.forEach(m => { if (weekSets[m] !== undefined) weekSets[m] += ex.sets.filter(s => s.completed).length; });
                     thisWeekVol += exVol;
                     ex.sets.forEach(s => {
-                        if(s.completed && mNames.some(m => HYPERTROPHY_GROUPS.includes(m))) { thisWeekRirSum += (s.rir||0); thisWeekRirCount++; }
+                        if(s.completed && mNames.some(m => hGroups.includes(m))) { thisWeekRirSum += (s.rir||0); thisWeekRirCount++; }
                     });
                 }
                 else if (wMon === lastMon) { lastWeekVol += exVol; }
@@ -2224,18 +2699,16 @@ const views = {
         let avgRir = thisWeekRirCount > 0 ? (thisWeekRirSum / thisWeekRirCount).toFixed(1) : '-'; let volDiff = lastWeekVol > 0 ? Math.round(((thisWeekVol - lastWeekVol) / lastWeekVol) * 100) : 0;
         let volDiffStr = lastWeekVol === 0 ? "No data last week" : volDiff >= 0 ? `↑ ${volDiff}% vs last week` : `↓ ${Math.abs(volDiff)}% vs last week`; let volDiffColor = lastWeekVol === 0 ? "var(--text-secondary)" : volDiff >= 0 ? "var(--success)" : "var(--pending)";
         let html = `<div class="page-header" style="flex-direction:row;"><h2 style="margin:0; font-size:18px;">${app.sym('analytics') || ''} Analytics</h2></div>`;
-
-        // MOVED TO TOP OF ANALYTICS: PROGRESSIVE OVERLOAD GRAPH + TOTAL TRAINING VOLUME & INDIVIDUAL MUSCLE BUTTONS
+        // PROGRESSIVE OVERLOAD GRAPH + TOTAL TRAINING VOLUME & INDIVIDUAL MUSCLE BUTTONS (Including Custom Muscle Groups)
         const volData = utils.getWorkoutVolumeHistory();
         const availableMuscles = Object.keys(volData.muscles).sort();
-        const allButtonsList = MUSCLE_GROUPS.filter(m => m !== 'Cardio' && m !== 'Other');
+        const allButtonsList = allMuscleGroups.filter(m => m !== 'Cardio' && m !== 'Other');
         availableMuscles.forEach(m => { if (!allButtonsList.includes(m)) allButtonsList.push(m); });
         const curVolFilter = store.state.settings.lastVolFilter || 'total';
         let volOptions = `<option value="total" ${curVolFilter === 'total' ? 'selected' : ''}>Total Training Volume</option>`;
         allButtonsList.forEach(m => {
             volOptions += `<option value="m_${m}" ${curVolFilter === 'm_' + m ? 'selected' : ''}>${m}</option>`;
         });
-
         html += `
         <div class="card" style="background: linear-gradient(145deg, var(--vol-bg1), var(--vol-bg2)); border-color: var(--info); box-shadow: 0 4px 16px var(--info-dim); margin-bottom: 16px;">
             <div class="flex-between" style="margin-bottom:8px;">
@@ -2263,15 +2736,14 @@ const views = {
                 <canvas id="workoutTimeChart"></canvas>
             </div>
         </div>`;
-
         const activeOverloadFilter = store.state.settings.overloadMuscleFilter || 'All';
         const overloadData = utils.getOverloadData(activeOverloadFilter);
-        const filterGroups = ['All', ...MUSCLE_GROUPS.filter(m => m !== 'Cardio')];
+        const filterGroups = ['All', ...allMuscleGroups.filter(m => m !== 'Cardio')];
         html += `<div class="card" style="padding: 12px; margin-bottom: 16px;">
             <div class="flex-between" style="margin-bottom:10px; gap:8px;">
                 <div>
-                    <h3 style="font-size:12px; margin:0; text-transform:uppercase; color:var(--text-secondary);">7-Day Overload Tracker (e1RM)</h3>
-                    <div class="text-muted" style="font-size:10px;">All exercises • Filter by muscle group</div>
+                    <h3 style="font-size:12px; margin:0; text-transform:uppercase; color:var(--text-secondary);">4-Week Overload & Maxes (e1RM)</h3>
+                    <div class="text-muted" style="font-size:10px;">Rolling 4-week maxes • Adjusts automatically for recovery</div>
                 </div>
                 <select class="edit-input" style="width:auto; margin:0; padding:4px 8px; font-size:12px !important; font-weight:bold; background:var(--surface-elevated);" onchange="store.state.settings.overloadMuscleFilter = this.value; store.save(); app.navigate('progress');">
                     ${filterGroups.map(g => `<option value="${g}" ${activeOverloadFilter === g ? 'selected' : ''}>${g === 'All' ? 'All Muscles' : g}</option>`).join('')}
@@ -2287,11 +2759,11 @@ const views = {
                     const color = item.diff > 0.05 ? 'var(--success)' : (item.diff < -0.05 ? 'var(--pending)' : 'var(--text-secondary)');
                     const icon = item.diff > 0.05 ? 'fa-arrow-trend-up' : (item.diff < -0.05 ? 'fa-arrow-trend-down' : 'fa-minus');
                     const sign = item.diff > 0.05 ? '+' : '';
-                    statusHtml = `<div style="text-align:right;"><span style="color:${color}; font-weight:bold;"><i class="fas ${icon}"></i> ${sign}${item.diff.toFixed(1)}kg</span><div class="text-muted" style="font-size:9px;">e1RM: ${item.currentE1RM.toFixed(1)}kg</div></div>`;
+                    statusHtml = `<div style="text-align:right;"><span style="color:${color}; font-weight:bold;"><i class="fas ${icon}"></i> ${sign}${item.diff.toFixed(1)}kg</span><div class="text-muted" style="font-size:9px;">4w e1RM: ${item.currentE1RM.toFixed(1)}kg</div></div>`;
                 } else if (item.currentE1RM > 0) {
-                    statusHtml = `<div style="text-align:right;"><span style="color:var(--info); font-weight:bold; font-size:11px;">${item.currentE1RM.toFixed(1)}kg e1RM</span><div class="text-muted" style="font-size:9px;">1 session logged</div></div>`;
+                    statusHtml = `<div style="text-align:right;"><span style="color:var(--info); font-weight:bold; font-size:11px;">${item.currentE1RM.toFixed(1)}kg e1RM</span><div class="text-muted" style="font-size:9px;">Last 4w Max</div></div>`;
                 } else {
-                    statusHtml = `<span class="text-muted" style="font-size:11px;">No sets logged</span>`;
+                    statusHtml = `<span class="text-muted" style="font-size:11px;">No sets last 4w</span>`;
                 }
                 html += `<div class="flex-between" style="font-size:13px; border-bottom:1px solid var(--border); padding:6px 0;">
                     <div style="min-width:0; flex:1;">
@@ -2325,9 +2797,9 @@ const views = {
                 <h3 style="margin:0; font-size:14px;"><i class="fas fa-bullseye text-info"></i> Weekly Hypertrophy Target</h3>
                 <span style="font-size:11px; font-weight:900; color:${hyperStatus.allCompleted ? 'var(--success)' : 'var(--info)'}; background:var(--surface-elevated); padding:3px 8px; border-radius:12px; border:1px solid var(--border);">+${hyperStatus.hypertrophyRP} RP Earned</span>
             </div>
-            <p class="text-muted" style="font-size:11px; margin-bottom:12px;">Hit 10–20 hard sets per muscle group (+5 RP/set, +50 RP/group at 10 sets). Completing all 7 groups (+150 RP bonus) is required to unlock <strong>Champion</strong> rank.</p>
+            <p class="text-muted" style="font-size:11px; margin-bottom:12px;">Hit 10–20 hard sets per muscle group (+5 RP/set, +50 RP/group at 10 sets). Completing 7+ groups (+150 RP bonus) is required to unlock <strong>Champion</strong> rank.</p>
             <div style="display:flex; flex-direction:column; gap:8px;">`;
-        HYPERTROPHY_GROUPS.forEach(m => { let sets = weekSets[m] || 0; let pct = (sets / 20) * 100; if (pct > 100) pct = 100; let color = sets >= 10 ? 'var(--success)' : 'var(--info)'; hyperHtml += `<div class="flex-between" style="font-size:12px; margin-bottom:2px;"><span style="font-weight:bold;">${m} ${sets >= 10 ? '<i class="fas fa-check-circle text-success"></i>' : ''}</span><span class="text-muted">${sets} / 10-20 sets</span></div><div class="progress-bg" style="height:6px; margin:0;"><div class="progress-fill" style="width:${pct}%; background:${color};"></div></div>`; }); hyperHtml += `</div></div>`;
+        hGroups.forEach(m => { let sets = weekSets[m] || 0; let pct = (sets / 20) * 100; if (pct > 100) pct = 100; let color = sets >= 10 ? 'var(--success)' : 'var(--info)'; hyperHtml += `<div class="flex-between" style="font-size:12px; margin-bottom:2px;"><span style="font-weight:bold;">${m} ${sets >= 10 ? '<i class="fas fa-check-circle text-success"></i>' : ''}</span><span class="text-muted">${sets} / 10-20 sets</span></div><div class="progress-bg" style="height:6px; margin:0;"><div class="progress-fill" style="width:${pct}%; background:${color};"></div></div>`; }); hyperHtml += `</div></div>`;
         html += qualityHtml + hyperHtml;
         let goal = store.state.settings.weightGoal || 'maintaining';
         const showCals = store.state.settings.showCaloriesOnBwChart !== false;
@@ -2376,26 +2848,26 @@ const views = {
         const deadliftWorld = utils.getLiftWorldStats('Deadlift');
         const worldStatsArr = [benchWorld, squatWorld, deadliftWorld];
         html += `<div class="card" style="background: linear-gradient(145deg, var(--pr-bg1), var(--pr-bg2)); border-color: var(--accent-color); box-shadow: 0 4px 16px var(--accent-dim);">
-            <h2 style="margin:0; color:var(--accent-color); font-style:italic; margin-bottom: 16px;">${app.sym('pr')} PR ZONE</h2>
-            <h3 style="font-size:14px; margin:0;">${app.sym('success')} Recorded PR's</h3>
+            <h2 style="margin:0; color:var(--accent-color); font-style:italic; margin-bottom: 8px;">${app.sym('pr')} 4-WEEK MAXES & PR ZONE</h2>
+            <h3 style="font-size:13px; margin:0; color:var(--text-secondary);">${app.sym('success')} Last 4 Weeks Peak Lifts (Auto-adjusts for current strength/recovery)</h3>
             <div style="display:flex; gap:8px; margin-top:12px; margin-bottom:16px;">
-                <div class="card" style="display:flex; flex:1; flex-direction:column; padding:12px; margin:0; border-color:var(--info); background: var(--info-dim); cursor:pointer;" onclick="app.editPR('Bench')"><span class="text-muted" style="font-size:12px; text-transform:uppercase;">Bench</span><span style="font-size:22px; font-weight:bold; color:var(--text-primary);">${store.state.prs.Bench?.weight || 0}<span style="font-size:12px; color:var(--text-secondary);">kg × ${store.state.prs.Bench?.reps || 0}</span></span></div>
-                <div class="card" style="display:flex; flex:1; flex-direction:column; padding:12px; margin:0; border-color:var(--accent-color); background: var(--accent-dim); cursor:pointer;" onclick="app.editPR('Squat')"><span class="text-muted" style="font-size:12px; text-transform:uppercase;">Squat</span><span style="font-size:22px; font-weight:bold; color:var(--text-primary);">${store.state.prs.Squat?.weight || 0}<span style="font-size:12px; color:var(--text-secondary);">kg × ${store.state.prs.Squat?.reps || 0}</span></span></div>
-                <div class="card" style="display:flex; flex:1; flex-direction:column; padding:12px; margin:0; border-color:var(--success); background: var(--success-dim); cursor:pointer;" onclick="app.editPR('Deadlift')"><span class="text-muted" style="font-size:12px; text-transform:uppercase;">Deadlift</span><span style="font-size:22px; font-weight:bold; color:var(--text-primary);">${store.state.prs.Deadlift?.weight || 0}<span style="font-size:12px; color:var(--text-secondary);">kg × ${store.state.prs.Deadlift?.reps || 0}</span></span></div>
+                <div class="card" style="display:flex; flex:1; flex-direction:column; padding:12px; margin:0; border-color:var(--info); background: var(--info-dim); cursor:pointer;" onclick="app.editPR('Bench')"><span class="text-muted" style="font-size:12px; text-transform:uppercase;">Bench (4w)</span><span style="font-size:22px; font-weight:bold; color:var(--text-primary);">${benchWorld.weight || 0}<span style="font-size:12px; color:var(--text-secondary);">kg × ${benchWorld.reps || 0}</span></span></div>
+                <div class="card" style="display:flex; flex:1; flex-direction:column; padding:12px; margin:0; border-color:var(--accent-color); background: var(--accent-dim); cursor:pointer;" onclick="app.editPR('Squat')"><span class="text-muted" style="font-size:12px; text-transform:uppercase;">Squat (4w)</span><span style="font-size:22px; font-weight:bold; color:var(--text-primary);">${squatWorld.weight || 0}<span style="font-size:12px; color:var(--text-secondary);">kg × ${squatWorld.reps || 0}</span></span></div>
+                <div class="card" style="display:flex; flex:1; flex-direction:column; padding:12px; margin:0; border-color:var(--success); background: var(--success-dim); cursor:pointer;" onclick="app.editPR('Deadlift')"><span class="text-muted" style="font-size:12px; text-transform:uppercase;">Deadlift (4w)</span><span style="font-size:22px; font-weight:bold; color:var(--text-primary);">${deadliftWorld.weight || 0}<span style="font-size:12px; color:var(--text-secondary);">kg × ${deadliftWorld.reps || 0}</span></span></div>
             </div>
             <div style="background:var(--surface-color); padding: 14px; border-radius: calc(var(--card-radius) - 4px); border: 1px solid var(--border);">
                 <div class="flex-between" style="margin-bottom:8px;">
-                    <h3 style="font-size:14px; margin:0;"><i class="fas fa-earth-americas text-info"></i> Global Strength Percentile</h3>
+                    <h3 style="font-size:14px; margin:0;"><i class="fas fa-earth-americas text-info"></i> Global Strength Percentile (Last 4 Weeks)</h3>
                     <span class="text-muted" style="font-size:10px;">@ ${store.state.user.currentWeight}kg BW</span>
                 </div>
-                <p class="text-muted" style="font-size:11px; margin-bottom:12px;">Your estimated 1RM compared against worldwide strength standards.</p>
+                <p class="text-muted" style="font-size:11px; margin-bottom:12px;">Your 4-week rolling estimated 1RM compared against worldwide strength standards.</p>
                 <div style="display:flex; flex-direction:column; gap:14px;">
                     ${worldStatsArr.map(ws => `
                     <div style="background:var(--surface-elevated); padding:10px 12px; border-radius:10px; border:1px solid var(--border);">
                         <div class="flex-between" style="margin-bottom:4px;">
                             <div>
                                 <span style="font-weight:800; font-size:14px; color:var(--text-primary); text-transform:uppercase;">${ws.lift}</span>
-                                <span class="text-muted" style="font-size:11px; margin-left:6px;">${ws.e1rm > 0 ? `${ws.e1rm}kg e1RM (${ws.bwRatio}x BW)` : 'No PR logged'}</span>
+                                <span class="text-muted" style="font-size:11px; margin-left:6px;">${ws.e1rm > 0 ? `${ws.e1rm}kg 4w e1RM (${ws.bwRatio}x BW)` : 'No lift logged in last 4w'}</span>
                             </div>
                             <span style="background:rgba(0,0,0,0.4); border:1px solid ${ws.color}; color:${ws.color}; padding:2px 8px; border-radius:12px; font-size:11px; font-weight:900;">
                                 ${ws.e1rm > 0 ? `Top ${ws.topPercent}% Worldwide` : 'Unranked'}
@@ -2502,6 +2974,7 @@ const views = {
 const app = {
     isEditingProgram: false, viewingRoutineId: null, draftRoutine: null, activeDataTab: null, customDraftTitle: '', draftChallenge: null, currentView: 'home', editingPastWorkoutId: null, draftPastWorkout: null, challengeOffset: 0,
     activeMealType: 'Breakfast', mealSearchQuery: '', mealSearchTab: 'meals', mealCategoryFilter: 'All', draftMealBuilder: null, builderSearchQuery: '',
+    exerciseLibraryFilter: 'All', exerciseLibraryQuery: '', createExContext: null, createExDayIdx: null, createExWIdx: null,
     init() { store.load(); this.setTheme(store.state.settings.theme, false); this.navigate('home'); },
     sym(key) { const t = store.state.settings.theme; return THEME_MAP[t] ? THEME_MAP[t].symbols[key] || THEME_MAP['basic'].symbols[key] : THEME_MAP['basic'].symbols[key]; },
     renderNav() { const t = store.state.settings.theme; const icons = THEME_MAP[t] ? THEME_MAP[t].nav : THEME_MAP['basic'].nav; const viewsList = [ {id:'home', label:'Home', i:icons[0]}, {id:'workout', label:'Workout', i:icons[1]}, {id:'progress', label:'Analytics', i:icons[2]}, {id:'nutrition', label:'Nutrition', i:icons[3]}, {id:'data', label:'Data', i:icons[4]} ]; let navHtml = ''; viewsList.forEach(v => { const isActive = this.currentView === v.id || (v.id === 'workout' && this.currentView === 'workout-detail') || (v.id === 'home' && this.currentView === 'ranked-breakdown'); navHtml += `<div class="nav-item ${isActive ? 'active' : ''}" onclick="app.navigate('${v.id}')"><i class="fas ${v.i}"></i>${v.label}</div>`; }); document.getElementById('nav-bar').innerHTML = navHtml; },
@@ -2525,6 +2998,276 @@ const app = {
         store.state.settings.showCaloriesOnBwChart = store.state.settings.showCaloriesOnBwChart === false ? true : false;
         store.save();
         this.navigate('progress');
+    },
+    // Top-Level Saved Exercises Library & Live Editor
+    openExerciseLibrary(muscleFilter = 'All') {
+        this.exerciseLibraryFilter = muscleFilter || 'All';
+        this.exerciseLibraryQuery = '';
+        this.renderExerciseLibraryModal();
+        document.getElementById('exercise-selection-modal').style.display = 'flex';
+    },
+    renderExerciseLibraryModal() {
+        const modal = document.getElementById('exercise-selection-modal');
+        const allMuscleGroups = utils.getAllMuscleGroups();
+        const filterCats = ['All', ...allMuscleGroups];
+        const q = (this.exerciseLibraryQuery || '').toLowerCase().trim();
+        let html = `
+        <div class="page-header">
+            <button class="btn btn-sm btn-icon" onclick="document.getElementById('exercise-selection-modal').style.display='none'; app.navigate(app.currentView);"><i class="fas fa-arrow-left"></i></button>
+            <h2 style="margin:0; font-size:18px;">Saved Exercises Library</h2>
+            <button class="btn btn-sm btn-icon" title="Create New Exercise" onclick="app.openCreateExerciseModal('library')"><i class="fas fa-plus"></i></button>
+        </div>
+        <div style="padding: 0 16px;">
+            <div style="display:flex; gap:8px; margin-bottom:10px;">
+                <button class="btn btn-sm btn-primary" style="flex:1;" onclick="app.openCreateExerciseModal('library')"><i class="fas fa-plus"></i> New Exercise</button>
+                <button class="btn btn-sm" style="flex:1; background:var(--surface-elevated); border:1px solid var(--border);" onclick="app.promptAddMuscleGroup()"><i class="fas fa-dna text-info"></i> + New Muscle Group</button>
+            </div>
+            <input type="text" id="ex-lib-search-input" class="edit-input" placeholder="Search saved exercises by name or muscle..." value="${this.exerciseLibraryQuery}" oninput="app.updateExerciseLibrarySearch(this.value)">
+            <div style="display:flex; gap:6px; overflow-x:auto; padding-bottom:8px; margin-bottom:10px; scrollbar-width:none;">
+                ${filterCats.map(c => `<button class="btn btn-sm" style="padding:5px 10px; font-size:11px; white-space:nowrap; background:${this.exerciseLibraryFilter === c ? 'var(--accent-color)' : 'var(--surface-elevated)'}; color:${this.exerciseLibraryFilter === c ? 'var(--bg-color)' : 'var(--text-primary)'}; border:none;" onclick="app.exerciseLibraryFilter='${c}'; app.renderExerciseLibraryModal();">${c}</button>`).join('')}
+            </div>
+        </div>
+        <div id="ex-lib-results-container" style="padding: 0 16px 80px 16px;">
+            ${this.buildExerciseLibraryResultsHTML(q)}
+        </div>`;
+        modal.innerHTML = html;
+    },
+    updateExerciseLibrarySearch(val) {
+        this.exerciseLibraryQuery = val;
+        const container = document.getElementById('ex-lib-results-container');
+        if (container) {
+            container.innerHTML = this.buildExerciseLibraryResultsHTML((val || '').toLowerCase().trim());
+        }
+    },
+    buildExerciseLibraryResultsHTML(q) {
+        const allMuscleGroups = utils.getAllMuscleGroups();
+        const exercises = [...(store.state.customExercises || [])].sort((a,b) => a.name.localeCompare(b.name));
+        const filtered = exercises.filter(ex => {
+            const mList = utils.getMuscles(ex);
+            const catOk = this.exerciseLibraryFilter === 'All' || mList.includes(this.exerciseLibraryFilter);
+            const qOk = !q || ex.name.toLowerCase().includes(q) || mList.some(m => m.toLowerCase().includes(q));
+            return catOk && qOk;
+        });
+        if (filtered.length === 0) {
+            return `<div class="card" style="text-align:center; padding:24px;"><p class="text-muted">No exercises match this filter.</p><button class="btn btn-primary" style="margin-top:10px;" onclick="app.openCreateExerciseModal('library')">+ Create Exercise</button></div>`;
+        }
+        let html = '';
+        filtered.forEach((ex, idx) => {
+            const mList = utils.getMuscles(ex);
+            const primaryM = mList[0] || 'Other';
+            const secondaryM = mList[1] || '';
+            const peak4w = store.getPeakSet(ex.name, '');
+            const safeOldName = ex.name.replace(/'/g, "\\'");
+            html += `
+            <div class="card" style="margin-bottom:12px; padding:12px;">
+                <div class="flex-between" style="gap:8px; margin-bottom:8px;">
+                    <div style="display:flex; align-items:center; gap:10px; flex:1; min-width:0;">
+                        <img src="${utils.getMuscleImage(primaryM)}" alt="${primaryM}" style="width:44px; height:44px; border-radius:10px; object-fit:cover; flex-shrink:0; border:1px solid var(--border);">
+                        <div style="flex:1; min-width:0;">
+                            <input type="text" class="edit-input" style="margin:0; font-weight:800; font-size:15px !important; padding:4px 8px;" value="${ex.name}" onchange="app.liveUpdateExerciseFromLibrary('${safeOldName}', 'name', this.value)">
+                            <div style="font-size:10px; color:var(--text-secondary); margin-top:2px;">
+                                ${peak4w ? `<span style="color:var(--success); font-weight:bold;"><i class="fas fa-fire"></i> 4w Max: ${peak4w.weight}kg × ${peak4w.reps}</span>` : 'No sets logged in last 4w'}
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn-icon" style="color:var(--pending); width:32px; height:32px; flex-shrink:0;" title="Delete Exercise" onclick="app.deleteSavedExercise('${safeOldName}')"><i class="fas fa-trash"></i></button>
+                </div>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-top:6px;">
+                    <div>
+                        <label class="text-muted" style="font-size:10px;">Default Sets</label>
+                        <input type="number" min="1" class="edit-input" style="margin:0; text-align:center; font-weight:bold; padding:6px;" value="${ex.targetSets || 3}" onchange="app.liveUpdateExerciseFromLibrary('${safeOldName}', 'targetSets', this.value)">
+                    </div>
+                    <div>
+                        <label class="text-muted" style="font-size:10px;">Target Rep Range</label>
+                        <input type="text" class="edit-input" style="margin:0; text-align:center; font-weight:bold; padding:6px;" value="${ex.targetReps || '8-12'}" onchange="app.liveUpdateExerciseFromLibrary('${safeOldName}', 'targetReps', this.value)">
+                    </div>
+                </div>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-top:8px;">
+                    <div>
+                        <label class="text-muted" style="font-size:10px;">Primary Muscle (Dropdown)</label>
+                        <select class="edit-input" style="margin:0; font-size:13px !important; padding:6px;" onchange="app.liveUpdateExerciseMuscle('${safeOldName}', 0, this.value)">
+                            ${allMuscleGroups.map(m => `<option value="${m}" ${primaryM === m ? 'selected' : ''}>${m}</option>`).join('')}
+                            <option value="__ADD_NEW__">+ Add New Muscle Group...</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-muted" style="font-size:10px;">Secondary Muscle (Optional)</label>
+                        <select class="edit-input" style="margin:0; font-size:13px !important; padding:6px;" onchange="app.liveUpdateExerciseMuscle('${safeOldName}', 1, this.value)">
+                            <option value="">None</option>
+                            ${allMuscleGroups.map(m => `<option value="${m}" ${secondaryM === m ? 'selected' : ''}>${m}</option>`).join('')}
+                            <option value="__ADD_NEW__">+ Add New Muscle Group...</option>
+                        </select>
+                    </div>
+                </div>
+            </div>`;
+        });
+        return html;
+    },
+    liveUpdateExerciseFromLibrary(oldName, field, val) {
+        const master = utils.getMasterExercise(oldName);
+        const updated = {
+            name: field === 'name' ? (val || oldName).trim() : master.name,
+            muscles: utils.getMuscles(master),
+            targetSets: field === 'targetSets' ? (parseInt(val) || 3) : (master.targetSets || 3),
+            targetReps: field === 'targetReps' ? (val || '8-12').trim() : (master.targetReps || '8-12')
+        };
+        store.syncExerciseGlobally(oldName, updated);
+        this.renderExerciseLibraryModal();
+        if (this.currentView) this.navigate(this.currentView);
+    },
+    liveUpdateExerciseMuscle(exName, slotIdx, selectedVal) {
+        let chosen = selectedVal;
+        if (selectedVal === '__ADD_NEW__') {
+            const newM = this.promptAddMuscleGroup(false);
+            if (!newM) { this.renderExerciseLibraryModal(); return; }
+            chosen = newM;
+        }
+        const master = utils.getMasterExercise(exName);
+        let mList = [...utils.getMuscles(master)];
+        if (slotIdx === 0) {
+            mList[0] = chosen || 'Other';
+        } else {
+            if (!chosen) mList = [mList[0] || 'Other'];
+            else mList[1] = chosen;
+        }
+        mList = mList.filter((v, i, a) => v && a.indexOf(v) === i);
+        store.syncExerciseGlobally(exName, {
+            name: master.name,
+            muscles: mList,
+            targetSets: master.targetSets || 3,
+            targetReps: master.targetReps || '8-12'
+        });
+        this.renderExerciseLibraryModal();
+        if (this.currentView) this.navigate(this.currentView);
+    },
+    deleteSavedExercise(exName) {
+        if (!confirm(`Delete "${exName}" from Saved Exercises and remove it from splits?`)) return;
+        store.state.customExercises = (store.state.customExercises || []).filter(c => c.name !== exName);
+        delete EXERCISE_DB[exName];
+        store.state.routines.forEach(r => (r.days || []).forEach(d => (d.workouts || []).forEach(w => {
+            w.exercises = (w.exercises || []).filter(e => e.name !== exName);
+        })));
+        store.save();
+        this.renderExerciseLibraryModal();
+        if (this.currentView) this.navigate(this.currentView);
+    },
+    promptAddMuscleGroup(refreshAfter = true) {
+        const name = prompt("Enter New Muscle Group Name (e.g. Forearms, Glutes, Traps, Neck):");
+        if (!name || !name.trim()) return null;
+        const clean = name.trim();
+        if (!MUSCLE_GROUPS.includes(clean) && !store.state.customMuscleGroups.includes(clean)) {
+            store.state.customMuscleGroups.push(clean);
+            store.save();
+        }
+        if (refreshAfter) {
+            if (document.getElementById('exercise-selection-modal').style.display === 'flex') {
+                this.renderExerciseLibraryModal();
+            }
+            this.navigate(this.currentView);
+        }
+        return clean;
+    },
+    // Create Exercise Modal with Dropdown Muscle Group Selector & "+ Add New Muscle Group" Option
+    openCreateExerciseModal(context = 'library', dIdx = null, wIdx = null) {
+        this.createExContext = context;
+        this.createExDayIdx = dIdx;
+        this.createExWIdx = wIdx;
+        const allMuscleGroups = utils.getAllMuscleGroups();
+        const defaultMuscle = (this.exerciseLibraryFilter && this.exerciseLibraryFilter !== 'All') ? this.exerciseLibraryFilter : 'Chest';
+        const modal = document.getElementById('meal-create-modal');
+        let html = `
+        <div class="page-header">
+            <button class="btn btn-sm btn-icon" onclick="document.getElementById('meal-create-modal').style.display='none'"><i class="fas fa-arrow-left"></i></button>
+            <h2 style="margin:0; font-size:18px;">Create New Exercise</h2>
+            <button class="btn btn-sm btn-success" onclick="app.saveCreatedExerciseModal()"><i class="fas fa-check"></i> Save</button>
+        </div>
+        <div style="padding: 16px;">
+            <div class="card">
+                <label class="text-muted" style="font-size:12px;">Exercise Name</label>
+                <input type="text" id="new-ex-name" class="edit-input" placeholder="e.g. Incline Cable Fly, Pendulum Squat">
+
+                <label class="text-muted" style="font-size:12px; margin-top:8px; display:block;">Primary Muscle Group</label>
+                <select id="new-ex-muscle-primary" class="edit-input" onchange="app.handleCreateExMuscleDropdown('new-ex-muscle-primary')">
+                    ${allMuscleGroups.map(m => `<option value="${m}" ${m === defaultMuscle ? 'selected' : ''}>${m}</option>`).join('')}
+                    <option value="__ADD_NEW__">+ Add New Muscle Group...</option>
+                </select>
+
+                <label class="text-muted" style="font-size:12px; margin-top:8px; display:block;">Secondary Muscle Group (Optional)</label>
+                <select id="new-ex-muscle-secondary" class="edit-input" onchange="app.handleCreateExMuscleDropdown('new-ex-muscle-secondary')">
+                    <option value="">None</option>
+                    ${allMuscleGroups.map(m => `<option value="${m}">${m}</option>`).join('')}
+                    <option value="__ADD_NEW__">+ Add New Muscle Group...</option>
+                </select>
+
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:8px;">
+                    <div>
+                        <label class="text-muted" style="font-size:12px;">Default Sets</label>
+                        <input type="number" id="new-ex-sets" class="edit-input" value="3" min="1">
+                    </div>
+                    <div>
+                        <label class="text-muted" style="font-size:12px;">Desired Rep Range</label>
+                        <input type="text" id="new-ex-reps" class="edit-input" value="8-12" placeholder="8-12">
+                    </div>
+                </div>
+                <button class="btn btn-primary" style="margin-top:12px;" onclick="app.saveCreatedExerciseModal()"><i class="fas fa-plus"></i> Save Exercise</button>
+            </div>
+        </div>`;
+        modal.innerHTML = html;
+        modal.style.display = 'flex';
+    },
+    handleCreateExMuscleDropdown(selectId) {
+        const el = document.getElementById(selectId);
+        if (!el) return;
+        if (el.value === '__ADD_NEW__') {
+            const added = this.promptAddMuscleGroup(false);
+            if (added) {
+                // Re-populate both dropdowns with the new muscle group and select it
+                ['new-ex-muscle-primary', 'new-ex-muscle-secondary'].forEach(id => {
+                    const sel = document.getElementById(id);
+                    if (!sel) return;
+                    const prevVal = sel.value;
+                    const allM = utils.getAllMuscleGroups();
+                    let opts = id === 'new-ex-muscle-secondary' ? `<option value="">None</option>` : '';
+                    opts += allM.map(m => `<option value="${m}">${m}</option>`).join('');
+                    opts += `<option value="__ADD_NEW__">+ Add New Muscle Group...</option>`;
+                    sel.innerHTML = opts;
+                    sel.value = (id === selectId) ? added : (prevVal === '__ADD_NEW__' ? 'Other' : prevVal);
+                });
+            } else {
+                el.value = selectId === 'new-ex-muscle-secondary' ? '' : 'Chest';
+            }
+        }
+    },
+    saveCreatedExerciseModal() {
+        const nameEl = document.getElementById('new-ex-name');
+        const pEl = document.getElementById('new-ex-muscle-primary');
+        const sEl = document.getElementById('new-ex-muscle-secondary');
+        const setsEl = document.getElementById('new-ex-sets');
+        const repsEl = document.getElementById('new-ex-reps');
+        const name = (nameEl ? nameEl.value : '').trim();
+        if (!name) { alert("Please enter an exercise name."); return; }
+        const primary = (pEl && pEl.value && pEl.value !== '__ADD_NEW__') ? pEl.value : 'Other';
+        const secondary = (sEl && sEl.value && sEl.value !== '__ADD_NEW__' && sEl.value !== primary) ? sEl.value : '';
+        const muscles = secondary ? [primary, secondary] : [primary];
+        const targetSets = parseInt(setsEl ? setsEl.value : 3) || 3;
+        const targetReps = (repsEl && repsEl.value ? repsEl.value : '8-12').trim();
+
+        store.syncExerciseGlobally(name, { name, muscles, targetSets, targetReps });
+        document.getElementById('meal-create-modal').style.display = 'none';
+
+        if (this.createExContext === 'active-workout' && workoutEngine.activeWorkout) {
+            workoutEngine.appendExercise(name, targetSets, targetReps);
+        } else if (this.createExContext === 'program-day' && this.draftRoutine && this.createExDayIdx !== null && this.createExWIdx !== null) {
+            this.draftRoutine.days[this.createExDayIdx].workouts[this.createExWIdx].exercises.push({
+                name, targetSets, targetReps, muscles, muscle: primary
+            });
+            this.commitDraftLive();
+            this.navigate('workout-detail');
+        } else if (document.getElementById('exercise-selection-modal').style.display === 'flex') {
+            this.renderExerciseLibraryModal();
+        } else {
+            this.navigate(this.currentView);
+        }
     },
     addWater(amount) { const todayStr = utils.getLocalISODate(new Date()); let nutEntry = store.state.history.nutrition.find(n => utils.getLocalISODate(n.date) === todayStr); if (!nutEntry) { nutEntry = { date: todayStr + 'T12:00:00', cal: 0, pro: 0, car: 0, fat: 0, loggedMeals: [], waterLog: [] }; store.state.history.nutrition.push(nutEntry); } if (!nutEntry.waterLog) nutEntry.waterLog = []; nutEntry.waterLog.push({ id: utils.generateId(), amount: amount, ts: Date.now() }); store.save(); this.navigate('nutrition'); },
     undoWater() { const todayStr = utils.getLocalISODate(new Date()); let nutEntry = store.state.history.nutrition.find(n => utils.getLocalISODate(n.date) === todayStr); if (nutEntry && nutEntry.waterLog && nutEntry.waterLog.length > 0) { nutEntry.waterLog.pop(); store.save(); this.navigate('nutrition'); } },
@@ -2553,18 +3296,23 @@ const app = {
     savePastWorkout() { const idx = store.state.history.workouts.findIndex(w => w.id === this.editingPastWorkoutId); if (idx > -1) { store.state.history.workouts[idx] = this.draftPastWorkout; store.save(); } this.editingPastWorkoutId = null; this.draftPastWorkout = null; this.navigate('data'); },
     editEntry(type, date, field, val) { if(type === 'bodyweight') store.updateBodyweight(date, val); else if (type === 'nutrition') store.updateNutrition(date, field, val); this.navigate('data'); }, deleteEntry(type, date) { if(confirm("Delete this entry forever?")) { store.deleteEntry(type, date); this.navigate('data'); } }, toggleDataTab(tabName) { this.activeDataTab = (this.activeDataTab === tabName) ? null : tabName; this.navigate('data'); }, resetData() { if(confirm("WARNING: This will delete all history and reset the app. Are you sure?")) { localStorage.removeItem('irontrack_state'); location.reload(); } },
     exportData() { const dataStr = JSON.stringify(store.state, null, 2); const blob = new Blob([dataStr], { type: "application/json" }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `IronTrack_Backup_${utils.getLocalISODate(new Date())}.json`; a.click(); URL.revokeObjectURL(url); }, importData(event) { const file = event.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = (e) => { try { const importedState = JSON.parse(e.target.result); if (importedState && importedState.history) { store.state = store.migrate(importedState); store.save(); alert("Data imported successfully! 🚀"); location.reload(); } else { alert("Invalid backup file."); } } catch (error) { alert("Error reading file."); } }; reader.readAsText(file); },
-    // Split Management
+    // Split Management (All edits commit live to store)
     viewRoutine(id) { this.viewingRoutineId = id; this.isEditingProgram = false; this.navigate('workout-detail'); },
     setRoutineActive(id) { store.state.activeRoutineId = id; store.save(); this.navigate('workout-detail'); },
     createNewRoutine() { const name = prompt("Enter name for new split:", "New Split"); if (!name) return; const newRoutine = { id: utils.generateId(), name: name, days: [1,2,3,4,5,6,0].map(d => ({ day: d, workouts: [] })) }; store.state.routines.push(newRoutine); store.state.activeRoutineId = newRoutine.id; store.save(); this.viewRoutine(newRoutine.id); },
     deleteCurrentRoutine() { if(store.state.routines.length <= 1) { alert("You must have at least one routine."); return; } if(confirm("Delete this routine permanently?")) { store.state.routines = store.state.routines.filter(r => r.id !== this.draftRoutine.id); store.state.activeRoutineId = store.state.routines[0].id; this.isEditingProgram = false; store.save(); this.navigate('workout'); } },
-    // Program Edit methods
-    toggleProgramEdit() { const r = store.state.routines.find(x => x.id === this.viewingRoutineId); this.draftRoutine = JSON.parse(JSON.stringify(r)); this.isEditingProgram = true; this.navigate('workout-detail'); },
-    saveProgramEdit() {
+    commitDraftLive() {
+        if (!this.draftRoutine) return;
         this.draftRoutine.days.forEach(d => d.workouts.forEach(w => w.exercises.forEach(e => { e.targetSets = parseInt(e.targetSets)||1; })));
         const idx = store.state.routines.findIndex(r => r.id === this.draftRoutine.id);
-        if(idx > -1) store.state.routines[idx] = JSON.parse(JSON.stringify(this.draftRoutine));
-        store.save(); this.isEditingProgram = false; this.navigate('workout-detail');
+        if (idx > -1) store.state.routines[idx] = JSON.parse(JSON.stringify(this.draftRoutine));
+        store.save();
+    },
+    toggleProgramEdit() { const r = store.state.routines.find(x => x.id === this.viewingRoutineId); this.draftRoutine = JSON.parse(JSON.stringify(r)); this.isEditingProgram = true; this.navigate('workout-detail'); },
+    saveProgramEdit() {
+        this.commitDraftLive();
+        this.isEditingProgram = false;
+        this.navigate('workout-detail');
     },
     swapAdjacentDays(pos1, pos2) {
         const order = [1, 2, 3, 4, 5, 6, 0]; if(pos1 < 0 || pos1 > 6 || pos2 < 0 || pos2 > 6) return;
@@ -2582,30 +3330,88 @@ const app = {
             let found = null; store.state.routines.forEach(r => r.days.forEach(d => d.workouts.forEach(w => { if(w.id === templateId) found = w; })));
             if (found) { newWorkout.name = found.name; newWorkout.isActivity = found.isActivity || false; newWorkout.exercises = JSON.parse(JSON.stringify(found.exercises)); }
         }
-        this.draftRoutine.days[dIdx].workouts.push(newWorkout); this.navigate('workout-detail');
+        this.draftRoutine.days[dIdx].workouts.push(newWorkout);
+        this.commitDraftLive();
+        this.navigate('workout-detail');
     },
-    removeWorkoutFromDay(dIdx, wIdx) { if(confirm("Remove this workout?")) { this.draftRoutine.days[dIdx].workouts.splice(wIdx, 1); this.navigate('workout-detail'); } },
-    updateWorkoutName(dIdx, wIdx, val) { this.draftRoutine.days[dIdx].workouts[wIdx].name = val; },
-    addEx(dIdx, wIdx) { this.draftRoutine.days[dIdx].workouts[wIdx].exercises.push({ name: 'New Exercise', targetSets: 3, targetReps: '8-12', muscle: 'Other' }); this.navigate('workout-detail'); },
-    updateEx(dIdx, wIdx, eIdx, field, val) { this.draftRoutine.days[dIdx].workouts[wIdx].exercises[eIdx][field] = val; },
-    moveEx(dIdx, wIdx, eIdx, dir) { const arr = this.draftRoutine.days[dIdx].workouts[wIdx].exercises; if (eIdx + dir < 0 || eIdx + dir >= arr.length) return; const temp = arr[eIdx]; arr[eIdx] = arr[eIdx + dir]; arr[eIdx + dir] = temp; this.navigate('workout-detail'); },
-    deleteEx(dIdx, wIdx, eIdx) { if(confirm("Delete exercise?")) { this.draftRoutine.days[dIdx].workouts[wIdx].exercises.splice(eIdx, 1); this.navigate('workout-detail'); } },
-    // PR Methods
+    removeWorkoutFromDay(dIdx, wIdx) { if(confirm("Remove this workout?")) { this.draftRoutine.days[dIdx].workouts.splice(wIdx, 1); this.commitDraftLive(); this.navigate('workout-detail'); } },
+    updateWorkoutName(dIdx, wIdx, val) {
+        this.draftRoutine.days[dIdx].workouts[wIdx].name = val;
+        this.commitDraftLive();
+    },
+    addEx(dIdx, wIdx) {
+        // Show modal picker of all saved exercises or option to create a new one
+        const modal = document.getElementById('exercise-selection-modal');
+        const grouped = utils.getGroupedExercises();
+        let html = `<div class="page-header"><button class="btn btn-sm btn-icon" onclick="document.getElementById('exercise-selection-modal').style.display='none'"><i class="fas fa-times"></i></button><h2 style="margin:0; font-size:18px;">Add Saved Exercise</h2><div style="width:36px;"></div></div><div style="padding:0 16px;"><button class="btn btn-primary" style="width:100%; margin-bottom:16px;" onclick="document.getElementById('exercise-selection-modal').style.display='none'; app.openCreateExerciseModal('program-day', ${dIdx}, ${wIdx});"><i class="fas fa-plus"></i> Create New Exercise</button></div><div style="padding:0 16px 80px 16px;">`;
+        Object.keys(grouped).sort().forEach(muscle => {
+            html += `<h3 style="margin-top:16px; color:var(--text-secondary); font-size:14px;">${muscle}</h3><div style="display:flex; flex-direction:column; gap:8px;">`;
+            grouped[muscle].sort((a,b) => a.name.localeCompare(b.name)).forEach(ex => {
+                const safeName = ex.name.replace(/'/g, "\\'");
+                html += `<div class="data-row flex-between" style="padding:12px; background:var(--surface-color); border-radius:8px; border:1px solid var(--border); cursor:pointer;" onclick="app.appendExToProgramDay(${dIdx}, ${wIdx}, '${safeName}')"><div><div style="font-weight:bold;">${ex.name}</div><div class="text-muted" style="font-size:12px;">Def: ${ex.targetSets}x${ex.targetReps} • ${utils.getMuscles(ex).join(', ')}</div></div><i class="fas fa-plus text-accent"></i></div>`;
+            });
+            html += `</div>`;
+        });
+        html += `</div>`;
+        modal.innerHTML = html;
+        modal.style.display = 'flex';
+    },
+    appendExToProgramDay(dIdx, wIdx, exName) {
+        const master = utils.getMasterExercise(exName);
+        this.draftRoutine.days[dIdx].workouts[wIdx].exercises.push({
+            name: master.name,
+            targetSets: master.targetSets || 3,
+            targetReps: master.targetReps || '8-12',
+            muscles: [...utils.getMuscles(master)],
+            muscle: utils.getPrimaryMuscle(master)
+        });
+        this.commitDraftLive();
+        document.getElementById('exercise-selection-modal').style.display = 'none';
+        this.navigate('workout-detail');
+    },
+    handleProgramExMuscleSelect(dIdx, wIdx, eIdx, val) {
+        let chosen = val;
+        if (val === '__ADD_NEW__') {
+            const added = this.promptAddMuscleGroup(false);
+            if (!added) { this.navigate('workout-detail'); return; }
+            chosen = added;
+        }
+        this.updateEx(dIdx, wIdx, eIdx, 'muscles', [chosen]);
+        this.navigate('workout-detail');
+    },
+    updateEx(dIdx, wIdx, eIdx, field, val) {
+        const ex = this.draftRoutine.days[dIdx].workouts[wIdx].exercises[eIdx];
+        const oldName = ex.name;
+        if (field === 'targetSets') ex.targetSets = parseInt(val) || 1;
+        else ex[field] = val;
+        this.commitDraftLive();
+        store.syncExerciseGlobally(oldName, {
+            name: ex.name,
+            muscles: utils.getMuscles(ex),
+            targetSets: ex.targetSets,
+            targetReps: ex.targetReps
+        });
+    },
+    moveEx(dIdx, wIdx, eIdx, dir) { const arr = this.draftRoutine.days[dIdx].workouts[wIdx].exercises; if (eIdx + dir < 0 || eIdx + dir >= arr.length) return; const temp = arr[eIdx]; arr[eIdx] = arr[eIdx + dir]; arr[eIdx + dir] = temp; this.commitDraftLive(); this.navigate('workout-detail'); },
+    deleteEx(dIdx, wIdx, eIdx) { if(confirm("Delete exercise?")) { this.draftRoutine.days[dIdx].workouts[wIdx].exercises.splice(eIdx, 1); this.commitDraftLive(); this.navigate('workout-detail'); } },
+    // PR Methods (Updates 4-week rolling maxes & logs timestamped manual PR)
     editPR(lift) {
-        const current = store.state.prs[lift] || {weight:0, reps:0};
-        const inputW = prompt(`Enter new PR Weight (kg) for ${lift}:`, current.weight);
+        const current = utils.getRecent4WeekPR(lift) || store.state.prs[lift] || {weight:0, reps:0};
+        const inputW = prompt(`Enter current 4-week max Weight (kg) for ${lift}:`, current.weight || 0);
         if (inputW === null) return;
-        const inputR = prompt(`Enter new PR Reps for ${lift} at ${inputW}kg:`, current.reps || 1);
+        const inputR = prompt(`Enter Reps for ${lift} at ${inputW}kg:`, current.reps || 1);
         if (inputR === null) return;
         const w = parseFloat(inputW) || 0;
         const r = parseInt(inputR) || 0;
         store.state.prs[lift] = { weight: w, reps: r };
+        const fourWeeksAgo = new Date().getTime() - (28 * 86400000);
+        store.state.history.manualPRs = (store.state.history.manualPRs || []).filter(m => !(m.lift === lift && new Date(m.date).getTime() >= fourWeeksAgo));
         if(w > 0 && r > 0) {
             store.state.history.manualPRs.push({
                 lift: lift,
                 weight: w,
                 reps: r,
-                e1rm: w * (1 + r/30),
+                e1rm: r === 1 ? w : w * (1 + r/30),
                 date: new Date().toISOString()
             });
         }
@@ -2847,7 +3653,7 @@ const app = {
         nutEntry.car = Math.round(car * 10) / 10;
         nutEntry.fat = Math.round(fat * 10) / 10;
     },
-    // Multi-Ingredient Meal Builder & On-The-Fly Saved Meal Editor (with non-rerendering search input so keyboard stays open)
+    // Multi-Ingredient Meal Builder & On-The-Fly Saved Meal Editor
     editSavedMeal(id) {
         const existing = id ? store.state.savedMeals.find(x => x.id === id) : null;
         if (existing) {
