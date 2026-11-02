@@ -2182,57 +2182,7 @@ const workoutEngine = {
         this.sync();
         this.renderActiveWorkout();
     },
-    promptRenameExercise(exIdx) {
-        const ex = this.activeWorkout.exercises[exIdx];
-        const newName = prompt(`Edit Exercise Title (Max ${MAX_EX_TITLE_LEN} chars — updates live across all splits & workouts):`, ex.name);
-        if (newName !== null && newName.trim() !== '') {
-            this.updateExerciseName(exIdx, newName.trim().slice(0, MAX_EX_TITLE_LEN));
-        }
-    },
-    editVariationTitle(exIdx) {
-        const ex = this.activeWorkout.exercises[exIdx];
-        const current = ex.variation || '';
-        if (!current) {
-            const newVar = prompt("Enter a new variation title for " + ex.name + ":");
-            if (newVar && newVar.trim()) {
-                const clean = newVar.trim();
-                if (!store.state.variations[ex.name]) store.state.variations[ex.name] = [];
-                if (!store.state.variations[ex.name].includes(clean)) store.state.variations[ex.name].push(clean);
-                ex.variation = clean;
-                this.updatePrefills(ex);
-                store.save(); this.sync(); this.renderActiveWorkout();
-            }
-            return;
-        }
-        const renamed = prompt("Edit variation title '" + current + "':", current);
-        if (renamed !== null && renamed.trim() !== '' && renamed.trim() !== current) {
-            const clean = renamed.trim();
-            if (!store.state.variations[ex.name]) store.state.variations[ex.name] = [];
-            const idx = store.state.variations[ex.name].indexOf(current);
-            if (idx > -1) store.state.variations[ex.name][idx] = clean;
-            else if (!store.state.variations[ex.name].includes(clean)) store.state.variations[ex.name].push(clean);
-            store.state.history.workouts.forEach(w => (w.exercises || []).forEach(pastEx => {
-                if (pastEx.name === ex.name && (pastEx.variation || '') === current) {
-                    pastEx.variation = clean;
-                }
-            }));
-            ex.variation = clean;
-            store.save(); this.sync(); this.renderActiveWorkout();
-        }
-    },
-    changeVariation(exIdx, val) {
-        const ex = this.activeWorkout.exercises[exIdx];
-        if (val === '__RENAME__') {
-            this.editVariationTitle(exIdx);
-            return;
-        }
-        if (val === '__NEW__') { const newVar = prompt("Enter new variation for " + ex.name + ":"); if (!newVar) { this.renderActiveWorkout(); return; } if (!store.state.variations[ex.name]) store.state.variations[ex.name] = []; if (!store.state.variations[ex.name].includes(newVar)) { store.state.variations[ex.name].push(newVar); store.save(); } val = newVar; }
-        ex.variation = val; const pastEx = store.getExerciseHistory(ex.name, val); ex.notes = pastEx[0] && pastEx[0].notes ? pastEx[0].notes : ''; ex.sets.forEach(s => { if(!s.completed) { s.weight = 0; s.reps = 0; }}); this.updatePrefills(ex); this.sync(); this.renderActiveWorkout();
-    },
-    inputChange(exIdx, setIdx, field, value) { this.activeWorkout.exercises[exIdx].sets[setIdx][field] = parseFloat(value) || 0; this.sync(); },
-    updateNotes(exIdx, val) { this.activeWorkout.exercises[exIdx].notes = val; this.sync(); },
-    toggleSet(exIdx, setIdx) { const set = this.activeWorkout.exercises[exIdx].sets[setIdx]; set.completed = !set.completed; if (set.completed) this.startRestTimer(store.state.settings.restTimer);
-                                  promptRenameExercise(exIdx) {
+        promptRenameExercise(exIdx) {
         const ex = this.activeWorkout.exercises[exIdx];
         const newName = prompt(`Edit Exercise Title (Max ${MAX_EX_TITLE_LEN} chars — updates live across all splits & workouts):`, ex.name);
         if (newName !== null && newName.trim() !== '') {
