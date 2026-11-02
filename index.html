@@ -141,10 +141,10 @@
         .input-group input { flex: 1; background: transparent; border: none; color: var(--text-primary); text-align: center; font-size: 18px; font-weight: bold; width: 100%; -moz-appearance: textfield; min-width:0; font-family: var(--font-family); }
         .edit-input { background: var(--surface-elevated); border: 1px solid var(--border); color: var(--text-primary); padding: 8px; border-radius: 8px; width: 100%; font-size: 16px !important; margin-bottom: 8px; -webkit-appearance: none; min-width:0; transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease; font-family: var(--font-family); }
         .inline-edit { background: var(--surface-elevated); border: 1px solid var(--border); color: var(--text-primary); padding: 4px; border-radius: 4px; font-size: 16px !important; font-weight:bold; text-align:center; width: 100%; min-width: 0; transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease; font-family: var(--font-family); }
-        .exercise-card { background: var(--surface-color); border-radius: var(--card-radius); border: var(--card-border); overflow: hidden; margin-bottom: 16px; transition: all 0.4s ease; } .exercise-header { padding: 16px; background: var(--surface-elevated); display: flex; justify-content: space-between; align-items: flex-start; transition: background-color 0.4s ease; border-bottom: 1px solid var(--border); } .exercise-body { padding: 12px 16px; } .set-wrapper { margin-bottom: 12px; }
+        .exercise-card { background: var(--surface-color); border-radius: var(--card-radius); border: var(--card-border); overflow: hidden; margin-bottom: 16px; transition: all 0.4s ease; } .exercise-header { padding: 14px 14px 12px 14px; background: var(--surface-elevated); display: flex; justify-content: space-between; align-items: flex-start; transition: background-color 0.4s ease; border-bottom: 1px solid var(--border); } .exercise-body { padding: 12px 14px; } .set-wrapper { margin-bottom: 12px; }
         .set-row { display: grid; grid-template-columns: 40px 1fr 1fr 1fr 50px; gap: 8px; align-items: center; } .set-number { font-size: 14px; color: var(--text-secondary); font-weight: bold; text-align: center; }
         .btn-check { height: 44px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface-elevated); color: var(--text-secondary); font-size: 18px; cursor: pointer; transition: background-color 0.4s ease, color 0.4s ease; } .btn-check.completed { background: var(--success); color: var(--bg-color); border:none;}
-        .editor-exercise-row { display:flex; gap:12px; align-items:center; background: var(--surface-elevated); padding: 12px; border-radius: 8px; margin-bottom: 8px; transition: background-color 0.4s ease; border: 1px solid var(--border);} .editor-controls { display:flex; gap:8px; flex-direction:column; } .editor-controls button { width: 44px; height: 44px; font-size: 16px; }
+        .editor-exercise-row { display:flex; gap:10px; align-items:center; background: var(--surface-elevated); padding: 12px; border-radius: 8px; margin-bottom: 8px; transition: background-color 0.4s ease; border: 1px solid var(--border);} .editor-controls { display:flex; gap:6px; flex-direction:column; } .editor-controls button { width: 36px; height: 36px; font-size: 14px; }
         .data-row { padding: 12px 0; border-bottom: 1px solid var(--border); transition: border-color 0.4s ease; } .data-row:last-child { border-bottom: none; }
         .nut-grid { display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr 1fr 30px; gap: 6px; align-items: center; margin-top: 8px; } .nut-label { font-size: 10px; color: var(--text-secondary); text-align: center; text-transform: uppercase; }
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg-color); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 12px 6px calc(12px + var(--safe-bottom)); z-index: 1000; transition: background-color 0.4s ease, border-color 0.4s ease; opacity: 0.95; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); }
@@ -200,6 +200,34 @@
         .nut-insight-good { background: rgba(52, 199, 89, 0.12); border: 1px solid rgba(52, 199, 89, 0.45); color: #66ef88; }
         .nut-insight-mid { background: rgba(255, 149, 0, 0.12); border: 1px solid rgba(255, 149, 0, 0.45); color: #ffb340; }
         .nut-insight-bad { background: rgba(255, 59, 48, 0.12); border: 1px solid rgba(255, 59, 48, 0.45); color: #ff6961; }
+        /* Aesthetic 2-Line Title Wrap & Non-Wrapping Badge Helpers */
+        .ex-title-2line {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            word-break: break-word;
+            line-height: 1.25;
+            max-height: 2.5em;
+        }
+        .pill-nowrap {
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+        /* Challenge Calendar Grid */
+        .chal-cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 10px; }
+        .chal-cal-hdr { text-align: center; font-size: 10px; font-weight: 800; color: var(--text-secondary); text-transform: uppercase; padding-bottom: 4px; }
+        .chal-cal-day {
+            aspect-ratio: 1 / 1.08; border-radius: 10px; background: var(--surface-elevated); border: 1px solid var(--border);
+            display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; padding: 2px; transition: all 0.2s ease;
+        }
+        .chal-cal-day.cal-all-met { background: var(--success-dim); border: 1.5px solid var(--success); box-shadow: 0 0 8px rgba(52,199,89,0.2); }
+        .chal-cal-day.cal-partial { background: var(--warning-dim); border: 1px solid var(--warning); }
+        .chal-cal-day.cal-missed { background: var(--pending-dim); border: 1px solid var(--pending); }
+        .chal-cal-day.cal-active-sel { outline: 2px solid var(--accent-color); transform: scale(1.04); z-index: 2; }
     </style>
 </head>
 <body>
@@ -215,6 +243,7 @@
 <div id="meal-search-modal"></div>
 <div id="meal-create-modal"></div>
 <script>
+const MAX_EX_TITLE_LEN = 38;
 const QUOTES = [
     "You have power over your mind—not outside events. Realize this, and you will find strength.", "The happiness of your life depends upon the quality of your thoughts.", "The impediment to action advances action. What stands in the way becomes the way.", "When you arise in the morning, think of what a privilege it is to be alive, to think, to enjoy, to love.", "Waste no more time arguing about what a good man should be. Be one.", "The best revenge is to be unlike him who performed the injury.", "The soul becomes dyed with the colour of its thoughts.", "If it is not right, do not do it, if it is not true, do not say it.", "Do every act of your life as though it were the very last act of your life.", "It is in your power whenever you shall choose to retire into yourself.", "The universe is transformation: life is opinion.", "Remember that very little is needed to make a happy life."
 ];
@@ -468,7 +497,6 @@ const store = {
         if(!state.savedMeals) state.savedMeals = [];
         if(!state.customExercises) state.customExercises = [];
         if(!state.customMuscleGroups) state.customMuscleGroups = [];
-        // Seed master exercise catalog into customExercises so all exercises are top-level editable & live-synced
         Object.keys(EXERCISE_DB).forEach(exName => {
             if (!state.customExercises.find(c => c.name === exName)) {
                 state.customExercises.push({
@@ -530,9 +558,23 @@ const store = {
         for (let i = this.state.history.workouts.length - 1; i >= 0; i--) {
             const w = this.state.history.workouts[i];
             if(w.isSkipped || w.isActivity) continue;
-            const ex = (w.exercises||[]).find(e => e.name === exerciseName && (e.variation || '') === variationStr);
-            if (ex && ex.sets.length > 0) history.push(ex);
-            if (history.length >= 3) break;
+            const exIdx = (w.exercises||[]).findIndex(e => e.name === exerciseName && (e.variation || '') === variationStr);
+            if (exIdx > -1) {
+                const ex = w.exercises[exIdx];
+                if (ex && ex.sets.length > 0) {
+                    let priorOverlap = 0;
+                    const currMuscles = utils.getMuscles(ex);
+                    for (let j = 0; j < exIdx; j++) {
+                        const prevEx = w.exercises[j];
+                        const prevM = utils.getMuscles(prevEx);
+                        if (prevM.some(m => currMuscles.includes(m) && m !== 'Cardio' && m !== 'Other')) {
+                            priorOverlap += (prevEx.sets || []).filter(s => s.completed !== false).length || 3;
+                        }
+                    }
+                    history.push({ ...ex, orderIndex: exIdx, totalExercises: w.exercises.length, priorOverlapSets: priorOverlap });
+                }
+            }
+            if (history.length >= 8) break;
         }
         return history;
     },
@@ -546,10 +588,9 @@ const store = {
         });
         return peak;
     },
-    // Live Global Sync for Exercises, Muscle Groups, Sets & Reps across all splits, active workout, and history
     syncExerciseGlobally(oldName, updatedData) {
         const cleanOld = (oldName || '').trim();
-        const newName = (updatedData.name || cleanOld).trim();
+        const newName = (updatedData.name || cleanOld).trim().slice(0, MAX_EX_TITLE_LEN);
         if (!newName) return;
         const muscles = (updatedData.muscles && updatedData.muscles.length)
             ? updatedData.muscles.filter(Boolean)
@@ -562,7 +603,6 @@ const store = {
         });
         const targetSets = parseInt(updatedData.targetSets) || 3;
         const targetReps = String(updatedData.targetReps || '8-12').trim();
-        // 1. Update Master Exercise Library (customExercises & EXERCISE_DB runtime)
         let masterIdx = this.state.customExercises.findIndex(c => c.name === cleanOld);
         if (masterIdx > -1) {
             this.state.customExercises[masterIdx] = {
@@ -582,7 +622,6 @@ const store = {
                 targetReps: targetReps
             });
         }
-        // Deduplicate if renamed to another existing entry
         this.state.customExercises = this.state.customExercises.filter((item, idx, arr) =>
             arr.findIndex(x => x.name === item.name) === idx
         );
@@ -590,11 +629,9 @@ const store = {
             delete EXERCISE_DB[cleanOld];
         }
         EXERCISE_DB[newName] = { muscles: muscles, targetSets: targetSets, targetReps: targetReps };
-        // Update trackedPRs if renamed
         if (cleanOld !== newName && this.state.trackedPRs) {
             this.state.trackedPRs = this.state.trackedPRs.map(n => n === cleanOld ? newName : n);
         }
-        // 2. Update All Saved Splits / Routines Live
         this.state.routines.forEach(r => (r.days || []).forEach(d => (d.workouts || []).forEach(w => (w.exercises || []).forEach(ex => {
             if (ex.name === cleanOld || ex.name === newName) {
                 ex.name = newName;
@@ -604,7 +641,6 @@ const store = {
                 if (updatedData.targetReps !== undefined) ex.targetReps = targetReps;
             }
         }))));
-        // 3. Update Draft Routine if Program Editor is currently open
         if (window.app && app.draftRoutine) {
             (app.draftRoutine.days || []).forEach(d => (d.workouts || []).forEach(w => (w.exercises || []).forEach(ex => {
                 if (ex.name === cleanOld || ex.name === newName) {
@@ -616,7 +652,6 @@ const store = {
                 }
             })));
         }
-        // 4. Update Variations key if renamed
         if (cleanOld !== newName && this.state.variations[cleanOld]) {
             if (!this.state.variations[newName]) this.state.variations[newName] = [];
             this.state.variations[cleanOld].forEach(v => {
@@ -624,7 +659,6 @@ const store = {
             });
             delete this.state.variations[cleanOld];
         }
-        // 5. Update All Logged History Workouts so all muscle graphs, heatmaps, and 4-week maxes update live
         this.state.history.workouts.forEach(w => (w.exercises || []).forEach(pastEx => {
             if (pastEx.name === cleanOld || pastEx.name === newName) {
                 pastEx.name = newName;
@@ -632,7 +666,6 @@ const store = {
                 pastEx.muscle = primaryMuscle;
             }
         }));
-        // 6. Update Active Session in Progress Live (including set count reductions/additions & target reps)
         const syncSessionObj = (sess) => {
             if (!sess || !sess.exercises) return;
             sess.exercises.forEach(actEx => {
@@ -643,7 +676,6 @@ const store = {
                     if (updatedData.targetReps !== undefined) actEx.targetReps = targetReps;
                     if (updatedData.targetSets !== undefined) {
                         actEx.targetSets = targetSets;
-                        // Adjust uncompleted sets live to match new targetSets
                         while (actEx.sets.length > targetSets && !actEx.sets[actEx.sets.length - 1].completed) {
                             actEx.sets.pop();
                         }
@@ -707,7 +739,6 @@ const utils = {
     getMuscleImage: (muscleName) => {
         return MUSCLE_IMAGES[muscleName] || MUSCLE_IMAGES['Other'];
     },
-    // Exact Exercise-Matched Movement Illustrations (so every exercise displays its true movement, e.g. Lateral Raise is actually a Lateral Raise)
     getExerciseImage: (exName, primaryMuscle = 'Other') => {
         const n = (exName || '').toLowerCase();
         const m = (primaryMuscle || 'Other').toLowerCase();
@@ -721,7 +752,6 @@ const utils = {
         const body = '#e5e5ea';
         let art = '';
         if (n.includes('lateral raise') || n.includes('side raise')) {
-            // Lateral Raise: Standing front view, both arms raised out to the sides at 90 degrees with dumbbells/cables & deltoid arcs
             art = `
             <path d="M18 52 Q24 28 38 24" fill="none" stroke="${c}" stroke-width="2" stroke-dasharray="3 2"/>
             <path d="M82 52 Q76 28 62 24" fill="none" stroke="${c}" stroke-width="2" stroke-dasharray="3 2"/>
@@ -736,7 +766,6 @@ const utils = {
             <line x1="46" y1="58" x2="43" y2="86" stroke="${body}" stroke-width="5" stroke-linecap="round"/>
             <line x1="54" y1="58" x2="57" y2="86" stroke="${body}" stroke-width="5" stroke-linecap="round"/>`;
         } else if (n.includes('rear delt') || n.includes('reverse fly') || n.includes('face pull')) {
-            // Rear Delt Fly: Bent-over / rear-delt view with arms sweeping wide horizontally & glowing rear delts
             art = `
             <path d="M22 44 Q14 34 14 26" fill="none" stroke="${c}" stroke-width="2" stroke-dasharray="3 2"/>
             <path d="M78 44 Q86 34 86 26" fill="none" stroke="${c}" stroke-width="2" stroke-dasharray="3 2"/>
@@ -752,7 +781,6 @@ const utils = {
             <line x1="45" y1="60" x2="42" y2="86" stroke="${body}" stroke-width="5" stroke-linecap="round"/>
             <line x1="55" y1="60" x2="58" y2="86" stroke="${body}" stroke-width="5" stroke-linecap="round"/>`;
         } else if (n.includes('incline') && n.includes('press')) {
-            // Incline DB / Barbell Press: 45-degree incline bench with athlete pressing upwards
             art = `
             <line x1="20" y1="78" x2="62" y2="42" stroke="${eq}" stroke-width="4" stroke-linecap="round"/>
             <line x1="28" y1="72" x2="28" y2="88" stroke="${eq}" stroke-width="3.5"/>
@@ -764,7 +792,6 @@ const utils = {
             <line x1="34" y1="58" x2="22" y2="72" stroke="${body}" stroke-width="5" stroke-linecap="round"/>
             <line x1="22" y1="72" x2="18" y2="88" stroke="${body}" stroke-width="4.5" stroke-linecap="round"/>`;
         } else if (n.includes('bench press') || (n.includes('flat') && n.includes('press'))) {
-            // Flat Bench Press: Horizontal bench, athlete lying flat pressing barbell with plates
             art = `
             <line x1="14" y1="66" x2="84" y2="66" stroke="${eq}" stroke-width="4.5" stroke-linecap="round"/>
             <line x1="24" y1="66" x2="24" y2="88" stroke="${eq}" stroke-width="3.5"/>
@@ -777,7 +804,6 @@ const utils = {
             <line x1="62" y1="58" x2="78" y2="72" stroke="${body}" stroke-width="5" stroke-linecap="round"/>
             <line x1="78" y1="72" x2="78" y2="88" stroke="${body}" stroke-width="4.5" stroke-linecap="round"/>`;
         } else if (n.includes('pec deck') || n.includes('fly')) {
-            // Pec Deck / Chest Fly: Seated front view bringing vertical machine arms together across chest
             art = `
             <rect x="20" y="12" width="60" height="6" rx="2" fill="${eq}"/>
             <circle cx="50" cy="28" r="7" fill="${body}"/>
@@ -791,7 +817,6 @@ const utils = {
             <line x1="45" y1="64" x2="42" y2="86" stroke="${body}" stroke-width="5" stroke-linecap="round"/>
             <line x1="55" y1="64" x2="58" y2="86" stroke="${body}" stroke-width="5" stroke-linecap="round"/>`;
         } else if (n.includes('dip')) {
-            // Parallel Bar Dips: Athlete suspended between dip bars pressing body up
             art = `
             <path d="M22 88 L22 48 L36 48" fill="none" stroke="${eq}" stroke-width="4" stroke-linecap="round"/>
             <path d="M78 88 L78 48 L64 48" fill="none" stroke="${eq}" stroke-width="4" stroke-linecap="round"/>
@@ -802,7 +827,6 @@ const utils = {
             <polyline points="47,56 46,72 52,78" fill="none" stroke="${body}" stroke-width="4.5" stroke-linecap="round"/>
             <polyline points="53,56 52,72 58,78" fill="none" stroke="${body}" stroke-width="4.5" stroke-linecap="round"/>`;
         } else if (n.includes('pulldown')) {
-            // Lat Pulldown: High cable tower, wide lat bar, seated athlete pulling bar to upper chest
             art = `
             <line x1="50" y1="6" x2="50" y2="26" stroke="${eq}" stroke-width="2.5"/>
             <path d="M20 28 L32 24 L68 24 L80 28" fill="none" stroke="${c}" stroke-width="4" stroke-linecap="round"/>
@@ -814,7 +838,6 @@ const utils = {
             <line x1="45" y1="68" x2="40" y2="88" stroke="${body}" stroke-width="5" stroke-linecap="round"/>
             <line x1="55" y1="68" x2="60" y2="88" stroke="${body}" stroke-width="5" stroke-linecap="round"/>`;
         } else if (n.includes('pull-up') || n.includes('pull up') || n.includes('chin-up') || n.includes('chin up')) {
-            // Pull-Ups: Overhead horizontal bar, athlete pulling chin up to bar with wide lats
             art = `
             <line x1="12" y1="16" x2="88" y2="16" stroke="${eq}" stroke-width="4.5" stroke-linecap="round"/>
             <circle cx="50" cy="26" r="6.5" fill="${body}"/>
@@ -824,7 +847,6 @@ const utils = {
             <polyline points="46,60 45,76 52,84" fill="none" stroke="${body}" stroke-width="4.5" stroke-linecap="round"/>
             <polyline points="54,60 53,76 46,84" fill="none" stroke="${body}" stroke-width="4.5" stroke-linecap="round"/>`;
         } else if (n.includes('row')) {
-            // Chest Supported / Bent Row: Angled chest pad, athlete rowing weight toward torso
             art = `
             <line x1="30" y1="74" x2="64" y2="38" stroke="${eq}" stroke-width="4" stroke-linecap="round"/>
             <line x1="56" y1="46" x2="66" y2="88" stroke="${eq}" stroke-width="3.5"/>
@@ -834,7 +856,6 @@ const utils = {
             <rect x="46" y="48" width="14" height="8" rx="2" fill="${c}"/>
             <line x1="36" y1="58" x2="22" y2="86" stroke="${body}" stroke-width="5" stroke-linecap="round"/>`;
         } else if (n.includes('preacher curl')) {
-            // Preacher Curl: Angled preacher pad supporting upper arm while curling EZ-bar
             art = `
             <polygon points="46,42 64,58 64,88 46,88" fill="${eq}" opacity="0.45"/>
             <line x1="46" y1="42" x2="66" y2="60" stroke="${eq}" stroke-width="4" stroke-linecap="round"/>
@@ -845,7 +866,6 @@ const utils = {
             <circle cx="72" cy="30" r="6" fill="${c}"/>
             <path d="M78 48 Q78 34 68 24" fill="none" stroke="${c}" stroke-width="2" stroke-dasharray="3 2"/>`;
         } else if (n.includes('hammer curl')) {
-            // Hammer Curl: Neutral-grip vertical dumbbell curl
             art = `
             <circle cx="44" cy="20" r="7" fill="${body}"/>
             <path d="M36 29 L52 29 L50 58 L38 58 Z" fill="${body}"/>
@@ -855,7 +875,6 @@ const utils = {
             <line x1="40" y1="58" x2="38" y2="86" stroke="${body}" stroke-width="5" stroke-linecap="round"/>
             <line x1="48" y1="58" x2="50" y2="86" stroke="${body}" stroke-width="5" stroke-linecap="round"/>`;
         } else if (n.includes('curl') && !n.includes('leg')) {
-            // Seated / Standing Bicep Curl: Supinated dumbbell/barbell curl with bicep peak highlight
             art = `
             <line x1="28" y1="34" x2="28" y2="86" stroke="${eq}" stroke-width="4" stroke-linecap="round"/>
             <line x1="28" y1="64" x2="52" y2="64" stroke="${eq}" stroke-width="4" stroke-linecap="round"/>
@@ -866,7 +885,6 @@ const utils = {
             <rect x="56" y="30" width="14" height="7" rx="2" fill="${c}"/>
             <polyline points="36,60 56,60 58,86" fill="none" stroke="${body}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>`;
         } else if (n.includes('pushdown') || n.includes('pressdown')) {
-            // Tricep Pushdown: High pulley cable, elbows pinned at sides pushing rope/bar down
             art = `
             <line x1="68" y1="8" x2="68" y2="88" stroke="${eq}" stroke-width="4"/>
             <line x1="68" y1="12" x2="52" y2="12" stroke="${eq}" stroke-width="4"/>
@@ -879,7 +897,6 @@ const utils = {
             <line x1="30" y1="58" x2="28" y2="86" stroke="${body}" stroke-width="5" stroke-linecap="round"/>
             <line x1="38" y1="58" x2="40" y2="86" stroke="${body}" stroke-width="5" stroke-linecap="round"/>`;
         } else if (n.includes('overhead') && n.includes('extension')) {
-            // Overhead Tricep Extension: Arms raised overhead extending weight behind head
             art = `
             <circle cx="50" cy="34" r="6.5" fill="${body}"/>
             <path d="M40 43 L60 43 L56 72 L44 72 Z" fill="${body}"/>
@@ -891,7 +908,6 @@ const utils = {
             <line x1="46" y1="72" x2="44" y2="90" stroke="${body}" stroke-width="5" stroke-linecap="round"/>
             <line x1="54" y1="72" x2="56" y2="90" stroke="${body}" stroke-width="5" stroke-linecap="round"/>`;
         } else if (n.includes('bulgarian') || n.includes('split squat') || n.includes('lunge')) {
-            // Bulgarian Split Squat: Rear foot elevated on bench behind, front leg squatting deep
             art = `
             <rect x="68" y="58" width="20" height="6" rx="2" fill="${eq}"/>
             <line x1="72" y1="64" x2="72" y2="88" stroke="${eq}" stroke-width="3.5"/>
@@ -903,7 +919,6 @@ const utils = {
             <polyline points="44,54 24,58 24,86" fill="none" stroke="${c}" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
             <polyline points="44,54 56,68 74,60" fill="none" stroke="${body}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>`;
         } else if (n.includes('hack squat')) {
-            // Hack Squat: 45-degree sled track, athlete squatting along angled back pad
             art = `
             <line x1="18" y1="84" x2="76" y2="18" stroke="${eq}" stroke-width="3" stroke-dasharray="4 3"/>
             <line x1="42" y1="54" x2="66" y2="26" stroke="${eq}" stroke-width="5" stroke-linecap="round"/>
@@ -912,7 +927,6 @@ const utils = {
             <polyline points="44,48 28,44 26,68" fill="none" stroke="${c}" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
             <line x1="16" y1="64" x2="36" y2="74" stroke="${eq}" stroke-width="4.5" stroke-linecap="round"/>`;
         } else if (n.includes('leg press')) {
-            // 45-Degree Leg Press: Reclined seat, legs pressing angled weight sled upward
             art = `
             <polyline points="16,66 34,82 54,82" fill="none" stroke="${eq}" stroke-width="4" stroke-linecap="round"/>
             <line x1="50" y1="48" x2="82" y2="16" stroke="${eq}" stroke-width="3" stroke-dasharray="4 2"/>
@@ -922,7 +936,6 @@ const utils = {
             <line x1="26" y1="62" x2="38" y2="76" stroke="${body}" stroke-width="6.5" stroke-linecap="round"/>
             <polyline points="38,76 42,54 58,42" fill="none" stroke="${c}" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>`;
         } else if (n.includes('leg extension')) {
-            // Leg Extension: Seated on machine extending shins upward against ankle roller pad
             art = `
             <polyline points="22,34 22,64 52,64 52,88" fill="none" stroke="${eq}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
             <circle cx="32" cy="22" r="6.5" fill="${body}"/>
@@ -932,7 +945,6 @@ const utils = {
             <circle cx="78" cy="46" r="5" fill="${c}"/>
             <path d="M72 68 Q82 58 82 44" fill="none" stroke="${c}" stroke-width="2" stroke-dasharray="3 2"/>`;
         } else if (n.includes('leg curl') || n.includes('hamstring')) {
-            // Seated Leg Curl: Seated with thigh pad, curling lower legs downward & back
             art = `
             <polyline points="24,34 24,62 56,62 56,88" fill="none" stroke="${eq}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
             <circle cx="34" cy="22" r="6.5" fill="${body}"/>
@@ -942,7 +954,6 @@ const utils = {
             <circle cx="46" cy="78" r="5" fill="${c}"/>
             <path d="M74 62 Q68 78 52 84" fill="none" stroke="${c}" stroke-width="2" stroke-dasharray="3 2"/>`;
         } else if (n.includes('romanian') || n.includes('rdl') || n.includes('stiff')) {
-            // Romanian Deadlift (RDL): Hip-hinge with slight knee bend, flat back, barbell gliding down shins
             art = `
             <circle cx="68" cy="28" r="6.5" fill="${body}"/>
             <line x1="62" y1="33" x2="32" y2="48" stroke="${body}" stroke-width="7" stroke-linecap="round"/>
@@ -951,7 +962,6 @@ const utils = {
             <circle cx="54" cy="68" r="9" fill="${c}"/>
             <circle cx="54" cy="68" r="3" fill="#1a1a1f"/>`;
         } else if (n.includes('deadlift')) {
-            // Conventional Barbell Deadlift: Heavy loaded barbell at mid-thigh/hip hinge pull
             art = `
             <circle cx="56" cy="20" r="6.5" fill="${body}"/>
             <line x1="52" y1="28" x2="34" y2="52" stroke="${c}" stroke-width="7" stroke-linecap="round"/>
@@ -961,7 +971,6 @@ const utils = {
             <rect x="22" y="52" width="7" height="24" rx="2" fill="${c}"/>
             <rect x="73" y="52" width="7" height="24" rx="2" fill="${c}"/>`;
         } else if (n.includes('squat')) {
-            // Barbell Back Squat: Barbell across upper traps, hips below parallel
             art = `
             <circle cx="48" cy="20" r="6.5" fill="${body}"/>
             <line x1="20" y1="28" x2="78" y2="28" stroke="${eq}" stroke-width="3.5"/>
@@ -970,7 +979,6 @@ const utils = {
             <line x1="48" y1="28" x2="32" y2="54" stroke="${body}" stroke-width="7" stroke-linecap="round"/>
             <polyline points="32,54 54,56 48,86" fill="none" stroke="${c}" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/>`;
         } else if (n.includes('calf')) {
-            // Standing Calf Raise: Standing on elevated block on tiptoes with highlighted gastrocnemius
             art = `
             <rect x="28" y="80" width="44" height="8" rx="2" fill="${eq}"/>
             <circle cx="50" cy="18" r="6.5" fill="${body}"/>
@@ -982,7 +990,6 @@ const utils = {
             <path d="M72 76 L72 56" stroke="${c}" stroke-width="2.5" stroke-linecap="round"/>
             <polygon points="72,50 68,58 76,58" fill="${c}"/>`;
         } else if (n.includes('hanging') && n.includes('raise')) {
-            // Hanging Leg Raise: Hanging from overhead bar with legs raised horizontally at 90 degrees
             art = `
             <line x1="18" y1="12" x2="82" y2="12" stroke="${eq}" stroke-width="4" stroke-linecap="round"/>
             <line x1="38" y1="12" x2="40" y2="32" stroke="${body}" stroke-width="4" stroke-linecap="round"/>
@@ -992,7 +999,6 @@ const utils = {
             <line x1="45" y1="58" x2="78" y2="54" stroke="${body}" stroke-width="5.5" stroke-linecap="round"/>
             <path d="M68 74 Q78 66 78 52" fill="none" stroke="${c}" stroke-width="2" stroke-dasharray="3 2"/>`;
         } else if (n.includes('crunch') || n.includes('sit-up') || n.includes('ab ')) {
-            // Weighted / Cable Crunch: Kneeling/curling torso flexing abs
             art = `
             <circle cx="58" cy="36" r="6.5" fill="${body}"/>
             <path d="M36 44 Q48 34 54 48" fill="none" stroke="${c}" stroke-width="8" stroke-linecap="round"/>
@@ -1000,7 +1006,6 @@ const utils = {
             <polyline points="36,44 34,74 18,78" fill="none" stroke="${body}" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
             <line x1="72" y1="10" x2="62" y2="34" stroke="${eq}" stroke-width="2.5" stroke-dasharray="3 2"/>`;
         } else if (n.includes('treadmill') || n.includes('walk') || n.includes('run') || n.includes('cardio')) {
-            // Incline Treadmill Walk: Angled treadmill deck + console with striding athlete
             art = `
             <line x1="14" y1="84" x2="82" y2="68" stroke="${c}" stroke-width="5" stroke-linecap="round"/>
             <polyline points="76,68 82,28 68,24" fill="none" stroke="${eq}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1010,7 +1015,6 @@ const utils = {
             <polyline points="46,54 34,76" fill="none" stroke="${body}" stroke-width="5" stroke-linecap="round"/>
             <polyline points="46,54 58,64 56,74" fill="none" stroke="${c}" stroke-width="5" stroke-linecap="round"/>`;
         } else {
-            // Custom Exercise fallback with Dumbbell & Primary Muscle Color
             art = `
             <line x1="20" y1="50" x2="80" y2="50" stroke="${eq}" stroke-width="5" stroke-linecap="round"/>
             <rect x="22" y="32" width="10" height="36" rx="3" fill="${c}"/>
@@ -1249,7 +1253,6 @@ const utils = {
                 }
             }
         }
-        // Also compute 4w overload comparison vs previous session
         const allOverload = utils.getOverloadData('All');
         const ovMatch = allOverload.find(o => o.name.toLowerCase() === (liftName || '').toLowerCase());
         const formattedPct = topPercent < 0.1 ? topPercent.toFixed(2) : (topPercent < 10 ? topPercent.toFixed(1) : Math.round(topPercent));
@@ -1277,8 +1280,8 @@ const utils = {
         if (g.type === 'weight') return `Log Bodyweight`;
         if (g.type === 'nutrition') {
             let l = `Track Nutrition`;
-            if (g.targetType === 'min') l += `(Min ${g.calories} kcal)`;
-            else if (g.targetType === 'max') l += `(Max ${g.calories} kcal)`;
+            if (g.targetType === 'min') l += ` (Min ${g.calories} kcal)`;
+            else if (g.targetType === 'max') l += ` (Max ${g.calories} kcal)`;
             return l;
         }
         if (g.type === 'cardio') return `Daily Walk`;
@@ -1295,6 +1298,18 @@ const utils = {
         else if (g.type === 'nutrition') { const nut = store.state.history.nutrition.find(n => n && n.date && utils.getLocalISODate(n.date) === dStr); if (!nut) return false; return nut.cal > 0; }
         else if (g.type === 'cardio') { return store.state.history.cardio.some(c => c && c.date && utils.getLocalISODate(c.date) === dStr); }
         return false;
+    },
+    getDayGoalStats: (dStr) => {
+        const c = store.state.challenge;
+        if (!c || !c.isActive || !c.goals || c.goals.length === 0) return { met: 0, possible: 0, pct: 0, allMet: false };
+        let possible = 0, met = 0;
+        c.goals.forEach(g => {
+            if (g.createdAt && dStr < g.createdAt) return;
+            possible++;
+            if (utils.checkGoalSuccess(dStr, g)) met++;
+        });
+        const pct = possible > 0 ? Math.round((met / possible) * 100) : 0;
+        return { met, possible, pct, allMet: possible > 0 && met === possible };
     },
     checkDaySuccess: (dStr) => {
         const c = store.state.challenge; if (!c || !c.isActive || c.goals.length === 0) return false;
@@ -1349,6 +1364,139 @@ const utils = {
             grouped[muscle].push(master);
         });
         return grouped;
+    },
+    getSavedMealUsageCounts: () => {
+        let counts = {};
+        (store.state.history.nutrition || []).forEach(n => {
+            (n.loggedMeals || []).forEach(m => {
+                if (m.savedMealId) counts[m.savedMealId] = (counts[m.savedMealId] || 0) + 1;
+                if (m.name) counts[m.name] = (counts[m.name] || 0) + 1;
+            });
+        });
+        return counts;
+    },
+    getRawIngredientUsageCounts: () => {
+        let counts = {};
+        (store.state.history.nutrition || []).forEach(n => {
+            (n.loggedMeals || []).forEach(m => {
+                if (m.foodId) counts[m.foodId] = (counts[m.foodId] || 0) + 1;
+                if (m.ingredients && Array.isArray(m.ingredients)) {
+                    m.ingredients.forEach(ing => {
+                        if (ing.foodId) counts[ing.foodId] = (counts[ing.foodId] || 0) + 1;
+                    });
+                }
+            });
+        });
+        return counts;
+    },
+    // Muscle-Specific Live Exercise Order & Fatigue Recommendation Engine
+    getExerciseOrderFatigueAnalysis: (activeExercises, exIdx) => {
+        const ex = activeExercises[exIdx];
+        if (!ex) return null;
+        const currMuscles = utils.getMuscles(ex).filter(m => m !== 'Cardio' && m !== 'Other');
+        const primaryM = currMuscles[0] || 'Other';
+
+        let overlappingBefore = [];
+        let nonOverlappingBefore = [];
+        let overlapWeightedSets = 0;
+
+        for (let i = 0; i < exIdx; i++) {
+            const prevEx = activeExercises[i];
+            const prevMuscles = utils.getMuscles(prevEx).filter(m => m !== 'Cardio' && m !== 'Other');
+            const shared = prevMuscles.filter(m => currMuscles.includes(m));
+            const setCnt = (prevEx.sets || []).length || parseInt(prevEx.targetSets) || 3;
+            if (shared.length > 0) {
+                const isPrimaryShared = shared.includes(primaryM) && prevMuscles[0] === primaryM;
+                const weightFactor = isPrimaryShared ? 1.0 : 0.65;
+                overlapWeightedSets += setCnt * weightFactor;
+                overlappingBefore.push({ name: prevEx.name, sharedMuscles: shared, sets: setCnt });
+            } else {
+                nonOverlappingBefore.push({ name: prevEx.name, muscles: prevMuscles });
+            }
+        }
+
+        let fatigueTier = 'Fresh';
+        let fatigueColor = 'var(--success)';
+        let fatigueBg = 'rgba(52, 199, 89, 0.14)';
+        let fatigueMultiplier = 1.0;
+
+        if (overlapWeightedSets === 0) {
+            fatigueTier = 'Fresh';
+            fatigueColor = 'var(--success)';
+            fatigueBg = 'rgba(52, 199, 89, 0.14)';
+            fatigueMultiplier = 1.0;
+        } else if (overlapWeightedSets <= 3.5) {
+            fatigueTier = 'Light Fatigue';
+            fatigueColor = 'var(--info)';
+            fatigueBg = 'rgba(0, 122, 255, 0.14)';
+            fatigueMultiplier = 0.975;
+        } else if (overlapWeightedSets <= 6.5) {
+            fatigueTier = 'Moderate Fatigue';
+            fatigueColor = 'var(--warning)';
+            fatigueBg = 'rgba(255, 149, 0, 0.14)';
+            fatigueMultiplier = 0.94;
+        } else {
+            fatigueTier = 'Heavy Fatigue';
+            fatigueColor = 'var(--pending)';
+            fatigueBg = 'rgba(255, 69, 58, 0.14)';
+            fatigueMultiplier = 0.90;
+        }
+
+        let scheduleNote = '';
+        if (exIdx === 0) {
+            scheduleNote = `Order #1 in schedule — First exercise of the session (${currMuscles.join('/')} Fresh).`;
+        } else if (overlappingBefore.length === 0) {
+            const priorNames = nonOverlappingBefore.map(p => p.name).join(', ');
+            scheduleNote = `Order #${exIdx + 1} in schedule — After ${priorNames}, but ZERO prior ${currMuscles.join('/')} exercises, so ${currMuscles.join('/')} is considered FRESH.`;
+        } else {
+            const overlapDesc = overlappingBefore.map(p => `${p.name} (${p.sharedMuscles.join('/')})`).join(', ');
+            scheduleNote = `Order #${exIdx + 1} in schedule — Pre-fatigued by ${overlappingBefore.length} overlapping exercise(s): ${overlapDesc} (~${Math.round(overlapWeightedSets)} effective sets prior).`;
+        }
+
+        // Historical Order & Slot Average Analysis
+        const pastSessions = store.getExerciseHistory(ex.name, ex.variation || '');
+        let lastOrderPos = null;
+        let lastPriorOverlap = 0;
+        let sameSlotHistory = [];
+
+        if (pastSessions.length > 0) {
+            lastOrderPos = (pastSessions[0].orderIndex !== undefined) ? (pastSessions[0].orderIndex + 1) : 1;
+            lastPriorOverlap = pastSessions[0].priorOverlapSets || 0;
+            sameSlotHistory = pastSessions.filter(p => p.orderIndex === exIdx);
+        }
+
+        let slotAvgBestWeight = 0, slotAvgBestReps = 0;
+        if (sameSlotHistory.length > 0) {
+            let sumW = 0, sumR = 0, cnt = 0;
+            sameSlotHistory.forEach(sess => {
+                let bSet = null;
+                (sess.sets || []).forEach(s => {
+                    if (s.completed && s.weight > 0 && s.reps > 0) {
+                        if (!bSet || s.weight > bSet.weight || (s.weight === bSet.weight && s.reps > bSet.reps)) bSet = s;
+                    }
+                });
+                if (bSet) { sumW += parseFloat(bSet.weight); sumR += parseFloat(bSet.reps); cnt++; }
+            });
+            if (cnt > 0) {
+                slotAvgBestWeight = Math.round((sumW / cnt) * 2) / 2;
+                slotAvgBestReps = Math.round(sumR / cnt);
+            }
+        }
+
+        return {
+            currentOrderPos: exIdx + 1,
+            lastOrderPos,
+            lastPriorOverlap,
+            overlapWeightedSets,
+            fatigueTier,
+            fatigueColor,
+            fatigueBg,
+            fatigueMultiplier,
+            scheduleNote,
+            slotAvgBestWeight,
+            slotAvgBestReps,
+            sameSlotCount: sameSlotHistory.length
+        };
     },
     getWeeklyHypertrophyStatus: (mondayTimestamp = null) => {
         const mon = mondayTimestamp !== null ? mondayTimestamp : utils.getMonday(new Date());
@@ -1825,7 +1973,6 @@ const utils = {
                 ]
             };
         }
-        // 1. Calorie Precision (0-25 pts): Scales smoothly based on proximity to target calories
         const calDev = Math.abs(cal - tCal) / tCal;
         let calScore = 0;
         if (cal > 0) {
@@ -1834,7 +1981,6 @@ const utils = {
             else calScore = Math.round(25 * (1 - ((calDev - 0.05) / 0.45) * 0.85));
         }
         calScore = Math.max(0, Math.min(25, calScore));
-        // 2. Protein Anchor & Efficiency (0-25 pts): Scales with hitting protein target + protein-to-calorie density
         const proRatio = pro / tPro;
         let proHitScore = 0;
         if (proRatio >= 0.95 && proRatio <= 1.30) proHitScore = 20;
@@ -1844,13 +1990,11 @@ const utils = {
         const actualProDensity = cal > 0 ? ((pro * 4) / cal) : 0;
         const densityBonus = actualProDensity >= targetProDensity * 0.9 ? 5 : Math.round(5 * (actualProDensity / Math.max(0.05, targetProDensity * 0.9)));
         const proScore = Math.max(0, Math.min(25, proHitScore + densityBonus));
-        // 3. Carb & Fat Macro Fit (0-20 pts): 10 pts Carbs + 10 pts Fats
         const carDev = Math.abs(car - tCar) / tCar;
         const fatDev = Math.abs(fat - tFat) / tFat;
         const carSub = car > 0 ? Math.max(0, Math.min(10, Math.round(10 * Math.max(0, 1 - Math.max(0, carDev - 0.08) / 0.65)))) : 0;
         const fatSub = fat > 0 ? Math.max(0, Math.min(10, Math.round(10 * Math.max(0, 1 - Math.max(0, fatDev - 0.08) / 0.55)))) : 0;
         const macroBalanceScore = carSub + fatSub;
-        // 4. Whole-Food Quality & Micronutrient Variety (0-20 pts)
         let foodItems = [];
         (nutEntry.loggedMeals || []).forEach(m => {
             if (m.foodId) {
@@ -1879,14 +2023,12 @@ const utils = {
                 uniqueFoods.add(item.food.id);
             });
             const avgQuality = totalWeightCals > 0 ? (weightedSum / totalWeightCals) : 0.75;
-            const tonePts = Math.round(avgQuality * 12); // up to 12 pts for whole-food quality
-            const diversityPts = Math.min(8, uniqueFoods.size + uniqueCats.size); // up to 8 pts for food & category diversity
+            const tonePts = Math.round(avgQuality * 12);
+            const diversityPts = Math.min(8, uniqueFoods.size + uniqueCats.size);
             qualityScore = Math.min(20, tonePts + diversityPts);
         } else if ((nutEntry.loggedMeals || []).length > 0 || cal > 0) {
-            // Custom macro meals without specific raw ingredient links get neutral baseline
             qualityScore = Math.min(14, 8 + (nutEntry.loggedMeals || []).length * 2);
         }
-        // 5. Hydration & Meal Structure (0-10 pts): 5 pts Water (scales to 3000-4000ml) + 5 pts Meal Timing/Distribution
         const waterPts = Math.min(5, Math.round((totalWater / 3500) * 5));
         const mealTypesLogged = new Set((nutEntry.loggedMeals || []).map(m => m.type)).size;
         const structurePts = Math.min(5, Math.round((mealTypesLogged / 3) * 5));
@@ -1929,7 +2071,6 @@ const utils = {
             });
             return insights;
         }
-        // Protein assessment (Protein Anchor Rule from NZ Athlete Reference)
         if (pro >= tPro * 0.95) {
             insights.push({ tone: 'good', text: `Today you have hit your protein goal (${pro}g / ${tPro}g), which is great for building and retaining muscle.` });
         } else if (pro >= tPro * 0.7) {
@@ -1937,7 +2078,6 @@ const utils = {
         } else {
             insights.push({ tone: 'bad', text: `Protein intake is currently low (${pro}g / ${tPro}g) — prioritise high biological value protein to protect muscle mass and recovery [1].` });
         }
-        // Calorie assessment
         const calDiff = Math.abs(cal - tCal);
         if (calDiff <= tCal * 0.1) {
             insights.push({ tone: 'good', text: `You have met your calorie goal for the day (${cal} / ${tCal} kcal).` });
@@ -1948,7 +2088,6 @@ const utils = {
         } else {
             insights.push({ tone: 'mid', text: `You are above your calorie target today (${cal} / ${tCal} kcal) — great for a bulking surplus, but watch energy-dense fats if cutting [1].` });
         }
-        // Carbs assessment
         if (car >= tCar * 0.85) {
             insights.push({ tone: 'good', text: `You had a solid amount of carbs today (${car}g), which is great for fuelling your workouts and replenishing glycogen [1].` });
         } else if (car >= tCar * 0.5) {
@@ -1956,13 +2095,11 @@ const utils = {
         } else {
             insights.push({ tone: 'bad', text: `Carbohydrates are low today (${car}g / ${tCar}g) — glycogen stores may dip during hard lifting sessions.` });
         }
-        // Fats assessment
         if (fat > tFat * 1.25) {
             insights.push({ tone: 'bad', text: `Dietary fat is high today (${fat}g / ${tFat}g) — measure energy-dense foods (nuts, peanut butter, cheddar, fattier mince) strictly and keep heavy fats away from hard sessions [1].` });
         } else if (fat >= tFat * 0.7) {
             insights.push({ tone: 'good', text: `Healthy fat intake is on target (${fat}g / ${tFat}g), supporting hormone health and fat-soluble vitamin absorption [1].` });
         }
-        // Ingredient-specific micronutrient & food-response notes from logged foods
         let loggedFoodIds = new Set();
         (nutEntry.loggedMeals || []).forEach(m => {
             if (m.foodId) loggedFoodIds.add(m.foodId);
@@ -1993,7 +2130,6 @@ const workoutEngine = {
             isActivity: workoutObj.isActivity || false,
             isRest: (workoutObj.exercises||[]).length === 0 && !workoutObj.isActivity,
             exercises: (workoutObj.exercises||[]).map(ex => {
-                // Pull latest top-level exercise config so any saved exercise edits filter straight into newly started workouts
                 const master = utils.getMasterExercise(ex.name);
                 const setsCount = parseInt(ex.targetSets) || master.targetSets || 3;
                 const repsTarget = ex.targetReps || master.targetReps || '8-12';
@@ -2007,10 +2143,21 @@ const workoutEngine = {
     resume() { if (!store.state.activeSession) return; this.activeWorkout = store.state.activeSession; document.getElementById('active-workout-view').style.display = 'flex'; this.renderActiveWorkout(); },
     buildExerciseData(name, targetSets, targetReps, variation = '') { const pastEx = store.getExerciseHistory(name, variation); const historySets = pastEx.map(ex => ex.sets); let prevNotes = pastEx[0] && pastEx[0].notes ? pastEx[0].notes : ''; let startingSets = []; for (let i = 0; i < targetSets; i++) { let prevW = historySets[0] && historySets[0][i] ? parseFloat(historySets[0][i].weight) : 0; let prevR = historySets[0] && historySets[0][i] ? parseFloat(historySets[0][i].reps) : 0; let sumW = 0, sumR = 0, count = 0; historySets.forEach(h => { if (h[i]) { sumW += parseFloat(h[i].weight)||0; sumR += parseFloat(h[i].reps)||0; count++; } }); let l3W = count ? (sumW / count).toFixed(1) : 0; let l3R = count ? Math.round(sumR / count) : 0; startingSets.push({ weight: prevW, reps: prevR, rir: 2, completed: false, prevWeight: prevW, prevReps: prevR, l3Weight: l3W, l3Reps: l3R }); } return { name: name, variation: variation, targetSets: targetSets, targetReps: targetReps, muscles: utils.getMuscles({ name }), sets: startingSets, notes: prevNotes }; },
     updatePrefills(ex) { const pastEx = store.getExerciseHistory(ex.name, ex.variation || ''); const historySets = pastEx.map(e => e.sets); ex.sets.forEach((set, i) => { let prevW = historySets[0] && historySets[0][i] ? parseFloat(historySets[0][i].weight) : 0; let prevR = historySets[0] && historySets[0][i] ? parseFloat(historySets[0][i].reps) : 0; let sumW = 0, sumR = 0, count = 0; historySets.forEach(h => { if (h[i]) { sumW += parseFloat(h[i].weight)||0; sumR += parseFloat(h[i].reps)||0; count++; } }); set.prevWeight = prevW; set.prevReps = prevR; set.l3Weight = count ? (sumW / count).toFixed(1) : 0; set.l3Reps = count ? Math.round(sumR / count) : 0; if(!set.completed && set.weight === 0 && set.reps === 0) { set.weight = prevW; set.reps = prevR; } }); },
+    // Live Exercise Reordering in Active Workout (recalculates fatigue & recommended sets live)
+    moveActiveExercise(exIdx, dir) {
+        const list = this.activeWorkout.exercises;
+        const targetIdx = exIdx + dir;
+        if (targetIdx < 0 || targetIdx >= list.length) return;
+        const temp = list[exIdx];
+        list[exIdx] = list[targetIdx];
+        list[targetIdx] = temp;
+        this.sync();
+        this.renderActiveWorkout();
+    },
     updateExerciseName(exIdx, newName) {
         const ex = this.activeWorkout.exercises[exIdx];
         const oldName = ex.name;
-        const trimmed = (newName || '').trim();
+        const trimmed = (newName || '').trim().slice(0, MAX_EX_TITLE_LEN);
         if(!trimmed || trimmed === oldName) { this.renderActiveWorkout(); return; }
         const preservedMuscles = utils.getMuscles(ex);
         store.syncExerciseGlobally(oldName, {
@@ -2024,9 +2171,9 @@ const workoutEngine = {
     },
     promptRenameExercise(exIdx) {
         const ex = this.activeWorkout.exercises[exIdx];
-        const newName = prompt("Edit Exercise Title (updates live across all splits & workouts):", ex.name);
+        const newName = prompt(`Edit Exercise Title (max ${MAX_EX_TITLE_LEN} chars — updates live across all splits & workouts):`, ex.name);
         if (newName !== null && newName.trim() !== '') {
-            this.updateExerciseName(exIdx, newName.trim());
+            this.updateExerciseName(exIdx, newName.trim().slice(0, MAX_EX_TITLE_LEN));
         }
     },
     editVariationTitle(exIdx) {
@@ -2095,7 +2242,7 @@ const workoutEngine = {
             alert("Cannot remove the last set.");
         }
     },
-    removeExercise(exIdx) { if(confirm("Remove this exercise?")) { this.activeWorkout.exercises.splice(exIdx, 1); this.sync(); this.renderActiveWorkout(); } },
+        removeExercise(exIdx) { if(confirm("Remove this exercise?")) { this.activeWorkout.exercises.splice(exIdx, 1); this.sync(); this.renderActiveWorkout(); } },
     showAddExerciseModal() {
         const modal = document.getElementById('exercise-selection-modal');
         let grouped = utils.getGroupedExercises();
@@ -2104,7 +2251,7 @@ const workoutEngine = {
             html += `<h3 style="margin-top:16px; color:var(--text-secondary); font-size:14px;">${muscle}</h3><div style="display:flex; flex-direction:column; gap:8px;">`;
             grouped[muscle].sort((a,b) => a.name.localeCompare(b.name)).forEach(ex => {
                 const exImg = utils.getExerciseImage(ex.name, utils.getPrimaryMuscle(ex));
-                html += `<div class="data-row flex-between" style="padding:12px; background:var(--surface-color); border-radius:8px; border:1px solid var(--border); cursor:pointer;" onclick="workoutEngine.appendExercise('${ex.name.replace(/'/g, "\\'")}', ${ex.targetSets}, '${ex.targetReps}')"><div style="display:flex; align-items:center; gap:10px;"><img src="${exImg}" alt="${ex.name}" style="width:42px; height:42px; border-radius:10px; object-fit:cover; flex-shrink:0; border:1px solid var(--border);"><div><div style="font-weight:bold;">${ex.name}</div><div class="text-muted" style="font-size:12px;">Def: ${ex.targetSets}x${ex.targetReps} • ${utils.getMuscles(ex).join(', ')}</div></div></div><i class="fas fa-plus text-accent"></i></div>`;
+                html += `<div class="data-row flex-between" style="padding:12px; background:var(--surface-color); border-radius:8px; border:1px solid var(--border); cursor:pointer;" onclick="workoutEngine.appendExercise('${ex.name.replace(/'/g, "\\'")}', ${ex.targetSets}, '${ex.targetReps}')"><div style="display:flex; align-items:center; gap:10px; flex:1; min-width:0; padding-right:8px;"><img src="${exImg}" alt="${ex.name}" style="width:42px; height:42px; border-radius:10px; object-fit:cover; flex-shrink:0; border:1px solid var(--border);"><div style="flex:1; min-width:0;"><div class="ex-title-2line" style="font-weight:bold;">${ex.name}</div><div class="text-muted" style="font-size:12px;">Def: ${ex.targetSets}×${ex.targetReps} • ${utils.getMuscles(ex).join(', ')}</div></div></div><i class="fas fa-plus text-accent" style="flex-shrink:0;"></i></div>`;
             });
             html += `</div>`;
         });
@@ -2184,8 +2331,8 @@ const workoutEngine = {
         }
         store.state.activeSession = null; store.save(); this.activeWorkout = null; this.stopRestTimer(); this.resetManualTimer(); document.getElementById('active-workout-view').style.display = 'none'; app.navigate('home');
     },
-    minimize() { document.getElementById('active-workout-view').style.display = 'none'; app.navigate(app.currentView); },
-    discard(skipConfirm = false) { if (!skipConfirm && !confirm("Discard workout? All progress will be lost.")) return; store.state.activeSession = null; store.save(); this.activeWorkout = null; this.stopRestTimer(); this.resetManualTimer(); document.getElementById('active-workout-view').style.display = 'none'; app.navigate(app.currentView); },
+    minimize() { document.getElementById('active-workout-view').style.display = 'none'; app.navigate(app.currentView, true); },
+    discard(skipConfirm = false) { if (!skipConfirm && !confirm("Discard workout? All progress will be lost.")) return; store.state.activeSession = null; store.save(); this.activeWorkout = null; this.stopRestTimer(); this.resetManualTimer(); document.getElementById('active-workout-view').style.display = 'none'; app.navigate(app.currentView, true); },
     renderActiveWorkout() {
         const container = document.getElementById('active-workout-view'); if (!this.activeWorkout) return;
         const scrollEl = document.getElementById('active-workout-scroll'); const scrollTop = scrollEl ? scrollEl.scrollTop : 0;
@@ -2193,18 +2340,23 @@ const workoutEngine = {
         html += `<div id="active-workout-scroll" style="flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 16px; padding-bottom: 40px;">`;
         if(this.activeWorkout.isActivity) { html += `<div style="text-align:center; padding: 60px 20px;"><div style="font-size:64px; margin-bottom:16px;"><i class="fas fa-person-running text-accent"></i></div><h2>Activity in Progress</h2><p class="text-muted">Timer is running. Hit FINISH when done.</p></div>`; } else {
             html += `<button class="btn" style="background:var(--surface-color); border:1px dashed var(--accent-color); color:var(--accent-color); margin-bottom: 16px;" onclick="workoutEngine.skipWorkout()"><i class="fas fa-forward-step"></i> Skip / Log Rest Day</button>`;
+            const totalExCount = this.activeWorkout.exercises.length;
             this.activeWorkout.exercises.forEach((ex, exIdx) => {
                 this.updatePrefills(ex); const varList = store.state.variations[ex.name] || []; const peak = store.getPeakSet(ex.name, ex.variation || '');
-                const peakHtml = peak ? `<div style="color: var(--pending); font-size: 11px; font-weight: bold; margin-top: 4px; text-align: right; display:flex; align-items:center; justify-content:flex-end; gap:4px;"><i class="fas fa-fire"></i> 4w Peak: ${peak.weight}kg × ${peak.reps}</div>` : '';
+                const peakHtml = peak ? `<div style="color: var(--pending); font-size: 11px; font-weight: bold; margin-top: 4px; text-align: right; display:flex; align-items:center; justify-content:flex-end; gap:4px; white-space:nowrap;"><i class="fas fa-fire"></i> 4w Peak: ${peak.weight}kg × ${peak.reps} reps</div>` : '';
                 const mNames = utils.getMuscles(ex); let colorMap = {}; mNames.forEach(m => colorMap[m] = 'var(--accent-color)');
                 const exMoveImg = utils.getExerciseImage(ex.name, mNames[0]);
-                let recHtml = '';
+
+                // Live Order & Muscle-Specific Fatigue Analysis
+                const fatInfo = utils.getExerciseOrderFatigueAnalysis(this.activeWorkout.exercises, exIdx);
                 const pastEx = store.getExerciseHistory(ex.name, ex.variation || '');
+                let recHtml = '';
+
                 if (pastEx && pastEx.length > 0) {
                     const lastSession = pastEx[0]; let bestSet = null;
                     lastSession.sets.forEach(s => { if (s.completed && s.weight > 0 && s.reps > 0) { if (!bestSet || s.weight > bestSet.weight || (s.weight === bestSet.weight && s.reps > bestSet.reps)) bestSet = s; } });
                     if (bestSet) {
-                        let recWeight = bestSet.weight; let recReps = bestSet.reps; let topR = 10, botR = 8;
+                        let baseWeight = bestSet.weight; let baseReps = bestSet.reps; let topR = 10, botR = 8;
                         if (ex.targetReps) { const match = String(ex.targetReps).match(/(\d+)(?:-(\d+))?/); if (match) { botR = parseInt(match[1]); topR = match[2] ? parseInt(match[2]) : botR; } }
                         let recNote = 'Maintain weight & push for +1 rep within target range';
                         let recBoxBorder = 'var(--info)';
@@ -2212,60 +2364,124 @@ const workoutEngine = {
                         let recBoxColor = 'var(--info)';
                         let recIcon = 'fa-lightbulb';
                         if (bestSet.reps > topR) {
-                            recWeight = parseFloat((bestSet.weight + 2.5).toFixed(1));
-                            recReps = botR;
+                            baseWeight = parseFloat((bestSet.weight + 2.5).toFixed(1));
+                            baseReps = botR;
                             recNote = `Exceeded max rep target (${bestSet.reps} > ${topR}) — Increase weight +2.5kg`;
                             recBoxBorder = 'var(--success)';
                             recBoxBg = 'rgba(52, 199, 89, 0.14)';
                             recBoxColor = 'var(--success)';
                             recIcon = 'fa-arrow-up-right-dots';
                         } else if (bestSet.reps === topR) {
-                            recWeight = parseFloat((bestSet.weight + 2.5).toFixed(1));
-                            recReps = botR;
+                            baseWeight = parseFloat((bestSet.weight + 2.5).toFixed(1));
+                            baseReps = botR;
                             recNote = `Hit top of rep range (${topR} reps) — Ready to increase weight +2.5kg`;
                             recBoxBorder = 'var(--success)';
                             recBoxBg = 'rgba(52, 199, 89, 0.14)';
                             recBoxColor = 'var(--success)';
                             recIcon = 'fa-arrow-up-right-dots';
                         } else if (bestSet.reps < botR) {
-                            recWeight = Math.max(0, parseFloat((bestSet.weight - 2.5).toFixed(1)));
-                            recReps = botR;
+                            baseWeight = Math.max(0, parseFloat((bestSet.weight - 2.5).toFixed(1)));
+                            baseReps = botR;
                             recNote = `Below min rep target (${bestSet.reps} < ${botR}) — Reduce weight -2.5kg to hit ${botR}–${topR} reps`;
                             recBoxBorder = 'var(--warning)';
                             recBoxBg = 'rgba(255, 149, 0, 0.14)';
                             recBoxColor = 'var(--warning)';
                             recIcon = 'fa-arrow-down-wide-short';
                         } else {
-                            recReps = Math.min(topR, bestSet.reps + 1);
+                            baseReps = Math.min(topR, bestSet.reps + 1);
                         }
-                        recHtml = `<div style="background: ${recBoxBg}; border: 1px solid ${recBoxBorder}; color: ${recBoxColor}; padding: 10px 12px; border-radius: 8px; font-size: 12px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; gap: 8px;"><div><div style="font-weight:800; margin-bottom:2px;"><i class="fas ${recIcon}"></i> Recommended Top Set: ${recWeight}kg × ${recReps} reps</div><div style="font-size:11px; opacity:0.95;">${recNote}</div></div><div style="text-align:right; font-size:10px; opacity:0.85; flex-shrink:0;">Last best:<br><strong>${bestSet.weight}kg × ${bestSet.reps}</strong></div></div>`;
+
+                        // Adjust recommendation live based on muscle-specific fatigue difference vs last session
+                        let recWeight = baseWeight;
+                        let recReps = baseReps;
+                        const lastPriorSets = fatInfo ? (fatInfo.lastPriorOverlap || 0) : 0;
+                        const currPriorSets = fatInfo ? (fatInfo.overlapWeightedSets || 0) : 0;
+                        const deltaOverlapSets = currPriorSets - lastPriorSets;
+                        let fatigueAdjustmentText = '';
+
+                        if (deltaOverlapSets >= 3) {
+                            // More fatigued on this muscle group than last time
+                            const rawAdj = baseWeight * (1 - Math.min(0.10, deltaOverlapSets * 0.012));
+                            recWeight = Math.max(0, Math.round(rawAdj * 2) / 2);
+                            if (recWeight === baseWeight && recReps > botR) recReps = Math.max(botR, recReps - 1);
+                            fatigueAdjustmentText = `Adjusted for later muscle order (+${Math.round(deltaOverlapSets)} prior ${mNames[0]} sets vs last session).`;
+                        } else if (deltaOverlapSets <= -3) {
+                            // Fresher on this muscle group than last time
+                            if (recReps < topR) {
+                                recReps = Math.min(topR, recReps + 1);
+                            } else {
+                                recWeight = Math.round((baseWeight + 2.5) * 2) / 2;
+                                recReps = botR;
+                            }
+                            fatigueAdjustmentText = `Boosted for fresher muscle state (${Math.abs(Math.round(deltaOverlapSets))} fewer prior ${mNames[0]} sets vs last session).`;
+                        }
+
+                        const lastOrderText = fatInfo && fatInfo.lastOrderPos ? `Order #${fatInfo.lastOrderPos} last session` : 'First tracked order';
+                        const slotAvgText = (fatInfo && fatInfo.sameSlotCount > 0)
+                            ? `Hist. avg at Order #${exIdx + 1}: <strong>${fatInfo.slotAvgBestWeight}kg × ${fatInfo.slotAvgBestReps} reps</strong> (${fatInfo.sameSlotCount}x)`
+                            : `No prior history at Order #${exIdx + 1} yet`;
+
+                        recHtml = `
+                        <div style="background: ${recBoxBg}; border: 1px solid ${recBoxBorder}; color: ${recBoxColor}; padding: 12px 14px; border-radius: 10px; font-size: 12px; margin-bottom: 12px;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; margin-bottom: 6px;">
+                                <div style="font-weight:900; font-size:13.5px; color:var(--text-primary); white-space:nowrap;">
+                                    <i class="fas ${recIcon}" style="color:${recBoxColor}; margin-right:4px;"></i> Rec Top Set: <span style="color:${recBoxColor};">${recWeight}kg × ${recReps} reps</span>
+                                </div>
+                                <span class="pill-nowrap" style="font-size:10px; font-weight:900; padding:2px 8px; border-radius:8px; background:${fatInfo.fatigueBg}; color:${fatInfo.fatigueColor}; border:1px solid ${fatInfo.fatigueColor}; text-transform:uppercase;">
+                                    <i class="fas fa-battery-three-quarters"></i> ${fatInfo.fatigueTier}
+                                </span>
+                            </div>
+                            <div style="font-size:11.5px; opacity:0.95; margin-bottom: 6px; color:var(--text-primary);">${recNote}${fatigueAdjustmentText ? ` • <strong>${fatigueAdjustmentText}</strong>` : ''}</div>
+                            <div style="font-size:11px; color:var(--text-secondary); background:rgba(0,0,0,0.35); padding:8px 10px; border-radius:8px; border:1px solid rgba(255,255,255,0.06); line-height:1.45;">
+                                <div><i class="fas fa-list-ol text-accent"></i> <strong>Schedule &amp; Muscle State:</strong> ${fatInfo.scheduleNote}</div>
+                                <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-top:4px; padding-top:4px; border-top:1px dashed rgba(255,255,255,0.1);">
+                                    <span>Last Best: <strong>${bestSet.weight}kg × ${bestSet.reps} reps</strong> (${lastOrderText})</span>
+                                    <span>${slotAvgText}</span>
+                                </div>
+                            </div>
+                        </div>`;
                     }
+                } else if (fatInfo) {
+                    recHtml = `
+                    <div style="background: rgba(255,255,255,0.04); border: 1px solid var(--border); padding: 10px 12px; border-radius: 10px; font-size: 11.5px; margin-bottom: 12px;">
+                        <div class="flex-between" style="margin-bottom:4px; gap:8px;">
+                            <span style="font-weight:800; color:var(--text-primary);"><i class="fas fa-list-ol text-accent"></i> Exercise Order #${exIdx + 1}</span>
+                            <span class="pill-nowrap" style="font-size:10px; font-weight:900; padding:2px 8px; border-radius:8px; background:${fatInfo.fatigueBg}; color:${fatInfo.fatigueColor}; border:1px solid ${fatInfo.fatigueColor}; text-transform:uppercase;">${fatInfo.fatigueTier}</span>
+                        </div>
+                        <div class="text-muted" style="font-size:11px;">${fatInfo.scheduleNote}</div>
+                    </div>`;
                 }
+
                 html += `
                 <div class="exercise-card" style="border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.2); background: var(--surface-color); border-radius: var(--card-radius); overflow:hidden; margin-bottom: 16px;">
-                    <div class="exercise-header" style="padding: 16px; background: linear-gradient(145deg, var(--surface-elevated), var(--surface-color)); position:relative; border-bottom: 1px solid var(--border);">
-                        <div style="width:100%;">
-                            <div class="flex-between" style="gap: 8px;">
-                                <div style="display:flex; align-items:center; gap:8px; flex:1; min-width:0;">
-                                    <img src="${exMoveImg}" alt="${ex.name}" style="width:42px; height:42px; border-radius:10px; object-fit:cover; flex-shrink:0; border:1px solid var(--border);">
-                                    <input type="text" class="edit-input" style="font-size:18px !important; font-weight:bold; margin:0; padding:2px 6px; border:1px dashed transparent; background:transparent; color:var(--text-primary); text-transform:uppercase; letter-spacing:1px; box-shadow:none; flex:1; min-width:0;" value="${ex.name}" title="Tap to edit exercise title" onchange="workoutEngine.updateExerciseName(${exIdx}, this.value)">
-                                    <button class="btn-icon" style="background:var(--surface-color); border:1px solid var(--border); border-radius: 8px; width:30px; height:30px; font-size:12px; flex-shrink:0;" title="Edit Exercise Title" onclick="workoutEngine.promptRenameExercise(${exIdx})"><i class="fas fa-pen"></i></button>
+                    <div class="exercise-header" style="padding: 14px; background: linear-gradient(145deg, var(--surface-elevated), var(--surface-color)); position:relative; border-bottom: 1px solid var(--border); display:block;">
+                        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap: 8px; width:100%;">
+                            <div style="display:flex; align-items:flex-start; gap:10px; flex:1; min-width:0; padding-right:4px;">
+                                <img src="${exMoveImg}" alt="${ex.name}" style="width:42px; height:42px; border-radius:10px; object-fit:cover; flex-shrink:0; border:1px solid var(--border); margin-top:2px;">
+                                <div style="flex:1; min-width:0; cursor:pointer;" onclick="workoutEngine.promptRenameExercise(${exIdx})" title="Tap to rename exercise (max ${MAX_EX_TITLE_LEN} chars)">
+                                    <div class="ex-title-2line" style="font-size:17px; font-weight:900; color:var(--text-primary); text-transform:uppercase; letter-spacing:0.5px;">${ex.name}</div>
+                                    <div style="font-size:10px; color:var(--text-secondary); font-weight:700; margin-top:2px;">Order #${exIdx + 1} of ${totalExCount} • Tap title to edit</div>
                                 </div>
-                                <button class="btn-icon" style="background:var(--surface-color); border:1px solid var(--border); border-radius: 8px; width:32px; height:32px; flex-shrink:0;" onclick="workoutEngine.removeExercise(${exIdx})"><i class="fas fa-times"></i></button>
                             </div>
-                            <div style="display:flex; gap: 8px; margin-top: 10px; align-items:center; flex-wrap:wrap;">
-                                <div style="display:flex; align-items:center; gap:4px;">
-                                    <select class="edit-input" style="padding: 4px 8px; font-size: 12px !important; margin: 0; width: auto; background: rgba(0,0,0,0.5); color:var(--text-primary); border: 1px solid var(--border); border-radius: 6px; font-weight:bold;" onchange="workoutEngine.changeVariation(${exIdx}, this.value)">
-                                        <option value="">Standard</option>
-                                        ${varList.map(v => `<option value="${v}" ${ex.variation === v ? 'selected' : ''}>${v}</option>`).join('')}
-                                        <option value="__NEW__">+ New Variation</option>
-                                        ${ex.variation ? `<option value="__RENAME__">Edit Variation Title</option>` : ''}
-                                    </select>
-                                    <button class="btn-icon" style="width:26px; height:26px; font-size:11px; background:rgba(0,0,0,0.5); border:1px solid var(--border); border-radius:6px;" title="Edit Variation Title" onclick="workoutEngine.editVariationTitle(${exIdx})"><i class="fas fa-pen"></i></button>
-                                </div>
-                                <span class="text-muted" style="font-size:11px; text-transform:uppercase; font-weight:bold; background:rgba(0,0,0,0.5); padding: 4px 8px; border-radius:6px; border:1px solid var(--border);">Tgt: ${ex.targetReps}</span>
-                                ${mNames.length > 0 ? `<span style="font-size: 11px; color: var(--accent-color); font-weight: 800; text-transform: uppercase; border: 1px solid var(--accent-dim); padding: 4px 8px; border-radius: 6px; background: rgba(0,0,0,0.4); letter-spacing:1px;">${mNames.join(' & ')} FOCUS</span>` : ''}
+                            <div style="display:flex; align-items:center; gap:4px; flex-shrink:0;">
+                                <button class="btn-icon" style="background:var(--surface-color); border:1px solid var(--border); border-radius:8px; width:30px; height:30px; font-size:12px; ${exIdx === 0 ? 'opacity:0.35; pointer-events:none;' : ''}" title="Move Exercise Up in Order" onclick="workoutEngine.moveActiveExercise(${exIdx}, -1)"><i class="fas fa-arrow-up"></i></button>
+                                <button class="btn-icon" style="background:var(--surface-color); border:1px solid var(--border); border-radius:8px; width:30px; height:30px; font-size:12px; ${exIdx === totalExCount - 1 ? 'opacity:0.35; pointer-events:none;' : ''}" title="Move Exercise Down in Order" onclick="workoutEngine.moveActiveExercise(${exIdx}, 1)"><i class="fas fa-arrow-down"></i></button>
+                                <button class="btn-icon" style="background:var(--surface-color); border:1px solid var(--border); border-radius:8px; width:30px; height:30px; font-size:12px;" title="Edit Exercise Title" onclick="workoutEngine.promptRenameExercise(${exIdx})"><i class="fas fa-pen"></i></button>
+                                <button class="btn-icon" style="background:var(--surface-color); border:1px solid var(--border); border-radius:8px; width:30px; height:30px; font-size:12px; color:var(--pending);" title="Remove Exercise" onclick="workoutEngine.removeExercise(${exIdx})"><i class="fas fa-times"></i></button>
                             </div>
+                        </div>
+                        <div style="display:flex; gap: 6px; margin-top: 10px; align-items:center; flex-wrap:wrap; width:100%;">
+                            <div style="display:flex; align-items:center; gap:4px; flex-shrink:0;">
+                                <select class="edit-input" style="padding: 4px 8px; font-size: 12px !important; margin: 0; width: auto; background: rgba(0,0,0,0.5); color:var(--text-primary); border: 1px solid var(--border); border-radius: 6px; font-weight:bold;" onchange="workoutEngine.changeVariation(${exIdx}, this.value)">
+                                    <option value="">Standard</option>
+                                    ${varList.map(v => `<option value="${v}" ${ex.variation === v ? 'selected' : ''}>${v}</option>`).join('')}
+                                    <option value="__NEW__">+ New Variation</option>
+                                    ${ex.variation ? `<option value="__RENAME__">Edit Variation Title</option>` : ''}
+                                </select>
+                                <button class="btn-icon" style="width:26px; height:26px; font-size:11px; background:rgba(0,0,0,0.5); border:1px solid var(--border); border-radius:6px;" title="Edit Variation Title" onclick="workoutEngine.editVariationTitle(${exIdx})"><i class="fas fa-pen"></i></button>
+                            </div>
+                            <span class="pill-nowrap text-muted" style="font-size:11px; text-transform:uppercase; font-weight:bold; background:rgba(0,0,0,0.5); padding: 4px 8px; border-radius:6px; border:1px solid var(--border);">Tgt: ${ex.targetReps} reps</span>
+                            ${mNames.length > 0 ? `<span class="pill-nowrap" style="font-size: 11px; color: var(--accent-color); font-weight: 800; text-transform: uppercase; border: 1px solid var(--accent-dim); padding: 4px 8px; border-radius: 6px; background: rgba(0,0,0,0.4); letter-spacing:0.5px;">${mNames.join(' & ')} FOCUS</span>` : ''}
                         </div>
                     </div>
                     <div style="padding: 12px 16px 8px 16px; background: rgba(0,0,0,0.18); border-bottom: 1px solid var(--border); text-align:center;">
@@ -2273,11 +2489,11 @@ const workoutEngine = {
                             ${utils.renderAnatomySVG(colorMap, '100%', '175px')}
                         </div>
                     </div>
-                    <div style="padding: 12px 16px 0 16px;">
+                    <div style="padding: 12px 14px 0 14px;">
                         <input type="text" class="edit-input" style="font-size:13px !important; margin:0; width:100%; color:var(--warning); background:transparent; border:none; border-bottom:1px dashed var(--border); border-radius:0;" placeholder="+ Add Notes (e.g. Seat 4, Handle 2)" value="${ex.notes || ''}" onchange="workoutEngine.updateNotes(${exIdx}, this.value)">
                         ${peakHtml}
                     </div>
-                    <div class="exercise-body" style="padding: 16px;">
+                    <div class="exercise-body" style="padding: 14px;">
                         ${recHtml}
                         <div class="set-row text-muted" style="font-size:11px; margin-bottom: 8px; font-weight:bold;">
                             <div style="text-align:center">SET</div><div style="text-align:center">KG</div><div style="text-align:center">REPS</div><div style="text-align:center">RIR</div><div></div>
@@ -2285,8 +2501,8 @@ const workoutEngine = {
                 ex.sets.forEach((set, setIdx) => { const isComp = set.completed;
                     html += `
                         <div class="set-wrapper">
-                            <div class="flex-between text-muted" style="font-size: 10px; margin-bottom: 4px; padding-left: 45px; padding-right: 55px; opacity:0.8;">
-                                <span>Prev: ${set.prevWeight}×${set.prevReps}</span><span>L3: ${set.l3Weight}×${set.l3Reps}</span>
+                            <div class="flex-between text-muted" style="font-size: 10.5px; margin-bottom: 4px; padding-left: 44px; padding-right: 54px; opacity:0.85; white-space:nowrap;">
+                                <span>Prev: ${set.prevWeight}kg × ${set.prevReps} reps</span><span>L3 Avg: ${set.l3Weight}kg × ${set.l3Reps} reps</span>
                             </div>
                             <div class="set-row">
                                 <div class="set-number">${setIdx + 1}</div>
@@ -2347,8 +2563,6 @@ const views = {
         const rpToNextLevel = 500 - (totalRP % 500);
         let lvlTier = Math.min(7, Math.floor(accountLevel / 5));
         let lvlBadgeClass = `lvl-tier-${lvlTier}`;
-
-        // 1. Exercise Heatmap Silhouette Card (Placed right below the quote, at the top of Home)
         const heatmapCard = `
         <div class="card" style="text-align:center;">
             <div class="flex-between">
@@ -2373,8 +2587,6 @@ const views = {
                 <span><span style="display:inline-block; width:8px; height:8px; background:#e74c3c; border-radius:50%; margin-right:4px;"></span>20+</span>
             </div>
         </div>`;
-
-        // 2. Weekly Rank Card (Removed cluttering weekly progress x/7 lifts line)
         const rank = utils.getWeeklyRankData();
         let rankBanner = `
         <div class="card" style="background: linear-gradient(135deg, var(--surface-elevated) 0%, var(--bg-color) 100%); border: 2px solid ${rank.color}; box-shadow: 0 0 20px ${rank.color}30; margin-bottom:16px; position:relative; overflow:hidden; cursor:pointer;" onclick="app.navigate('ranked-breakdown')">
@@ -2398,8 +2610,6 @@ const views = {
                 <div class="progress-fill" style="width:${rank.progress}%; background:${rank.color}; box-shadow: 0 0 10px ${rank.color};"></div>
             </div>
         </div>`;
-
-        // 3. Challenge Card
         let challengeCard = '';
         if (cStats) {
             challengeCard = `
@@ -2425,8 +2635,6 @@ const views = {
         } else {
             challengeCard = `<button class="btn" style="margin-bottom: 16px; background: var(--surface-elevated); border: 1px dashed var(--accent-color); color: var(--accent-color);" onclick="app.navigate('challenge')"><i class="fas fa-plus"></i> Create Custom Challenge</button>`;
         }
-
-        // Pinned Challenge Goals
         let pinnedGoalsHtml = '';
         if (store.state.challenge && store.state.challenge.isActive && store.state.challenge.goals) {
             const pinnedGoals = store.state.challenge.goals.filter(g => g.showInActionPlan);
@@ -2467,11 +2675,9 @@ const views = {
                 </div>`;
             });
         }
-
         const startWorkoutLabel = isResumable
             ? `Resume: ${store.state.activeSession.name}`
             : (wComplete && !isRest ? 'Start a Workout (Completed)' : 'Start a Workout');
-
         return `
             <div class="flex-between" style="margin-top: calc(24px + var(--safe-top)); margin-bottom: 16px; gap:8px;">
                 <h1 style="margin:0; font-size:24px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${today.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })}</h1>
@@ -2492,7 +2698,6 @@ const views = {
                     <h2 style="font-size: 18px; margin:0;">Today's Action Plan</h2>
                     <button class="btn btn-sm" style="width:auto; padding:4px 10px; font-size:11px; background:var(--surface-elevated);" onclick="app.navigate('challenge')"><i class="fas fa-thumbtack"></i> Pin Goals</button>
                 </div>
-                <!-- Replaced Daily Session Row with the single attached Start a Workout + Activity button row -->
                 <div style="display:flex; gap:8px; margin-bottom:10px;">
                     <button class="btn ${isResumable ? 'resume-pulse' : ''}" style="flex:2; background:var(--surface-elevated); border:1.5px solid ${wComplete && !isResumable ? 'var(--success)' : 'var(--accent-color)'}; color:${wComplete && !isResumable ? 'var(--success)' : 'var(--accent-color)'}; font-weight:800;" onclick="app.showStartWorkoutModal()"><i class="fas fa-dumbbell"></i> ${startWorkoutLabel}</button>
                     <button class="btn" style="flex:1; background:var(--surface-elevated); border:1px solid var(--border); color:var(--text-primary); padding:14px 10px; font-weight:700;" onclick="app.startOtherActivity()"><i class="fas fa-person-running"></i> Activity</button>
@@ -2643,6 +2848,7 @@ const views = {
             if (!app.activeChallengeDate) app.activeChallengeDate = todayStr;
             const targetDateStr = app.activeChallengeDate;
             const isViewingToday = targetDateStr === todayStr;
+            const dayStat = utils.getDayGoalStats(targetDateStr);
             let goalsHtml = c.goals.map((g, idx) => {
                 if (g.createdAt && targetDateStr < g.createdAt) return '';
                 const isMet = utils.checkGoalSuccess(targetDateStr, g);
@@ -2683,12 +2889,19 @@ const views = {
                             <div style="font-size:24px; font-weight:bold; color:var(--success);">${stats.successRate}%</div>
                         </div>
                     </div>
+                    <button class="btn btn-sm" style="margin-top:16px; width:100%; background:var(--surface-elevated); border:1px solid var(--accent-color); color:var(--accent-color); font-weight:800;" onclick="app.openChallengeCalendarModal()"><i class="fas fa-calendar-check"></i> View Challenge Calendar</button>
                 </div>
-                <div class="flex-between" style="margin-bottom: 12px; margin-top: 24px;">
-                    <h2 style="margin:0;">Checklist</h2>
-                    <div style="display:flex; background:var(--surface-elevated); border-radius:8px; padding:2px; border:1px solid var(--border);">
-                        <button class="btn btn-sm" style="padding:4px 12px; font-size:12px; border:none; background:${!isViewingToday ? 'var(--accent-color)' : 'transparent'}; color:${!isViewingToday ? 'var(--bg-color)' : 'var(--text-secondary)'};" onclick="app.setChallengeDate('${yestStr}')">Yesterday</button>
-                        <button class="btn btn-sm" style="padding:4px 12px; font-size:12px; border:none; background:${isViewingToday ? 'var(--accent-color)' : 'transparent'}; color:${isViewingToday ? 'var(--bg-color)' : 'var(--text-secondary)'};" onclick="app.setChallengeDate('${todayStr}')">Today</button>
+                <div class="flex-between" style="margin-bottom: 12px; margin-top: 20px; gap:8px; flex-wrap:wrap;">
+                    <div>
+                        <h2 style="margin:0;">Checklist</h2>
+                        <div class="text-muted" style="font-size:11px;">${utils.formatDate(targetDateStr)} • <strong style="color:${dayStat.allMet ? 'var(--success)' : 'var(--warning)'};">${dayStat.pct}% (${dayStat.met}/${dayStat.possible} Met)</strong></div>
+                    </div>
+                    <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
+                        <input type="date" class="edit-input" style="width:auto; margin:0; padding:5px 8px; font-size:12px !important; font-weight:bold;" value="${targetDateStr}" min="${c.startDate}" max="${c.endDate}" onchange="app.setChallengeDate(this.value)">
+                        <div style="display:flex; background:var(--surface-elevated); border-radius:8px; padding:2px; border:1px solid var(--border);">
+                            <button class="btn btn-sm" style="padding:4px 10px; font-size:11px; border:none; background:${targetDateStr === yestStr ? 'var(--accent-color)' : 'transparent'}; color:${targetDateStr === yestStr ? 'var(--bg-color)' : 'var(--text-secondary)'};" onclick="app.setChallengeDate('${yestStr}')">Yest</button>
+                            <button class="btn btn-sm" style="padding:4px 10px; font-size:11px; border:none; background:${isViewingToday ? 'var(--accent-color)' : 'transparent'}; color:${isViewingToday ? 'var(--bg-color)' : 'var(--text-secondary)'};" onclick="app.setChallengeDate('${todayStr}')">Today</button>
+                        </div>
                     </div>
                 </div>
                 <p class="text-muted" style="font-size:11px; margin-bottom:10px;">Tip: Tap the <i class="fas fa-thumbtack"></i> pin icon on any goal to show or hide it inside Today's Action Plan on your Home screen.</p>
@@ -2707,9 +2920,7 @@ const views = {
         const activeExFilter = store.state.settings.overloadExerciseFilter || 'ALL_MUSCLE';
         let recentBw = store.state.history.bodyweight.slice(-7);
         let avgBw = recentBw.length ? (recentBw.reduce((a,b)=>a+b.weight,0)/recentBw.length).toFixed(1) : store.state.user.currentWeight;
-
         const muscleTabs = ['total', ...utils.getAllMuscleGroups().filter(m => m !== 'Cardio' && m !== 'Other')];
-        // Gather exercises belonging to the selected muscle pill (if not Total Volume)
         let exercisesInMuscle = [];
         if (activeVolFilter !== 'total') {
             let seen = new Set();
@@ -2721,14 +2932,10 @@ const views = {
             });
             exercisesInMuscle.sort();
         }
-
         const trackedLifts = store.state.trackedPRs || ['Bench Press', 'Squat', 'Deadlift'];
         const hyperStatus = utils.getWeeklyHypertrophyStatus();
-
         return `
             <h1 style="margin-bottom:16px;">Analytics</h1>
-
-            <!-- 1. PROGRESSIVE OVERLOAD GRAPH (OLD COMBINED DESIGN WITH PILL BUTTONS & TIMEFRAME SELECTOR) -->
             <div class="card" style="background: linear-gradient(145deg, var(--vol-bg1), var(--vol-bg2)); border: 1.5px solid var(--info);">
                 <div class="flex-between" style="margin-bottom: 12px;">
                     <h2 style="color: var(--info); margin:0; font-style:italic; letter-spacing:0.5px;"><i class="fas fa-chart-line"></i> PROGRESSIVE OVERLOAD</h2>
@@ -2741,7 +2948,6 @@ const views = {
                         <option value="all" ${range == 'all' ? 'selected' : ''}>ALL</option>
                     </select>
                 </div>
-                <!-- Horizontal Muscle / Total Volume Pill Bar -->
                 <div class="nut-meal-carousel" style="gap:8px; padding-bottom:10px; margin-bottom:8px;">
                     ${muscleTabs.map(m => {
                         const isSel = activeVolFilter === m;
@@ -2749,7 +2955,6 @@ const views = {
                         return `<button class="btn btn-sm" style="width:auto; flex-shrink:0; padding:7px 14px; font-size:13px; border-radius:10px; background:${isSel ? 'var(--info)' : 'rgba(0,0,0,0.35)'}; color:${isSel ? '#ffffff' : 'var(--text-primary)'}; border:1px solid ${isSel ? 'var(--info)' : 'var(--border)'};" onclick="app.selectOverloadGraphTab('${m}')">${label}</button>`;
                     }).join('')}
                 </div>
-                <!-- Sub-selector box matching attached screenshot -->
                 <div style="margin-bottom: 8px;">
                     ${activeVolFilter === 'total' ? `
                         <div style="width:100%; padding:10px 14px; border-radius:10px; background:rgba(0,0,0,0.35); border:1px solid var(--border); font-weight:bold; font-size:15px; color:var(--text-primary);">
@@ -2764,8 +2969,6 @@ const views = {
                 </div>
                 <div style="position: relative; height: 240px; width: 100%;"><canvas id="volChart"></canvas></div>
             </div>
-
-            <!-- 2. BODYWEIGHT TRACKER & DUAL-AXIS CHART -->
             <div class="card" style="background: linear-gradient(145deg, var(--bw-bg1), var(--bw-bg2)); border: 1px solid var(--warning);">
                 <div class="flex-between" style="align-items:flex-start; margin-bottom:8px;">
                     <div>
@@ -2792,8 +2995,6 @@ const views = {
                 <div style="position: relative; height: 220px; width: 100%;"><canvas id="bwChart"></canvas></div>
                 <div id="bw-Feedback" style="margin-top:12px; font-size:13px; text-align:center; padding:8px; border-radius:8px; background:rgba(0,0,0,0.3);"></div>
             </div>
-
-            <!-- 3. INTEGRATED PR ZONE & 4-WEEK OVERLOAD / MAXES (WITH + / - EXERCISE TRACKING) -->
             <div class="card" style="background: linear-gradient(145deg, var(--pr-bg1), var(--pr-bg2)); border: 1px solid var(--accent-color);">
                 <div class="flex-between" style="margin-bottom:6px; gap:8px;">
                     <div>
@@ -2805,28 +3006,28 @@ const views = {
                 <div style="display:flex; flex-direction:column; gap:12px; margin-top: 12px;">
                     ${trackedLifts.map((lift, idx) => {
                         const st = utils.getLiftWorldStats(lift);
-                        const bestSetStr = st.weight > 0 ? `${st.weight}kg × ${st.reps}` : 'No 4w set logged';
+                        const bestSetStr = st.weight > 0 ? `${st.weight}kg × ${st.reps} reps` : 'No 4w set logged';
                         const safeId = lift.replace(/[^a-zA-Z0-9]/g, '_');
                         let overloadBadge = '';
                         if (st.hasComparison) {
                             const sign = st.overloadDiff > 0 ? '+' : '';
                             const ovCol = st.overloadDiff >= 0 ? 'var(--success)' : 'var(--pending)';
-                            overloadBadge = `<span style="font-size:10px; font-weight:800; color:${ovCol}; background:rgba(0,0,0,0.5); padding:2px 7px; border-radius:8px; border:1px solid ${ovCol};">${sign}${st.overloadDiff}kg vs prev</span>`;
+                            overloadBadge = `<span class="pill-nowrap" style="font-size:10px; font-weight:800; color:${ovCol}; background:rgba(0,0,0,0.5); padding:2px 7px; border-radius:8px; border:1px solid ${ovCol};">${sign}${st.overloadDiff}kg vs prev</span>`;
                         }
                         return `
                         <div style="background: rgba(0,0,0,0.45); padding: 14px; border-radius: 12px; border: 1px solid var(--border); position:relative; overflow:hidden;">
                             <div class="flex-between" style="margin-bottom: 10px; align-items:flex-start; gap:8px;">
-                                <div style="flex:1; min-width:0;">
-                                    <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-                                        <span style="font-weight:900; font-size:17px; color:${st.color}; text-transform:uppercase; letter-spacing:0.5px;">${lift}</span>
-                                        <span style="font-size:10px; font-weight:900; padding:2px 8px; border-radius:10px; background:${st.color}22; color:${st.color}; border:1px solid ${st.color}; text-transform:uppercase;">${st.tier}</span>
+                                <div style="flex:1; min-width:0; padding-right:6px;">
+                                    <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                                        <span class="ex-title-2line" style="font-weight:900; font-size:16px; color:${st.color}; text-transform:uppercase; letter-spacing:0.5px;">${lift}</span>
+                                        <span class="pill-nowrap" style="font-size:10px; font-weight:900; padding:2px 8px; border-radius:10px; background:${st.color}22; color:${st.color}; border:1px solid ${st.color}; text-transform:uppercase;">${st.tier}</span>
                                         ${overloadBadge}
                                     </div>
-                                    <div class="text-muted" style="font-size:11px; margin-top:3px;">4w Best Set: <strong style="color:var(--text-primary);">${bestSetStr}</strong> • Ratio: <strong style="color:var(--text-primary);">${st.bwRatio}x BW</strong></div>
+                                    <div class="text-muted" style="font-size:11px; margin-top:4px;">4w Best Set: <strong style="color:var(--text-primary); white-space:nowrap;">${bestSetStr}</strong> • Ratio: <strong style="color:var(--text-primary); white-space:nowrap;">${st.bwRatio}x BW</strong></div>
                                 </div>
                                 <div style="display:flex; align-items:flex-start; gap:8px; flex-shrink:0;">
-                                    <div style="text-align:right;">
-                                        <div style="font-size:21px; font-weight:900; color:#fff; line-height:1;">${st.e1rm > 0 ? `${st.e1rm} <span style="font-size:11px; color:var(--text-secondary);">kg 1RM</span>` : '—'}</div>
+                                    <div style="text-align:right; white-space:nowrap;">
+                                        <div style="font-size:20px; font-weight:900; color:#fff; line-height:1;">${st.e1rm > 0 ? `${st.e1rm} <span style="font-size:11px; color:var(--text-secondary);">kg 1RM</span>` : '—'}</div>
                                         <div style="font-size:11px; font-weight:900; color:var(--success); margin-top:4px;"><i class="fas fa-globe"></i> Top ${st.topPercent}% World</div>
                                     </div>
                                     <button class="btn-icon" style="width:28px; height:28px; background:rgba(255,59,48,0.12); border:1px solid rgba(255,59,48,0.35); color:var(--pending);" title="Remove from PR Zone" onclick="app.removeTrackedPR(${idx})"><i class="fas fa-minus" style="font-size:11px;"></i></button>
@@ -2852,12 +3053,10 @@ const views = {
                     }).join('')}
                 </div>
             </div>
-
-            <!-- 4. WEEKLY HYPERTROPHY SETS CHART -->
             <div class="card" style="background: linear-gradient(145deg, var(--vol-bg1), var(--vol-bg2)); border: 1px solid var(--info);">
                 <div class="flex-between">
                     <h2 style="color: var(--info); margin:0;"><i class="fas fa-dumbbell"></i> Weekly Hypertrophy</h2>
-                    <span style="font-size:11px; font-weight:800; color:${hyperStatus.allCompleted ? 'var(--success)' : 'var(--warning)'}; background:rgba(0,0,0,0.4); padding:4px 8px; border-radius:6px; border:1px solid ${hyperStatus.allCompleted ? 'var(--success)' : 'var(--warning)'};">${hyperStatus.completedGroups}/${hyperStatus.totalGroups} Targets Met (+${hyperStatus.hypertrophyRP} RP)</span>
+                    <span class="pill-nowrap" style="font-size:11px; font-weight:800; color:${hyperStatus.allCompleted ? 'var(--success)' : 'var(--warning)'}; background:rgba(0,0,0,0.4); padding:4px 8px; border-radius:6px; border:1px solid ${hyperStatus.allCompleted ? 'var(--success)' : 'var(--warning)'};">${hyperStatus.completedGroups}/${hyperStatus.totalGroups} Targets Met (+${hyperStatus.hypertrophyRP} RP)</span>
                 </div>
                 <p class="text-muted" style="font-size:12px; margin-bottom: 8px;">Hard Sets Completed This Week vs. Optimal Target (10-20 Sets)</p>
                 <div style="position: relative; height: 240px; width: 100%;"><canvas id="hypertrophyChart"></canvas></div>
@@ -2900,7 +3099,6 @@ const views = {
             { id: 'Dinner', label: 'Dinner', img: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=450&q=80' },
             { id: 'Snacks', label: 'Snacks', img: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=450&q=80' }
         ];
-        // Meals Carousel
         let mealsCarouselHtml = `<div class="nut-meal-carousel">`;
         mealCategories.forEach(mc => {
             const mealsForCat = (activeEntry.loggedMeals || []).filter(m => m.type === mc.id);
@@ -2919,7 +3117,6 @@ const views = {
             </div>`;
         });
         mealsCarouselHtml += `</div>`;
-        // Logged items breakdown by meal category
         let loggedMealsBreakdownHtml = '';
         mealCategories.forEach(mc => {
             const mealsInType = (activeEntry.loggedMeals || []).map((m, idx) => ({ ...m, originalIdx: idx })).filter(m => m.type === mc.id);
@@ -2947,10 +3144,8 @@ const views = {
                 </div>`;
             }
         });
-        // Calculate Daily Nutrition Score (0 - 100) + Factor Breakdown
         const nutScoreObj = utils.getNutritionScore(activeEntry, targets);
         const scoreRingSVG = buildRingSVG(nutScoreObj.totalScore, nutScoreObj.color, `${nutScoreObj.totalScore}`, `/ 100`, 110);
-        // Generate bullet-point insights (Green / Orange / Red) for the active day
         const insights = utils.getDailyNutritionInsights(activeEntry, targets);
         const insightsHtml = insights.map(item => {
             const cls = item.tone === 'good' ? 'nut-insight-good' : (item.tone === 'mid' ? 'nut-insight-mid' : 'nut-insight-bad');
@@ -2958,7 +3153,6 @@ const views = {
             return `<div class="nut-insight-bullet ${cls}"><i class="fas ${icon}" style="margin-top:3px; flex-shrink:0;"></i><div>• ${item.text}</div></div>`;
         }).join('');
         const savedMealsCount = (store.state.savedMeals || []).length;
-
         return `
             <div class="flex-between" style="margin-top: calc(24px + var(--safe-top)); margin-bottom: 12px;">
                 <h1 style="margin:0;">Nutrition</h1>
@@ -2967,8 +3161,6 @@ const views = {
                     ${!isToday ? `<button class="btn btn-sm btn-primary" style="padding:6px 10px; font-size:12px;" onclick="app.setNutritionDate('${todayStr}')">Today</button>` : ''}
                 </div>
             </div>
-
-            <!-- 1. DAILY SUMMARY PROGRESS RINGS (TOP) -->
             <div class="flex-between" style="margin-bottom: 10px;">
                 <h2 style="margin:0; font-size:20px;">${isToday ? 'Daily Summary' : `Summary (${utils.formatDate(activeDateStr)})`}</h2>
                 <button class="btn btn-sm" style="width:auto; padding:5px 10px; font-size:12px; background:var(--surface-elevated);" onclick="app.promptCopyFromPastDay()"><i class="fas fa-copy"></i> Copy Past Day</button>
@@ -3007,19 +3199,15 @@ const views = {
                     <div class="text-muted" style="font-size:12px; font-weight:600;">of ${targets.fat} g</div>
                 </div>
             </div>
-
-            <!-- 2. MEALS CAROUSEL (BREAKFAST, LUNCH, DINNER, SNACKS) -->
             <div class="flex-between" style="margin-bottom: 10px;">
                 <div>
                     <h2 style="margin:0; font-size:20px;">Meals</h2>
-                    <div class="text-muted" style="font-size:11px;">Tap a meal window to log from your Saved Meals or build a new meal</div>
+                    <div class="text-muted" style="font-size:11px;">Tap a meal window to log from your Saved Meals or raw ingredients</div>
                 </div>
                 <button class="btn btn-sm btn-primary" style="width:auto; padding:6px 12px; font-size:12px;" onclick="app.openCreateMealModal()"><i class="fas fa-utensils"></i> + Create Meal</button>
             </div>
             ${mealsCarouselHtml}
             ${loggedMealsBreakdownHtml}
-
-            <!-- 3. WATER INTAKE TRACKER -->
             <div class="card" style="background: linear-gradient(145deg, #051329, #0a2246); border: 1px solid var(--info); box-shadow: var(--info-glow); margin-top: 8px;">
                 <div class="flex-between" style="margin-bottom: 8px;">
                     <h2 style="color: var(--info); margin:0;"><i class="fas fa-droplet"></i> Water Intake</h2>
@@ -3029,19 +3217,17 @@ const views = {
                     <div class="progress-fill" style="width: ${waterPct}%; background: var(--info); box-shadow: 0 0 10px var(--info);"></div>
                 </div>
                 <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 12px;">
-                    <button class="btn btn-sm" style="background: rgba(0, 122, 255, 0.15); border: 1px solid var(--info); color: #fff; font-weight:bold; padding:10px 4px;" onclick="app.logWater(250)">+250ml</button>
-                    <button class="btn btn-sm" style="background: rgba(0, 122, 255, 0.15); border: 1px solid var(--info); color: #fff; font-weight:bold; padding:10px 4px;" onclick="app.logWater(500)">+500ml</button>
-                    <button class="btn btn-sm" style="background: rgba(0, 122, 255, 0.15); border: 1px solid var(--info); color: #fff; font-weight:bold; padding:10px 4px;" onclick="app.logWater(750)">+750ml</button>
-                    <button class="btn btn-sm" style="background: rgba(0, 122, 255, 0.15); border: 1px solid var(--info); color: #fff; font-weight:bold; padding:10px 4px;" onclick="app.logWater(1000)">+1.0L</button>
+                    <button type="button" class="btn btn-sm" style="background: rgba(0, 122, 255, 0.15); border: 1px solid var(--info); color: #fff; font-weight:bold; padding:10px 4px;" onclick="app.logWater(250)">+250ml</button>
+                    <button type="button" class="btn btn-sm" style="background: rgba(0, 122, 255, 0.15); border: 1px solid var(--info); color: #fff; font-weight:bold; padding:10px 4px;" onclick="app.logWater(500)">+500ml</button>
+                    <button type="button" class="btn btn-sm" style="background: rgba(0, 122, 255, 0.15); border: 1px solid var(--info); color: #fff; font-weight:bold; padding:10px 4px;" onclick="app.logWater(750)">+750ml</button>
+                    <button type="button" class="btn btn-sm" style="background: rgba(0, 122, 255, 0.15); border: 1px solid var(--info); color: #fff; font-weight:bold; padding:10px 4px;" onclick="app.logWater(1000)">+1.0L</button>
                 </div>
                 <div style="display:flex; gap:8px;">
                     <input type="number" id="custom-water-input" class="edit-input" style="margin:0; background:rgba(0,0,0,0.4); border-color:rgba(0,122,255,0.4);" placeholder="Custom ml (e.g. 330)">
-                    <button class="btn btn-sm" style="background:var(--info); color:#fff; border:none; width:auto; padding:0 16px;" onclick="app.logCustomWater()">Add</button>
-                    ${activeEntry.waterLog && activeEntry.waterLog.length > 0 ? `<button class="btn btn-sm" style="background:rgba(255,59,48,0.2); border:1px solid var(--pending); color:var(--pending); width:auto; padding:0 12px;" onclick="app.undoWater()" title="Undo last water log"><i class="fas fa-rotate-left"></i></button>` : ''}
+                    <button type="button" class="btn btn-sm" style="background:var(--info); color:#fff; border:none; width:auto; padding:0 16px;" onclick="app.logCustomWater()">Add</button>
+                    ${activeEntry.waterLog && activeEntry.waterLog.length > 0 ? `<button type="button" class="btn btn-sm" style="background:rgba(255,59,48,0.2); border:1px solid var(--pending); color:var(--pending); width:auto; padding:0 12px;" onclick="app.undoWater()" title="Undo last water log"><i class="fas fa-rotate-left"></i></button>` : ''}
                 </div>
             </div>
-
-            <!-- 4. DAILY NUTRITION SCORE (0 - 100) CARD -->
             <div class="card" style="border: 2px solid ${nutScoreObj.color}; background: linear-gradient(145deg, var(--surface-elevated), var(--bg-color)); margin-bottom: 16px;">
                 <div class="flex-between" style="margin-bottom:8px;">
                     <div>
@@ -3073,8 +3259,6 @@ const views = {
                     </div>
                 </div>
             </div>
-
-            <!-- 5. DAILY NUTRITION & MICRONUTRIENT INSIGHTS (RECOMMENDATIONS / NOTES) -->
             <div class="card">
                 <div class="flex-between" style="margin-bottom: 10px;">
                     <h2 style="margin:0; font-size:18px;"><i class="fas fa-clipboard-check text-accent"></i> Recommendations &amp; Notes</h2>
@@ -3082,8 +3266,6 @@ const views = {
                 </div>
                 ${insightsHtml}
             </div>
-
-            <!-- 6. NUTRITION SETTINGS SECTION (DECLUTTERED BUTTONS FOR SAVED MEALS, MACRO TARGETS, PAST LOGS) -->
             <div class="card">
                 <h2 style="margin:0 0 12px 0; font-size:18px;"><i class="fas fa-sliders text-accent"></i> Nutrition Settings</h2>
                 <div style="display:flex; flex-direction:column; gap:10px;">
@@ -3109,8 +3291,6 @@ const views = {
             return this.renderProgramEditor();
         }
         const activeDaysCount = (active.days || []).filter(d => d.workouts && d.workouts.length > 0).length;
-
-        // Current Active Split Weekly Schedule
         let scheduleHtml = '';
         active.days.forEach(d => {
             const dayName = utils.getDayName(d.day);
@@ -3134,24 +3314,21 @@ const views = {
                     scheduleHtml += `
                     <div class="card" style="padding:12px; margin-bottom:10px; display:flex; align-items:center; gap:12px;">
                         <img src="${thumbImg}" style="width:62px; height:62px; border-radius:12px; object-fit:cover; flex-shrink:0; border:1px solid var(--border);" loading="lazy">
-                        <div style="flex:1; min-width:0;">
+                        <div style="flex:1; min-width:0; padding-right:6px;">
                             <div style="font-size:11px; font-weight:800; color:var(--accent-color); text-transform:uppercase;">${dayName}</div>
-                            <div style="font-weight:800; font-size:17px; color:var(--text-primary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${w.name}</div>
+                            <div class="ex-title-2line" style="font-weight:800; font-size:16px; color:var(--text-primary);">${w.name}</div>
                             <div class="text-muted" style="font-size:12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${exList.length} Exercises • ${musclesSummary || 'Custom'}</div>
                         </div>
-                        <button class="btn btn-sm btn-primary" style="width:auto; padding:10px 14px;" onclick="workoutEngine.start(utils.getActiveRoutine().days.find(x=>x.day===${d.day}).workouts.find(x=>x.id==='${w.id}'))"><i class="fas fa-play"></i></button>
+                        <button class="btn btn-sm btn-primary" style="width:auto; padding:10px 14px; flex-shrink:0;" onclick="workoutEngine.start(utils.getActiveRoutine().days.find(x=>x.day===${d.day}).workouts.find(x=>x.id==='${w.id}'))"><i class="fas fa-play"></i></button>
                     </div>`;
                 });
             }
         });
-
         return `
-            <div class="flex-between" style="margin-top: calc(24px + var(--safe-top)); margin-bottom: 14px;">
-                <h1 style="margin:0;">Workouts</h1>
-                <button class="btn btn-sm" style="width:auto; padding:8px 12px; background:var(--surface-elevated); border:1px solid var(--accent-color); color:var(--accent-color);" onclick="app.openSavedSplitsModal()"><i class="fas fa-layer-group"></i> View Saved Splits</button>
+            <div class="flex-between" style="margin-top: calc(24px + var(--safe-top)); margin-bottom: 14px; gap: 12px;">
+                <h1 style="margin:0; font-size:26px; flex:1; min-width:0;">Workouts</h1>
+                <button class="btn btn-sm" style="width:auto; padding:6px 10px; font-size:11.5px; flex-shrink:0; white-space:nowrap; background:var(--surface-elevated); border:1px solid var(--accent-color); color:var(--accent-color);" onclick="app.openSavedSplitsModal()"><i class="fas fa-layer-group"></i> View Saved Splits</button>
             </div>
-
-            <!-- CURRENT ACTIVATED SPLIT CARD (ALWAYS USES THE DUMBBELL RACK PHOTO) -->
             <div class="flex-between" style="margin-bottom:8px;">
                 <h2 style="margin:0; font-size:18px;">Your Workout Split</h2>
                 <span class="text-muted" style="font-size:11px;">Tap split to inspect or edit</span>
@@ -3166,13 +3343,10 @@ const views = {
                     <div class="text-muted" style="font-size:12px;">${activeDaysCount} Training Days / Week</div>
                 </div>
             </div>
-
-            <!-- VIEW ALL EXERCISES TAB BUTTON JUST UNDER YOUR WORKOUT SPLIT -->
             <button class="btn" style="margin-bottom: 20px; background:var(--surface-elevated); border:1px solid var(--border); justify-content:space-between;" onclick="app.openAllExercisesModal()">
                 <span><i class="fas fa-dumbbell text-accent" style="margin-right:8px;"></i> View All Exercises &amp; Muscle Groups</span>
                 <i class="fas fa-chevron-right text-muted"></i>
             </button>
-
             <div class="flex-between" style="margin-bottom:10px;">
                 <div>
                     <h2 style="margin:0; font-size:19px;">${active.name} Schedule</h2>
@@ -3228,10 +3402,10 @@ const views = {
                         html += `
                         <div class="editor-exercise-row">
                             <img src="${exMoveImg}" alt="${ex.name}" style="width:40px; height:40px; border-radius:8px; object-fit:cover; flex-shrink:0; border:1px solid var(--border);">
-                            <div style="flex:1; min-width:0;">
-                                <div class="flex-between" style="margin-bottom:4px; gap:6px;">
-                                    <div style="font-weight:bold; font-size:15px; color:var(--text-primary); cursor:pointer;" onclick="app.openEditExerciseModal('${ex.name.replace(/'/g, "\\'")}', 'editor', ${dIdx}, ${wIdx}, ${exIdx})">${ex.name} <i class="fas fa-pen" style="font-size:11px; color:var(--accent-color); margin-left:4px;"></i></div>
-                                    <span style="font-size:10px; background:var(--accent-dim); color:var(--accent-color); padding:2px 6px; border-radius:6px; font-weight:bold; cursor:pointer;" onclick="app.openEditExerciseModal('${ex.name.replace(/'/g, "\\'")}', 'editor', ${dIdx}, ${wIdx}, ${exIdx})">${mList.join(', ')}</span>
+                            <div style="flex:1; min-width:0; padding-right:4px;">
+                                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px; gap:6px; flex-wrap:wrap;">
+                                    <div class="ex-title-2line" style="font-weight:bold; font-size:14.5px; color:var(--text-primary); cursor:pointer; flex:1; min-width:110px;" onclick="app.openEditExerciseModal('${ex.name.replace(/'/g, "\\'")}', 'editor', ${dIdx}, ${wIdx}, ${exIdx})">${ex.name} <i class="fas fa-pen" style="font-size:10px; color:var(--accent-color); margin-left:4px;"></i></div>
+                                    <span class="pill-nowrap" style="font-size:10px; background:var(--accent-dim); color:var(--accent-color); padding:2px 6px; border-radius:6px; font-weight:bold; cursor:pointer;" onclick="app.openEditExerciseModal('${ex.name.replace(/'/g, "\\'")}', 'editor', ${dIdx}, ${wIdx}, ${exIdx})">${mList.join(', ')}</span>
                                 </div>
                                 <div style="display:flex; gap:8px; align-items:center;">
                                     <div style="flex:1;">
@@ -3301,7 +3475,7 @@ const views = {
                             <div style="font-weight:bold; font-size:15px;">${w.name}</div>
                             <div class="text-muted" style="font-size:12px;">${utils.formatDate(w.date)} • ${w.duration || 0}m • ${(w.exercises||[]).length} exercises</div>
                         </div>
-                        <button class="btn-icon" style="color:var(--pending); width:32px; height:32px;" onclick="if(confirm('Delete this workout log?')){store.deleteEntry('workouts','${w.date}'); app.navigate('data');}"><i class="fas fa-trash"></i></button>
+                        <button class="btn-icon" style="color:var(--pending); width:32px; height:32px;" onclick="if(confirm('Delete this workout log?')){store.deleteEntry('workouts','${w.date}'); app.navigate('data', true);}"><i class="fas fa-trash"></i></button>
                     </div>
                 `).join('')}
             </div>
@@ -3317,8 +3491,10 @@ const app = {
     activeChallengeDate: null,
     activeNutritionDate: null,
     currentMealType: 'Breakfast',
+    mealSearchMode: 'saved',
     mealBuilderIngredients: [],
     editingSavedMealId: null,
+    challengeCalendarMonthOffset: 0,
     init() {
         store.load();
         document.documentElement.setAttribute('data-theme', store.state.settings.theme || 'olympus');
@@ -3346,10 +3522,16 @@ const app = {
             </a>
         `).join('');
     },
-    navigate(view) {
+    // Preserves scroll position whenever re-rendering the same view (prevents jumping to top on water/button/input actions)
+    navigate(view, preserveScroll = null) {
+        const main = document.getElementById('main-content');
+        const isSameView = (this.currentView === view);
+        const shouldPreserve = preserveScroll !== null ? preserveScroll : isSameView;
+        const prevScrollTop = main ? main.scrollTop : 0;
+
         this.currentView = view;
         this.renderNav();
-        const main = document.getElementById('main-content');
+
         if (view === 'home') main.innerHTML = views.renderHome();
         else if (view === 'ranked-breakdown') main.innerHTML = views.renderRankedBreakdown();
         else if (view === 'challenge') {
@@ -3373,14 +3555,17 @@ const app = {
         }
         else if (view === 'nutrition') main.innerHTML = views.renderNutrition();
         else if (view === 'data') main.innerHTML = views.renderData();
-        main.scrollTop = 0;
+
+        if (main) {
+            main.scrollTop = shouldPreserve ? prevScrollTop : 0;
+        }
     },
     changeTheme(themeName) {
         store.state.settings.theme = themeName;
         store.save();
         document.documentElement.setAttribute('data-theme', themeName);
         this.renderNav();
-        this.navigate(this.currentView);
+        this.navigate(this.currentView, true);
     },
     handleWorkoutRowClick() {
         if (store.state.activeSession) {
@@ -3439,7 +3624,7 @@ const app = {
         if (val !== null && !isNaN(parseFloat(val))) {
             if (existing) store.updateBodyweight(existing.date, parseFloat(val));
             else store.addBodyweight(parseFloat(val));
-            this.navigate(this.currentView);
+            this.navigate(this.currentView, true);
         }
     },
     handleCardioClick() {
@@ -3449,15 +3634,112 @@ const app = {
             if (confirm("Remove today's completed walk log?")) {
                 store.state.history.cardio.splice(existingIdx, 1);
                 store.save();
-                this.navigate(this.currentView);
+                this.navigate(this.currentView, true);
             }
         } else {
             store.state.history.cardio.push({ date: new Date().toISOString(), type: 'Walk' });
             store.save();
-            this.navigate(this.currentView);
+            this.navigate(this.currentView, true);
         }
     },
-    /* CHALLENGE FUNCTIONS */
+    /* CHALLENGE FUNCTIONS & CHALLENGE CALENDAR MODAL */
+    openChallengeCalendarModal() {
+        this.challengeCalendarMonthOffset = 0;
+        const modal = document.getElementById('start-workout-modal');
+        modal.style.display = 'flex';
+        this.renderChallengeCalendarModalContent();
+    },
+    changeChallengeCalendarMonth(delta) {
+        this.challengeCalendarMonthOffset = (this.challengeCalendarMonthOffset || 0) + delta;
+        this.renderChallengeCalendarModalContent();
+    },
+    renderChallengeCalendarModalContent() {
+        const modal = document.getElementById('start-workout-modal');
+        const c = store.state.challenge;
+        if (!c || !c.isActive) { modal.style.display = 'none'; return; }
+
+        const todayStr = utils.getLocalISODate(new Date());
+        const selectedStr = this.activeChallengeDate || todayStr;
+        const baseParts = selectedStr.split('-');
+        const viewDate = new Date(parseInt(baseParts[0]), parseInt(baseParts[1]) - 1 + (this.challengeCalendarMonthOffset || 0), 1);
+        const year = viewDate.getFullYear();
+        const month = viewDate.getMonth();
+        const monthTitle = viewDate.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
+
+        const firstDayWeekIdx = (new Date(year, month, 1).getDay() + 6) % 7; // Monday = 0
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        let gridCellsHtml = '';
+        ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].forEach(d => {
+            gridCellsHtml += `<div class="chal-cal-hdr">${d}</div>`;
+        });
+        for (let b = 0; b < firstDayWeekIdx; b++) {
+            gridCellsHtml += `<div></div>`;
+        }
+
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            const inChallengeWindow = dStr >= c.startDate && dStr <= c.endDate;
+            const isFuture = dStr > todayStr;
+            const isSelected = dStr === selectedStr;
+
+            let cellClass = 'chal-cal-day';
+            if (isSelected) cellClass += ' cal-active-sel';
+
+            let pctBadge = '';
+            if (inChallengeWindow && !isFuture) {
+                const st = utils.getDayGoalStats(dStr);
+                if (st.possible > 0) {
+                    if (st.allMet) {
+                        cellClass += ' cal-all-met';
+                        pctBadge = `<div style="font-size:9px; font-weight:900; color:var(--success); display:flex; align-items:center; gap:1px;"><i class="fas fa-check" style="font-size:8px;"></i>100%</div>`;
+                    } else if (st.met > 0) {
+                        cellClass += ' cal-partial';
+                        pctBadge = `<div style="font-size:9px; font-weight:800; color:var(--warning);">${st.pct}%</div>`;
+                    } else {
+                        cellClass += ' cal-missed';
+                        pctBadge = `<div style="font-size:9px; font-weight:800; color:var(--pending);">0%</div>`;
+                    }
+                }
+            } else if (inChallengeWindow && isFuture) {
+                pctBadge = `<div style="font-size:8px; color:var(--text-secondary);">—</div>`;
+            }
+
+            gridCellsHtml += `
+            <div class="${cellClass}" style="${!inChallengeWindow ? 'opacity:0.32;' : ''}" onclick="document.getElementById('start-workout-modal').style.display='none'; app.setChallengeDate('${dStr}')">
+                <div style="font-weight:800; font-size:12px; color:var(--text-primary); line-height:1.1;">${day}</div>
+                ${pctBadge}
+            </div>`;
+        }
+
+        modal.innerHTML = `
+            <div class="page-header">
+                <button class="btn btn-sm btn-icon" onclick="document.getElementById('start-workout-modal').style.display='none'"><i class="fas fa-times"></i></button>
+                <h2 style="margin:0; font-size:18px;">Challenge Calendar</h2>
+                <div style="width:36px;"></div>
+            </div>
+            <div style="padding: 0 16px;">
+                <div class="card">
+                    <div class="flex-between" style="margin-bottom:10px;">
+                        <button class="btn btn-sm btn-icon" onclick="app.changeChallengeCalendarMonth(-1)"><i class="fas fa-chevron-left"></i></button>
+                        <div style="text-align:center;">
+                            <div style="font-weight:900; font-size:17px; color:var(--text-primary); text-transform:uppercase;">${monthTitle}</div>
+                            <div class="text-muted" style="font-size:11px;">Tap any date to inspect or toggle checklist</div>
+                        </div>
+                        <button class="btn btn-sm btn-icon" onclick="app.changeChallengeCalendarMonth(1)"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                    <div class="chal-cal-grid">
+                        ${gridCellsHtml}
+                    </div>
+                    <div style="display:flex; justify-content:space-around; margin-top:16px; padding-top:12px; border-top:1px solid var(--border); font-size:11px; color:var(--text-secondary);">
+                        <span><span style="display:inline-block; width:10px; height:10px; border-radius:3px; background:var(--success); margin-right:5px;"></span>100% All Tasks Met</span>
+                        <span><span style="display:inline-block; width:10px; height:10px; border-radius:3px; background:var(--warning); margin-right:5px;"></span>Partial %</span>
+                        <span><span style="display:inline-block; width:10px; height:10px; border-radius:3px; background:var(--pending); margin-right:5px;"></span>0% Missed</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    },
     renderDraftGoals() {
         const container = document.getElementById('chal-goals-list');
         if (!container) return;
@@ -3509,22 +3791,23 @@ const app = {
         this.navigate('challenge');
     },
     setChallengeDate(dStr) {
+        if (!dStr) return;
         this.activeChallengeDate = dStr;
-        this.navigate('challenge');
+        this.navigate('challenge', true);
     },
     toggleManualGoal(dStr, goalId) {
         if (!store.state.history.challengeLogs) store.state.history.challengeLogs = {};
         if (!store.state.history.challengeLogs[dStr]) store.state.history.challengeLogs[dStr] = {};
         store.state.history.challengeLogs[dStr][goalId] = !store.state.history.challengeLogs[dStr][goalId];
         store.save();
-        this.navigate(this.currentView);
+        this.navigate(this.currentView, true);
     },
     toggleGoalActionPlan(idx) {
         const g = store.state.challenge.goals[idx];
         if (!g) return;
         g.showInActionPlan = !g.showInActionPlan;
         store.save();
-        this.navigate(this.currentView);
+        this.navigate(this.currentView, true);
     },
     addGoalToActiveChallenge() {
         const title = prompt("Enter a new daily habit/goal for your active challenge (e.g. Stretching 15m, Creatine, No Sugar):");
@@ -3538,14 +3821,14 @@ const app = {
                 showInActionPlan: pin
             });
             store.save();
-            this.navigate('challenge');
+            this.navigate('challenge', true);
         }
     },
     removeActiveChallengeGoal(idx) {
         if (confirm("Remove this goal from your active challenge?")) {
             store.state.challenge.goals.splice(idx, 1);
             store.save();
-            this.navigate('challenge');
+            this.navigate('challenge', true);
         }
     },
     endChallenge() {
@@ -3574,7 +3857,7 @@ const app = {
                     <button class="btn-icon" onclick="document.getElementById('start-workout-modal').style.display='none'; app.editRoutine('${r.id}')" title="Edit Split"><i class="fas fa-pen"></i></button>
                 </div>
                 <div style="display:flex; gap:8px;">
-                    ${!isSelected ? `<button class="btn btn-sm btn-primary" style="flex:1;" onclick="store.state.activeRoutineId='${r.id}'; store.save(); app.openSavedSplitsModal(); app.navigate('workouts');"><i class="fas fa-check-circle"></i> Activate Split</button>` : `<button class="btn btn-sm btn-success" style="flex:1;" disabled><i class="fas fa-check"></i> Activated</button>`}
+                    ${!isSelected ? `<button class="btn btn-sm btn-primary" style="flex:1;" onclick="store.state.activeRoutineId='${r.id}'; store.save(); app.openSavedSplitsModal(); app.navigate('workouts', true);"><i class="fas fa-check-circle"></i> Activate Split</button>` : `<button class="btn btn-sm btn-success" style="flex:1;" disabled><i class="fas fa-check"></i> Activated</button>`}
                     <button class="btn btn-sm" style="flex:1; background:var(--surface-elevated);" onclick="app.openRoutinePreview('${r.id}')">Inspect Days</button>
                 </div>
             </div>`;
@@ -3607,11 +3890,11 @@ const app = {
                         const exMoveImg = utils.getExerciseImage(ex.name, utils.getPrimaryMuscle(ex));
                         return `
                         <div class="flex-between" style="background:var(--surface-elevated); padding:8px 12px; border-radius:10px; border:1px solid var(--border); cursor:pointer;" onclick="app.openEditExerciseModal('${ex.name.replace(/'/g, "\\'")}', 'library')">
-                            <div style="display:flex; align-items:center; gap:10px;">
+                            <div style="display:flex; align-items:center; gap:10px; flex:1; min-width:0; padding-right:8px;">
                                 <img src="${exMoveImg}" alt="${ex.name}" style="width:40px; height:40px; border-radius:8px; object-fit:cover; flex-shrink:0; border:1px solid var(--border);">
-                                <div>
-                                    <div style="font-weight:700; font-size:14px; color:var(--text-primary);">${ex.name}</div>
-                                    <div class="text-muted" style="font-size:11px;">Muscles: ${utils.getMuscles(ex).join(', ')} • Default: ${ex.targetSets || 3} sets × ${ex.targetReps || '8-12'}</div>
+                                <div style="flex:1; min-width:0;">
+                                    <div class="ex-title-2line" style="font-weight:700; font-size:14px; color:var(--text-primary);">${ex.name}</div>
+                                    <div class="text-muted" style="font-size:11px;">Muscles: ${utils.getMuscles(ex).join(', ')} • Default: ${ex.targetSets || 3} sets × ${ex.targetReps || '8-12'} reps</div>
                                 </div>
                             </div>
                             <button class="btn-icon" style="width:30px; height:30px; flex-shrink:0;" title="Edit Exercise Name, Muscles, Sets & Reps" onclick="event.stopPropagation(); app.openEditExerciseModal('${ex.name.replace(/'/g, "\\'")}', 'library')"><i class="fas fa-pen" style="font-size:11px;"></i></button>
@@ -3627,7 +3910,7 @@ const app = {
                 <div style="width:36px;"></div>
             </div>
             <div style="padding: 0 16px;">
-                <p class="text-muted" style="font-size:12px; margin-bottom:12px;">Tap any exercise to edit its name, muscle groups, sets, or rep range — syncs live across all splits &amp; workouts.</p>
+                <p class="text-muted" style="font-size:12px; margin-bottom:12px;">Tap any exercise to edit its name (up to ${MAX_EX_TITLE_LEN} chars), muscle groups, sets, or rep range — syncs live across all splits &amp; workouts.</p>
                 <div style="display:flex; gap:8px; margin-bottom:16px;">
                     <button class="btn btn-sm" style="flex:1; background:var(--surface-elevated);" onclick="app.promptCreateMuscleGroup()">+ Muscle Group</button>
                     <button class="btn btn-sm btn-primary" style="flex:1;" onclick="app.openCreateExerciseModal('library')">+ Exercise</button>
@@ -3668,7 +3951,7 @@ const app = {
             </div>
             <div style="padding: 0 16px;">
                 <div style="display:flex; gap:8px; margin-bottom:16px;">
-                    ${!isCurrent ? `<button class="btn btn-primary" style="flex:1;" onclick="store.state.activeRoutineId='${r.id}'; store.save(); document.getElementById('start-workout-modal').style.display='none'; app.navigate('workouts');"><i class="fas fa-check-circle"></i> Set as Active Split</button>` : `<button class="btn btn-success" style="flex:1;" disabled><i class="fas fa-check"></i> Currently Active Split</button>`}
+                    ${!isCurrent ? `<button class="btn btn-primary" style="flex:1;" onclick="store.state.activeRoutineId='${r.id}'; store.save(); document.getElementById('start-workout-modal').style.display='none'; app.navigate('workouts', true);"><i class="fas fa-check-circle"></i> Set as Active Split</button>` : `<button class="btn btn-success" style="flex:1;" disabled><i class="fas fa-check"></i> Currently Active Split</button>`}
                     <button class="btn" style="flex:1; background:var(--surface-elevated);" onclick="document.getElementById('start-workout-modal').style.display='none'; app.editRoutine('${r.id}')"><i class="fas fa-sliders"></i> Customize Split</button>
                 </div>
                 <div class="card" style="padding:0; overflow:hidden;">
@@ -3737,12 +4020,12 @@ const app = {
             name: name.trim(),
             exercises: []
         });
-        this.navigate('workouts');
+        this.navigate('workouts', true);
     },
     removeWorkoutFromDay(dIdx, wIdx) {
         if (confirm("Remove this workout session from this day?")) {
             this.draftRoutine.days[dIdx].workouts.splice(wIdx, 1);
-            this.navigate('workouts');
+            this.navigate('workouts', true);
         }
     },
     moveExerciseInRoutine(dIdx, wIdx, exIdx, dir) {
@@ -3752,11 +4035,11 @@ const app = {
         const temp = list[exIdx];
         list[exIdx] = list[targetIdx];
         list[targetIdx] = temp;
-        this.navigate('workouts');
+        this.navigate('workouts', true);
     },
     removeExerciseFromRoutine(dIdx, wIdx, exIdx) {
         this.draftRoutine.days[dIdx].workouts[wIdx].exercises.splice(exIdx, 1);
-        this.navigate('workouts');
+        this.navigate('workouts', true);
     },
     updateRoutineExerciseSetsReps(dIdx, wIdx, exIdx, field, rawVal) {
         const ex = this.draftRoutine.days[dIdx].workouts[wIdx].exercises[exIdx];
@@ -3791,14 +4074,14 @@ const app = {
                 const exMoveImg = utils.getExerciseImage(ex.name, utils.getPrimaryMuscle(ex));
                 html += `
                 <div class="data-row flex-between" style="padding:12px; background:var(--surface-color); border-radius:8px; border:1px solid var(--border); cursor:pointer;" onclick="app.appendExerciseToRoutine(${dIdx}, ${wIdx}, '${ex.name.replace(/'/g, "\\'")}', ${ex.targetSets || 3}, '${ex.targetReps || '8-12'}')">
-                    <div style="display:flex; align-items:center; gap:10px;">
+                    <div style="display:flex; align-items:center; gap:10px; flex:1; min-width:0; padding-right:8px;">
                         <img src="${exMoveImg}" alt="${ex.name}" style="width:40px; height:40px; border-radius:8px; object-fit:cover; flex-shrink:0; border:1px solid var(--border);">
-                        <div>
-                            <div style="font-weight:bold;">${ex.name}</div>
+                        <div style="flex:1; min-width:0;">
+                            <div class="ex-title-2line" style="font-weight:bold;">${ex.name}</div>
                             <div class="text-muted" style="font-size:12px;">${ex.targetSets || 3} × ${ex.targetReps || '8-12'} • ${utils.getMuscles(ex).join(', ')}</div>
                         </div>
                     </div>
-                    <i class="fas fa-plus text-accent"></i>
+                    <i class="fas fa-plus text-accent" style="flex-shrink:0;"></i>
                 </div>`;
             });
             html += `</div>`;
@@ -3818,7 +4101,7 @@ const app = {
             muscle: muscles[0]
         });
         document.getElementById('exercise-selection-modal').style.display = 'none';
-        this.navigate('workouts');
+        this.navigate('workouts', true);
     },
     promptCreateMuscleGroup() {
         const name = prompt("Enter new Muscle Group name (e.g. Forearms, Glutes, Traps, Neck):");
@@ -3828,12 +4111,11 @@ const app = {
             store.state.customMuscleGroups.push(clean);
             store.save();
             alert(`Muscle group "${clean}" added!`);
-            this.navigate(this.currentView);
+            this.navigate(this.currentView, true);
         } else {
             alert("That muscle group already exists.");
         }
     },
-    // Top-Level Exercise Editor Modal
     openEditExerciseModal(exName, context = 'library', dIdx = null, wIdx = null, exIdx = null) {
         const modal = document.getElementById('exercise-selection-modal');
         const master = utils.getMasterExercise(exName);
@@ -3860,16 +4142,16 @@ const app = {
             <div style="padding: 0 16px;">
                 <div class="card">
                     <div style="display:flex; align-items:center; gap:14px; margin-bottom:14px; padding-bottom:12px; border-bottom:1px solid var(--border);">
-                        <img src="${previewSvg}" style="width:60px; height:60px; border-radius:14px; object-fit:cover; border:1px solid var(--border);">
-                        <div>
+                        <img src="${previewSvg}" style="width:60px; height:60px; border-radius:14px; object-fit:cover; border:1px solid var(--border); flex-shrink:0;">
+                        <div style="flex:1; min-width:0;">
                             <div style="font-size:11px; color:var(--accent-color); font-weight:800; text-transform:uppercase;">Live Global Sync</div>
-                            <div style="font-weight:800; font-size:16px; color:var(--text-primary);">${master.name}</div>
+                            <div class="ex-title-2line" style="font-weight:800; font-size:16px; color:var(--text-primary);">${master.name}</div>
                             <div class="text-muted" style="font-size:11px;">Changes update all splits, active workouts &amp; charts</div>
                         </div>
                     </div>
                     <div style="margin-bottom:12px;">
-                        <label class="text-muted" style="font-size:12px; display:block; margin-bottom:4px;">Exercise Name</label>
-                        <input type="text" id="edit-ex-name" class="edit-input" value="${master.name}">
+                        <label class="text-muted" style="font-size:12px; display:block; margin-bottom:4px;">Exercise Name (Max ${MAX_EX_TITLE_LEN} chars for 2-line fit)</label>
+                        <input type="text" id="edit-ex-name" class="edit-input" maxlength="${MAX_EX_TITLE_LEN}" value="${master.name}">
                     </div>
                     <div style="margin-bottom:12px;">
                         <label class="text-muted" style="font-size:12px; display:block; margin-bottom:4px;">Primary Muscle Group</label>
@@ -3901,7 +4183,7 @@ const app = {
         modal.style.display = 'flex';
     },
     saveEditedExercise(oldName, context = 'library', dIdx = null, wIdx = null, exIdx = null) {
-        const newName = (document.getElementById('edit-ex-name').value || '').trim();
+        const newName = (document.getElementById('edit-ex-name').value || '').trim().slice(0, MAX_EX_TITLE_LEN);
         const m1 = document.getElementById('edit-ex-m1').value;
         const m2 = document.getElementById('edit-ex-m2').value;
         const sets = Math.max(1, parseInt(document.getElementById('edit-ex-sets').value) || 3);
@@ -3922,7 +4204,7 @@ const app = {
             if (workoutEngine.activeWorkout && document.getElementById('active-workout-view').style.display === 'flex') {
                 workoutEngine.renderActiveWorkout();
             } else {
-                this.navigate(this.currentView);
+                this.navigate(this.currentView, true);
             }
         }
     },
@@ -3938,8 +4220,8 @@ const app = {
             <div style="padding: 0 16px;">
                 <div class="card">
                     <div style="margin-bottom:12px;">
-                        <label class="text-muted" style="font-size:12px; display:block; margin-bottom:4px;">Exercise Name</label>
-                        <input type="text" id="new-ex-name" class="edit-input" placeholder="e.g. Pendulum Squat, Cable Fly">
+                        <label class="text-muted" style="font-size:12px; display:block; margin-bottom:4px;">Exercise Name (Max ${MAX_EX_TITLE_LEN} chars)</label>
+                        <input type="text" id="new-ex-name" class="edit-input" maxlength="${MAX_EX_TITLE_LEN}" placeholder="e.g. Pendulum Squat, Cable Fly">
                     </div>
                     <div style="margin-bottom:12px;">
                         <label class="text-muted" style="font-size:12px; display:block; margin-bottom:4px;">Primary Muscle Group</label>
@@ -3971,7 +4253,7 @@ const app = {
         modal.style.display = 'flex';
     },
     saveCustomExercise(context, dIdx, wIdx) {
-        const name = document.getElementById('new-ex-name').value.trim();
+        const name = (document.getElementById('new-ex-name').value || '').trim().slice(0, MAX_EX_TITLE_LEN);
         const m1 = document.getElementById('new-ex-m1').value;
         const m2 = document.getElementById('new-ex-m2').value;
         const sets = parseInt(document.getElementById('new-ex-sets').value) || 3;
@@ -3995,22 +4277,33 @@ const app = {
             this.openAllExercisesModal();
         } else {
             document.getElementById('exercise-selection-modal').style.display = 'none';
-            this.navigate('workouts');
+            this.navigate('workouts', true);
         }
     },
     editExerciseMusclesPrompt(exName) {
         this.openEditExerciseModal(exName, 'library');
     },
-    /* NUTRITION, SAVED MEAL LOGGING, & SETTINGS MODALS */
+    /* NUTRITION, SAVED MEAL LOGGING, OPTIONAL RAW INGREDIENT LOGGING, & SETTINGS MODALS */
     openSavedMealsManagerModal() {
         const modal = document.getElementById('meal-search-modal');
-        const savedMeals = store.state.savedMeals || [];
+        const usageMap = utils.getSavedMealUsageCounts();
+        const savedMeals = [...(store.state.savedMeals || [])].sort((a, b) => {
+            const countA = (usageMap[a.id] || 0) + (usageMap[a.name] || 0);
+            const countB = (usageMap[b.id] || 0) + (usageMap[b.name] || 0);
+            if (countB !== countA) return countB - countA;
+            return a.name.localeCompare(b.name);
+        });
         let savedLibraryHtml = savedMeals.length === 0
             ? `<p class="text-muted" style="font-size:13px; text-align:center; padding:18px 0;">No saved meals yet. Tap "+ New Meal" to combine raw ingredients into a quick-add meal.</p>`
-            : savedMeals.map(sm => `
+            : savedMeals.map(sm => {
+                const useCnt = usageMap[sm.id] || usageMap[sm.name] || 0;
+                return `
                 <div class="data-row flex-between" style="padding:12px 0;">
                     <div style="flex:1; padding-right:8px;">
-                        <div style="font-weight:bold; font-size:15px; color:var(--text-primary);">${sm.name}</div>
+                        <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                            <span style="font-weight:bold; font-size:15px; color:var(--text-primary);">${sm.name}</span>
+                            ${useCnt > 0 ? `<span class="pill-nowrap" style="font-size:10px; background:var(--accent-dim); color:var(--accent-color); padding:1px 6px; border-radius:6px; font-weight:800;"><i class="fas fa-fire"></i> Logged ${useCnt}x</span>` : ''}
+                        </div>
                         <div class="text-muted" style="font-size:11px;">${Math.round(sm.cal)} kcal • P: ${Math.round(sm.pro)}g • C: ${Math.round(sm.car)}g • F: ${Math.round(sm.fat)}g ${sm.ingredients && sm.ingredients.length ? `• (${sm.ingredients.length} ingredients)` : ''}</div>
                     </div>
                     <div style="display:flex; gap:6px;">
@@ -4019,7 +4312,7 @@ const app = {
                         <button class="btn-icon" style="width:30px; height:30px; color:var(--pending);" onclick="app.deleteSavedMeal('${sm.id}')"><i class="fas fa-trash" style="font-size:11px;"></i></button>
                     </div>
                 </div>
-            `).join('');
+            `}).join('');
         modal.innerHTML = `
             <div class="page-header">
                 <button class="btn btn-sm btn-icon" onclick="document.getElementById('meal-search-modal').style.display='none'"><i class="fas fa-times"></i></button>
@@ -4123,13 +4416,13 @@ const app = {
     setNutritionDate(dStr) {
         if (!dStr) return;
         this.activeNutritionDate = dStr;
-        this.navigate('nutrition');
+        this.navigate('nutrition', true);
     },
     logWater(amountMl) {
         const entry = this.getOrCreateNutritionEntry();
         entry.waterLog.push({ amount: parseInt(amountMl) || 0, ts: new Date().getTime() });
         store.save();
-        this.navigate('nutrition');
+        this.navigate('nutrition', true);
     },
     logCustomWater() {
         const el = document.getElementById('custom-water-input');
@@ -4143,102 +4436,171 @@ const app = {
         if (entry.waterLog && entry.waterLog.length > 0) {
             entry.waterLog.pop();
             store.save();
-            this.navigate('nutrition');
+            this.navigate('nutrition', true);
         }
     },
     openMealSearch(mealType = 'Breakfast') {
         this.currentMealType = mealType;
+        this.mealSearchMode = 'saved'; // Primary intent: Saved Meals first, with optional toggle for Raw Ingredients
         const modal = document.getElementById('meal-search-modal');
         modal.style.display = 'flex';
+        this.renderMealSearchModalContent();
+    },
+    setMealSearchMode(mode) {
+        this.mealSearchMode = mode;
         this.renderMealSearchModalContent();
     },
     renderMealSearchModalContent() {
         const modal = document.getElementById('meal-search-modal');
         const mealType = this.currentMealType || 'Breakfast';
+        const mode = this.mealSearchMode || 'saved';
         const qInput = document.getElementById('nut-search-query');
         const query = qInput ? qInput.value.toLowerCase().trim() : '';
-        const savedList = (store.state.savedMeals || []).filter(m => !query || m.name.toLowerCase().includes(query));
-        let resultsHtml = '';
-        if (savedList.length === 0) {
-            resultsHtml = `
-            <div class="card" style="text-align:center; padding:24px 16px;">
-                <div style="font-size:32px; margin-bottom:8px; color:var(--accent-color);"><i class="fas fa-utensils"></i></div>
-                <h3 style="color:var(--text-primary); margin-bottom:4px;">No Saved Meals Found</h3>
-                <p class="text-muted" style="font-size:13px; margin-bottom:16px;">Create a Saved Meal using our 100+ NZ Athlete Raw Ingredients (weighted in grams) or custom macros to log into ${mealType}.</p>
-                <button class="btn btn-primary" onclick="app.openCreateMealModal('${mealType}')"><i class="fas fa-plus"></i> Create New Saved Meal</button>
-            </div>`;
-        } else {
-            resultsHtml = savedList.map(sm => {
-                const ingSummary = (sm.ingredients && sm.ingredients.length > 0)
-                    ? `<div class="text-muted" style="font-size:11px; margin-top:2px;">Ingredients: ${sm.ingredients.map(i => `${i.name} (${i.grams}g)`).join(', ')}</div>`
-                    : '';
-                return `
-                <div class="card" style="padding:12px; margin-bottom:10px;">
-                    <div class="flex-between" style="margin-bottom:8px;">
-                        <div style="flex:1; padding-right:8px;">
-                            <div style="font-weight:800; font-size:16px; color:var(--text-primary);">${sm.name}</div>
-                            <div style="font-size:12px; color:var(--accent-color); font-weight:bold;">${Math.round(sm.cal)} kcal • P: ${Math.round(sm.pro)}g • C: ${Math.round(sm.car)}g • F: ${Math.round(sm.fat)}g</div>
-                            ${ingSummary}
-                        </div>
-                        <button class="btn-icon" style="width:30px; height:30px;" title="Edit Saved Meal" onclick="app.openCreateMealModal('${mealType}', '${sm.id}')"><i class="fas fa-pen" style="font-size:11px;"></i></button>
-                    </div>
-                    <div style="display:flex; gap:8px; align-items:center;">
-                        <span class="text-muted" style="font-size:12px;">Servings:</span>
-                        <input type="number" id="serv-mult-${sm.id}" class="inline-edit" style="width:70px; padding:6px;" value="1" step="0.25" min="0.25">
-                        <button class="btn btn-sm btn-success" style="flex:1; padding:8px 12px;" onclick="app.logSavedMealToDay('${sm.id}', '${mealType}')"><i class="fas fa-check"></i> Add to ${mealType}</button>
-                    </div>
-                </div>`;
-            }).join('');
-        }
+
         modal.innerHTML = `
             <div class="page-header">
                 <button class="btn btn-sm btn-icon" onclick="document.getElementById('meal-search-modal').style.display='none'"><i class="fas fa-times"></i></button>
-                <h2 style="margin:0; font-size:18px;">Add Meal to ${mealType}</h2>
+                <h2 style="margin:0; font-size:18px;">Add to ${mealType}</h2>
                 <button class="btn btn-sm btn-primary" style="width:auto; padding:6px 10px; font-size:11px;" onclick="app.openCreateMealModal('${mealType}')">+ Create Meal</button>
             </div>
             <div style="padding: 0 16px;">
-                <div style="display:flex; gap:6px; margin-bottom:12px; overflow-x:auto;">
+                <div style="display:flex; gap:6px; margin-bottom:10px; overflow-x:auto;">
                     ${['Breakfast', 'Lunch', 'Dinner', 'Snacks'].map(mt => `
                         <button class="btn btn-sm" style="flex:1; padding:8px 10px; font-size:12px; background:${mealType === mt ? 'var(--accent-color)' : 'var(--surface-elevated)'}; color:${mealType === mt ? 'var(--bg-color)' : 'var(--text-primary)'}; border:none;" onclick="app.currentMealType='${mt}'; app.renderMealSearchModalContent();">${mt}</button>
                     `).join('')}
                 </div>
+                <!-- Primary Saved Meals Tab + Secondary Optional Raw Ingredient Option -->
                 <div style="display:flex; gap:8px; margin-bottom:12px;">
-                    <input type="text" id="nut-search-query" class="edit-input" style="margin:0; flex:1;" placeholder="Search your Saved Meals..." value="${query}" oninput="app.updateMealSearchResults()">
+                    <button class="btn btn-sm" style="flex:1.4; padding:8px 10px; font-size:12px; background:${mode === 'saved' ? 'var(--accent-dim)' : 'var(--surface-elevated)'}; color:${mode === 'saved' ? 'var(--accent-color)' : 'var(--text-secondary)'}; border:1.5px solid ${mode === 'saved' ? 'var(--accent-color)' : 'var(--border)'}; font-weight:800;" onclick="app.setMealSearchMode('saved')">
+                        <i class="fas fa-star"></i> Saved Meals (Primary)
+                    </button>
+                    <button class="btn btn-sm" style="flex:1; padding:8px 10px; font-size:11.5px; background:${mode === 'raw' ? 'var(--accent-dim)' : 'var(--surface-elevated)'}; color:${mode === 'raw' ? 'var(--accent-color)' : 'var(--text-secondary)'}; border:1px dashed ${mode === 'raw' ? 'var(--accent-color)' : 'var(--border)'};" onclick="app.setMealSearchMode('raw')">
+                        <i class="fas fa-apple-whole"></i> + Raw Ingredient
+                    </button>
+                </div>
+                <div style="display:flex; gap:8px; margin-bottom:12px;">
+                    <input type="text" id="nut-search-query" class="edit-input" style="margin:0; flex:1;" placeholder="${mode === 'saved' ? 'Search your Saved Meals (most used at top)...' : 'Search 100+ NZ raw ingredients (grams)...'}" value="${query}" oninput="app.updateMealSearchResults()">
                     <button class="btn btn-sm btn-primary" style="width:auto; padding:0 14px;" onclick="app.openCreateMealModal('${mealType}')"><i class="fas fa-utensils"></i> Build Meal</button>
                 </div>
-                <div id="nut-search-results-container">
-                    ${resultsHtml}
-                </div>
+                <div id="nut-search-results-container"></div>
             </div>
         `;
+        this.updateMealSearchResults();
     },
     updateMealSearchResults() {
         const mealType = this.currentMealType || 'Breakfast';
+        const mode = this.mealSearchMode || 'saved';
         const qInput = document.getElementById('nut-search-query');
         const query = qInput ? qInput.value.toLowerCase().trim() : '';
         const container = document.getElementById('nut-search-results-container');
         if (!container) return;
-        const savedList = (store.state.savedMeals || []).filter(m => !query || m.name.toLowerCase().includes(query));
-        if (savedList.length === 0) {
-            container.innerHTML = `<p class="text-muted" style="text-align:center; padding:16px;">No matching saved meals. Tap "Build Meal" to combine raw ingredients into a new Saved Meal.</p>`;
-        } else {
-            container.innerHTML = savedList.map(sm => `
-                <div class="card" style="padding:12px; margin-bottom:10px;">
-                    <div class="flex-between" style="margin-bottom:8px;">
-                        <div>
-                            <div style="font-weight:800; font-size:16px; color:var(--text-primary);">${sm.name}</div>
-                            <div style="font-size:12px; color:var(--accent-color); font-weight:bold;">${Math.round(sm.cal)} kcal • P: ${Math.round(sm.pro)}g • C: ${Math.round(sm.car)}g • F: ${Math.round(sm.fat)}g</div>
+
+        if (mode === 'saved') {
+            const usageMap = utils.getSavedMealUsageCounts();
+            const savedList = [...(store.state.savedMeals || [])]
+                .filter(m => !query || m.name.toLowerCase().includes(query))
+                .sort((a, b) => {
+                    const countA = (usageMap[a.id] || 0) + (usageMap[a.name] || 0);
+                    const countB = (usageMap[b.id] || 0) + (usageMap[b.name] || 0);
+                    if (countB !== countA) return countB - countA;
+                    return a.name.localeCompare(b.name);
+                });
+
+            if (savedList.length === 0) {
+                container.innerHTML = `
+                <div class="card" style="text-align:center; padding:24px 16px;">
+                    <div style="font-size:32px; margin-bottom:8px; color:var(--accent-color);"><i class="fas fa-utensils"></i></div>
+                    <h3 style="color:var(--text-primary); margin-bottom:4px;">No Saved Meals Found</h3>
+                    <p class="text-muted" style="font-size:13px; margin-bottom:16px;">Create a Saved Meal using our 100+ NZ Athlete Raw Ingredients [1] or switch to "+ Raw Ingredient" above to add an individual food item.</p>
+                    <div style="display:flex; gap:8px;">
+                        <button class="btn btn-primary" style="flex:1;" onclick="app.openCreateMealModal('${mealType}')"><i class="fas fa-plus"></i> Create Saved Meal</button>
+                        <button class="btn" style="flex:1; background:var(--surface-elevated);" onclick="app.setMealSearchMode('raw')">Add Raw Ingredient</button>
+                    </div>
+                </div>`;
+            } else {
+                container.innerHTML = savedList.map(sm => {
+                    const useCnt = (usageMap[sm.id] || 0) + (usageMap[sm.name] || 0);
+                    const ingSummary = (sm.ingredients && sm.ingredients.length > 0)
+                        ? `<div class="text-muted" style="font-size:11px; margin-top:2px;">Ingredients: ${sm.ingredients.map(i => `${i.name} (${i.grams}g)`).join(', ')}</div>`
+                        : '';
+                    return `
+                    <div class="card" style="padding:12px; margin-bottom:10px;">
+                        <div class="flex-between" style="margin-bottom:8px;">
+                            <div style="flex:1; padding-right:8px;">
+                                <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                                    <span style="font-weight:800; font-size:16px; color:var(--text-primary);">${sm.name}</span>
+                                    ${useCnt > 0 ? `<span class="pill-nowrap" style="font-size:10px; background:var(--accent-dim); color:var(--accent-color); padding:2px 7px; border-radius:8px; font-weight:800;"><i class="fas fa-fire"></i> Top Used (${useCnt}x)</span>` : ''}
+                                </div>
+                                <div style="font-size:12px; color:var(--accent-color); font-weight:bold;">${Math.round(sm.cal)} kcal • P: ${Math.round(sm.pro)}g • C: ${Math.round(sm.car)}g • F: ${Math.round(sm.fat)}g</div>
+                                ${ingSummary}
+                            </div>
+                            <button class="btn-icon" style="width:30px; height:30px;" title="Edit Saved Meal" onclick="app.openCreateMealModal('${mealType}', '${sm.id}')"><i class="fas fa-pen" style="font-size:11px;"></i></button>
                         </div>
-                        <button class="btn-icon" style="width:30px; height:30px;" onclick="app.openCreateMealModal('${mealType}', '${sm.id}')"><i class="fas fa-pen" style="font-size:11px;"></i></button>
-                    </div>
-                    <div style="display:flex; gap:8px; align-items:center;">
-                        <span class="text-muted" style="font-size:12px;">Servings:</span>
-                        <input type="number" id="serv-mult-${sm.id}" class="inline-edit" style="width:70px; padding:6px;" value="1" step="0.25" min="0.25">
-                        <button class="btn btn-sm btn-success" style="flex:1; padding:8px 12px;" onclick="app.logSavedMealToDay('${sm.id}', '${mealType}')"><i class="fas fa-check"></i> Add to ${mealType}</button>
-                    </div>
-                </div>
-            `).join('');
+                        <div style="display:flex; gap:8px; align-items:center;">
+                            <span class="text-muted" style="font-size:12px;">Servings:</span>
+                            <input type="number" id="serv-mult-${sm.id}" class="inline-edit" style="width:70px; padding:6px;" value="1" step="0.25" min="0.25">
+                            <button class="btn btn-sm btn-success" style="flex:1; padding:8px 12px;" onclick="app.logSavedMealToDay('${sm.id}', '${mealType}')"><i class="fas fa-check"></i> Add to ${mealType}</button>
+                        </div>
+                    </div>`;
+                }).join('');
+            }
+        } else {
+            // Optional Raw Ingredient Direct Logging (sorted with most frequently used ingredients at top)
+            const rawUsage = utils.getRawIngredientUsageCounts();
+            const rawList = [...NZ_ATHLETE_FOODS]
+                .filter(f => !query || f.name.toLowerCase().includes(query) || f.cat.toLowerCase().includes(query) || f.micros.toLowerCase().includes(query))
+                .sort((a, b) => {
+                    const cA = rawUsage[a.id] || 0;
+                    const cB = rawUsage[b.id] || 0;
+                    if (cB !== cA) return cB - cA;
+                    return 0;
+                });
+
+            container.innerHTML = `
+                <div class="text-muted" style="font-size:11px; margin-bottom:8px;">Optional: Log a single raw ingredient by weight (grams) directly into <strong>${mealType}</strong>:</div>
+                ${rawList.map(f => {
+                    const uCnt = rawUsage[f.id] || 0;
+                    return `
+                    <div class="card" style="padding:10px 12px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center; gap:8px;">
+                        <div style="flex:1; min-width:0;">
+                            <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                                <span style="font-weight:700; font-size:14px; color:var(--text-primary);">${f.name}</span>
+                                ${uCnt > 0 ? `<span class="pill-nowrap" style="font-size:9.5px; background:var(--accent-dim); color:var(--accent-color); padding:1px 6px; border-radius:6px; font-weight:800;">Used ${uCnt}x</span>` : ''}
+                            </div>
+                            <div style="font-size:11px; color:var(--accent-color);">Per 100g: ${f.cal} kcal • P:${f.pro}g • C:${f.car}g • F:${f.fat}g</div>
+                            <div class="text-muted" style="font-size:10px;">${f.micros}</div>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:5px; flex-shrink:0;">
+                            <input type="number" id="raw-direct-g-${f.id}" class="inline-edit" style="width:64px; padding:5px;" value="100" step="10" min="1">
+                            <span class="text-muted" style="font-size:11px;">g</span>
+                            <button class="btn btn-sm btn-success" style="width:auto; padding:6px 10px;" onclick="app.logRawFoodToDay('${f.id}', '${mealType}')">+ Add</button>
+                        </div>
+                    </div>`;
+                }).join('')}
+            `;
         }
+    },
+    logRawFoodToDay(foodId, mealType = 'Breakfast') {
+        const food = NZ_ATHLETE_FOODS.find(f => f.id === foodId);
+        if (!food) return;
+        const gEl = document.getElementById('raw-direct-g-' + foodId);
+        const grams = Math.max(1, parseFloat(gEl ? gEl.value : 100) || 100);
+        const ratio = grams / 100;
+        const entry = this.getOrCreateNutritionEntry();
+        entry.loggedMeals.push({
+            id: utils.generateId(),
+            foodId: food.id,
+            name: food.name,
+            type: mealType,
+            grams: grams,
+            cal: Math.round(food.cal * ratio),
+            pro: Math.round(food.pro * ratio * 10) / 10,
+            car: Math.round(food.car * ratio * 10) / 10,
+            fat: Math.round(food.fat * ratio * 10) / 10
+        });
+        this.recalcDailyNutritionTotals(entry);
+        document.getElementById('meal-search-modal').style.display = 'none';
+        this.navigate('nutrition', true);
     },
     logSavedMealToDay(savedMealId, mealType = 'Breakfast') {
         const sm = (store.state.savedMeals || []).find(x => x.id === savedMealId);
@@ -4260,7 +4622,7 @@ const app = {
         });
         this.recalcDailyNutritionTotals(entry);
         document.getElementById('meal-search-modal').style.display = 'none';
-        this.navigate('nutrition');
+        this.navigate('nutrition', true);
     },
     quickLogSavedMealPrompt(savedMealId) {
         const sm = (store.state.savedMeals || []).find(x => x.id === savedMealId);
@@ -4282,14 +4644,14 @@ const app = {
             ingredients: sm.ingredients ? JSON.parse(JSON.stringify(sm.ingredients)) : []
         });
         this.recalcDailyNutritionTotals(entry);
-        this.navigate('nutrition');
+        this.navigate('nutrition', true);
     },
     removeLoggedMeal(idx) {
         const entry = this.getOrCreateNutritionEntry();
         if (entry.loggedMeals && entry.loggedMeals[idx]) {
             entry.loggedMeals.splice(idx, 1);
             this.recalcDailyNutritionTotals(entry);
-            this.navigate('nutrition');
+            this.navigate('nutrition', true);
         }
     },
     /* MULTI-INGREDIENT MEAL BUILDER MODAL */
@@ -4502,7 +4864,7 @@ const app = {
         } else if (document.getElementById('meal-search-modal').style.display === 'flex') {
             this.renderMealSearchModalContent();
         }
-        this.navigate('nutrition');
+        this.navigate('nutrition', true);
     },
     deleteSavedMeal(id) {
         if (confirm("Delete this saved meal from your library?")) {
@@ -4511,7 +4873,7 @@ const app = {
             if (document.getElementById('meal-search-modal').style.display === 'flex') {
                 this.openSavedMealsManagerModal();
             } else {
-                this.navigate('nutrition');
+                this.navigate('nutrition', true);
             }
         }
     },
@@ -4524,7 +4886,7 @@ const app = {
         };
         store.save();
         document.getElementById('meal-search-modal').style.display = 'none';
-        this.navigate('nutrition');
+        this.navigate('nutrition', true);
     },
     copyNutritionFromDate(sourceDateStr) {
         const src = store.state.history.nutrition.find(n => utils.getLocalISODate(n.date) === sourceDateStr);
@@ -4542,7 +4904,7 @@ const app = {
             targetEntry.fat = (targetEntry.fat || 0) + (src.fat || 0);
             store.save();
         }
-        this.navigate('nutrition');
+        this.navigate('nutrition', true);
     },
     promptCopyFromPastDay() {
         const past = [...store.state.history.nutrition]
@@ -4562,13 +4924,13 @@ const app = {
     updateChartRange(val) {
         store.state.settings.chartRange = val;
         store.save();
-        this.navigate('analytics');
+        this.navigate('analytics', true);
     },
     selectOverloadGraphTab(tabName) {
         store.state.settings.lastVolFilter = tabName;
         store.state.settings.overloadExerciseFilter = 'ALL_MUSCLE';
         store.save();
-        this.navigate('analytics');
+        this.navigate('analytics', true);
     },
     selectOverloadExerciseFilter(exVal) {
         store.state.settings.overloadExerciseFilter = exVal;
@@ -4595,14 +4957,14 @@ const app = {
                 const exMoveImg = utils.getExerciseImage(ex.name, utils.getPrimaryMuscle(ex));
                 html += `
                 <div class="data-row flex-between" style="padding:10px 12px; background:var(--surface-color); border-radius:8px; border:1px solid ${isTracked ? 'var(--accent-color)' : 'var(--border)'}; cursor:pointer;" onclick="app.toggleTrackedPRExercise('${ex.name.replace(/'/g, "\\'")}')">
-                    <div style="display:flex; align-items:center; gap:10px;">
+                    <div style="display:flex; align-items:center; gap:10px; flex:1; min-width:0; padding-right:8px;">
                         <img src="${exMoveImg}" alt="${ex.name}" style="width:38px; height:38px; border-radius:8px; object-fit:cover; flex-shrink:0; border:1px solid var(--border);">
-                        <div>
-                            <div style="font-weight:bold; font-size:14px;">${ex.name}</div>
+                        <div style="flex:1; min-width:0;">
+                            <div class="ex-title-2line" style="font-weight:bold; font-size:14px;">${ex.name}</div>
                             <div class="text-muted" style="font-size:11px;">${utils.getMuscles(ex).join(', ')}</div>
                         </div>
                     </div>
-                    <button class="btn-icon" style="width:30px; height:30px; background:${isTracked ? 'var(--pending-dim)' : 'var(--accent-dim)'}; color:${isTracked ? 'var(--pending)' : 'var(--accent-color)'}; border:1px solid ${isTracked ? 'var(--pending)' : 'var(--accent-color)'};">
+                    <button class="btn-icon" style="width:30px; height:30px; flex-shrink:0; background:${isTracked ? 'var(--pending-dim)' : 'var(--accent-dim)'}; color:${isTracked ? 'var(--pending)' : 'var(--accent-color)'}; border:1px solid ${isTracked ? 'var(--pending)' : 'var(--accent-color)'};">
                         <i class="fas fa-${isTracked ? 'minus' : 'plus'}"></i>
                     </button>
                 </div>`;
@@ -4624,25 +4986,24 @@ const app = {
         store.save();
         this.openAddTrackedPRModal();
         if (this.currentView === 'analytics') {
-            document.getElementById('main-content').innerHTML = views.renderAnalytics();
-            setTimeout(() => this.initCharts(), 50);
+            this.navigate('analytics', true);
         }
     },
     removeTrackedPR(idx) {
         if (!store.state.trackedPRs) return;
         store.state.trackedPRs.splice(idx, 1);
         store.save();
-        this.navigate('analytics');
+        this.navigate('analytics', true);
     },
     setWeightGoal(goal) {
         store.state.settings.weightGoal = goal;
         store.save();
-        this.navigate('analytics');
+        this.navigate('analytics', true);
     },
     toggleCaloriesOnBwChart() {
         store.state.settings.showCaloriesOnBwChart = !store.state.settings.showCaloriesOnBwChart;
         store.save();
-        this.navigate('analytics');
+        this.navigate('analytics', true);
     },
     logWeight() {
         const el = document.getElementById('bw-input');
@@ -4652,7 +5013,7 @@ const app = {
             const existing = store.state.history.bodyweight.find(e => utils.getLocalISODate(e.date) === todayStr);
             if (existing) store.updateBodyweight(existing.date, val);
             else store.addBodyweight(val);
-            this.navigate('analytics');
+            this.navigate('analytics', true);
         }
     },
     saveManualPR(lift, safeId = null) {
@@ -4674,15 +5035,13 @@ const app = {
             e1rm
         });
         store.save();
-        this.navigate('analytics');
+        this.navigate('analytics', true);
     },
     initCharts() {
         Object.values(this.charts).forEach(c => { if (c && c.destroy) c.destroy(); });
         this.charts = {};
         const range = store.state.settings.chartRange || '90';
         const cutoff = range === 'all' ? 0 : (new Date().getTime() - (parseInt(range) * 86400000));
-
-        // 1. Progressive Overload / Total Volume Combined Chart
         const vCtx = document.getElementById('volChart');
         if (vCtx) {
             const volHist = utils.getWorkoutVolumeHistory();
@@ -4721,8 +5080,6 @@ const app = {
                 }
             });
         }
-
-        // 2. Bodyweight + Optional Calories Dual-Axis Chart
         const bwCtx = document.getElementById('bwChart');
         if (bwCtx) {
             const bwPts = store.state.history.bodyweight
@@ -4776,8 +5133,6 @@ const app = {
                 }
             }
         }
-
-        // 3. Weekly Hypertrophy Chart
         const hCtx = document.getElementById('hypertrophyChart');
         if (hCtx) {
             const hyper = utils.getWeeklyHypertrophyStatus();
