@@ -30,7 +30,6 @@
         }
         [data-theme="olympus"] h1, [data-theme="olympus"] h2, [data-theme="olympus"] h3 { letter-spacing: 0.5px; text-transform: uppercase; color: var(--accent-color); }
         [data-theme="olympus"] .card { box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
-
         /* DARK MODE THEME */
         [data-theme="dark"] {
             --bg-color: #0b0b0f; --surface-color: #16161e; --surface-elevated: #22222e;
@@ -50,7 +49,6 @@
             --app-backdrop: radial-gradient(circle at 50% 0%, #1c1c28 0%, #0b0b0f 80%);
             --card-radius: 16px; --card-border: 1px solid var(--border);
         }
-
         /* LIGHT MODE THEME */
         [data-theme="light"] {
             --bg-color: #f2f4f8; --surface-color: #ffffff; --surface-elevated: #eef1f6;
@@ -92,7 +90,6 @@
         [data-theme="light"] .routine-folder-body {
             background: #ffffff; border-color: #e2e8f0; box-shadow: 0 -4px 10px rgba(15, 23, 42, 0.05);
         }
-
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         body {
             background: var(--app-backdrop); background-color: var(--bg-color); background-size: cover; background-position: center; background-attachment: fixed;
@@ -157,8 +154,8 @@
         .editor-exercise-row { display:flex; gap:10px; align-items:center; background: var(--surface-elevated); padding: 12px; border-radius: 8px; margin-bottom: 8px; transition: background-color 0.4s ease; border: 1px solid var(--border);} .editor-controls { display:flex; gap:6px; flex-direction:column; } .editor-controls button { width: 36px; height: 36px; font-size: 14px; }
         .data-row { padding: 12px 0; border-bottom: 1px solid var(--border); transition: border-color 0.4s ease; } .data-row:last-child { border-bottom: none; }
         .nut-grid { display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr 1fr 30px; gap: 6px; align-items: center; margin-top: 8px; } .nut-label { font-size: 10px; color: var(--text-secondary); text-align: center; text-transform: uppercase; }
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg-color); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 12px 6px calc(12px + var(--safe-bottom)); z-index: 1000; transition: background-color 0.4s ease, border-color 0.4s ease; opacity: 0.95; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); }
-        .nav-item { color: var(--text-secondary); display: flex; flex-direction: column; align-items: center; text-decoration: none; font-size: 10px; gap: 4px; cursor: pointer; flex: 1; transition: color 0.3s ease; text-transform: uppercase; font-weight: bold; letter-spacing: 0.5px;} .nav-item i { font-size: 20px; margin-bottom: 2px; } .nav-item.active { color: var(--accent-color); }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg-color); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 12px 4px calc(12px + var(--safe-bottom)); z-index: 1000; transition: background-color 0.4s ease, border-color 0.4s ease; opacity: 0.95; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); }
+        .nav-item { color: var(--text-secondary); display: flex; flex-direction: column; align-items: center; text-decoration: none; font-size: 9.5px; gap: 4px; cursor: pointer; flex: 1; transition: color 0.3s ease; text-transform: uppercase; font-weight: bold; letter-spacing: 0.3px;} .nav-item i { font-size: 19px; margin-bottom: 2px; } .nav-item.active { color: var(--accent-color); }
         .page-header { position: sticky; top: 0; background: var(--bg-color); opacity: 0.95; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 10; margin-left: -16px; margin-right: -16px; margin-bottom: 16px; padding-top: calc(16px + var(--safe-top)); padding-left: 16px; padding-right: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; transition: background-color 0.4s ease, border-color 0.4s ease; }
         .workout-header-sticky { position: sticky; top: 0; background: var(--bg-color); opacity: 0.95; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); padding-top: calc(16px + var(--safe-top)); padding-left: 16px; padding-right: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border); z-index: 10; display: flex; justify-content: space-between; align-items: center; transition: background-color 0.4s ease, border-color 0.4s ease; }
         /* Auto Rest Timer Overlay */
@@ -273,7 +270,7 @@
             cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; border-radius: 10px; transition: color 0.2s, background 0.2s;
         }
         .routine-folder-start:active { background: rgba(255,255,255,0.06); color: var(--text-primary); }
-        /* Home Screenshot-Matched Hero, Week Strip & Activity Grid */
+        /* Home Screenshot-Matched Hero, Week Strip & Smaller 48d Activity Bento Grid */
         .home-hero-routine {
             background: radial-gradient(circle at 20% 20%, rgba(255,255,255,0.07), var(--surface-color) 70%);
             border-radius: 24px; padding: 20px; margin-bottom: 16px; border: var(--card-border); position: relative; overflow: hidden;
@@ -295,11 +292,17 @@
         }
         .week-day-circle.done { background: #ffffff; color: #0b0b0d; border-color: #ffffff; box-shadow: 0 0 12px rgba(255,255,255,0.35); }
         .week-day-circle.today-ring { border: 2px solid var(--accent-color); }
+        .home-bento-row {
+            display: grid; grid-template-columns: 1.35fr 1fr; gap: 12px; margin-bottom: 16px; align-items: stretch;
+        }
+        .home-bento-right {
+            display: flex; flex-direction: column; gap: 12px; justify-content: space-between;
+        }
         .activity-heat-grid {
-            display: grid; grid-template-columns: repeat(12, 1fr); gap: 6px; padding: 6px 0;
+            display: grid; grid-template-columns: repeat(12, 1fr); gap: 4px; padding: 6px 0 2px 0;
         }
         .activity-heat-cell {
-            aspect-ratio: 1; border-radius: 6px; background: rgba(255,255,255,0.06);
+            aspect-ratio: 1; border-radius: 4px; background: rgba(255,255,255,0.06);
         }
         .activity-heat-cell.active-1 { background: rgba(255, 192, 105, 0.45); }
         .activity-heat-cell.active-2 { background: #ffc069; box-shadow: 0 0 8px rgba(255, 192, 105, 0.35); }
@@ -415,9 +418,9 @@ const SPLIT_IMAGES = [
 const RANK_NAMES = ['Copper', 'Bronze', 'Silver', 'Gold', 'Platinum', 'Emerald', 'Diamond', 'Champion'];
 const RANK_COLORS = ['#a32626', '#8c5129', '#a0a3a8', '#d4af37', '#007aff', '#2fa869', '#00e5ff', '#9d00ff'];
 const THEME_MAP = {
-    olympus: { nav: ['fa-building-columns', 'fa-hand-fist', 'fa-bolt', 'fa-leaf', 'fa-user-shield'], symbols: { streak: '⚡', pr: '🔱', bw: '⚖️', vol: '🗿', rest: '🫒', workout: '🏺', success: '👑', activity: '🐎', cardGoal: '🏛️', analytics: '📜', nutrition: '🍇', data: '🪙' } },
-    dark: { nav: ['fa-home', 'fa-dumbbell', 'fa-chart-line', 'fa-apple-whole', 'fa-user'], symbols: { streak: '🔥', pr: '🏆', bw: '⚖️', vol: '📊', rest: '🛋️', workout: '💪', success: '⭐', activity: '🏃‍♂️', cardGoal: '🎯', analytics: '📈', nutrition: '🍎', data: '🗄️' } },
-    light: { nav: ['fa-home', 'fa-dumbbell', 'fa-chart-line', 'fa-apple-whole', 'fa-user'], symbols: { streak: '🔥', pr: '🏆', bw: '⚖️', vol: '📊', rest: '🛋️', workout: '💪', success: '⭐', activity: '🏃‍♂️', cardGoal: '🎯', analytics: '📈', nutrition: '🍎', data: '🗄️' } }
+    olympus: { nav: ['fa-building-columns', 'fa-hand-fist', 'fa-bolt', 'fa-leaf', 'fa-sliders', 'fa-user-shield'], symbols: { streak: '⚡', pr: '🔱', bw: '⚖️', vol: '🗿', rest: '🫒', workout: '🏺', success: '👑', activity: '🐎', cardGoal: '🏛️', analytics: '📜', nutrition: '🍇', data: '🪙' } },
+    dark: { nav: ['fa-home', 'fa-dumbbell', 'fa-chart-line', 'fa-apple-whole', 'fa-sliders', 'fa-user'], symbols: { streak: '🔥', pr: '🏆', bw: '⚖️', vol: '📊', rest: '🛋️', workout: '💪', success: '⭐', activity: '🏃‍♂️', cardGoal: '🎯', analytics: '📈', nutrition: '🍎', data: '🗄️' } },
+    light: { nav: ['fa-home', 'fa-dumbbell', 'fa-chart-line', 'fa-apple-whole', 'fa-sliders', 'fa-user'], symbols: { streak: '🔥', pr: '🏆', bw: '⚖️', vol: '📊', rest: '🛋️', workout: '💪', success: '⭐', activity: '🏃‍♂️', cardGoal: '🎯', analytics: '📈', nutrition: '🍎', data: '🗄️' } }
 };
 /* COMPREHENSIVE NZ ATHLETE RAW INGREDIENT REFERENCE DATABASE (per 100g) */
 const NZ_ATHLETE_FOODS = [
@@ -1483,8 +1486,8 @@ const utils = {
         if (g.type === 'weight') return `Log Bodyweight`;
         if (g.type === 'nutrition') {
             let l = `Track Nutrition`;
-            if (g.targetType === 'min') l += ` (Min ${g.calories} kcal)`;
-            else if (g.targetType === 'max') l += ` (Max ${g.calories} kcal)`;
+            if (g.targetType === 'min') l += `(Min ${g.calories} kcal)`;
+            else if (g.targetType === 'max') l += `(Max ${g.calories} kcal)`;
             return l;
         }
         if (g.type === 'cardio') return `Daily Walk`;
@@ -1538,7 +1541,7 @@ const utils = {
                 let possible = 3; let met = 0;
                 if(wDates.includes(dStr) || isRest || loggedRest) met++;
                 if(bDates.includes(dStr)) met++;
-                if(nDates.includes(dStr)) met++;
+                if(nDates.includes(nStr => nStr === dStr)) met++;
                 return (met / possible) >= 0.66;
             };
             if (isComplete(utils.getLocalISODate(d))) streak++; d.setDate(d.getDate() - 1);
@@ -2476,7 +2479,7 @@ const workoutEngine = {
         const past = store.getExerciseHistory(ex.name, ex.variation || '');
         const fMult = fatigueInfo ? fatigueInfo.fatigueMultiplier : 1.0;
         const fatigueNote = (fatigueInfo && fatigueInfo.overlapWeightedSets > 0)
-            ? ` • ${fatigueInfo.fatigueTier} (#${fatigueInfo.currentOrderPos})`
+            ? `• ${fatigueInfo.fatigueTier} (#${fatigueInfo.currentOrderPos})`
             : '';
         if (!past.length || !past[0].sets.length) return { text: `Establish baseline${fatigueNote}`, color: 'var(--text-secondary)', icon: 'fa-bullseye', e1rm: 0 };
         let bestPrevSet = null;
@@ -2910,7 +2913,7 @@ const views = {
         const rank = utils.getWeeklyRankData();
         const sym = THEME_MAP[store.state.settings.theme].symbols;
         const unit = utils.unitLabel();
-
+        // 1. DASHBOARD TITLE
         let html = `
             <div class="page-header">
                 <div>
@@ -2928,16 +2931,40 @@ const views = {
                 </div>
             </div>
         `;
-
+        // 2. QUOTE (No bounding box, right underneath Dashboard Title)
         if (store.state.settings.features.showQuote) {
             const dayHash = today.getFullYear() * 400 + today.getMonth() * 32 + today.getDate();
             const randomQuote = QUOTES[dayHash % QUOTES.length];
-            html += `<div class="card" style="background: linear-gradient(135deg, rgba(255,215,0,0.08), rgba(255,215,0,0.02)); border: 1px solid var(--border); padding: 14px 16px; margin-bottom: 16px; position: relative; overflow: hidden;">
-                <p style="font-style: italic; color: var(--text-primary); font-size: 13.5px; line-height: 1.45; margin: 0; text-align: center;">"${randomQuote}"</p>
-                <div style="text-align: right; color: var(--text-secondary); font-size: 11px; margin-top: 6px; font-weight:bold;">— Marcus Aurelius</div>
+            html += `<div style="padding: 2px 10px 14px 10px; margin-bottom: 4px; text-align: center;">
+                <p style="font-style: italic; color: var(--text-primary); font-size: 14px; line-height: 1.45; margin: 0; opacity: 0.92;">"${randomQuote}"</p>
+                <div style="color: var(--text-secondary); font-size: 11px; margin-top: 4px; font-weight: bold; letter-spacing: 0.5px;">— Marcus Aurelius</div>
             </div>`;
         }
-
+        // 3. 28-DAY MUSCLE HEATMAP (Moved to top right after Quote)
+        if (store.state.settings.features.showHeatmap) {
+            const colorMap = {};
+            utils.getAllMuscleGroups().forEach(m => colorMap[m] = utils.getMuscleHeatColor(m));
+            const hyper = utils.getWeeklyHypertrophyStatus();
+            html += `
+            <div class="card" style="padding:16px;">
+                <div class="flex-between">
+                    <div>
+                        <h2 style="margin:0; font-size:18px;">28-Day Muscle Heatmap</h2>
+                        <div class="text-muted" style="font-size:12px;">Weekly Hypertrophy: ${hyper.completedGroups}/${hyper.totalGroups} groups at 10+ sets</div>
+                    </div>
+                    <button class="btn btn-sm" onclick="app.navigate('analytics')">Details</button>
+                </div>
+                <div class="heatmap-svg">${utils.renderAnatomySVG(colorMap)}</div>
+                <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap; font-size:10px; color:var(--text-secondary);">
+                    <span><i class="fas fa-circle" style="color:#333333;"></i> 0 sets</span>
+                    <span><i class="fas fa-circle" style="color:#3498db;"></i> 5+ sets</span>
+                    <span><i class="fas fa-circle" style="color:#f1c40f;"></i> 10+ sets</span>
+                    <span><i class="fas fa-circle" style="color:#e67e22;"></i> 15+ sets</span>
+                    <span><i class="fas fa-circle" style="color:#e74c3c;"></i> 20+ sets</span>
+                </div>
+            </div>`;
+        }
+        // 4. MONTHLY RANKED BANNER
         if (store.state.settings.features.showRankBanner) {
             const deltaSign = rank.dailyDeltaToday >= 0 ? '+' : '';
             html += `
@@ -2958,7 +2985,6 @@ const views = {
                 </div>
             </div>`;
         }
-
         if (store.state.activeSession) {
             html += `
             <div class="objective-row resume-pulse" style="border-color:var(--info); background:var(--info-dim); margin-bottom:16px;" onclick="workoutEngine.resumeSession()">
@@ -2970,7 +2996,6 @@ const views = {
                 <span class="btn btn-sm" style="background:var(--info); color:#fff; border:none;">Resume</span>
             </div>`;
         }
-
         const primaryTodayW = (prog.workouts && prog.workouts.length > 0) ? prog.workouts[0] : null;
         if (primaryTodayW) {
             const exCount = (primaryTodayW.exercises || []).length;
@@ -3010,7 +3035,6 @@ const views = {
                 </div>
             </div>`;
         }
-
         if (store.state.settings.features.showWeekStrip) {
             const monTs = utils.getMonday(today);
             const dayLabels = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
@@ -3033,7 +3057,6 @@ const views = {
             }
             html += `</div>`;
         }
-
         // Daily Action Plan
         const wGoalMet = workoutsToday.length > 0 || activitiesToday.length > 0 || skippedToday || !primaryTodayW;
         html += `
@@ -3069,7 +3092,6 @@ const views = {
                 <i class="fas fa-utensils" style="color:var(--text-secondary);"></i>
             </div>
         `;
-
         if (store.state.challenge && store.state.challenge.isActive && store.state.challenge.goals) {
             store.state.challenge.goals.filter(g => g.showInActionPlan || ['cardio', 'water', 'reading', 'custom'].includes(g.type)).forEach(g => {
                 const met = utils.checkGoalSuccess(todayStr, g);
@@ -3085,54 +3107,53 @@ const views = {
             });
         }
         html += `</div>`;
-
-        if (store.state.settings.features.showHeatmap) {
-            const colorMap = {};
-            utils.getAllMuscleGroups().forEach(m => colorMap[m] = utils.getMuscleHeatColor(m));
-            const hyper = utils.getWeeklyHypertrophyStatus();
-            html += `
-            <div class="card" style="padding:16px;">
-                <div class="flex-between">
-                    <div>
-                        <h2 style="margin:0; font-size:18px;">28-Day Muscle Heatmap</h2>
-                        <div class="text-muted" style="font-size:12px;">Weekly Hypertrophy: ${hyper.completedGroups}/${hyper.totalGroups} groups at 10+ sets</div>
-                    </div>
-                    <button class="btn btn-sm" onclick="app.navigate('analytics')">Details</button>
-                </div>
-                <div class="heatmap-svg">${utils.renderAnatomySVG(colorMap)}</div>
-                <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap; font-size:10px; color:var(--text-secondary);">
-                    <span><i class="fas fa-circle" style="color:#333333;"></i> 0 sets</span>
-                    <span><i class="fas fa-circle" style="color:#3498db;"></i> 5+ sets</span>
-                    <span><i class="fas fa-circle" style="color:#f1c40f;"></i> 10+ sets</span>
-                    <span><i class="fas fa-circle" style="color:#e67e22;"></i> 15+ sets</span>
-                    <span><i class="fas fa-circle" style="color:#e74c3c;"></i> 20+ sets</span>
-                </div>
-            </div>`;
-        }
-
+        // Screenshot-Matched Smaller 48-Day Activity Grid + Weight & Strength Ranks Bento Cards
         if (store.state.settings.features.showActivityGrid) {
             let cellsHtml = '';
-            for (let i = 83; i >= 0; i--) {
+            let activeDays48 = 0;
+            for (let i = 47; i >= 0; i--) {
                 const d = new Date(today.getTime() - i * 86400000);
                 const dIso = utils.getLocalISODate(d);
                 const hasW = store.state.history.workouts.some(w => utils.getLocalISODate(w.date) === dIso && !w.isSkipped);
                 const hasN = store.state.history.nutrition.some(n => utils.getLocalISODate(n.date) === dIso && n.cal > 0);
+                if (hasW) activeDays48++;
                 const lvl = (hasW && hasN) ? 'active-2' : ((hasW || hasN) ? 'active-1' : '');
                 cellsHtml += `<div class="activity-heat-cell ${lvl}" title="${dIso}"></div>`;
             }
             html += `
-            <div class="card">
-                <div class="flex-between" style="margin-bottom:8px;">
-                    <h3 style="margin:0; font-size:14px; color:var(--text-primary);">12-Week Consistency Grid</h3>
-                    <span style="font-size:11px; color:var(--text-secondary);">Last 84 Days</span>
+            <div class="home-bento-row">
+                <div class="card" style="margin:0; padding:14px; display:flex; flex-direction:column; justify-content:space-between;">
+                    <div class="flex-between" style="align-items:flex-start; margin-bottom:6px;">
+                        <div>
+                            <div style="font-size:18px; font-weight:900; color:var(--text-primary); line-height:1.1;">${activeDays48} <span style="font-size:12px; font-weight:700; color:var(--text-secondary);">DAYS</span></div>
+                            <div style="font-size:11px; color:var(--text-secondary);">Workout Activity (48d)</div>
+                        </div>
+                        <i class="fas fa-fire" style="color:#ff9500; font-size:16px;"></i>
+                    </div>
+                    <div class="activity-heat-grid">${cellsHtml}</div>
                 </div>
-                <div class="activity-heat-grid">${cellsHtml}</div>
+                <div class="home-bento-right">
+                    <div class="card" style="margin:0; padding:12px 14px; flex:1; cursor:pointer; display:flex; flex-direction:column; justify-content:center;" onclick="app.promptQuickBodyweight()">
+                        <div class="flex-between">
+                            <span style="font-size:11px; font-weight:bold; color:var(--text-secondary);">Weight</span>
+                            <i class="fas fa-weight-scale" style="color:#ff9500; font-size:13px;"></i>
+                        </div>
+                        <div style="font-size:21px; font-weight:900; color:var(--text-primary); margin-top:2px;">${store.state.user.currentWeight} <span style="font-size:13px; font-weight:normal; color:var(--text-secondary);">${unit}</span></div>
+                        <div style="font-size:10.5px; color:var(--text-secondary);">Goal: ${store.state.user.targetWeight}${unit}</div>
+                    </div>
+                    <div class="card" style="margin:0; padding:12px 14px; flex:1; cursor:pointer; display:flex; flex-direction:column; justify-content:center;" onclick="app.navigate('analytics')">
+                        <div class="flex-between">
+                            <span style="font-size:10.5px; font-weight:bold; color:var(--text-secondary);">4w PRs & World %</span>
+                            <i class="fas fa-trophy" style="color:var(--accent-color); font-size:13px;"></i>
+                        </div>
+                        <div style="font-size:15px; font-weight:900; color:var(--text-primary); margin-top:3px;">Strength Ranks</div>
+                        <div style="font-size:10.5px; color:var(--text-secondary);">View Top % Standards</div>
+                    </div>
+                </div>
             </div>`;
         }
-
         return html;
     },
-
     renderWorkouts() {
         const active = utils.getActiveRoutine();
         const todayIdx = new Date().getDay();
@@ -3146,7 +3167,6 @@ const views = {
                 </div>
             </div>
         `;
-
         // Active Split Switcher
         html += `
         <div class="card" style="padding:14px;">
@@ -3160,7 +3180,6 @@ const views = {
                 <button class="btn btn-sm" style="margin-top:16px;" onclick="app.createNewRoutine()"><i class="fas fa-plus"></i> New Split</button>
             </div>
         </div>`;
-
         // 7-Day Weekly Schedule
         html += `<h2 style="font-size:17px; margin:16px 0 10px 0;">Weekly Schedule (${active.name})</h2><div class="weekly-plan-list">`;
         for (let d = 0; d < 7; d++) {
@@ -3182,7 +3201,6 @@ const views = {
             </div>`;
         }
         html += `</div>`;
-
         // Routine Folder Grid
         html += `<h2 style="font-size:17px; margin:18px 0 10px 0;">Routine Folders</h2><div class="routine-folder-grid">`;
         const tabColors = ['#ff3b30', '#007aff', '#34c759', '#ff9500', '#af52de', '#00e5ff'];
@@ -3212,7 +3230,6 @@ const views = {
             });
         });
         html += `</div>`;
-
         // Recent Workout History
         const recentW = [...store.state.history.workouts].filter(w => !w.isSkipped).sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 12);
         html += `<h2 style="font-size:17px; margin:18px 0 10px 0;">Recent Sessions</h2>`;
@@ -3237,7 +3254,6 @@ const views = {
         }
         return html;
     },
-
     renderAnalytics() {
         const unit = utils.unitLabel();
         const range = store.state.settings.chartRange || '90';
@@ -3245,7 +3261,6 @@ const views = {
         const tracked = store.state.trackedPRs || ['Bench Press', 'Squat', 'Deadlift'];
         const ovMuscle = store.state.settings.overloadMuscleFilter || 'All';
         const overloads = utils.getOverloadData(ovMuscle);
-
         let html = `
             <div class="page-header">
                 <h1 style="margin:0; font-size:24px;">Analytics & PRs</h1>
@@ -3257,14 +3272,12 @@ const views = {
                 </select>
             </div>
         `;
-
         // World Strength Standards & Tracked PR Cards
         html += `
         <div class="flex-between" style="margin-bottom:10px;">
             <h2 style="margin:0; font-size:18px;">4-Week Strength Standards</h2>
             <button class="btn btn-sm" onclick="app.promptManualPR()"><i class="fas fa-plus"></i> Log PR</button>
         </div>`;
-
         tracked.forEach(liftName => {
             const st = utils.getLiftWorldStats(liftName);
             const deltaHtml = st.hasComparison
@@ -3292,7 +3305,6 @@ const views = {
                 </div>
             </div>`;
         });
-
         // Charts
         html += `
         <div class="card">
@@ -3302,7 +3314,6 @@ const views = {
             </div>
             <div style="height:220px;"><canvas id="e1rmChart"></canvas></div>
         </div>
-
         <div class="card">
             <div class="flex-between" style="margin-bottom:8px;">
                 <div>
@@ -3313,7 +3324,6 @@ const views = {
             </div>
             <div style="height:220px;"><canvas id="bwChart"></canvas></div>
         </div>
-
         <div class="card">
             <div class="flex-between" style="margin-bottom:8px;">
                 <h2 style="margin:0; font-size:17px;">Session Volume (${unit})</h2>
@@ -3324,7 +3334,6 @@ const views = {
             </div>
             <div style="height:200px;"><canvas id="volChart"></canvas></div>
         </div>`;
-
         // Progressive Overload Tracker
         html += `
         <div class="card">
@@ -3350,10 +3359,8 @@ const views = {
                 `).join('')}
             </div>
         </div>`;
-
         return html;
     },
-
     renderNutrition() {
         const dStr = app.selectedNutritionDate || utils.getLocalISODate(new Date());
         let nutEntry = store.state.history.nutrition.find(n => utils.getLocalISODate(n.date) === dStr);
@@ -3364,7 +3371,6 @@ const views = {
         const scoreObj = utils.getNutritionScore(nutEntry, targets);
         const insights = utils.getDailyNutritionInsights(nutEntry, targets);
         const totalWater = (nutEntry.waterLog || []).reduce((s, e) => s + e.amount, 0);
-
         let html = `
             <div class="page-header">
                 <div>
@@ -3377,7 +3383,6 @@ const views = {
                 </div>
             </div>
         `;
-
         // Nutrition Score Banner
         html += `
         <div class="card" style="background: radial-gradient(circle at 90% 10%, ${scoreObj.color}22, var(--surface-color) 75%); border: 1px solid ${scoreObj.color}55;">
@@ -3400,7 +3405,6 @@ const views = {
                 </div>
             `).join('')}
         </div>`;
-
         // Macro Ring Grid
         html += `
         <div class="nut-ring-grid">
@@ -3425,7 +3429,6 @@ const views = {
                 <div style="font-size:11px; color:var(--text-secondary);">${Math.max(0, targets.fat - Math.round(nutEntry.fat))}g remaining</div>
             </div>
         </div>`;
-
         // Hydration Tracker
         html += `
         <div class="card">
@@ -3444,14 +3447,12 @@ const views = {
                 <div class="progress-fill" style="width:${Math.min(100, (totalWater / 3500) * 100)}%; background:var(--info);"></div>
             </div>
         </div>`;
-
         // Quick Add & Meal Builder Actions
         html += `
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:16px;">
             <button class="btn btn-primary" onclick="app.openMealSearchModal('${dStr}')"><i class="fas fa-magnifying-glass"></i> NZ Food Bank (100+)</button>
             <button class="btn" onclick="app.openMealCreateModal('${dStr}')"><i class="fas fa-utensils"></i> Build Custom Meal</button>
         </div>`;
-
         // Logged Meals List
         html += `
         <div class="card">
@@ -3471,7 +3472,6 @@ const views = {
                     </div>
                 `).join('')}
         </div>`;
-
         // NZ Athlete Fuel Insights
         html += `
         <div class="card">
@@ -3483,22 +3483,161 @@ const views = {
                 </div>
             `).join('')}
         </div>`;
-
         return html;
     },
-
+    renderManage() {
+        const unit = utils.unitLabel();
+        const active = utils.getActiveRoutine();
+        const tab = app.manageSubTab || 'history';
+        const allWorkouts = [...store.state.history.workouts].sort((a,b) => new Date(b.date) - new Date(a.date));
+        const allBw = [...store.state.history.bodyweight].sort((a,b) => new Date(b.date) - new Date(a.date));
+        const allNut = [...store.state.history.nutrition].filter(n => n.cal > 0).sort((a,b) => new Date(b.date) - new Date(a.date));
+        const groupedEx = utils.getGroupedExercises();
+        let html = `
+            <div class="page-header">
+                <div>
+                    <div style="font-size:11px; color:var(--text-secondary); font-weight:bold; text-transform:uppercase;">Logs, Splits & Exercises</div>
+                    <h1 style="margin:0; font-size:24px;">Manage & Review</h1>
+                </div>
+                <button class="btn btn-sm" onclick="app.openRoutineEditor('${active.id}')"><i class="fas fa-pen"></i> Edit Split</button>
+            </div>
+            <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:6px; margin-bottom:16px;">
+                <button class="btn btn-sm ${tab === 'history' ? 'btn-primary' : ''}" onclick="app.setManageSubTab('history')">Workouts</button>
+                <button class="btn btn-sm ${tab === 'exercises' ? 'btn-primary' : ''}" onclick="app.setManageSubTab('exercises')">Exercises</button>
+                <button class="btn btn-sm ${tab === 'logs' ? 'btn-primary' : ''}" onclick="app.setManageSubTab('logs')">BW & Fuel</button>
+                <button class="btn btn-sm ${tab === 'backup' ? 'btn-primary' : ''}" onclick="app.setManageSubTab('backup')">Backup</button>
+            </div>
+        `;
+        if (tab === 'history') {
+            html += `<div class="card">
+                <div class="flex-between" style="margin-bottom:10px;">
+                    <h2 style="margin:0; font-size:17px;">Workout & Activity Logs (${allWorkouts.length})</h2>
+                    <button class="btn btn-sm" onclick="app.logQuickActivity()">+ Log Activity</button>
+                </div>`;
+            if (allWorkouts.length === 0) {
+                html += `<div class="text-muted" style="text-align:center; padding:20px;">No workouts recorded yet.</div>`;
+            } else {
+                allWorkouts.slice(0, 40).forEach(w => {
+                    const vol = (w.exercises || []).reduce((acc, ex) => acc + utils.calcVolume(ex.sets || []), 0);
+                    const setsCount = (w.exercises || []).reduce((acc, ex) => acc + (ex.sets || []).filter(s => s.completed !== false).length, 0);
+                    html += `
+                    <div class="data-row">
+                        <div class="flex-between">
+                            <div>
+                                <div style="font-size:11px; color:var(--text-secondary); font-weight:bold;">${utils.formatDate(w.date)}</div>
+                                <div style="font-weight:800; font-size:15px;">${w.name} ${w.isSkipped ? '<span style="font-size:10px; color:var(--info);">(REST)</span>' : (w.isActivity ? '<span style="font-size:10px; color:var(--info);">(ACTIVITY)</span>' : '')}</div>
+                                ${(!w.isSkipped && !w.isActivity) ? `<div style="font-size:11px; color:var(--text-secondary);">${setsCount} sets • ${Math.round(vol).toLocaleString()} ${unit}</div>` : ''}
+                            </div>
+                            <button class="btn-icon" style="color:var(--pending); width:32px; height:32px;" onclick="app.deleteWorkoutEntry('${w.id}')"><i class="fas fa-trash"></i></button>
+                        </div>
+                        ${(!w.isSkipped && !w.isActivity && w.exercises && w.exercises.length > 0) ? `
+                            <div style="margin-top:6px; font-size:11.5px; color:var(--text-secondary); line-height:1.4;">
+                                ${w.exercises.map(ex => `<span style="display:inline-block; margin-right:8px;">• <strong>${ex.name}</strong> (${(ex.sets||[]).length}s)</span>`).join('')}
+                            </div>
+                        ` : ''}
+                    </div>`;
+                });
+            }
+            html += `</div>`;
+        } else if (tab === 'exercises') {
+            html += `
+            <div class="card">
+                <div class="flex-between" style="margin-bottom:12px;">
+                    <h2 style="margin:0; font-size:17px;">Master Exercise Database</h2>
+                    <button class="btn btn-sm btn-primary" onclick="app.promptCreateMasterExercise()">+ New Exercise</button>
+                </div>
+                <div style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">Editing an exercise here automatically updates its name, muscle groups, and default sets/reps across all splits and history.</div>
+            `;
+            Object.keys(groupedEx).sort().forEach(muscle => {
+                html += `<h3 style="margin-top:14px; margin-bottom:6px; color:var(--accent-color); border-bottom:1px solid var(--border); padding-bottom:4px;">${muscle}</h3>`;
+                groupedEx[muscle].forEach(ex => {
+                    const safeName = ex.name.replace(/'/g, "\\'");
+                    html += `
+                    <div class="data-row flex-between">
+                        <div>
+                            <div style="font-weight:bold; font-size:14px;">${ex.name}</div>
+                            <div style="font-size:11px; color:var(--text-secondary);">${utils.getMuscles(ex).join(', ')} • Default: ${ex.targetSets || 3} × ${ex.targetReps || '8-12'}</div>
+                        </div>
+                        <button class="btn-icon" style="width:32px; height:32px;" onclick="workoutEngine.editExerciseFromModal('NEW', '${safeName}'); app.navigate('manage');"><i class="fas fa-pen"></i></button>
+                    </div>`;
+                });
+            });
+            html += `</div>`;
+        } else if (tab === 'logs') {
+            html += `
+            <div class="card">
+                <div class="flex-between" style="margin-bottom:10px;">
+                    <h2 style="margin:0; font-size:17px;">Bodyweight History (${allBw.length})</h2>
+                    <button class="btn btn-sm" onclick="app.promptQuickBodyweight()">+ Log BW</button>
+                </div>
+                ${allBw.length === 0 ? `<div class="text-muted">No bodyweight entries logged.</div>` : allBw.slice(0, 25).map(b => `
+                    <div class="data-row flex-between">
+                        <div>
+                            <div style="font-weight:bold; font-size:14px;">${b.weight} ${unit}</div>
+                            <div style="font-size:11px; color:var(--text-secondary);">${utils.formatDate(b.date)}</div>
+                        </div>
+                        <div style="display:flex; gap:6px;">
+                            <button class="btn-icon" style="width:30px; height:30px;" onclick="app.editBodyweightEntry('${b.date}', ${b.weight})"><i class="fas fa-pen"></i></button>
+                            <button class="btn-icon" style="width:30px; height:30px; color:var(--pending);" onclick="store.deleteEntry('bodyweight', '${b.date}'); app.navigate('manage');"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+            <div class="card">
+                <div class="flex-between" style="margin-bottom:10px;">
+                    <h2 style="margin:0; font-size:17px;">Nutrition History (${allNut.length})</h2>
+                    <button class="btn btn-sm" onclick="app.navigate('nutrition')">Open Fuel OS</button>
+                </div>
+                ${allNut.length === 0 ? `<div class="text-muted">No nutrition days logged.</div>` : allNut.slice(0, 25).map(n => {
+                    const iso = utils.getLocalISODate(n.date);
+                    return `
+                    <div class="data-row flex-between">
+                        <div style="cursor:pointer;" onclick="app.changeNutritionDate('${iso}')">
+                            <div style="font-weight:bold; font-size:14px;">${utils.formatDate(n.date)} — ${Math.round(n.cal)} kcal</div>
+                            <div style="font-size:11px; color:var(--text-secondary);">P: ${Math.round(n.pro)}g • C: ${Math.round(n.car)}g • F: ${Math.round(n.fat)}g</div>
+                        </div>
+                        <button class="btn-icon" style="width:30px; height:30px; color:var(--pending);" onclick="store.deleteEntry('nutrition', '${n.date}'); app.navigate('manage');"><i class="fas fa-trash"></i></button>
+                    </div>`;
+                }).join('')}
+            </div>`;
+        } else {
+            html += `
+            <div class="card">
+                <h2 style="margin:0 0 8px 0; font-size:17px;">Split & Routine Manager</h2>
+                <div style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">Switch, edit, or create training splits.</div>
+                ${store.state.routines.map(r => `
+                    <div class="data-row flex-between">
+                        <div>
+                            <div style="font-weight:bold; font-size:15px;">${r.name} ${r.id === store.state.activeRoutineId ? '<span style="font-size:10px; background:var(--accent-color); color:var(--bg-color); padding:2px 6px; border-radius:4px; font-weight:900;">ACTIVE</span>' : ''}</div>
+                        </div>
+                        <div style="display:flex; gap:6px;">
+                            ${r.id !== store.state.activeRoutineId ? `<button class="btn btn-sm" onclick="app.switchActiveRoutine('${r.id}')">Activate</button>` : ''}
+                            <button class="btn btn-sm" onclick="app.openRoutineEditor('${r.id}')"><i class="fas fa-pen"></i> Edit</button>
+                        </div>
+                    </div>
+                `).join('')}
+                <button class="btn btn-sm btn-primary" style="margin-top:12px; width:100%;" onclick="app.createNewRoutine()">+ Create New Split</button>
+            </div>
+            <div class="card">
+                <h2 style="margin:0 0 10px 0; font-size:17px;">Data Backup & Portability</h2>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                    <button class="btn btn-sm" onclick="app.exportJSON()"><i class="fas fa-download"></i> Export JSON</button>
+                    <button class="btn btn-sm" onclick="app.importJSONPrompt()"><i class="fas fa-upload"></i> Import JSON</button>
+                </div>
+            </div>`;
+        }
+        return html;
+    },
     renderProfile() {
         const stats = utils.getProfileStatsAndMedals();
         const rank = utils.getWeeklyRankData();
         const chalStats = utils.getChallengeStats();
         const unit = utils.unitLabel();
-
         let html = `
             <div class="page-header">
                 <h1 style="margin:0; font-size:24px;">Athlete Profile</h1>
                 <button class="btn btn-sm" onclick="app.openSettingsModal()"><i class="fas fa-gear"></i> Settings</button>
             </div>
-
             <div class="card" style="display:flex; align-items:center; gap:16px;">
                 <img src="${store.state.user.avatar}" style="width:72px; height:72px; border-radius:50%; object-fit:cover; border:2px solid var(--accent-color);" onclick="app.promptProfileEdit()">
                 <div style="flex:1;">
@@ -3508,7 +3647,6 @@ const views = {
                 </div>
                 <button class="btn-icon" onclick="app.promptProfileEdit()" title="Edit Profile"><i class="fas fa-pen"></i></button>
             </div>
-
             <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:10px; margin-bottom:16px;">
                 <div class="card" style="margin:0; text-align:center; padding:12px;">
                     <div style="font-size:11px; color:var(--text-secondary); text-transform:uppercase; font-weight:bold;">Workouts</div>
@@ -3527,7 +3665,6 @@ const views = {
                     <div style="font-size:22px; font-weight:900; color:var(--warning);">${stats.streak} Days</div>
                 </div>
             </div>
-
             <div class="card">
                 <div class="flex-between" style="margin-bottom:8px;">
                     <h2 style="margin:0; font-size:17px;">Honour Medals (${stats.medals.filter(m => m.unlocked).length}/${stats.medals.length})</h2>
@@ -3545,7 +3682,6 @@ const views = {
                 </div>
             </div>
         `;
-
         // Challenge Hub
         if (store.state.challenge && store.state.challenge.isActive && chalStats) {
             html += `
@@ -3574,7 +3710,6 @@ const views = {
                 </div>
             </div>`;
         }
-
         // Progress Photos Vault
         const photos = store.state.history.progressPhotos || [];
         html += `
@@ -3598,7 +3733,6 @@ const views = {
                 </div>`
             }
         </div>
-
         <div class="card">
             <h2 style="margin:0 0 10px 0; font-size:17px;">Data Backup & Portability</h2>
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
@@ -3606,17 +3740,15 @@ const views = {
                 <button class="btn btn-sm" onclick="app.importJSONPrompt()"><i class="fas fa-upload"></i> Import Backup</button>
             </div>
         </div>`;
-
         return html;
     }
 };
-
 const app = {
     currentPage: 'home',
+    manageSubTab: 'history',
     selectedNutritionDate: null,
     chartInstances: {},
     draftRoutine: null,
-
     init() {
         store.load();
         this.applyTheme(store.state.settings.theme || 'olympus');
@@ -3624,7 +3756,6 @@ const app = {
         this.renderNav();
         this.navigate('home');
     },
-
     applyTheme(themeName) {
         if (!['olympus', 'dark', 'light'].includes(themeName)) themeName = 'olympus';
         store.state.settings.theme = themeName;
@@ -3632,7 +3763,6 @@ const app = {
         store.save();
         this.renderNav();
     },
-
     renderNav() {
         const theme = store.state.settings.theme || 'olympus';
         const icons = (THEME_MAP[theme] || THEME_MAP.olympus).nav;
@@ -3641,7 +3771,8 @@ const app = {
             { id: 'workouts', label: 'Workouts', icon: icons[1] },
             { id: 'analytics', label: 'Analytics', icon: icons[2] },
             { id: 'nutrition', label: 'Nutrition', icon: icons[3] },
-            { id: 'profile', label: 'Profile', icon: icons[4] }
+            { id: 'manage', label: 'Manage', icon: icons[4] || 'fa-sliders' },
+            { id: 'profile', label: 'Profile', icon: icons[5] || 'fa-user' }
         ];
         const navBar = document.getElementById('nav-bar');
         if (!navBar) return;
@@ -3652,7 +3783,6 @@ const app = {
             </a>
         `).join('');
     },
-
     navigate(page) {
         this.currentPage = page;
         this.renderNav();
@@ -3664,10 +3794,40 @@ const app = {
             main.innerHTML = views.renderAnalytics();
             setTimeout(() => this.initCharts(), 40);
         } else if (page === 'nutrition') main.innerHTML = views.renderNutrition();
+        else if (page === 'manage') main.innerHTML = views.renderManage();
         else if (page === 'profile') main.innerHTML = views.renderProfile();
         main.scrollTop = 0;
     },
-
+    setManageSubTab(sub) {
+        this.manageSubTab = sub;
+        this.navigate('manage');
+    },
+    promptCreateMasterExercise() {
+        const name = prompt(`Enter new exercise name (Max ${MAX_EX_TITLE_LEN} chars):`);
+        if (!name || !name.trim()) return;
+        const cleanName = name.trim().slice(0, MAX_EX_TITLE_LEN);
+        const allM = utils.getAllMuscleGroups();
+        const muscleInput = prompt(`Enter muscle group(s) (comma-separated, e.g. ${allM.join(', ')}):`, "Chest");
+        const parsedMuscles = (muscleInput || 'Other').split(',').map(m => m.trim()).filter(Boolean);
+        const setsInput = prompt("Default Target Sets:", "3");
+        const repsInput = prompt("Default Target Reps (e.g. 8-12):", "8-12");
+        store.syncExerciseGlobally(cleanName, {
+            name: cleanName,
+            muscles: parsedMuscles.length ? parsedMuscles : ['Other'],
+            targetSets: parseInt(setsInput) || 3,
+            targetReps: (repsInput || '8-12').trim()
+        });
+        this.navigate('manage');
+    },
+    editBodyweightEntry(isoDate, oldWeight) {
+        const val = prompt(`Edit Bodyweight (${utils.unitLabel()}):`, oldWeight);
+        if (val === null) return;
+        const num = parseFloat(val);
+        if (!isNaN(num) && num > 0) {
+            store.updateBodyweight(isoDate, num);
+            this.navigate('manage');
+        }
+    },
     startTodayWorkout(idx = 0) {
         const prog = utils.getTodayProgram();
         if (prog && prog.workouts && prog.workouts[idx]) {
@@ -3676,7 +3836,6 @@ const app = {
             this.openStartWorkoutModal();
         }
     },
-
     startRoutineWorkout(routineId, dayIdx, wIdx = 0) {
         const r = store.state.routines.find(x => x.id === routineId) || utils.getActiveRoutine();
         const d = r.days.find(x => x.day === dayIdx);
@@ -3684,7 +3843,6 @@ const app = {
             workoutEngine.initNewOrResume(d.workouts[wIdx]);
         }
     },
-
     openStartWorkoutModal() {
         const modal = document.getElementById('start-workout-modal');
         const active = utils.getActiveRoutine();
@@ -3715,12 +3873,10 @@ const app = {
         modal.innerHTML = html;
         modal.style.display = 'flex';
     },
-
     startBlankWorkout() {
         const name = prompt("Session Name:", "Freestyle Session") || "Freestyle Session";
         workoutEngine.startNewSession({ id: utils.generateId(), name: name.trim(), exercises: [] });
     },
-
     markRestDayToday() {
         const todayStr = utils.getLocalISODate(new Date());
         if (!store.state.history.workouts.some(w => utils.getLocalISODate(w.date) === todayStr && w.isSkipped)) {
@@ -3728,7 +3884,6 @@ const app = {
         }
         this.navigate(this.currentPage);
     },
-
     logQuickActivity() {
         const actName = prompt("Enter sport, cardio, or recovery activity (e.g. Touch Rugby, 5km Run, Sauna & Mobility):");
         if (!actName || !actName.trim()) return;
@@ -3744,7 +3899,6 @@ const app = {
         store.save();
         this.navigate(this.currentPage);
     },
-
     promptQuickBodyweight() {
         const unit = utils.unitLabel();
         const val = prompt(`Enter morning bodyweight (${unit}):`, store.state.user.currentWeight || 90);
@@ -3762,7 +3916,6 @@ const app = {
         }
         this.navigate(this.currentPage);
     },
-
     toggleChallengeGoal(dStr, goalId, goalType) {
         if (goalType === 'cardio') {
             this.logQuickActivity();
@@ -3773,13 +3926,11 @@ const app = {
         store.save();
         this.navigate(this.currentPage);
     },
-
     switchActiveRoutine(rId) {
         store.state.activeRoutineId = rId;
         store.save();
-        this.navigate('workouts');
+        this.navigate(this.currentPage);
     },
-
     createNewRoutine() {
         const name = prompt("New Split Name (e.g. Winter Bulk PPL, 4-Day Upper/Lower):");
         if (!name || !name.trim()) return;
@@ -3793,13 +3944,11 @@ const app = {
         store.save();
         this.openRoutineEditor(newR.id);
     },
-
     openRoutineEditor(routineId) {
         const r = store.state.routines.find(x => x.id === routineId) || utils.getActiveRoutine();
         this.draftRoutine = JSON.parse(JSON.stringify(r));
         this.renderRoutineEditorModal();
     },
-
     renderRoutineEditorModal() {
         const modal = document.getElementById('start-workout-modal');
         const r = this.draftRoutine;
@@ -3844,19 +3993,16 @@ const app = {
         modal.innerHTML = html;
         modal.style.display = 'flex';
     },
-
     addDraftDayWorkout(dIdx) {
         const name = prompt("Workout Title (e.g. Push A, Legs, Pull):", "Workout");
         if (!name) return;
         this.draftRoutine.days[dIdx].workouts.push({ id: 'w_' + utils.generateId(), name: name.trim(), exercises: [] });
         this.renderRoutineEditorModal();
     },
-
     removeDraftDayWorkout(dIdx, wIdx) {
         this.draftRoutine.days[dIdx].workouts.splice(wIdx, 1);
         this.renderRoutineEditorModal();
     },
-
     promptAddExerciseToDraft(dIdx, wIdx) {
         const exName = prompt("Enter Exercise Name (e.g. Bench Press, Squat, Lat Pulldown, Incline DB Press):");
         if (!exName || !exName.trim()) return;
@@ -3870,7 +4016,6 @@ const app = {
         });
         this.renderRoutineEditorModal();
     },
-
     saveDraftRoutine() {
         if (!this.draftRoutine) return;
         const idx = store.state.routines.findIndex(r => r.id === this.draftRoutine.id);
@@ -3880,32 +4025,27 @@ const app = {
         document.getElementById('start-workout-modal').style.display = 'none';
         this.navigate(this.currentPage);
     },
-
     deleteWorkoutEntry(wId) {
         if (!confirm("Delete this logged workout session?")) return;
         store.state.history.workouts = store.state.history.workouts.filter(w => w.id !== wId);
         store.save();
         this.navigate(this.currentPage);
     },
-
     setChartRange(val) {
         store.state.settings.chartRange = val;
         store.save();
         this.navigate('analytics');
     },
-
     setVolFilter(val) {
         store.state.settings.lastVolFilter = val;
         store.save();
         this.navigate('analytics');
     },
-
     setOverloadMuscleFilter(val) {
         store.state.settings.overloadMuscleFilter = val;
         store.save();
         this.navigate('analytics');
     },
-
     promptManualPR() {
         const lift = prompt("Lift Name (e.g. Bench Press, Squat, Deadlift):", "Bench Press");
         if (!lift) return;
@@ -3914,11 +4054,12 @@ const app = {
         const reps = parseInt(prompt("Reps completed:", "1")) || 1;
         const e1rm = reps === 1 ? weight : Math.round(weight * (1 + reps / 30) * 10) / 10;
         store.state.history.manualPRs.push({
+            id: utils.generateId(),
             date: new Date().toISOString(),
             lift: lift.trim(),
-            weight,
-            reps,
-            e1rm
+            weight: weight,
+            reps: reps,
+            e1rm: e1rm
         });
         if (!store.state.trackedPRs.includes(lift.trim())) {
             store.state.trackedPRs.push(lift.trim());
@@ -3926,63 +4067,63 @@ const app = {
         store.save();
         this.navigate('analytics');
     },
-
     initCharts() {
         Object.values(this.chartInstances).forEach(c => { if (c && c.destroy) c.destroy(); });
         this.chartInstances = {};
-        const range = store.state.settings.chartRange;
-        const daysLimit = range === 'ALL' ? null : (parseInt(range) || 90);
-        const cutoffTs = daysLimit ? (Date.now() - daysLimit * 86400000) : 0;
-        const textSecondary = utils.getCssVar('--text-secondary', '#8e8e99');
+        const range = store.state.settings.chartRange || '90';
+        const daysLimit = range === 'ALL' ? 0 : parseInt(range);
+        const cutoff = daysLimit ? (Date.now() - daysLimit * 86400000) : 0;
+        const textSec = utils.getCssVar('--text-secondary', '#8e8e99');
         const borderCol = utils.getCssVar('--border', '#2c2c38');
+        const accentCol = utils.getCssVar('--accent-color', '#ffd700');
 
         // 1. E1RM Chart
         const e1rmCanvas = document.getElementById('e1rmChart');
         if (e1rmCanvas && window.Chart) {
-            const hist = utils.getE1RMHistory(daysLimit);
+            const eHist = utils.getE1RMHistory(daysLimit);
             this.chartInstances.e1rm = new Chart(e1rmCanvas.getContext('2d'), {
                 type: 'line',
                 data: {
                     datasets: [
-                        { label: 'Bench', data: hist.bench.map(p => ({ x: p.ts, y: Math.round(p.e1rm) })), borderColor: '#0a84ff', tension: 0.25 },
-                        { label: 'Squat', data: hist.squat.map(p => ({ x: p.ts, y: Math.round(p.e1rm) })), borderColor: '#ffd700', tension: 0.25 },
-                        { label: 'Deadlift', data: hist.deadlift.map(p => ({ x: p.ts, y: Math.round(p.e1rm) })), borderColor: '#32d74b', tension: 0.25 }
+                        { label: 'Bench', data: eHist.bench.map(p => ({ x: p.ts, y: Math.round(p.e1rm * 10) / 10 })), borderColor: '#007aff', backgroundColor: '#007aff', tension: 0.25, pointRadius: 3 },
+                        { label: 'Squat', data: eHist.squat.map(p => ({ x: p.ts, y: Math.round(p.e1rm * 10) / 10 })), borderColor: '#ff3b30', backgroundColor: '#ff3b30', tension: 0.25, pointRadius: 3 },
+                        { label: 'Deadlift', data: eHist.deadlift.map(p => ({ x: p.ts, y: Math.round(p.e1rm * 10) / 10 })), borderColor: '#34c759', backgroundColor: '#34c759', tension: 0.25, pointRadius: 3 }
                     ]
                 },
                 options: {
                     responsive: true, maintainAspectRatio: false,
                     scales: {
-                        x: { type: 'time', time: { unit: 'day' }, ticks: { color: textSecondary }, grid: { color: borderCol } },
-                        y: { ticks: { color: textSecondary }, grid: { color: borderCol } }
+                        x: { type: 'time', time: { unit: 'day' }, ticks: { color: textSec }, grid: { color: borderCol } },
+                        y: { ticks: { color: textSec }, grid: { color: borderCol } }
                     },
-                    plugins: { legend: { labels: { color: textSecondary } } }
+                    plugins: { legend: { labels: { color: textSec, boxWidth: 12 } } }
                 }
             });
         }
 
-        // 2. Bodyweight Chart
+        // 2. Bodyweight & Calorie Chart
         const bwCanvas = document.getElementById('bwChart');
         if (bwCanvas && window.Chart) {
-            const bwPts = [...store.state.history.bodyweight]
-                .filter(b => !cutoffTs || new Date(b.date).getTime() >= cutoffTs)
+            const bwData = [...store.state.history.bodyweight]
+                .filter(b => !cutoff || new Date(b.date).getTime() >= cutoff)
                 .sort((a, b) => new Date(a.date) - new Date(b.date))
                 .map(b => ({ x: new Date(b.date).setHours(0,0,0,0), y: b.weight }));
-            const smaPts = utils.calculateSMA(bwPts, 7);
+            const sma7 = utils.calculateSMA(bwData, 7);
             this.chartInstances.bw = new Chart(bwCanvas.getContext('2d'), {
                 type: 'line',
                 data: {
                     datasets: [
-                        { label: 'Daily BW', data: bwPts, borderColor: 'rgba(255,159,10,0.45)', pointRadius: 2, tension: 0.1 },
-                        { label: '7d Average', data: smaPts, borderColor: '#ff3b30', borderWidth: 2.5, pointRadius: 0, tension: 0.3 }
+                        { label: 'Bodyweight', data: bwData, borderColor: 'rgba(255,149,0,0.45)', backgroundColor: '#ff9500', pointRadius: 2.5, tension: 0.1 },
+                        { label: '7d Trend', data: sma7, borderColor: accentCol, borderWidth: 2.5, pointRadius: 0, tension: 0.3 }
                     ]
                 },
                 options: {
                     responsive: true, maintainAspectRatio: false,
                     scales: {
-                        x: { type: 'time', time: { unit: 'day' }, ticks: { color: textSecondary }, grid: { color: borderCol } },
-                        y: { ticks: { color: textSecondary }, grid: { color: borderCol } }
+                        x: { type: 'time', time: { unit: 'day' }, ticks: { color: textSec }, grid: { color: borderCol } },
+                        y: { ticks: { color: textSec }, grid: { color: borderCol } }
                     },
-                    plugins: { legend: { labels: { color: textSecondary } } }
+                    plugins: { legend: { labels: { color: textSec, boxWidth: 12 } } }
                 }
             });
         }
@@ -3991,38 +4132,35 @@ const app = {
         const volCanvas = document.getElementById('volChart');
         if (volCanvas && window.Chart) {
             const vHist = utils.getWorkoutVolumeHistory();
-            const filter = store.state.settings.lastVolFilter || 'total';
-            const rawSeries = filter === 'total' ? vHist.total : (vHist.muscles[filter] || []);
-            const filteredSeries = rawSeries.filter(p => !cutoffTs || p.x >= cutoffTs);
+            const fKey = store.state.settings.lastVolFilter || 'total';
+            const rawPts = (fKey === 'total' ? vHist.total : (vHist.muscles[fKey] || []))
+                .filter(p => !cutoff || p.x >= cutoff);
             this.chartInstances.vol = new Chart(volCanvas.getContext('2d'), {
                 type: 'bar',
                 data: {
                     datasets: [{
-                        label: `${filter.toUpperCase()} Volume`,
-                        data: filteredSeries,
-                        backgroundColor: 'rgba(255, 215, 0, 0.55)',
-                        borderColor: '#ffd700',
-                        borderWidth: 1
+                        label: fKey === 'total' ? 'Total Session Volume' : `${fKey} Volume`,
+                        data: rawPts,
+                        backgroundColor: accentCol,
+                        borderRadius: 6
                     }]
                 },
                 options: {
                     responsive: true, maintainAspectRatio: false,
                     scales: {
-                        x: { type: 'time', time: { unit: 'day' }, ticks: { color: textSecondary }, grid: { color: borderCol } },
-                        y: { ticks: { color: textSecondary }, grid: { color: borderCol } }
+                        x: { type: 'time', time: { unit: 'day' }, ticks: { color: textSec }, grid: { color: borderCol } },
+                        y: { ticks: { color: textSec }, grid: { color: borderCol } }
                     },
-                    plugins: { legend: { labels: { color: textSecondary } } }
+                    plugins: { legend: { labels: { color: textSec, boxWidth: 12 } } }
                 }
             });
         }
     },
-
-    changeNutritionDate(val) {
-        if (!val) return;
-        this.selectedNutritionDate = val;
+    changeNutritionDate(newDateStr) {
+        if (!newDateStr) return;
+        this.selectedNutritionDate = newDateStr;
         this.navigate('nutrition');
     },
-
     getOrCreateNutritionDay(dStr) {
         let entry = store.state.history.nutrition.find(n => utils.getLocalISODate(n.date) === dStr);
         if (!entry) {
@@ -4033,23 +4171,19 @@ const app = {
         if (!entry.waterLog) entry.waterLog = [];
         return entry;
     },
-
     recalcNutritionTotals(entry) {
-        if (entry.loggedMeals && entry.loggedMeals.length > 0) {
-            entry.cal = Math.round(entry.loggedMeals.reduce((s, m) => s + (parseFloat(m.cal) || 0), 0));
-            entry.pro = Math.round(entry.loggedMeals.reduce((s, m) => s + (parseFloat(m.pro) || 0), 0));
-            entry.car = Math.round(entry.loggedMeals.reduce((s, m) => s + (parseFloat(m.car) || 0), 0));
-            entry.fat = Math.round(entry.loggedMeals.reduce((s, m) => s + (parseFloat(m.fat) || 0), 0));
-        }
+        if (!entry.loggedMeals || entry.loggedMeals.length === 0) return;
+        entry.cal = entry.loggedMeals.reduce((s, m) => s + (parseFloat(m.cal) || 0), 0);
+        entry.pro = entry.loggedMeals.reduce((s, m) => s + (parseFloat(m.pro) || 0), 0);
+        entry.car = entry.loggedMeals.reduce((s, m) => s + (parseFloat(m.car) || 0), 0);
+        entry.fat = entry.loggedMeals.reduce((s, m) => s + (parseFloat(m.fat) || 0), 0);
     },
-
     addWater(dStr, ml) {
         const entry = this.getOrCreateNutritionDay(dStr);
-        entry.waterLog.push({ time: new Date().toISOString(), amount: parseInt(ml) || 250 });
+        entry.waterLog.push({ time: new Date().toISOString(), amount: ml });
         store.save();
         this.navigate('nutrition');
     },
-
     promptNutritionTargets() {
         const t = store.state.settings.nutritionTargets;
         const cal = parseInt(prompt("Daily Calorie Target (kcal):", t.cal)) || t.cal;
@@ -4060,61 +4194,71 @@ const app = {
         store.save();
         this.navigate('nutrition');
     },
-
     promptQuickMacros(dStr) {
         const entry = this.getOrCreateNutritionDay(dStr);
-        const cal = parseFloat(prompt("Total Daily Calories (kcal):", entry.cal)) || 0;
-        const pro = parseFloat(prompt("Total Daily Protein (g):", entry.pro)) || 0;
-        const car = parseFloat(prompt("Total Daily Carbs (g):", entry.car)) || 0;
-        const fat = parseFloat(prompt("Total Daily Fat (g):", entry.fat)) || 0;
-        entry.cal = cal; entry.pro = pro; entry.car = car; entry.fat = fat;
+        const name = prompt("Entry Label (e.g. Post-Workout Shake, Eating Out):", "Quick Macro Log");
+        if (!name) return;
+        const cal = parseFloat(prompt("Calories (kcal):", "400")) || 0;
+        const pro = parseFloat(prompt("Protein (g):", "35")) || 0;
+        const car = parseFloat(prompt("Carbs (g):", "40")) || 0;
+        const fat = parseFloat(prompt("Fat (g):", "10")) || 0;
+        entry.loggedMeals.push({ id: utils.generateId(), name: name.trim(), type: 'Snack', cal, pro, car, fat });
+        this.recalcNutritionTotals(entry);
         store.save();
         this.navigate('nutrition');
     },
-
+    removeLoggedMeal(dStr, idx) {
+        const entry = this.getOrCreateNutritionDay(dStr);
+        entry.loggedMeals.splice(idx, 1);
+        if (entry.loggedMeals.length === 0) {
+            entry.cal = 0; entry.pro = 0; entry.car = 0; entry.fat = 0;
+        } else {
+            this.recalcNutritionTotals(entry);
+        }
+        store.save();
+        this.navigate('nutrition');
+    },
     openMealSearchModal(dStr) {
         const modal = document.getElementById('meal-search-modal');
         const savedMeals = store.state.savedMeals || [];
         let html = `
             <div class="workout-header-sticky">
                 <button class="btn btn-sm" style="width:auto;" onclick="document.getElementById('meal-search-modal').style.display='none'">Close</button>
-                <div style="font-weight:bold; font-size:16px;">NZ Athlete Food Reference</div>
-                <button class="btn btn-sm btn-primary" style="width:auto;" onclick="app.openMealCreateModal('${dStr}')">+ Custom</button>
+                <div style="font-weight:bold; font-size:16px;">NZ Athlete Food Bank (per 100g)</div>
+                <div style="width:60px;"></div>
             </div>
             <div style="padding:16px;">
                 <div class="input-group" style="margin-bottom:14px;">
-                    <input type="text" placeholder="Search 100+ NZ raw foods & saved meals..." oninput="app.filterFoodModal(this.value)" style="font-size:15px; text-align:left; padding:0 12px;">
+                    <input type="text" placeholder="Search chicken, kumara, kiwi, beef, oats..." oninput="app.filterFoodBankModal(this.value)" style="font-size:15px; text-align:left; padding:0 12px;">
                 </div>
-                <div id="food-modal-results">
         `;
-
         if (savedMeals.length > 0) {
             html += `<h3 style="color:var(--accent-color); margin-bottom:8px;">Saved Custom Meals</h3>`;
             savedMeals.forEach(sm => {
                 html += `
-                <div class="card food-search-item" data-search="${sm.name.toLowerCase()}" style="padding:12px; margin-bottom:8px; cursor:pointer;" onclick="app.logSavedMealToDate('${dStr}', '${sm.id}')">
+                <div class="card food-bank-item" data-search="${sm.name.toLowerCase()}" style="padding:12px; margin-bottom:8px; cursor:pointer;" onclick="app.logSavedMealToDay('${dStr}', '${sm.id}')">
                     <div class="flex-between">
                         <div>
-                            <div style="font-weight:bold; font-size:15px;">${sm.name}</div>
+                            <div style="font-weight:800; font-size:15px;">${sm.name}</div>
                             <div style="font-size:11px; color:var(--text-secondary);">${Math.round(sm.cal)} kcal • P: ${Math.round(sm.pro)}g • C: ${Math.round(sm.car)}g • F: ${Math.round(sm.fat)}g</div>
                         </div>
-                        <span class="btn btn-sm btn-primary" style="width:auto;">+ Log</span>
+                        <i class="fas fa-plus-circle text-accent" style="font-size:18px;"></i>
                     </div>
                 </div>`;
             });
         }
-
-        html += `<h3 style="color:var(--accent-color); margin:14px 0 8px 0;">NZ Athlete Whole Foods (per 100g)</h3>`;
+        html += `<h3 style="color:var(--accent-color); margin:14px 0 8px 0;">NZ Whole Foods Reference</h3><div id="food-bank-list">`;
         NZ_ATHLETE_FOODS.forEach(f => {
             html += `
-            <div class="card food-search-item" data-search="${(f.name + ' ' + f.cat).toLowerCase()}" style="padding:12px; margin-bottom:8px; cursor:pointer;" onclick="app.promptLogRawFood('${dStr}', '${f.id}')">
+            <div class="card food-bank-item" data-search="${(f.name + ' ' + f.cat + ' ' + f.micros).toLowerCase()}" style="padding:12px; margin-bottom:8px; cursor:pointer;" onclick="app.logRawFoodToDay('${dStr}', '${f.id}')">
                 <div class="flex-between">
-                    <div style="flex:1; padding-right:8px;">
-                        <div style="font-weight:bold; font-size:14.5px;">${f.name} <span style="font-size:10px; color:var(--text-secondary); font-weight:normal;">(${f.cat})</span></div>
-                        <div style="font-size:11px; color:var(--accent-color); font-weight:bold; margin-top:2px;">100g: ${f.cal} kcal | P: ${f.pro}g | C: ${f.car}g | F: ${f.fat}g</div>
-                        <div style="font-size:11px; color:var(--text-secondary); margin-top:2px;">${f.micros} — ${f.notes}</div>
+                    <div style="padding-right:10px;">
+                        <div style="font-size:10px; font-weight:800; color:var(--accent-color); text-transform:uppercase;">${f.cat}</div>
+                        <div style="font-weight:800; font-size:15px;">${f.name}</div>
+                        <div style="font-size:11px; color:var(--text-secondary);">Per 100g: <strong>${f.cal} kcal</strong> • P: ${f.pro}g • C: ${f.car}g • F: ${f.fat}g</div>
+                        <div style="font-size:10.5px; color:var(--text-secondary); margin-top:2px;">Micros: ${f.micros}</div>
                     </div>
-                    <i class="fas fa-plus-circle text-accent" style="font-size:20px;"></i>
+                    <i class="fas fa-plus-circle text-accent" style="font-size:20px; flex-shrink:0;"></i>
                 </div>
             </div>`;
         });
@@ -4122,19 +4266,17 @@ const app = {
         modal.innerHTML = html;
         modal.style.display = 'flex';
     },
-
-    filterFoodModal(q) {
+    filterFoodBankModal(q) {
         const query = (q || '').toLowerCase().trim();
-        document.querySelectorAll('#food-modal-results .food-search-item').forEach(el => {
+        document.querySelectorAll('#meal-search-modal .food-bank-item').forEach(el => {
             const match = !query || el.getAttribute('data-search').includes(query);
             el.style.display = match ? 'block' : 'none';
         });
     },
-
-    promptLogRawFood(dStr, foodId) {
+    logRawFoodToDay(dStr, foodId) {
         const food = NZ_ATHLETE_FOODS.find(f => f.id === foodId);
         if (!food) return;
-        const grams = parseFloat(prompt(`How many grams of ${food.name}? (Base: ${food.cal} kcal, ${food.pro}g P per 100g)`, "150"));
+        const grams = parseFloat(prompt(`Grams of "${food.name}" (Nutrients listed per 100g):`, "150"));
         if (isNaN(grams) || grams <= 0) return;
         const mult = grams / 100;
         const entry = this.getOrCreateNutritionDay(dStr);
@@ -4144,19 +4286,18 @@ const app = {
             name: food.name,
             grams: Math.round(grams),
             type: 'Meal',
-            cal: Math.round(food.cal * mult),
-            pro: Math.round(food.pro * mult * 10) / 10,
-            car: Math.round(food.car * mult * 10) / 10,
-            fat: Math.round(food.fat * mult * 10) / 10
+            cal: food.cal * mult,
+            pro: food.pro * mult,
+            car: food.car * mult,
+            fat: food.fat * mult
         });
         this.recalcNutritionTotals(entry);
         store.save();
         document.getElementById('meal-search-modal').style.display = 'none';
         this.navigate('nutrition');
     },
-
-    logSavedMealToDate(dStr, savedMealId) {
-        const sm = (store.state.savedMeals || []).find(m => m.id === savedMealId);
+    logSavedMealToDay(dStr, mealId) {
+        const sm = (store.state.savedMeals || []).find(x => x.id === mealId);
         if (!sm) return;
         const entry = this.getOrCreateNutritionDay(dStr);
         entry.loggedMeals.push({
@@ -4175,74 +4316,51 @@ const app = {
         document.getElementById('meal-search-modal').style.display = 'none';
         this.navigate('nutrition');
     },
-
     openMealCreateModal(dStr) {
-        document.getElementById('meal-search-modal').style.display = 'none';
-        const name = prompt("Meal / Food Name:");
+        const name = prompt("Custom Saved Meal Name (e.g. Post-Lift Chicken & Rice Bowl):");
         if (!name || !name.trim()) return;
-        const cal = parseFloat(prompt("Calories (kcal):", "450")) || 0;
-        const pro = parseFloat(prompt("Protein (g):", "40")) || 0;
-        const car = parseFloat(prompt("Carbohydrates (g):", "45")) || 0;
-        const fat = parseFloat(prompt("Fat (g):", "12")) || 0;
+        const cal = parseFloat(prompt("Total Calories (kcal):", "650")) || 0;
+        const pro = parseFloat(prompt("Total Protein (g):", "50")) || 0;
+        const car = parseFloat(prompt("Total Carbohydrates (g):", "75")) || 0;
+        const fat = parseFloat(prompt("Total Fats (g):", "14")) || 0;
         const newMeal = { id: 'sm_' + utils.generateId(), name: name.trim(), cal, pro, car, fat, ingredients: [] };
         store.state.savedMeals.push(newMeal);
-        const entry = this.getOrCreateNutritionDay(dStr);
-        entry.loggedMeals.push({ ...newMeal, savedMealId: newMeal.id, type: 'Meal' });
-        this.recalcNutritionTotals(entry);
-        store.save();
-        this.navigate('nutrition');
+        this.logSavedMealToDay(dStr, newMeal.id);
     },
-
-    removeLoggedMeal(dStr, idx) {
-        const entry = this.getOrCreateNutritionDay(dStr);
-        if (entry.loggedMeals && entry.loggedMeals[idx]) {
-            entry.loggedMeals.splice(idx, 1);
-            this.recalcNutritionTotals(entry);
-            store.save();
-            this.navigate('nutrition');
-        }
-    },
-
     openRankModal() {
         const modal = document.getElementById('settings-modal');
         const rank = utils.getWeeklyRankData();
-        const breakdown = utils.getWeeklyRPBreakdown();
+        const cats = utils.getWeeklyRPBreakdown();
         let html = `
             <div class="workout-header-sticky">
                 <button class="btn btn-sm" style="width:auto;" onclick="document.getElementById('settings-modal').style.display='none'">Close</button>
-                <div style="font-weight:bold; font-size:16px;">${rank.monthName} Ranked Standings</div>
+                <div style="font-weight:bold; font-size:16px;">${rank.monthName} Ranked Ladder</div>
                 <div style="width:60px;"></div>
             </div>
             <div style="padding:16px;">
                 <div class="r6-stage-card" style="text-align:center;">
-                    <div class="r6-rank-trio">
-                        <div>${rank.prevRank ? utils.renderRankCrestSVG(rank.prevRank.color, rank.prevRank.division, 0.65, false) : ''}</div>
-                        <div>${utils.renderRankCrestSVG(rank.color, rank.division, 1.05, true)}</div>
-                        <div>${rank.nextRank ? utils.renderRankCrestSVG(rank.nextRank.color, rank.nextRank.division, 0.65, false) : ''}</div>
+                    ${utils.renderRankCrestSVG(rank.color, rank.division, 1.15, true)}
+                    <h2 style="margin:10px 0 2px 0; font-size:26px; color:${rank.color};">${rank.fullName}</h2>
+                    <div style="font-size:13px; color:var(--text-secondary); font-weight:bold;">${rank.totalRP} Total Monthly RP • ${rank.consistencyPct}% Consistency</div>
+                    <div class="progress-bg" style="height:10px; margin:14px 0 8px 0;">
+                        <div class="progress-fill" style="width:${rank.progress}%; background:${rank.color};"></div>
                     </div>
-                    <h2 style="margin:0; font-size:24px; color:${rank.color};">${rank.fullName}</h2>
-                    <div style="font-size:14px; font-weight:800; margin-top:4px;">${rank.totalRP} Total RP • ${rank.consistencyPct}% Monthly Consistency</div>
-                    <div class="r6-line-wrap">
-                        <div class="r6-line-fill" style="width:${rank.progress}%; background:${rank.color};"></div>
-                        <div class="r6-line-spark" style="left:${rank.progress}%;"></div>
+                    <div style="font-size:12px; color:var(--text-secondary);">
+                        ${rank.isMax ? 'CHAMPION TIER UNLOCKED' : `${rank.rpNeededForNext} RP required for ${rank.nextRank ? rank.nextRank.fullName : 'Next Division'}`}
                     </div>
-                    <div class="r6-req-pill"><span>${rank.isMax ? 'CHAMPION TIER UNLOCKED' : `${rank.rpNeededForNext} RP TO PROMOTION`}</span></div>
                 </div>
-                <h3 style="margin-bottom:10px;">RP Contribution Breakdown</h3>
-                ${breakdown.map(b => `
-                    <div class="card rp-contrib-card" style="border-left: 4px solid ${b.color};">
+                <h3 style="margin-bottom:10px;">RP Breakdown & Multipliers</h3>
+                ${cats.map(c => `
+                    <div class="card rp-contrib-card" style="border-left:4px solid ${c.color};">
                         <div class="flex-between">
                             <div>
-                                <div style="font-weight:800; font-size:15px;"><i class="fas ${b.icon}" style="color:${b.color};"></i> ${b.title}</div>
-                                <div style="font-size:11px; color:var(--text-secondary); margin-top:2px;">${b.subtitle}</div>
+                                <div style="font-weight:800; font-size:15px;"><i class="fas ${c.icon}" style="color:${c.color};"></i> ${c.title}</div>
+                                <div style="font-size:11px; color:var(--text-secondary); margin-top:2px;">${c.subtitle}</div>
                             </div>
                             <div style="text-align:right;">
-                                <div style="font-weight:900; font-size:15px; color:${b.color};">+${b.rpEarned} RP</div>
-                                <div style="font-size:11px; color:var(--text-secondary);">${b.current}/${b.total} ${b.unit}</div>
+                                <div style="font-weight:900; font-size:15px; color:${c.color};">+${c.rpEarned} RP</div>
+                                <div style="font-size:11px; color:var(--text-secondary);">${c.current}/${c.total} ${c.unit}</div>
                             </div>
-                        </div>
-                        <div class="progress-bg" style="height:6px; margin-top:8px;">
-                            <div class="progress-fill" style="width:${b.pct}%; background:${b.color};"></div>
                         </div>
                     </div>
                 `).join('')}
@@ -4250,42 +4368,41 @@ const app = {
         modal.innerHTML = html;
         modal.style.display = 'flex';
     },
-
     openSettingsModal() {
         const modal = document.getElementById('settings-modal');
         const s = store.state.settings;
         const f = s.features || {};
-        modal.innerHTML = `
+        let html = `
             <div class="workout-header-sticky">
                 <button class="btn btn-sm" style="width:auto;" onclick="document.getElementById('settings-modal').style.display='none'">Done</button>
-                <div style="font-weight:bold; font-size:16px;">IronTrack OS Settings</div>
+                <div style="font-weight:bold; font-size:16px;">OS Settings & Themes</div>
                 <div style="width:60px;"></div>
             </div>
             <div style="padding:16px;">
                 <div class="card">
-                    <h3 style="margin-top:0;">Theme & Visual Mode</h3>
+                    <h3 style="margin-top:0;">Visual Theme</h3>
                     <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:8px;">
-                        <button class="btn btn-sm ${s.theme === 'olympus' ? 'btn-primary' : ''}" onclick="app.applyTheme('olympus'); app.openSettingsModal();">Olympus</button>
-                        <button class="btn btn-sm ${s.theme === 'dark' ? 'btn-primary' : ''}" onclick="app.applyTheme('dark'); app.openSettingsModal();">Dark</button>
-                        <button class="btn btn-sm ${s.theme === 'light' ? 'btn-primary' : ''}" onclick="app.applyTheme('light'); app.openSettingsModal();">Light</button>
+                        <button class="btn btn-sm ${s.theme === 'olympus' ? 'btn-primary' : ''}" onclick="app.applyTheme('olympus'); app.openSettingsModal();">Olympus Gold</button>
+                        <button class="btn btn-sm ${s.theme === 'dark' ? 'btn-primary' : ''}" onclick="app.applyTheme('dark'); app.openSettingsModal();">Dark Pro</button>
+                        <button class="btn btn-sm ${s.theme === 'light' ? 'btn-primary' : ''}" onclick="app.applyTheme('light'); app.openSettingsModal();">Light Clean</button>
                     </div>
                 </div>
                 <div class="card">
-                    <h3 style="margin-top:0;">Workout & Timer</h3>
+                    <h3 style="margin-top:0;">Workout & Timer Preferences</h3>
                     <div class="flex-between" style="margin-bottom:10px;">
-                        <span>Auto Rest Timer (seconds)</span>
-                        <input type="number" class="inline-edit" style="width:80px;" value="${s.restTimer || 120}" onchange="store.state.settings.restTimer = parseInt(this.value)||0; store.save();">
+                        <span>Auto Rest Timer (Seconds)</span>
+                        <input type="number" class="inline-edit" style="width:90px;" value="${s.restTimer || 120}" onchange="store.state.settings.restTimer = parseInt(this.value)||90; store.save();">
                     </div>
                     <div class="flex-between" style="margin-bottom:10px;">
                         <span>Weight Units</span>
-                        <select class="edit-input" style="width:100px; margin:0;" onchange="store.state.settings.units = this.value; store.save(); app.navigate(app.currentPage);">
+                        <select class="inline-edit" style="width:90px;" onchange="store.state.settings.units = this.value; store.save(); app.navigate(app.currentPage);">
                             <option value="kg" ${s.units === 'kg' ? 'selected' : ''}>kg</option>
                             <option value="lbs" ${s.units === 'lbs' ? 'selected' : ''}>lbs</option>
                         </select>
                     </div>
                     <div class="flex-between">
                         <span>Phase Goal</span>
-                        <select class="edit-input" style="width:130px; margin:0;" onchange="store.state.settings.weightGoal = this.value; store.save();">
+                        <select class="inline-edit" style="width:130px;" onchange="store.state.settings.weightGoal = this.value; store.save();">
                             <option value="cutting" ${s.weightGoal === 'cutting' ? 'selected' : ''}>Cutting</option>
                             <option value="maintaining" ${s.weightGoal === 'maintaining' ? 'selected' : ''}>Maintaining</option>
                             <option value="bulking" ${s.weightGoal === 'bulking' ? 'selected' : ''}>Bulking</option>
@@ -4294,37 +4411,43 @@ const app = {
                 </div>
                 <div class="card">
                     <h3 style="margin-top:0;">Home Dashboard Modules</h3>
-                    ${[
-                        ['showQuote', 'Stoic Daily Quote'],
-                        ['showRankBanner', 'Monthly Ranked Banner'],
-                        ['showWeekStrip', '7-Day Consistency Strip'],
-                        ['showHeatmap', '28-Day Muscle Heatmap'],
-                        ['showActivityGrid', '12-Week Consistency Grid']
-                    ].map(([key, label]) => `
-                        <div class="flex-between data-row">
-                            <span>${label}</span>
-                            <input type="checkbox" ${f[key] ? 'checked' : ''} onchange="store.state.settings.features['${key}'] = this.checked; store.save(); app.navigate(app.currentPage);">
-                        </div>
-                    `).join('')}
+                    <label class="flex-between" style="padding:8px 0; border-bottom:1px solid var(--border);">
+                        <span>Stoic Daily Quote</span>
+                        <input type="checkbox" ${f.showQuote ? 'checked' : ''} onchange="store.state.settings.features.showQuote = this.checked; store.save(); app.navigate(app.currentPage);">
+                    </label>
+                    <label class="flex-between" style="padding:8px 0; border-bottom:1px solid var(--border);">
+                        <span>28-Day Muscle Heatmap</span>
+                        <input type="checkbox" ${f.showHeatmap ? 'checked' : ''} onchange="store.state.settings.features.showHeatmap = this.checked; store.save(); app.navigate(app.currentPage);">
+                    </label>
+                    <label class="flex-between" style="padding:8px 0; border-bottom:1px solid var(--border);">
+                        <span>Monthly Ranked Banner</span>
+                        <input type="checkbox" ${f.showRankBanner ? 'checked' : ''} onchange="store.state.settings.features.showRankBanner = this.checked; store.save(); app.navigate(app.currentPage);">
+                    </label>
+                    <label class="flex-between" style="padding:8px 0;">
+                        <span>48-Day Activity Bento Grid</span>
+                        <input type="checkbox" ${f.showActivityGrid ? 'checked' : ''} onchange="store.state.settings.features.showActivityGrid = this.checked; store.save(); app.navigate(app.currentPage);">
+                    </label>
                 </div>
             </div>`;
+        modal.innerHTML = html;
         modal.style.display = 'flex';
     },
-
     promptProfileEdit() {
-        const name = prompt("Athlete Name:", store.state.user.name);
-        if (name !== null && name.trim()) store.state.user.name = name.trim();
-        const targetW = parseFloat(prompt(`Target Bodyweight (${utils.unitLabel()}):`, store.state.user.targetWeight));
-        if (!isNaN(targetW) && targetW > 0) store.state.user.targetWeight = targetW;
+        const u = store.state.user;
+        const name = prompt("Athlete Display Name:", u.name);
+        if (name !== null && name.trim()) u.name = name.trim();
+        const handle = prompt("Athlete Handle:", u.handle);
+        if (handle !== null && handle.trim()) u.handle = handle.trim();
+        const targetW = parseFloat(prompt(`Target Bodyweight (${utils.unitLabel()}):`, u.targetWeight));
+        if (!isNaN(targetW) && targetW > 0) u.targetWeight = targetW;
         store.save();
         this.navigate('profile');
     },
-
     startDefaultChallenge() {
-        const title = prompt("Challenge Name:", "75 Iron Discipline") || "75 Iron Discipline";
-        const days = parseInt(prompt("Duration in Days:", "75")) || 75;
+        const title = prompt("Challenge Name:", "75 Hard Titan Protocol");
+        if (!title) return;
         const start = new Date();
-        const end = new Date(start.getTime() + (days - 1) * 86400000);
+        const end = new Date(start.getTime() + 74 * 86400000);
         const startStr = utils.getLocalISODate(start);
         store.state.challenge = {
             isActive: true,
@@ -4333,47 +4456,56 @@ const app = {
             endDate: utils.getLocalISODate(end),
             goals: [
                 { id: 'g_w', type: 'workout', count: 1, createdAt: startStr, showInActionPlan: false },
-                { id: 'g_n', type: 'nutrition', createdAt: startStr, showInActionPlan: false },
-                { id: 'g_bw', type: 'weight', createdAt: startStr, showInActionPlan: false },
-                { id: 'g_c', type: 'cardio', createdAt: startStr, showInActionPlan: true },
-                { id: 'g_h2o', type: 'water', target: '3.5L Water', createdAt: startStr, showInActionPlan: true }
+                { id: 'g_n', type: 'nutrition', targetType: 'any', calories: 2000, createdAt: startStr, showInActionPlan: false },
+                { id: 'g_c', type: 'cardio', title: '45m Outdoor Walk / Cardio', createdAt: startStr, showInActionPlan: true },
+                { id: 'g_h2o', type: 'water', target: '3.5L Water', createdAt: startStr, showInActionPlan: true },
+                { id: 'g_read', type: 'reading', target: '10 Pages Non-Fiction', createdAt: startStr, showInActionPlan: true }
             ]
         };
         store.save();
-        this.navigate('profile');
+        this.navigate(this.currentPage);
     },
-
     endChallenge() {
-        if (!confirm("End current active challenge?")) return;
+        if (!confirm("End current challenge?")) return;
         store.state.challenge.isActive = false;
         store.save();
         this.navigate('profile');
     },
-
     handleProgressPhotoUpload(event) {
         const file = event.target.files && event.target.files[0];
         if (!file) return;
         const reader = new FileReader();
         reader.onload = (e) => {
-            store.state.history.progressPhotos.unshift({
-                id: utils.generateId(),
-                date: new Date().toISOString(),
-                weight: store.state.user.currentWeight || 0,
-                dataUrl: e.target.result
-            });
-            store.save();
-            this.navigate('profile');
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                const maxW = 720;
+                const scale = Math.min(1, maxW / img.width);
+                canvas.width = Math.round(img.width * scale);
+                canvas.height = Math.round(img.height * scale);
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                const dataUrl = canvas.toDataURL('image/jpeg', 0.78);
+                if (!store.state.history.progressPhotos) store.state.history.progressPhotos = [];
+                store.state.history.progressPhotos.unshift({
+                    id: utils.generateId(),
+                    date: new Date().toISOString(),
+                    weight: store.state.user.currentWeight,
+                    dataUrl: dataUrl
+                });
+                store.save();
+                app.navigate('profile');
+            };
+            img.src = e.target.result;
         };
         reader.readAsDataURL(file);
     },
-
     deleteProgressPhoto(idx) {
         if (!confirm("Delete this progress photo?")) return;
         store.state.history.progressPhotos.splice(idx, 1);
         store.save();
         this.navigate('profile');
     },
-
     exportJSON() {
         const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(store.state));
         const a = document.createElement('a');
@@ -4383,20 +4515,28 @@ const app = {
         a.click();
         a.remove();
     },
-
     importJSONPrompt() {
-        const raw = prompt("Paste exported IronTrack JSON backup string below:");
-        if (!raw || !raw.trim()) return;
-        try {
-            const parsed = JSON.parse(raw);
-            store.state = store.migrate(parsed);
-            store.save();
-            this.applyTheme(store.state.settings.theme || 'olympus');
-            this.navigate('home');
-            alert("Backup restored successfully!");
-        } catch (err) {
-            alert("Invalid JSON backup file.");
-        }
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.json,application/json';
+        input.onchange = (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                try {
+                    const parsed = JSON.parse(ev.target.result);
+                    store.state = store.migrate(parsed);
+                    store.save();
+                    app.init();
+                    alert("Backup restored successfully!");
+                } catch (err) {
+                    alert("Invalid JSON backup file.");
+                }
+            };
+            reader.readAsText(file);
+        };
+        input.click();
     }
 };
 
