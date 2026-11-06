@@ -92,25 +92,25 @@
         }
         #app-container { display: flex; flex-direction: column; height: 100%; width: 100%; max-width: 800px; margin: 0 auto; position: relative; overflow: hidden; }
         #main-content { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding-left: 16px; padding-right: 16px; padding-bottom: calc(100px + var(--safe-bottom)); }
-        /* Dynamic Streak Fire CSS */
+        /* Dynamic Streak Fire CSS - iPhone Header Fitted */
         .streak-flame {
             display: inline-flex; align-items: center; justify-content: center;
-            border-radius: 20px; padding: 6px 12px; font-weight: 900;
-            font-size: 14px; gap: 6px; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            font-style:italic; white-space: nowrap; cursor: pointer;
+            border-radius: 20px; padding: 5px 10px; font-weight: 900;
+            font-size: 13px; gap: 4px; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-style:italic; white-space: nowrap; cursor: pointer; flex-shrink: 0;
         }
         .streak-tier-1 { color: #ffd700; background: rgba(255, 215, 0, 0.1); border: 1px solid #ffd700; box-shadow: 0 0 10px rgba(255, 215, 0, 0.2); }
-        .streak-tier-2 { color: #ff9500; background: rgba(255, 149, 0, 0.15); border: 1px solid #ff9500; box-shadow: 0 0 15px rgba(255, 149, 0, 0.3); transform: scale(1.05); }
-        .streak-tier-3 { color: #ff3b30; background: rgba(255, 59, 48, 0.15); border: 1px solid #ff3b30; box-shadow: 0 0 20px rgba(255, 59, 48, 0.4); transform: scale(1.1); animation: pulseTier3 2s infinite; }
-        .streak-tier-4 { color: #d600ff; background: rgba(214, 0, 255, 0.15); border: 1px solid #d600ff; box-shadow: 0 0 25px rgba(214, 0, 255, 0.6); transform: scale(1.15); animation: pulseTier4 1.5s infinite; text-shadow: 0 0 5px #d600ff; }
+        .streak-tier-2 { color: #ff9500; background: rgba(255, 149, 0, 0.15); border: 1px solid #ff9500; box-shadow: 0 0 15px rgba(255, 149, 0, 0.3); }
+        .streak-tier-3 { color: #ff3b30; background: rgba(255, 59, 48, 0.15); border: 1px solid #ff3b30; box-shadow: 0 0 20px rgba(255, 59, 48, 0.4); animation: pulseTier3 2s infinite; }
+        .streak-tier-4 { color: #d600ff; background: rgba(214, 0, 255, 0.15); border: 1px solid #d600ff; box-shadow: 0 0 25px rgba(214, 0, 255, 0.6); animation: pulseTier4 1.5s infinite; text-shadow: 0 0 5px #d600ff; }
         @keyframes pulseTier3 { 0% { box-shadow: 0 0 15px rgba(255,59,48,0.3); } 50% { box-shadow: 0 0 25px rgba(255,59,48,0.6); } 100% { box-shadow: 0 0 15px rgba(255,59,48,0.3); } }
         @keyframes pulseTier4 { 0% { box-shadow: 0 0 20px rgba(214,0,255,0.4); } 50% { box-shadow: 0 0 35px rgba(214,0,255,0.8); } 100% { box-shadow: 0 0 20px rgba(214,0,255,0.4); } }
-        /* Dynamic Account Level CSS */
+        /* Dynamic Account Level CSS - iPhone Header Fitted */
         .level-badge {
             display: inline-flex; align-items: center; justify-content: center;
-            border-radius: 20px; padding: 6px 12px; font-weight: 900;
-            font-size: 13px; gap: 6px; transition: all 0.4s;
-            color: var(--bg-color); cursor: pointer; white-space: nowrap;
+            border-radius: 20px; padding: 5px 10px; font-weight: 900;
+            font-size: 12px; gap: 4px; transition: all 0.4s;
+            color: var(--bg-color); cursor: pointer; white-space: nowrap; flex-shrink: 0;
         }
         .lvl-tier-0 { background: linear-gradient(135deg, #a32626, #5c1515); box-shadow: 0 0 10px rgba(163,38,38,0.4); color: #ffd1d1; }
         .lvl-tier-1 { background: linear-gradient(135deg, #8c5129, #4a2912); box-shadow: 0 0 10px rgba(140,81,41,0.4); color: #ffe8d4; }
@@ -121,10 +121,12 @@
         .lvl-tier-6 { background: linear-gradient(135deg, #00e5ff, #007685); box-shadow: 0 0 25px rgba(0,229,255,0.8); color: #e0fdff; }
         .lvl-tier-7 { background: linear-gradient(135deg, #9d00ff, #4e0080); box-shadow: 0 0 30px rgba(157,0,255,0.9); color: #f4e0ff; animation: pulseTier4 1.5s infinite; }
         h1, h2, h3, h4 { font-weight: 700; margin-bottom: 12px; }
-        h1 { font-size: 28px; letter-spacing: -0.5px; margin-top: calc(24px + var(--safe-top)); } h2 { font-size: 20px; color: var(--text-primary); } h3 { font-size: 16px; color: var(--text-secondary); }
+        h1 { font-size: 24px; letter-spacing: -0.5px; margin: 0; line-height: 1.15; }
+        h2 { font-size: 20px; color: var(--text-primary); } h3 { font-size: 16px; color: var(--text-secondary); }
         .text-muted { color: var(--text-secondary); font-size: 14px; } .text-accent { color: var(--accent-color); } .text-success { color: var(--success); } .text-info { color: var(--info); } .text-warning { color: var(--warning); } .text-pending { color: var(--pending); }
-        .card { background: var(--surface-color); border-radius: var(--card-radius); padding: 16px; margin-bottom: 16px; border: var(--card-border); box-shadow: 0 4px 12px rgba(0,0,0,0.2); transition: all 0.4s ease; }
-        .objective-row { display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--pending-dim); border: 2px solid var(--pending); border-radius: calc(var(--card-radius) - 4px); transition: all 0.3s; cursor: pointer; margin-bottom: 8px; }
+        .truncate-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: block; max-width: 100%; }
+        .card { background: var(--surface-color); border-radius: var(--card-radius); padding: 16px; margin-bottom: 16px; border: var(--card-border); box-shadow: 0 4px 12px rgba(0,0,0,0.2); transition: all 0.4s ease; max-width: 100%; overflow: hidden; }
+        .objective-row { display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--pending-dim); border: 2px solid var(--pending); border-radius: calc(var(--card-radius) - 4px); transition: all 0.3s; cursor: pointer; margin-bottom: 8px; max-width: 100%; overflow: hidden; }
         .objective-row:active { transform: scale(0.98); }
         .check-circle { width: 28px; height: 28px; flex-shrink: 0; border-radius: 50%; border: 2px solid var(--pending); display: flex; align-items: center; justify-content: center; font-size: 14px; color: transparent; transition: all 0.3s; }
         .objective-row.completed { border-color: var(--success); background: var(--success-dim); }
@@ -135,27 +137,28 @@
         .progress-fill { background: var(--accent-color); height: 100%; transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.4s ease; }
         .btn { background: var(--surface-elevated); color: var(--text-primary); border: 1px solid var(--border); padding: 14px 20px; border-radius: calc(var(--card-radius) - 4px); font-size: 16px; font-weight: 600; cursor: pointer; width: 100%; display: inline-flex; justify-content: center; align-items: center; gap: 8px; transition: transform 0.1s, opacity 0.1s, all 0.4s ease; font-family: var(--font-family); }
         .btn:active { transform: scale(0.98); opacity: 0.8; } .btn-primary { background: var(--accent-color); color: var(--bg-color); border:none;} .btn-success { background: var(--success); color: var(--bg-color); border:none;}
-        .btn-sm { padding: 8px 12px; font-size: 14px; width: auto; border-radius: calc(var(--card-radius) - 6px); } .btn-icon { width: 36px; height: 36px; border-radius: calc(var(--card-radius) - 6px); padding: 0; background: var(--surface-elevated); display:flex; justify-content:center; align-items:center; color: var(--text-primary); border: 1px solid var(--border); cursor:pointer;}
+        .btn-sm { padding: 8px 12px; font-size: 13px; width: auto; border-radius: calc(var(--card-radius) - 6px); white-space: nowrap; flex-shrink: 0; } .btn-icon { width: 34px; height: 34px; flex-shrink: 0; border-radius: calc(var(--card-radius) - 6px); padding: 0; background: var(--surface-elevated); display:flex; justify-content:center; align-items:center; color: var(--text-primary); border: 1px solid var(--border); cursor:pointer;}
         .input-group { display: flex; background: var(--surface-color); border-radius: 8px; border: 1px solid var(--border); overflow: hidden; height: 44px; transition: background-color 0.4s ease, border-color 0.4s ease; }
         .input-group input { flex: 1; background: transparent; border: none; color: var(--text-primary); text-align: center; font-size: 18px; font-weight: bold; width: 100%; -moz-appearance: textfield; min-width:0; font-family: var(--font-family); }
         .edit-input { background: var(--surface-elevated); border: 1px solid var(--border); color: var(--text-primary); padding: 8px; border-radius: 8px; width: 100%; font-size: 16px !important; margin-bottom: 8px; -webkit-appearance: none; min-width:0; transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease; font-family: var(--font-family); }
         .inline-edit { background: var(--surface-elevated); border: 1px solid var(--border); color: var(--text-primary); padding: 4px; border-radius: 4px; font-size: 16px !important; font-weight:bold; text-align:center; width: 100%; min-width: 0; transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease; font-family: var(--font-family); }
         .exercise-card { background: var(--surface-color); border-radius: var(--card-radius); border: var(--card-border); overflow: hidden; margin-bottom: 16px; transition: all 0.4s ease; } .exercise-header { padding: 14px 14px 12px 14px; background: var(--surface-elevated); display: flex; justify-content: space-between; align-items: flex-start; transition: background-color 0.4s ease; border-bottom: 1px solid var(--border); } .exercise-body { padding: 12px 14px; } .set-wrapper { margin-bottom: 12px; }
-        .set-row { display: grid; grid-template-columns: 40px 1fr 1fr 1fr 50px; gap: 8px; align-items: center; } .set-number { font-size: 14px; color: var(--text-secondary); font-weight: bold; text-align: center; }
+        .set-row { display: grid; grid-template-columns: 36px 1fr 1fr 1fr 46px; gap: 6px; align-items: center; } .set-number { font-size: 14px; color: var(--text-secondary); font-weight: bold; text-align: center; }
         .btn-check { height: 44px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface-elevated); color: var(--text-secondary); font-size: 18px; cursor: pointer; transition: background-color 0.4s ease, color 0.4s ease; } .btn-check.completed { background: var(--success); color: var(--bg-color); border:none;}
         .editor-exercise-row { display:flex; gap:10px; align-items:center; background: var(--surface-elevated); padding: 12px; border-radius: 8px; margin-bottom: 8px; transition: background-color 0.4s ease; border: 1px solid var(--border);} .editor-controls { display:flex; gap:6px; flex-direction:column; } .editor-controls button { width: 36px; height: 36px; font-size: 14px; }
-        .data-row { padding: 12px 0; border-bottom: 1px solid var(--border); transition: border-color 0.4s ease; } .data-row:last-child { border-bottom: none; }
+        .data-row { padding: 12px 0; border-bottom: 1px solid var(--border); transition: border-color 0.4s ease; gap: 8px; } .data-row:last-child { border-bottom: none; }
         .nut-grid { display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr 1fr 30px; gap: 6px; align-items: center; margin-top: 8px; } .nut-label { font-size: 10px; color: var(--text-secondary); text-align: center; text-transform: uppercase; }
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg-color); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 12px 4px calc(12px + var(--safe-bottom)); z-index: 1000; transition: background-color 0.4s ease, border-color 0.4s ease; opacity: 0.95; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); }
         .nav-item { color: var(--text-secondary); display: flex; flex-direction: column; align-items: center; text-decoration: none; font-size: 10px; gap: 4px; cursor: pointer; flex: 1; transition: color 0.3s ease; text-transform: uppercase; font-weight: bold; letter-spacing: 0.4px;} .nav-item i { font-size: 20px; margin-bottom: 2px; } .nav-item.active { color: var(--accent-color); }
-        .page-header { position: sticky; top: 0; background: var(--bg-color); opacity: 0.95; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 10; margin-left: -16px; margin-right: -16px; margin-bottom: 16px; padding-top: calc(16px + var(--safe-top)); padding-left: 16px; padding-right: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; transition: background-color 0.4s ease, border-color 0.4s ease; }
-        .workout-header-sticky { position: sticky; top: 0; background: var(--bg-color); opacity: 0.95; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); padding-top: calc(16px + var(--safe-top)); padding-left: 16px; padding-right: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border); z-index: 10; display: flex; justify-content: space-between; align-items: center; transition: background-color 0.4s ease, border-color 0.4s ease; }
+        .page-header { position: sticky; top: 0; background: var(--bg-color); opacity: 0.95; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 10; margin-left: -16px; margin-right: -16px; margin-bottom: 16px; padding-top: calc(14px + var(--safe-top)); padding-left: 16px; padding-right: 16px; padding-bottom: 14px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; gap: 8px; transition: background-color 0.4s ease, border-color 0.4s ease; }
+        .page-header > div:first-child { flex: 1; min-width: 0; }
+        .workout-header-sticky { position: sticky; top: 0; background: var(--bg-color); opacity: 0.95; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); padding-top: calc(14px + var(--safe-top)); padding-left: 16px; padding-right: 16px; padding-bottom: 14px; border-bottom: 1px solid var(--border); z-index: 10; display: flex; justify-content: space-between; align-items: center; gap: 8px; transition: background-color 0.4s ease, border-color 0.4s ease; }
         /* Auto Rest Timer Overlay */
         #rest-timer-overlay { position: fixed; bottom: calc(80px + var(--safe-bottom)); left: 50%; transform: translateX(-50%); background: var(--accent-color); color: var(--bg-color); padding: 10px 20px; border-radius: 30px; box-shadow: 0 4px 16px var(--accent-dim); display: none; font-weight: bold; font-size: 18px; align-items: center; gap: 12px; z-index: 2010; cursor: pointer; transition: background-color 0.4s ease; border: 1px solid rgba(255,255,255,0.2); }
         /* Modals and Overlays */
         #active-workout-view { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 2000; display: none; flex-direction: column; overflow: hidden; transition: background-color 0.4s ease; }
-        #exercise-selection-modal, #start-workout-modal, #meal-search-modal, #meal-create-modal, #settings-modal, #rank-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 2005; display: none; flex-direction: column; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding-bottom: calc(100px + var(--safe-bottom)); transition: background-color 0.4s ease; }
-        .flex-between { display: flex; justify-content: space-between; align-items: center; }
+        #exercise-selection-modal, #start-workout-modal, #meal-search-modal, #meal-create-modal, #settings-modal, #rank-modal, #rank-details-modal, #routine-editor-modal, #pin-goals-modal, #calendar-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 2005; display: none; flex-direction: column; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding-bottom: calc(100px + var(--safe-bottom)); transition: background-color 0.4s ease; }
+        .flex-between { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
         canvas { max-width: 100%; margin-top: 10px; }
         .heatmap-svg { filter: drop-shadow(0 4px 10px rgba(0,0,0,0.45)); height: 240px; max-width: 320px; width: 100%; margin: 12px auto; display: flex; align-items: center; justify-content: center; }
         .heatmap-svg svg { width: 100% !important; height: 100% !important; max-height: 240px; }
@@ -202,20 +205,20 @@
         .promo-crest-anim { animation: promoCrestPop 0.75s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
         /* Nutrition & Workout Dashboard Image-Matched Styles */
         .nut-meal-carousel {
-            display: flex; gap: 14px; overflow-x: auto; padding: 4px 2px 14px 2px; margin-bottom: 12px; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+            display: flex; gap: 12px; overflow-x: auto; padding: 4px 2px 14px 2px; margin-bottom: 12px; -webkit-overflow-scrolling: touch; scrollbar-width: none;
         }
         .nut-meal-carousel::-webkit-scrollbar { display: none; }
         .nut-meal-tile {
-            min-width: 138px; flex: 1; background: var(--surface-color); border-radius: 16px; overflow: hidden; border: var(--card-border);
+            min-width: 132px; flex: 1; background: var(--surface-color); border-radius: 16px; overflow: hidden; border: var(--card-border);
             box-shadow: 0 6px 16px rgba(0,0,0,0.28); cursor: pointer; transition: transform 0.2s ease, border-color 0.2s ease; display: flex; flex-direction: column;
         }
         .nut-meal-tile:active { transform: scale(0.96); }
-        .nut-meal-tile-img { width: 100%; height: 105px; object-fit: cover; display: block; background: var(--surface-elevated); }
-        .nut-meal-tile-body { padding: 10px 12px; text-align: center; background: var(--surface-color); flex: 1; display: flex; flex-direction: column; justify-content: center; }
-        .nut-ring-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px; }
+        .nut-meal-tile-img { width: 100%; height: 100px; object-fit: cover; display: block; background: var(--surface-elevated); }
+        .nut-meal-tile-body { padding: 10px 10px; text-align: center; background: var(--surface-color); flex: 1; display: flex; flex-direction: column; justify-content: center; }
+        .nut-ring-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px; }
         .nut-ring-card {
-            background: var(--surface-color); border-radius: 18px; padding: 16px; border: var(--card-border);
-            box-shadow: 0 6px 18px rgba(0,0,0,0.22); display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+            background: var(--surface-color); border-radius: 18px; padding: 14px; border: var(--card-border);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.22); display: flex; flex-direction: column; align-items: center; justify-content: space-between; min-width: 0;
         }
         .nut-insight-bullet {
             display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border-radius: 10px; font-size: 12.5px; line-height: 1.4; margin-bottom: 8px;
@@ -253,31 +256,31 @@
         .vol-pill-btn.active {
             background: var(--info); border-color: var(--info); color: #ffffff; box-shadow: 0 0 12px rgba(2, 136, 209, 0.45);
         }
-        /* Challenge Calendar Grid */
+        /* Challenge & Full Workout Calendar Grid */
         .chal-cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 10px; }
         .chal-cal-hdr { text-align: center; font-size: 10px; font-weight: 800; color: var(--text-secondary); text-transform: uppercase; padding-bottom: 4px; }
         .chal-cal-day {
-            aspect-ratio: 1 / 1.08; border-radius: 10px; background: var(--surface-elevated); border: 1px solid var(--border);
-            display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; padding: 2px; transition: all 0.2s ease;
+            aspect-ratio: 1 / 1.15; border-radius: 10px; background: var(--surface-elevated); border: 1px solid var(--border);
+            display: flex; flex-direction: column; align-items: center; justify-content: space-between; cursor: pointer; padding: 4px 2px; transition: all 0.2s ease; min-width: 0; overflow: hidden;
         }
         .chal-cal-day.cal-all-met { background: var(--success-dim); border: 1.5px solid var(--success); box-shadow: 0 0 8px rgba(52,199,89,0.2); }
         .chal-cal-day.cal-partial { background: var(--warning-dim); border: 1px solid var(--warning); }
         .chal-cal-day.cal-missed { background: var(--pending-dim); border: 1px solid var(--pending); }
-        .chal-cal-day.cal-active-sel { outline: 2px solid var(--accent-color); transform: scale(1.04); z-index: 2; }
+        .chal-cal-day.cal-active-sel { outline: 2px solid var(--accent-color); transform: scale(1.03); z-index: 2; }
         /* Screenshot-Matched Routines Folder & Weekly Plan */
         .weekly-plan-list {
             background: var(--surface-color); border-radius: 20px; border: var(--card-border); overflow: hidden; margin-bottom: 22px; box-shadow: 0 8px 24px rgba(0,0,0,0.28);
         }
         .weekly-plan-row {
-            display: flex; align-items: center; justify-content: space-between; padding: 13px 16px; border-bottom: 1px solid rgba(255,255,255,0.06); transition: background 0.2s;
+            display: flex; align-items: center; justify-content: space-between; padding: 12px 12px; border-bottom: 1px solid rgba(255,255,255,0.06); transition: background 0.2s; gap: 6px;
         }
         .weekly-plan-row:last-child { border-bottom: none; }
         .routine-folder-grid {
-            display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 22px;
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 22px;
         }
         .routine-folder-card {
             background: var(--surface-color); border-radius: 20px; padding: 12px 10px 10px 10px; border: var(--card-border);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.32); display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.32); display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; min-width: 0;
         }
         .routine-folder-tabs {
             position: relative; height: 34px; margin: 0 4px -10px 4px; z-index: 1;
@@ -291,7 +294,7 @@
         }
         .routine-folder-body {
             background: var(--surface-elevated); border-radius: 14px; padding: 14px 12px; position: relative; z-index: 2; border: 1px solid rgba(255,255,255,0.08);
-            box-shadow: 0 -4px 12px rgba(0,0,0,0.25);
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.25); min-width: 0;
         }
         .routine-folder-start {
             margin-top: 10px; padding: 8px 6px; text-align: center; font-size: 13px; font-weight: 700; color: var(--text-secondary);
@@ -300,8 +303,8 @@
         .routine-folder-start:active { background: rgba(255,255,255,0.06); color: var(--text-primary); }
         /* Week Strip & Smaller 48d Activity Bento Grid */
         .week-check-strip {
-            background: var(--surface-color); border-radius: 20px; padding: 14px 12px; margin-bottom: 16px; border: var(--card-border);
-            display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center;
+            background: var(--surface-color); border-radius: 20px; padding: 14px 10px; margin-bottom: 16px; border: var(--card-border);
+            display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center;
         }
         .week-day-circle {
             width: 34px; height: 34px; border-radius: 50%; margin: 6px auto 0; display: flex; align-items: center; justify-content: center;
@@ -313,7 +316,7 @@
             display: grid; grid-template-columns: 1.35fr 1fr; gap: 12px; margin-bottom: 16px; align-items: stretch;
         }
         .home-bento-right {
-            display: flex; flex-direction: column; gap: 12px; justify-content: space-between;
+            display: flex; flex-direction: column; gap: 12px; justify-content: space-between; min-width: 0;
         }
         .activity-heat-grid {
             display: grid; grid-template-columns: repeat(12, 1fr); gap: 4px; padding: 6px 0 2px 0;
@@ -371,6 +374,10 @@
 <div id="meal-create-modal"></div>
 <div id="settings-modal"></div>
 <div id="rank-modal"></div>
+<div id="rank-details-modal"></div>
+<div id="routine-editor-modal"></div>
+<div id="pin-goals-modal"></div>
+<div id="calendar-modal"></div>
 <script>
 const MAX_EX_TITLE_LEN = 38;
 const QUOTES = [
@@ -444,7 +451,7 @@ const THEME_MAP = {
     dark: { nav: ['fa-home', 'fa-dumbbell', 'fa-bolt', 'fa-leaf', 'fa-user'], symbols: { streak: '🔥', pr: '🏆', bw: '⚖️', vol: '📊', rest: '🛋️', workout: '💪', success: '⭐', activity: '🏃‍♂️', cardGoal: '🎯', analytics: '📈', nutrition: '🍎', data: '🗄️' } },
     light: { nav: ['fa-home', 'fa-dumbbell', 'fa-bolt', 'fa-leaf', 'fa-user'], symbols: { streak: '🔥', pr: '🏆', bw: '⚖️', vol: '📊', rest: '🛋️', workout: '💪', success: '⭐', activity: '🏃‍♂️', cardGoal: '🎯', analytics: '📈', nutrition: '🍎', data: '🗄️' } }
 };
-/* COMPREHENSIVE NZ ATHLETE RAW INGREDIENT REFERENCE DATABASE (per 100g) [1] */
+/* COMPREHENSIVE NZ ATHLETE RAW INGREDIENT REFERENCE DATABASE (per 100g) */
 const NZ_ATHLETE_FOODS = [
     { id: 'f_req_potatoes', name: 'Potatoes (whole / general)', cat: 'Starchy Carbs', cal: 77, pro: 2, car: 17, fat: 0.1, micros: 'K high, Vit C, Fib ~2g', notes: 'Cheapest high-volume carb in NZ. High satiety and potassium; great post-workout with lean protein.', tone: 'good' },
     { id: 'f_req_kumara', name: 'Kumara (sweet potato)', cat: 'Starchy Carbs', cal: 85, pro: 1.5, car: 20, fat: 0.1, micros: 'Vit A (beta-carotene), Vit C, K, Fib ~3g', notes: 'NZ icon carb. Rich in beta-carotene and potassium; ideal pre-evening training carb.', tone: 'good' },
@@ -456,7 +463,6 @@ const NZ_ATHLETE_FOODS = [
     { id: 'f_req_greek_yoghurt', name: 'Greek yoghurt', cat: 'Dairy', cal: 70, pro: 10, car: 4, fat: 2, micros: 'Ca, B12, K, probiotics', notes: 'NZ gym staple for high-protein breakfasts, dips, and casein-rich evening snacks.', tone: 'good' },
     { id: 'f_req_eggs', name: 'Eggs (whole)', cat: 'Poultry & Eggs', cal: 140, pro: 13, car: 1, fat: 10, micros: 'Choline, B12, Vit D, Se, lutein', notes: 'Complete nutrient-dense protein; yolks provide choline and support hormone health.', tone: 'good' },
     { id: 'f_req_fruits', name: 'Fruits (mixed fresh fruit salad)', cat: 'Fruit', cal: 55, pro: 0.8, car: 14, fat: 0.2, micros: 'Vit C, K, polyphenols, Fib ~2.5g', notes: 'Fast-to-moderate carbs, micronutrients, hydration, and diet adherence.', tone: 'good' },
-    // 1. Poultry & Eggs
     { id: 'f_chk_breast', name: 'Chicken breast, skinless raw', cat: 'Poultry & Eggs', cal: 110, pro: 23, car: 0, fat: 1.5, micros: 'B3, B6, Se, P; low Fe', notes: 'Gold-standard cut protein. Minimal fat for cuts. Fast digesting when plain. Train-day staple; pair with rice/potato post-workout. Low food-response risk.', tone: 'good' },
     { id: 'f_chk_thigh_lean', name: 'Chicken thigh, skinless raw', cat: 'Poultry & Eggs', cal: 140, pro: 20, car: 0, fat: 6, micros: 'B vitamins, Se, Zn', notes: 'More flavour and satiety than breast; slight calorie bump. Good bulking/maintenance. Slightly slower gastric emptying with fat.', tone: 'good' },
     { id: 'f_chk_thigh_skin', name: 'Chicken thigh, skin-on raw', cat: 'Poultry & Eggs', cal: 180, pro: 18, car: 0, fat: 12, micros: 'B vitamins, Se, Zn + fat-soluble flavour', notes: 'Use sparingly on aggressive cuts. Better for surplus phases. Crisp skin is palatable but easy to overeat calories.', tone: 'mid' },
@@ -465,7 +471,6 @@ const NZ_ATHLETE_FOODS = [
     { id: 'f_egg_white', name: 'Egg white, raw', cat: 'Poultry & Eggs', cal: 50, pro: 11, car: 1, fat: 0, micros: 'Riboflavin; almost no fat/chol', notes: 'Pure protein filler on deep cuts. Low satiety vs whole egg. Combine with 1–2 yolks rather than whites-only long term.', tone: 'good' },
     { id: 'f_duck_breast', name: 'Duck breast, skinless raw', cat: 'Poultry & Eggs', cal: 140, pro: 19, car: 0, fat: 7, micros: 'B vitamins, Fe, Se', notes: 'Richer flavour, moderate fat. Occasional variety protein. Not a daily cut staple for most.', tone: 'mid' },
     { id: 'f_chk_liver', name: 'Chicken liver, raw', cat: 'Poultry & Eggs', cal: 120, pro: 17, car: 1, fat: 5, micros: 'Very high Vit A, B12, Fe, folate, Cu', notes: 'Micronutrient bomb 1–2x/week. Good for athletes with low iron intake. Do not mega-dose daily (vitamin A).', tone: 'good' },
-    // 2. Red Meat & Game
     { id: 'f_beef_mince_5', name: 'Beef mince, lean ~5% fat', cat: 'Red Meat & Game', cal: 140, pro: 21, car: 0, fat: 5, micros: 'Fe (heme), Zn, B12, B3, Se, creatine', notes: 'NZ athlete workhorse. Lean grind for cuts; heme iron helps endurance and women athletes.', tone: 'good' },
     { id: 'f_beef_mince_15', name: 'Beef mince, standard ~15% fat', cat: 'Red Meat & Game', cal: 200, pro: 19, car: 0, fat: 15, micros: 'Fe (heme), Zn, B12, creatine + more energy', notes: 'Better for bulking and flavour. Drain fat if cutting. Higher satiety from fat — watch portions.', tone: 'mid' },
     { id: 'f_beef_rump', name: 'Beef rump/steak lean', cat: 'Red Meat & Game', cal: 140, pro: 22, car: 0, fat: 5, micros: 'Fe, Zn, B12, carnosine', notes: 'Steak meal-prep classic. Pair with kumara + greens. Excellent post-lift dinner protein.', tone: 'good' },
@@ -478,7 +483,6 @@ const NZ_ATHLETE_FOODS = [
     { id: 'f_pork_loin', name: 'Pork loin, lean', cat: 'Red Meat & Game', cal: 140, pro: 22, car: 0, fat: 5, micros: 'B1 (thiamin), Se, B6, Zn', notes: 'Underrated lean protein rich in thiamin (B1) for carbohydrate metabolism.', tone: 'good' },
     { id: 'f_pork_mince', name: 'Pork mince, lean', cat: 'Red Meat & Game', cal: 160, pro: 20, car: 0, fat: 9, micros: 'B1, Se, Zn', notes: 'Budget protein for meatballs/San choy bow. Choose lean labelled packs.', tone: 'good' },
     { id: 'f_beef_liver', name: 'Beef liver', cat: 'Red Meat & Game', cal: 130, pro: 20, car: 4, fat: 4, micros: 'Extreme B12, Vit A, Cu, Fe, folate', notes: '1 serving/week covers many micronutrients. Limit frequency for Vitamin A.', tone: 'good' },
-    // 3. Seafood
     { id: 'f_salmon_raw', name: 'Salmon, Atlantic raw', cat: 'Seafood', cal: 200, pro: 20, car: 0, fat: 13, micros: 'EPA/DHA high, Vit D, B12, Se', notes: 'Best whole-food omega-3 vehicle. 2–4x/week supports recovery and inflammation control.', tone: 'good' },
     { id: 'f_salmon_smoked', name: 'Smoked salmon', cat: 'Seafood', cal: 180, pro: 22, car: 0, fat: 10, micros: 'Omega-3, Na high (600-1200mg), B12', notes: 'Convenient omega-3 source; high sodium — fine occasionally, watch if BP/sodium sensitive.', tone: 'mid' },
     { id: 'f_salmon_king', name: 'Akaroa / NZ king salmon', cat: 'Seafood', cal: 200, pro: 20, car: 0, fat: 13, micros: 'EPA/DHA, Vit D', notes: 'Local premium option — high EPA/DHA omega-3 for recovery and inflammation control.', tone: 'good' },
@@ -491,7 +495,6 @@ const NZ_ATHLETE_FOODS = [
     { id: 'f_prawns', name: 'Prawns / shrimp, raw', cat: 'Seafood', cal: 70, pro: 15, car: 0, fat: 1, micros: 'Se, B12, iodine; chol moderate', notes: 'Very lean protein with high satiety per calorie in stir-fries.', tone: 'good' },
     { id: 'f_squid', name: 'Squid / calamari, raw', cat: 'Seafood', cal: 80, pro: 16, car: 1, fat: 1, micros: 'B12, Se, Cu', notes: 'Lean seafood protein; cook quickly to avoid rubberising.', tone: 'good' },
     { id: 'f_cod', name: 'Cod / similar white fillet', cat: 'Seafood', cal: 80, pro: 18, car: 0, fat: 0.5, micros: 'Iodine, Se, B12', notes: 'Cut-friendly ultra-lean white fish protein base.', tone: 'good' },
-    // 4. Dairy
     { id: 'f_gyog_0', name: 'Greek yoghurt, plain non-fat (~0%)', cat: 'Dairy', cal: 55, pro: 10, car: 4, fat: 0, micros: 'Ca, B12, K, probiotics', notes: 'Top cut snack. High protein, low calorie, casein-rich for overnight recovery.', tone: 'good' },
     { id: 'f_gyog_2', name: 'Greek yoghurt, plain 2–5% fat', cat: 'Dairy', cal: 80, pro: 9, car: 4, fat: 4, micros: 'Ca, B12, probiotics', notes: 'Better taste and satiety; default maintenance choice. Flavour yourself with fruit.', tone: 'good' },
     { id: 'f_gyog_full', name: 'Greek yoghurt, full fat', cat: 'Dairy', cal: 120, pro: 7, car: 4, fat: 8, micros: 'Ca, B12', notes: 'Good for bulking or high-satiety breakfasts. Whole-food dairy quality.', tone: 'good' },
@@ -505,7 +508,6 @@ const NZ_ATHLETE_FOODS = [
     { id: 'f_paneer', name: 'Cheese, cottage-style paneer', cat: 'Dairy', cal: 300, pro: 18, car: 2, fat: 25, micros: 'Ca', notes: 'Dense Indian-style cheese — track fat portions carefully.', tone: 'mid' },
     { id: 'f_ricotta', name: 'Ricotta, smooth', cat: 'Dairy', cal: 150, pro: 10, car: 4, fat: 10, micros: 'Ca', notes: 'Softer macros than hard cheese; works well on toast or bakes.', tone: 'good' },
     { id: 'f_kefir', name: 'Kefir, plain', cat: 'Dairy', cal: 55, pro: 3.5, car: 5, fat: 2, micros: 'Ca, probiotics', notes: 'Gut-support fermented drink that helps regularity under high protein intake.', tone: 'good' },
-    // 5. Plant Proteins
     { id: 'f_tofu', name: 'Tofu, firm', cat: 'Plant Proteins', cal: 130, pro: 12, car: 3, fat: 8, micros: 'Ca (calcium-set), Fe, Fib ~1g', notes: 'Best plant protein for gym diets. Easy on the gut vs beans for many.', tone: 'good' },
     { id: 'f_tempeh', name: 'Tempeh', cat: 'Plant Proteins', cal: 190, pro: 19, car: 9, fat: 11, micros: 'Fe, Mn, Fib ~5g; fermented', notes: 'Higher protein than tofu; fermentation aids digestion.', tone: 'good' },
     { id: 'f_edamame', name: 'Edamame, shelled cooked', cat: 'Plant Proteins', cal: 120, pro: 12, car: 9, fat: 5, micros: 'Folate, Vit K, Fib ~5g', notes: 'Complete-ish soy snack with solid fibre and micronutrient density.', tone: 'good' },
@@ -517,7 +519,6 @@ const NZ_ATHLETE_FOODS = [
     { id: 'f_split_peas', name: 'Split peas, cooked', cat: 'Plant Proteins', cal: 120, pro: 8, car: 21, fat: 0.4, micros: 'Fib ~8g, B vitamins', notes: 'High-volume soup base for winter cutting diets.', tone: 'good' },
     { id: 'f_baked_beans', name: 'Baked beans, canned tomato', cat: 'Plant Proteins', cal: 90, pro: 5, car: 15, fat: 0.5, micros: 'Fib ~4g; Na + sugar vary', notes: 'Convenient emergency carb-protein, but check label for added sugar and sodium.', tone: 'mid' },
     { id: 'f_falafel', name: 'Falafel (ready, approx baked)', cat: 'Plant Proteins', cal: 300, pro: 10, car: 30, fat: 15, micros: 'Fib varies', notes: 'Calorie-dense and often fried; homemade baked is better for cuts.', tone: 'mid' },
-    // 6. Starchy Carbohydrates
     { id: 'f_potato_raw', name: 'Potato, white raw', cat: 'Starchy Carbs', cal: 75, pro: 2, car: 17, fat: 0.1, micros: 'K high, Vit C, Fib ~2g', notes: 'Cheapest high-volume carb in NZ. High satiety and potassium; great post-workout with lean protein.', tone: 'good' },
     { id: 'f_potato_boiled', name: 'Potato, boiled flesh', cat: 'Starchy Carbs', cal: 80, pro: 2, car: 18, fat: 0.1, micros: 'K, Fib ~2g', notes: 'Easy-digesting training fuel; cooling then reheating increases resistant starch.', tone: 'good' },
     { id: 'f_kumara_orange', name: 'Kumara, orange raw', cat: 'Starchy Carbs', cal: 85, pro: 1.5, car: 20, fat: 0.1, micros: 'Vit A (beta-carotene), Vit C, K, Fib ~3g', notes: 'NZ icon carb. Rich in beta-carotene and potassium; ideal pre-evening training carb.', tone: 'good' },
@@ -538,7 +539,6 @@ const NZ_ATHLETE_FOODS = [
     { id: 'f_bread_whole', name: 'Bread, wholegrain sandwich', cat: 'Starchy Carbs', cal: 250, pro: 10, car: 40, fat: 4, micros: 'Fib ~6g; Na varies', notes: 'Convenient plate staple providing carbs, fibre, and 10g protein per 100g.', tone: 'good' },
     { id: 'f_wrap_whole', name: 'Wrap, wholemeal', cat: 'Starchy Carbs', cal: 280, pro: 9, car: 45, fat: 6, micros: 'Fib varies; Na', notes: 'Easy high-calorie delivery for burrito wraps and bulking lunches.', tone: 'good' },
     { id: 'f_rice_cakes', name: 'Rice cakes (plain)', cat: 'Starchy Carbs', cal: 380, pro: 7, car: 80, fat: 1, micros: 'Low micronutrient', notes: 'Fast-digesting crisp pre-workout carb; pair with banana or honey near training.', tone: 'good' },
-    // 7. Fruit
     { id: 'f_banana', name: 'Banana', cat: 'Fruit', cal: 90, pro: 1, car: 23, fat: 0.3, micros: 'K high, B6, Fib ~2.5g', notes: 'Best portable pre/intra/post workout carb. Ripe bananas give a faster glucose response.', tone: 'good' },
     { id: 'f_kiwi_green', name: 'Kiwifruit, green', cat: 'Fruit', cal: 60, pro: 1, car: 15, fat: 0.5, micros: 'Vit C very high, Fib ~3g, actinidin enzyme', notes: 'NZ hero fruit. Actinidin enzyme aids protein digestion and Vitamin C boosts immunity & iron absorption.', tone: 'good' },
     { id: 'f_kiwi_gold', name: 'Kiwifruit, gold', cat: 'Fruit', cal: 60, pro: 1, car: 15, fat: 0.4, micros: 'Vit C extremely high', notes: 'Sweeter NZ kiwi with extremely high Vitamin C to support recovery and non-heme iron uptake.', tone: 'good' },
@@ -555,7 +555,6 @@ const NZ_ATHLETE_FOODS = [
     { id: 'f_pineapple', name: 'Pineapple', cat: 'Fruit', cal: 50, pro: 0.5, car: 13, fat: 0.1, micros: 'Vit C, bromelain', notes: 'Contains bromelain enzyme; pairs well with cottage cheese.', tone: 'good' },
     { id: 'f_watermelon', name: 'Watermelon', cat: 'Fruit', cal: 30, pro: 0.6, car: 8, fat: 0.2, micros: 'Citrulline (blood flow), K', notes: 'Hydrating peri-workout fruit with natural L-citrulline.', tone: 'good' },
     { id: 'f_avocado', name: 'Avocado', cat: 'Fruit', cal: 160, pro: 2, car: 9, fat: 15, micros: 'K, folate, mono fat, Fib ~7g', notes: 'Nutrient-dense monounsaturated fat source; boosts carotenoid absorption from veggies.', tone: 'good' },
-    // 8. Vegetables
     { id: 'f_broccoli', name: 'Broccoli', cat: 'Vegetables', cal: 35, pro: 3, car: 7, fat: 0.4, micros: 'Vit C, K, folate, Fib ~2.5g, sulforaphane', notes: 'Gym-diet classic with sulforaphane and high volume satiety.', tone: 'good' },
     { id: 'f_spinach', name: 'Spinach, raw', cat: 'Vegetables', cal: 25, pro: 3, car: 4, fat: 0.4, micros: 'Vit K, A, folate, Mg, nitrates', notes: 'Dietary nitrates support blood flow and nitric oxide; high magnesium.', tone: 'good' },
     { id: 'f_kale', name: 'Kale', cat: 'Vegetables', cal: 35, pro: 3, car: 6, fat: 1.5, micros: 'Vit K, C, A', notes: 'Hardy micronutrient-dense leafy green.', tone: 'good' },
@@ -577,7 +576,6 @@ const NZ_ATHLETE_FOODS = [
     { id: 'f_peas', name: 'Peas, green cooked', cat: 'Vegetables', cal: 80, pro: 5, car: 14, fat: 0.4, micros: 'Fib ~5g, Vit C, K', notes: 'High-protein vegetable freezer staple.', tone: 'good' },
     { id: 'f_buk_choy', name: 'Buk choy / Asian greens', cat: 'Vegetables', cal: 15, pro: 1.5, car: 2, fat: 0.2, micros: 'Vit A, C, K, Ca', notes: 'Ultra-low calorie stir-fry green with bioavailable calcium.', tone: 'good' },
     { id: 'f_silverbeet', name: 'Silverbeet / Swiss chard', cat: 'Vegetables', cal: 20, pro: 2, car: 4, fat: 0.2, micros: 'Vit K, A, Mg', notes: 'NZ garden staple rich in magnesium and Vitamin K.', tone: 'good' },
-    // 9. Nuts, Seeds & Nut Butters
     { id: 'f_almonds', name: 'Almonds', cat: 'Nuts & Seeds', cal: 580, pro: 21, car: 20, fat: 50, micros: 'Vit E, Mg, Fib ~12g', notes: 'Rich in Vitamin E and magnesium; blunts glycaemic spike when paired with carbs. Weigh 20–30g portions.', tone: 'good' },
     { id: 'f_peanuts', name: 'Peanuts', cat: 'Nuts & Seeds', cal: 560, pro: 26, car: 16, fat: 49, micros: 'Niacin, Mg, Fib ~8g', notes: 'Highest protein common nut; energy-dense so measure portions.', tone: 'good' },
     { id: 'f_pb_natural', name: 'Peanut butter, natural', cat: 'Nuts & Seeds', cal: 590, pro: 25, car: 20, fat: 50, micros: 'Niacin, Mg, Vit E', notes: 'Classic athlete bulking tool. Energy-dense — weigh tablespoons strictly on cuts.', tone: 'mid' },
@@ -589,7 +587,6 @@ const NZ_ATHLETE_FOODS = [
     { id: 'f_pumpkin_seeds', name: 'Pumpkin seeds (pepitas)', cat: 'Nuts & Seeds', cal: 550, pro: 30, car: 10, fat: 45, micros: 'Mg, Zn, Fe, Fib ~6g', notes: '30g protein/100g plus high zinc and magnesium for hormone and recovery support.', tone: 'good' },
     { id: 'f_sunflower_seeds', name: 'Sunflower seeds', cat: 'Nuts & Seeds', cal: 580, pro: 21, car: 20, fat: 51, micros: 'Vit E, Se, Fib', notes: 'High Vitamin E antioxidant support; portion control.', tone: 'good' },
     { id: 'f_tahini', name: 'Sesame seeds / tahini', cat: 'Nuts & Seeds', cal: 600, pro: 18, car: 20, fat: 54, micros: 'Ca, Cu, Fib', notes: 'Calcium-rich dressing base; calorie-dense so measure teaspoons.', tone: 'mid' },
-    // 10. Other Whole Foods
     { id: 'f_passata', name: 'Passata / crushed tomato', cat: 'Other Staples', cal: 30, pro: 1, car: 6, fat: 0.2, micros: 'Lycopene, K', notes: 'Low-calorie volume sauce base for mince and chicken.', tone: 'good' },
     { id: 'f_tzatziki', name: 'Greek yoghurt tzatziki base', cat: 'Other Staples', cal: 60, pro: 6, car: 4, fat: 2, micros: 'Protein dip, Ca', notes: 'High-protein low-calorie dip that makes potatoes and veggies easy to eat.', tone: 'good' },
     { id: 'f_hummus', name: 'Hummus', cat: 'Other Staples', cal: 160, pro: 7, car: 14, fat: 10, micros: 'Fib; chickpea + tahini', notes: 'Wholesome dip; measure 40–60g portions.', tone: 'good' },
@@ -725,7 +722,29 @@ const store = {
     },
     save() { localStorage.setItem('irontrack_state', JSON.stringify(this.state)); },
     addWorkout(workoutData) { this.state.history.workouts.push(workoutData); this.save(); if(window.app && app.checkRankPromotion) app.checkRankPromotion(); },
-    addBodyweight(weight, isoStr = null) { this.state.history.bodyweight.push({ date: isoStr || new Date().toISOString(), weight: parseFloat(weight) }); this.state.user.currentWeight = parseFloat(weight); this.save(); if(window.app && app.checkRankPromotion) app.checkRankPromotion(); },
+    addCardio(cardioData) { this.state.history.cardio.push(cardioData); this.save(); if(window.app && app.checkRankPromotion) app.checkRankPromotion(); },
+    addManualPR(lift, weight, reps) {
+        const e1rm = reps === 1 ? weight : weight * (1 + reps / 30);
+        this.state.history.manualPRs.push({ date: new Date().toISOString(), lift, weight, reps, e1rm });
+        this.save();
+    },
+    deleteWorkoutById(wId) {
+        this.state.history.workouts = this.state.history.workouts.filter(w => w.id !== wId);
+        this.save();
+    },
+    addBodyweight(weight, isoStr = null) {
+        const targetIso = isoStr || new Date().toISOString();
+        const dStr = utils.getLocalISODate(targetIso);
+        const existing = this.state.history.bodyweight.find(e => utils.getLocalISODate(e.date) === dStr);
+        if (existing) {
+            existing.weight = parseFloat(weight);
+        } else {
+            this.state.history.bodyweight.push({ date: targetIso, weight: parseFloat(weight) });
+        }
+        this.state.user.currentWeight = parseFloat(weight);
+        this.save();
+        if(window.app && app.checkRankPromotion) app.checkRankPromotion();
+    },
     updateBodyweight(isoDate, newWeight) { const entry = this.state.history.bodyweight.find(e => e.date === isoDate); if(entry) { entry.weight = parseFloat(newWeight); this.state.user.currentWeight = parseFloat(newWeight); this.save(); } },
     updateNutrition(isoDate, field, val) { const entry = this.state.history.nutrition.find(e => e.date === isoDate); if(entry) { entry[field] = parseFloat(val) || 0; this.save(); } },
     deleteEntry(type, isoDate) { this.state.history[type] = this.state.history[type].filter(e => e.date !== isoDate); this.save(); },
@@ -891,6 +910,11 @@ const store = {
 };
 const utils = {
     generateId: () => Math.random().toString(36).substr(2, 9),
+    truncate: (str, maxLen = 28) => {
+        if (!str) return '';
+        const s = String(str);
+        return s.length > maxLen ? s.slice(0, maxLen - 1).trim() + '…' : s;
+    },
     unitLabel: () => (store.state.settings && store.state.settings.units === 'lbs') ? 'lbs' : 'kg',
     formatDate: (isoString) => new Date(isoString).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }),
     formatDateShort: (dateObj) => dateObj.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }),
@@ -1456,6 +1480,7 @@ const utils = {
         let waterLiters = 0;
         let challengeTasksMet = 0;
         let dailyDeltaToday = 0;
+        let rpHistoryLog = [];
         for (let dayNum = 1; dayNum <= daysElapsed; dayNum++) {
             const dObj = new Date(year, month, dayNum);
             const dStr = utils.getLocalISODate(dObj);
@@ -1500,17 +1525,33 @@ const utils = {
             if (isDayConsistent) consistentDays++;
             let dayRP = (dayStrength * 85) + (dayAct * 35) + (hasNut ? 35 : 0) + (hasBw ? 20 : 0) + (hasCardio ? 25 : 0) + (dayWaterL * 8) + (dayChalMet * 15);
             if (!isScheduledWorkoutDay && (hasNut || hasBw)) dayRP += 25;
+            let reasons = [];
+            if (dayStrength > 0) reasons.push(`${dayStrength} Workout`);
+            if (dayAct > 0) reasons.push(`${dayAct} Activity`);
+            if (hasNut) reasons.push(`Nutrition`);
+            if (hasBw) reasons.push(`Bodyweight`);
+            if (!isScheduledWorkoutDay && (hasNut || hasBw)) reasons.push(`Rest Bonus`);
             if (dayNum < daysElapsed) {
                 if (dayPillarsMet === 0 && dayStrength === 0 && dayAct === 0) {
                     dayRP -= 65;
+                    reasons.push(`Missed Day Decay`);
                 } else if (isScheduledWorkoutDay && !workoutRequirementMet) {
                     dayRP -= 35;
+                    reasons.push(`Missed Split Session`);
                 } else if (!hasNut && !hasBw) {
                     dayRP -= 20;
+                    reasons.push(`No BW/Fuel Log`);
                 }
             }
             rp = Math.max(0, rp + dayRP);
             if (dayNum === daysElapsed) dailyDeltaToday = dayRP;
+            rpHistoryLog.push({
+                dateStr: dStr,
+                shortDate: `${dayNum}/${month + 1}`,
+                delta: dayRP,
+                totalAfter: rp,
+                reasons: reasons.length > 0 ? reasons.join(' • ') : (dayNum === daysElapsed ? 'In Progress Today' : 'No Logs')
+            });
         }
         const hyper = utils.getWeeklyHypertrophyStatus();
         rp += Math.round(hyper.hypertrophyRP * 0.5);
@@ -1532,10 +1573,11 @@ const utils = {
             waterLiters,
             challengeTasksMet,
             dailyDeltaToday,
+            rpHistoryLog: rpHistoryLog.reverse(),
             hyper
         };
     },
-    getWeeklyRPBreakdown: () => {
+        getWeeklyRPBreakdown: () => {
         const m = utils.getMonthlyRankMetrics();
         const hGroups = HYPERTROPHY_GROUPS;
         const getTierStyle = (ratio) => {
@@ -1694,6 +1736,7 @@ const utils = {
             monthName: m.monthName,
             consistencyPct: m.consistencyPct,
             dailyDeltaToday: m.dailyDeltaToday,
+            rpHistoryLog: m.rpHistoryLog || [],
             championLockedByHypertrophy: championLockedByConsistency
         };
     },
@@ -2004,20 +2047,20 @@ const utils = {
         return `
         <div class="nut-ring-card" style="align-items:stretch;">
             <div class="flex-between" style="width:100%; margin-bottom:4px;">
-                <span style="font-size:17px; font-weight:800; color:var(--text-primary);">${title}</span>
-                <i class="fas ${iconClass}" style="color:${colorHex}; font-size:16px;"></i>
+                <span style="font-size:16px; font-weight:800; color:var(--text-primary);">${title}</span>
+                <i class="fas ${iconClass}" style="color:${colorHex}; font-size:15px;"></i>
             </div>
-            <div style="position:relative; width:112px; height:112px; display:flex; align-items:center; justify-content:center; margin: 6px auto;">
-                <svg width="112" height="112" viewBox="0 0 112 112" style="transform: rotate(-90deg);">
+            <div style="position:relative; width:108px; height:108px; display:flex; align-items:center; justify-content:center; margin: 4px auto;">
+                <svg width="108" height="108" viewBox="0 0 112 112" style="transform: rotate(-90deg);">
                     <circle cx="56" cy="56" r="${r}" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="10"></circle>
                     <circle cx="56" cy="56" r="${r}" fill="none" stroke="${colorHex}" stroke-width="10" stroke-linecap="round" stroke-dasharray="${c.toFixed(1)}" stroke-dashoffset="${offset.toFixed(1)}" style="transition: stroke-dashoffset 0.5s ease;"></circle>
                 </svg>
                 <div style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
-                    <div style="font-size:21px; font-weight:900; color:var(--text-primary); line-height:1.1;">${Math.round(val)}${unit === 'g' ? 'g' : ''}</div>
+                    <div style="font-size:20px; font-weight:900; color:var(--text-primary); line-height:1.1;">${Math.round(val)}${unit === 'g' ? 'g' : ''}</div>
                     <div style="font-size:11px; color:var(--text-secondary);">${subLabel}</div>
                 </div>
             </div>
-            <div style="font-size:13px; color:var(--text-secondary); text-align:center; margin-top:4px;">of ${target} ${unit}</div>
+            <div style="font-size:12px; color:var(--text-secondary); text-align:center; margin-top:4px;">of ${target} ${unit}</div>
         </div>`;
     }
 };
@@ -2043,6 +2086,7 @@ const workoutEngine = {
             isSkipped: false,
             isActivity: false,
             fitFileName: null,
+            sessionPhotos: [],
             exercises: programTemplate.exercises.map(ex => {
                 const master = utils.getMasterExercise(ex.name);
                 const tSets = parseInt(ex.targetSets) || master.targetSets || 3;
@@ -2233,8 +2277,8 @@ const workoutEngine = {
         let html = `
             <div class="workout-header-sticky">
                 <button class="btn btn-sm" style="background:var(--surface-elevated); width:auto;" onclick="workoutEngine.minimizeWorkout()"><i class="fas fa-chevron-down"></i> Minimize</button>
-                <div style="text-align:center;">
-                    <div style="font-weight:bold; font-size:16px;">${this.activeWorkout.name}</div>
+                <div style="text-align:center; min-width:0; flex:1;">
+                    <div class="truncate-text" style="font-weight:bold; font-size:15px;">${utils.truncate(this.activeWorkout.name, 26)}</div>
                     <div id="workout-timer" class="text-accent" style="font-size:14px; font-weight:bold;">${mins}:${secs}</div>
                 </div>
                 <button class="btn btn-sm btn-success" onclick="workoutEngine.finishWorkout()">Finish</button>
@@ -2258,59 +2302,59 @@ const workoutEngine = {
                 if (bestLast) lastBestStr = `${bestLast.weight}${unit} × ${bestLast.reps}`;
             }
             const prStr = allTimeBest ? `${allTimeBest.weight}${unit} × ${allTimeBest.reps}` : (peak ? `${peak.weight}${unit} × ${peak.reps}` : 'None');
-            const mTags = utils.getMuscles(ex).join(', ');
+            const mTags = utils.truncate(utils.getMuscles(ex).join(', '), 24);
             const primaryM = utils.getPrimaryMuscle(ex);
             const thumbUrl = utils.getExerciseImage(ex.name, primaryM);
             const fatigueInfo = utils.getExerciseOrderFatigueAnalysis(this.activeWorkout.exercises, exIdx);
             const targetObj = this.getTargetForExercise(ex, fatigueInfo);
             const liveStatus = this.getLiveOverloadStatus(ex, targetObj);
             let variations = store.state.variations[ex.name] || [];
-            let varSelectHTML = `<select onchange="workoutEngine.changeVariation(${exIdx}, this.value)" style="background:var(--surface-color); color:var(--text-secondary); border:1px solid var(--border); border-radius:6px; padding:3px 6px; font-size:11px; max-width:130px; text-overflow:ellipsis;">
+            let varSelectHTML = `<select onchange="workoutEngine.changeVariation(${exIdx}, this.value)" style="background:var(--surface-color); color:var(--text-secondary); border:1px solid var(--border); border-radius:6px; padding:3px 6px; font-size:11px; max-width:120px; text-overflow:ellipsis;">
                 <option value="" ${vStr === '' ? 'selected' : ''}>Standard</option>
-                ${variations.map(v => `<option value="${v}" ${vStr === v ? 'selected' : ''}>${v}</option>`).join('')}
+                ${variations.map(v => `<option value="${v}" ${vStr === v ? 'selected' : ''}>${utils.truncate(v, 16)}</option>`).join('')}
                 <option value="ADD_NEW">+ Variation...</option>
             </select>`;
             html += `
                 <div class="exercise-card" style="${liveStatus.achieved ? 'border-color:var(--success); box-shadow: 0 0 12px rgba(52,199,89,0.15);' : ''}">
                     <div class="exercise-header" style="flex-direction: column; align-items: stretch; gap: 10px;">
-                        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px;">
-                            <div style="display:flex; gap:12px; align-items:center; flex:1; min-width:0;">
-                                <img src="${thumbUrl}" alt="${ex.name}" style="width:52px; height:52px; border-radius:10px; object-fit:cover; flex-shrink:0; border:1px solid var(--border); background:#121217;">
+                        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
+                            <div style="display:flex; gap:10px; align-items:center; flex:1; min-width:0;">
+                                <img src="${thumbUrl}" alt="${ex.name}" style="width:48px; height:48px; border-radius:10px; object-fit:cover; flex-shrink:0; border:1px solid var(--border); background:#121217;">
                                 <div style="flex:1; min-width:0;">
                                     <div style="display:flex; align-items:flex-start; gap:6px;">
-                                        <span class="ex-title-2line" style="font-weight:800; font-size:17px; color:var(--text-primary); flex:1;">${ex.name}</span>
-                                        <button class="btn-icon" style="width:26px; height:26px; font-size:11px; background:transparent; border:none; color:var(--text-secondary); flex-shrink:0;" onclick="workoutEngine.editActiveExerciseMeta(${exIdx})" title="Edit Name, Muscle & Sets/Reps"><i class="fas fa-pen"></i></button>
+                                        <span class="ex-title-2line" style="font-weight:800; font-size:16px; color:var(--text-primary); flex:1;">${utils.truncate(ex.name, 34)}</span>
+                                        <button class="btn-icon" style="width:24px; height:24px; font-size:11px; background:transparent; border:none; color:var(--text-secondary); flex-shrink:0;" onclick="workoutEngine.editActiveExerciseMeta(${exIdx})" title="Edit Name, Muscle & Sets/Reps"><i class="fas fa-pen"></i></button>
                                     </div>
-                                    <div style="display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin-top:4px;">
-                                        <span class="pill-nowrap" style="font-size:10px; background:var(--surface-color); padding:2px 7px; border-radius:4px; color:var(--text-secondary); font-weight:normal; border: 1px solid var(--border);">${mTags}</span>
-                                        <span class="pill-nowrap" style="font-size:10px; background:${fatigueInfo.fatigueBg}; padding:2px 7px; border-radius:4px; color:${fatigueInfo.fatigueColor}; font-weight:800; border: 1px solid ${fatigueInfo.fatigueColor};"><i class="fas ${fatigueInfo.fatigueIcon}"></i> #${fatigueInfo.currentOrderPos} ${fatigueInfo.fatigueTier}</span>
+                                    <div style="display:flex; flex-wrap:wrap; align-items:center; gap:5px; margin-top:4px;">
+                                        <span class="pill-nowrap" style="font-size:10px; background:var(--surface-color); padding:2px 6px; border-radius:4px; color:var(--text-secondary); font-weight:normal; border: 1px solid var(--border);">${mTags}</span>
+                                        <span class="pill-nowrap" style="font-size:10px; background:${fatigueInfo.fatigueBg}; padding:2px 6px; border-radius:4px; color:${fatigueInfo.fatigueColor}; font-weight:800; border: 1px solid ${fatigueInfo.fatigueColor};"><i class="fas ${fatigueInfo.fatigueIcon}"></i> #${fatigueInfo.currentOrderPos} ${fatigueInfo.fatigueTier}</span>
                                         ${varSelectHTML}
                                     </div>
                                 </div>
                             </div>
                             <div style="display:flex; flex-direction:column; align-items:flex-end; gap:6px; flex-shrink:0;">
-                                <span class="pill-nowrap" style="font-size:11px; color:var(--bg-color); font-weight:800; background:var(--accent-color); padding:4px 9px; border-radius:12px; cursor:pointer;" onclick="workoutEngine.editActiveExerciseMeta(${exIdx})">Target: ${ex.targetReps}</span>
+                                <span class="pill-nowrap" style="font-size:11px; color:var(--bg-color); font-weight:800; background:var(--accent-color); padding:3px 8px; border-radius:12px; cursor:pointer;" onclick="workoutEngine.editActiveExerciseMeta(${exIdx})">Target: ${utils.truncate(ex.targetReps, 10)}</span>
                                 <div style="display:flex; gap:4px; align-items:center;">
-                                    <button class="btn-icon" style="width:28px; height:28px; font-size:11px; ${exIdx === 0 ? 'opacity:0.3; pointer-events:none;' : ''}" onclick="workoutEngine.moveActiveExercise(${exIdx}, -1)"><i class="fas fa-arrow-up"></i></button>
-                                    <button class="btn-icon" style="width:28px; height:28px; font-size:11px; ${exIdx === this.activeWorkout.exercises.length - 1 ? 'opacity:0.3; pointer-events:none;' : ''}" onclick="workoutEngine.moveActiveExercise(${exIdx}, 1)"><i class="fas fa-arrow-down"></i></button>
-                                    <button class="btn-icon" style="width:28px; height:28px; font-size:11px;" onclick="workoutEngine.openExerciseModal(${exIdx})"><i class="fas fa-exchange-alt"></i></button>
-                                    <button class="btn-icon" style="width:28px; height:28px; font-size:11px; color:var(--pending);" onclick="workoutEngine.removeExercise(${exIdx})"><i class="fas fa-trash"></i></button>
+                                    <button class="btn-icon" style="width:26px; height:26px; font-size:11px; ${exIdx === 0 ? 'opacity:0.3; pointer-events:none;' : ''}" onclick="workoutEngine.moveActiveExercise(${exIdx}, -1)"><i class="fas fa-arrow-up"></i></button>
+                                    <button class="btn-icon" style="width:26px; height:26px; font-size:11px; ${exIdx === this.activeWorkout.exercises.length - 1 ? 'opacity:0.3; pointer-events:none;' : ''}" onclick="workoutEngine.moveActiveExercise(${exIdx}, 1)"><i class="fas fa-arrow-down"></i></button>
+                                    <button class="btn-icon" style="width:26px; height:26px; font-size:11px;" onclick="workoutEngine.openExerciseModal(${exIdx})"><i class="fas fa-exchange-alt"></i></button>
+                                    <button class="btn-icon" style="width:26px; height:26px; font-size:11px; color:var(--pending);" onclick="workoutEngine.removeExercise(${exIdx})"><i class="fas fa-trash"></i></button>
                                 </div>
                             </div>
                         </div>
                         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; padding-top:8px; border-top:1px solid rgba(255,255,255,0.06);">
-                            <div style="background:var(--surface-color); padding:6px 10px; border-radius:8px; border:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; gap:6px;">
+                            <div style="background:var(--surface-color); padding:6px 10px; border-radius:8px; border:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; gap:6px; min-width:0;">
                                 <span class="pill-nowrap" style="font-size:10px; color:var(--text-secondary); text-transform:uppercase; font-weight:bold;"><i class="fas fa-clock-rotate-left"></i> Last</span>
                                 <span class="pill-nowrap" style="font-size:12px; font-weight:800; color:var(--text-primary);">${lastBestStr}</span>
                             </div>
-                            <div style="background:var(--surface-color); padding:6px 10px; border-radius:8px; border:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; gap:6px;">
+                            <div style="background:var(--surface-color); padding:6px 10px; border-radius:8px; border:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; gap:6px; min-width:0;">
                                 <span class="pill-nowrap" style="font-size:10px; color:var(--accent-color); text-transform:uppercase; font-weight:bold;"><i class="fas fa-trophy"></i> Best PR</span>
                                 <span class="pill-nowrap" style="font-size:12px; font-weight:800; color:var(--accent-color);">${prStr}</span>
                             </div>
                         </div>
-                        <div style="display:flex; justify-content:space-between; align-items:center; background:${liveStatus.bg}; border:1px solid ${liveStatus.border}; border-radius:8px; padding:7px 10px;">
-                            <div style="font-size:11px; color:${liveStatus.color}; font-weight:800; display:flex; align-items:center; gap:6px;">
-                                <i class="fas ${liveStatus.icon}"></i> <span>${liveStatus.label}</span>
+                        <div style="display:flex; justify-content:space-between; align-items:center; background:${liveStatus.bg}; border:1px solid ${liveStatus.border}; border-radius:8px; padding:7px 10px; gap:6px;">
+                            <div class="truncate-text" style="font-size:11px; color:${liveStatus.color}; font-weight:800; display:flex; align-items:center; gap:6px; min-width:0;">
+                                <i class="fas ${liveStatus.icon}"></i> <span class="truncate-text">${liveStatus.label}</span>
                             </div>
                             ${liveStatus.achieved ? `<span class="pill-nowrap" style="font-size:10px; background:var(--success); color:var(--bg-color); font-weight:900; padding:2px 6px; border-radius:4px;">PR PACE</span>` : ''}
                         </div>
@@ -2328,7 +2372,7 @@ const workoutEngine = {
                             <div class="input-group"><input type="number" value="${set.rir}" onchange="workoutEngine.updateSet(${exIdx}, ${setIdx}, 'rir', this.value)"></div>
                             <button class="btn-check ${set.completed ? 'completed' : ''}" onclick="workoutEngine.toggleSet(${exIdx}, ${setIdx})"><i class="fas fa-check"></i></button>
                         </div>
-                        <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; color:var(--text-secondary); padding: 4px 54px 0 44px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; color:var(--text-secondary); padding: 4px 50px 0 40px;">
                             <span>Last: ${set.prevWeight}${unit} × ${set.prevReps}</span><span>L3 Avg: ${set.l3Weight}${unit} × ${set.l3Reps}</span>
                         </div>
                     </div>
@@ -2339,15 +2383,26 @@ const workoutEngine = {
                         ${ex.sets.length > 1 ? `<button class="btn btn-sm" style="width:auto; background:var(--pending-dim); color:var(--pending); border-color:var(--pending); padding:10px 14px;" onclick="workoutEngine.removeLastSet(${exIdx})"><i class="fas fa-minus"></i></button>` : ''}
                      </div></div></div>`;
         });
+        const sessionPhotos = this.activeWorkout.sessionPhotos || [];
+        const sessionPhotoBanner = sessionPhotos.length > 0
+            ? `<div style="background:var(--surface-elevated); border:1px solid var(--accent-color); padding:10px 12px; border-radius:10px; margin-bottom:12px;">
+                <div style="font-size:12px; font-weight:800; color:var(--accent-color); margin-bottom:6px;"><i class="fas fa-camera"></i> Progress Photos Uploaded This Session (${sessionPhotos.length})</div>
+                <div style="display:flex; gap:8px; overflow-x:auto;">
+                    ${sessionPhotos.map(url => `<img src="${url}" style="width:64px; height:64px; object-fit:cover; border-radius:8px; border:1px solid var(--border);">`).join('')}
+                </div>
+               </div>`
+            : '';
         const attachedFitBanner = this.activeWorkout.fitFileName
             ? `<div style="background:var(--info-dim); border:1px solid var(--info); color:var(--info); padding:10px 12px; border-radius:10px; margin-bottom:12px; font-size:13px; font-weight:bold; display:flex; justify-content:space-between; align-items:center;">
-                <span><i class="fas fa-file-Waveform"></i> Attached .FIT: ${this.activeWorkout.fitFileName}</span>
+                <span class="truncate-text"><i class="fas fa-paperclip"></i> Attached .FIT: ${this.activeWorkout.fitFileName}</span>
                 <button class="btn-icon" style="width:24px; height:24px; color:var(--pending); border:none; background:transparent;" onclick="workoutEngine.activeWorkout.fitFileName=null; workoutEngine.saveSessionState(); workoutEngine.renderActiveWorkout();"><i class="fas fa-xmark"></i></button>
                </div>`
             : '';
         html += `
+            ${sessionPhotoBanner}
             ${attachedFitBanner}
             <button class="btn" style="margin-bottom: 12px; border: 1px dashed var(--accent-color); color: var(--accent-color); background: transparent;" onclick="workoutEngine.openExerciseModal('NEW')"><i class="fas fa-plus"></i> Add Exercise to Session</button>
+            <button class="btn" style="margin-bottom: 12px; background: var(--accent-dim); color: var(--accent-color); border: 1px solid var(--accent-color);" onclick="document.getElementById('progress-photo-input').click()"><i class="fas fa-camera"></i> Upload Progress Photo</button>
             <button class="btn" style="margin-bottom: 12px; background: var(--info-dim); color: var(--info); border: 1px solid var(--info);" onclick="app.triggerActiveWorkoutFitUpload()"><i class="fas fa-file-arrow-up"></i> Upload .FIT File to Workout</button>
             <button class="btn" style="background:var(--pending-dim); color:var(--pending); border:1px solid var(--pending); margin-bottom: 24px;" onclick="workoutEngine.cancelWorkout()">Discard Workout</button>
             </div>`;
@@ -2448,8 +2503,8 @@ const workoutEngine = {
                     <div style="display:flex; align-items:center; gap:12px; flex:1; cursor:pointer; min-width:0;" onclick="workoutEngine.selectExercise('${targetIdx}', '${safeName}')">
                         <img src="${thumb}" alt="${ex.name}" style="width:44px; height:44px; border-radius:8px; object-fit:cover; flex-shrink:0; border:1px solid var(--border); background:#121217;">
                         <div style="min-width:0; flex:1;">
-                            <div class="ex-title-2line" style="font-weight:bold; font-size:15px;">${ex.name}</div>
-                            <div style="font-size:11px; color:var(--text-secondary); margin-top:2px;">${mList} • ${ex.targetSets || 3} sets × ${ex.targetReps || '8-12'}</div>
+                            <div class="ex-title-2line" style="font-weight:bold; font-size:15px;">${utils.truncate(ex.name, 34)}</div>
+                            <div class="truncate-text" style="font-size:11px; color:var(--text-secondary); margin-top:2px;">${mList} • ${ex.targetSets || 3} sets × ${ex.targetReps || '8-12'}</div>
                         </div>
                     </div>
                     <div style="display:flex; gap:6px; align-items:center; flex-shrink:0;">
@@ -2603,11 +2658,11 @@ const views = {
         const unit = utils.unitLabel();
         let html = `
             <div class="page-header">
-                <div>
-                    <div style="font-size:11px; color:var(--text-secondary); text-transform:uppercase; font-weight:800; letter-spacing:0.8px;">${utils.formatDate(today.toISOString())}</div>
-                    <h1 style="margin:2px 0 0 0; font-size:26px;">DASHBOARD</h1>
+                <div style="min-width:0; flex:1;">
+                    <div class="truncate-text" style="font-size:11px; color:var(--text-secondary); text-transform:uppercase; font-weight:800; letter-spacing:0.6px;">${utils.formatDate(today.toISOString())}</div>
+                    <h1 style="margin:2px 0 0 0; font-size:24px;">DASHBOARD</h1>
                 </div>
-                <div style="display:flex; align-items:center; gap:8px;">
+                <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
                     <div class="streak-flame streak-tier-${streakTier}" onclick="app.openLevelModal()" title="Active Streak">
                         <span>${sym.streak}</span> <span>${streak}d</span>
                     </div>
@@ -2629,23 +2684,23 @@ const views = {
         if (store.state.settings.features.showRankBanner) {
             const nextLabel = rank.isMax ? 'MAX RANK' : `${rank.rpNeededForNext} RP to ${rank.nextRank ? rank.nextRank.fullName : 'Next'}`;
             html += `
-            <div class="card" onclick="app.openRankModal()" style="cursor:pointer; padding:18px 18px 16px 18px; position:relative; overflow:hidden; background: linear-gradient(135deg, rgba(16,22,28,0.94) 0%, rgba(28,24,18,0.92) 60%, ${rank.color}28 100%); border: 2px solid ${rank.color}; box-shadow: 0 0 24px ${rank.color}35, inset 0 0 20px ${rank.color}15; border-radius: 18px;">
+            <div class="card" onclick="app.openRankModal()" style="cursor:pointer; padding:18px 16px 16px 16px; position:relative; overflow:hidden; background: linear-gradient(135deg, rgba(16,22,28,0.94) 0%, rgba(28,24,18,0.92) 60%, ${rank.color}28 100%); border: 2px solid ${rank.color}; box-shadow: 0 0 24px ${rank.color}35, inset 0 0 20px ${rank.color}15; border-radius: 18px;">
                 <div style="position:absolute; right:-18px; top:-14px; opacity:0.14; pointer-events:none; transform: scale(1.65) rotate(6deg);">
                     ${utils.renderRankCrestSVG(rank.color, rank.division, 1.0, false)}
                 </div>
-                <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; position:relative; z-index:2;">
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; position:relative; z-index:2;">
                     <div style="flex:1; min-width:0;">
-                        <div style="font-size:11px; font-weight:900; text-transform:uppercase; color:${rank.color}; letter-spacing:1.1px; line-height:1.35;">WEEKLY RANKED STATUS • TAP FOR BREAKDOWN</div>
-                        <div style="font-size:28px; font-weight:900; color:#ffffff; letter-spacing:0.5px; margin-top:4px; text-transform:uppercase; text-shadow: 0 2px 12px rgba(0,0,0,0.6);">${rank.fullName}</div>
+                        <div class="truncate-text" style="font-size:10.5px; font-weight:900; text-transform:uppercase; color:${rank.color}; letter-spacing:0.8px; line-height:1.35;">WEEKLY RANKED STATUS • TAP FOR BREAKDOWN</div>
+                        <div class="truncate-text" style="font-size:26px; font-weight:900; color:#ffffff; letter-spacing:0.5px; margin-top:4px; text-transform:uppercase; text-shadow: 0 2px 12px rgba(0,0,0,0.6);">${rank.fullName}</div>
                     </div>
-                    <div style="display:flex; align-items:center; gap:10px; flex-shrink:0;">
+                    <div style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
                         <div style="text-align:right;">
-                            <div style="font-size:24px; font-weight:900; color:${rank.color}; line-height:1;">${rank.totalRP}</div>
-                            <div style="font-size:13px; font-weight:800; color:var(--text-secondary); margin-top:2px;">RP</div>
-                            <div style="font-size:11.5px; color:var(--text-secondary); margin-top:2px; max-width:95px; line-height:1.2;">${nextLabel}</div>
+                            <div style="font-size:22px; font-weight:900; color:${rank.color}; line-height:1;">${rank.totalRP}</div>
+                            <div style="font-size:12px; font-weight:800; color:var(--text-secondary); margin-top:2px;">RP</div>
+                            <div style="font-size:11px; color:var(--text-secondary); margin-top:2px; max-width:95px; line-height:1.2;">${nextLabel}</div>
                         </div>
                         <div>
-                            ${utils.renderRankCrestSVG(rank.color, rank.division, 0.78, true)}
+                            ${utils.renderRankCrestSVG(rank.color, rank.division, 0.74, true)}
                         </div>
                     </div>
                 </div>
@@ -2657,38 +2712,38 @@ const views = {
         const primaryTodayW = (prog.workouts && prog.workouts.length > 0) ? prog.workouts[0] : null;
         const wDone = workoutsToday.length > 0 || skippedToday;
         const actDone = activitiesToday.length > 0;
-        const startBtnLabel = wDone ? 'Start a Workout (Completed)' : (primaryTodayW ? `Start ${primaryTodayW.name}` : 'Start a Workout');
+        const startBtnLabel = wDone ? 'Workout Done' : (primaryTodayW ? `Start ${utils.truncate(primaryTodayW.name, 16)}` : 'Start Workout');
         html += `
         <div class="card" style="padding:18px 16px;">
             <div class="flex-between" style="margin-bottom:14px;">
-                <h2 style="margin:0; font-size:20px; letter-spacing:0.5px;">TODAY'S ACTION PLAN</h2>
-                <button class="btn btn-sm" style="padding:6px 12px; font-size:12px; background:transparent; border:1px solid var(--border); color:var(--text-primary);" onclick="app.openPinGoalsModal()"><i class="fas fa-thumbtack" style="color:var(--text-secondary);"></i> Pin Goals</button>
+                <h2 style="margin:0; font-size:19px; letter-spacing:0.5px;">TODAY'S ACTION PLAN</h2>
+                <button class="btn btn-sm" style="padding:6px 10px; font-size:12px; background:transparent; border:1px solid var(--border); color:var(--text-primary);" onclick="app.openPinGoalsModal()"><i class="fas fa-thumbtack" style="color:var(--text-secondary);"></i> Pin Goals</button>
             </div>
-            <div style="display:grid; grid-template-columns: 1.55fr 1fr; gap:10px; margin-bottom:10px;">
-                <div class="objective-row ${wDone ? 'completed' : ''}" style="margin:0; justify-content:center; text-align:center; padding:14px 10px; border-width:1.5px;" onclick="app.openStartWorkoutModal()">
-                    <i class="fas fa-dumbbell" style="color:${wDone ? 'var(--success)' : 'var(--accent-color)'}; font-size:18px;"></i>
-                    <span style="font-weight:800; font-size:15px; color:${wDone ? 'var(--success)' : 'var(--text-primary)'};">${startBtnLabel}</span>
+            <div style="display:grid; grid-template-columns: 1.45fr 1fr; gap:10px; margin-bottom:10px;">
+                <div class="objective-row ${wDone ? 'completed' : ''}" style="margin:0; justify-content:center; text-align:center; padding:14px 8px; border-width:1.5px;" onclick="app.openStartWorkoutModal()">
+                    <i class="fas fa-dumbbell" style="color:${wDone ? 'var(--success)' : 'var(--accent-color)'}; font-size:17px; flex-shrink:0;"></i>
+                    <span class="truncate-text" style="font-weight:800; font-size:14px; color:${wDone ? 'var(--success)' : 'var(--text-primary)'};">${startBtnLabel}</span>
                 </div>
-                <div class="objective-row ${actDone ? 'completed' : ''}" style="margin:0; justify-content:center; text-align:center; padding:14px 10px; border-color:${actDone ? 'var(--success)' : 'var(--border)'}; background:${actDone ? 'var(--success-dim)' : 'var(--surface-elevated)'}; border-width:1.5px;" onclick="app.logQuickActivity()">
-                    <i class="fas fa-person-running" style="color:var(--text-primary); font-size:17px;"></i>
-                    <span style="font-weight:800; font-size:15px; color:var(--text-primary);">Activity</span>
+                <div class="objective-row ${actDone ? 'completed' : ''}" style="margin:0; justify-content:center; text-align:center; padding:14px 8px; border-color:${actDone ? 'var(--success)' : 'var(--border)'}; background:${actDone ? 'var(--success-dim)' : 'var(--surface-elevated)'}; border-width:1.5px;" onclick="app.logQuickActivity()">
+                    <i class="fas fa-person-running" style="color:var(--text-primary); font-size:16px; flex-shrink:0;"></i>
+                    <span class="truncate-text" style="font-weight:800; font-size:14px; color:var(--text-primary);">Activity</span>
                 </div>
             </div>
             <div class="objective-row ${bwLogged ? 'completed' : ''}" onclick="app.promptQuickBodyweight()">
                 <div class="check-circle"><i class="fas fa-check"></i></div>
-                <div style="flex:1;">
-                    <div style="font-weight:800; font-size:16px;">Log Bodyweight</div>
-                    <div style="font-size:12.5px; color:var(--text-secondary);">${bwLogged ? `Logged: ${bwEntry.weight} ${unit} (Tap to edit)` : `Current: ${store.state.user.currentWeight} ${unit} (Tap to log)`}</div>
+                <div style="flex:1; min-width:0;">
+                    <div class="truncate-text" style="font-weight:800; font-size:15px;">Log Bodyweight</div>
+                    <div class="truncate-text" style="font-size:12px; color:var(--text-secondary);">${bwLogged ? `Logged: ${bwEntry.weight} ${unit} (Tap to edit)` : `Current: ${store.state.user.currentWeight} ${unit} (Tap to log)`}</div>
                 </div>
-                <i class="fas fa-weight-scale" style="color:var(--text-secondary); font-size:18px;"></i>
+                <i class="fas fa-weight-scale" style="color:var(--text-secondary); font-size:17px; flex-shrink:0;"></i>
             </div>
             <div class="objective-row ${nutLogged ? 'completed' : ''}" style="margin-bottom:0;" onclick="app.navigate('nutrition')">
                 <div class="check-circle"><i class="fas fa-check"></i></div>
-                <div style="flex:1;">
-                    <div style="font-weight:800; font-size:16px;">Track Nutrition & Water</div>
-                    <div style="font-size:12.5px; color:var(--text-secondary);">${nutLogged ? `${Math.round(nutEntry.cal || 0)} kcal • ${totalWaterToday}ml` : `Tap to log meals • ${totalWaterToday}ml`}</div>
+                <div style="flex:1; min-width:0;">
+                    <div class="truncate-text" style="font-weight:800; font-size:15px;">Track Nutrition & Water</div>
+                    <div class="truncate-text" style="font-size:12px; color:var(--text-secondary);">${nutLogged ? `${Math.round(nutEntry.cal || 0)} kcal • ${totalWaterToday}ml` : `Tap to log meals • ${totalWaterToday}ml`}</div>
                 </div>
-                <i class="fas fa-apple-whole" style="color:var(--text-secondary); font-size:18px;"></i>
+                <i class="fas fa-apple-whole" style="color:var(--text-secondary); font-size:17px; flex-shrink:0;"></i>
             </div>
         `;
         if (store.state.challenge && store.state.challenge.isActive && store.state.challenge.goals) {
@@ -2697,11 +2752,11 @@ const views = {
                 html += `
                 <div class="objective-row ${met ? 'completed' : ''}" style="margin-top:8px; margin-bottom:0;" onclick="app.toggleChallengeGoal('${todayStr}', '${g.id}', '${g.type}')">
                     <div class="check-circle"><i class="fas fa-check"></i></div>
-                    <div style="flex:1;">
-                        <div style="font-weight:bold; font-size:15px;">${utils.getGoalLabel(g)}</div>
-                        <div style="font-size:12px; color:var(--text-secondary);">Pinned Goal • ${met ? 'Completed' : 'Tap to complete'}</div>
+                    <div style="flex:1; min-width:0;">
+                        <div class="truncate-text" style="font-weight:bold; font-size:15px;">${utils.truncate(utils.getGoalLabel(g), 32)}</div>
+                        <div class="truncate-text" style="font-size:12px; color:var(--text-secondary);">Pinned Goal • ${met ? 'Completed' : 'Tap to complete'}</div>
                     </div>
-                    <i class="fas fa-thumbtack" style="color:var(--accent-color);"></i>
+                    <i class="fas fa-thumbtack" style="color:var(--accent-color); flex-shrink:0;"></i>
                 </div>`;
             });
         }
@@ -2712,11 +2767,11 @@ const views = {
             html += `
             <div class="card" style="padding:16px;">
                 <div class="flex-between">
-                    <h2 style="margin:0; font-size:18px;">RECOVERY & VOLUME (28D)</h2>
+                    <h2 style="margin:0; font-size:17px;">RECOVERY & VOLUME (28D)</h2>
                     <button class="btn btn-sm" style="padding:5px 10px; font-size:11px;" onclick="app.navigate('analytics')">Details</button>
                 </div>
                 <div class="heatmap-svg">${utils.renderAnatomySVG(colorMap)}</div>
-                <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap; font-size:11px; color:var(--text-secondary); margin-top:4px;">
+                <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap; font-size:11px; color:var(--text-secondary); margin-top:4px;">
                     <span><i class="fas fa-circle" style="color:#333333;"></i> 0</span>
                     <span><i class="fas fa-circle" style="color:#2e86ab;"></i> 1-4</span>
                     <span><i class="fas fa-circle" style="color:#3498db;"></i> 5-9</span>
@@ -2762,13 +2817,13 @@ const views = {
             }
             html += `
             <div class="home-bento-row">
-                <div class="card" style="margin:0; padding:14px; display:flex; flex-direction:column; justify-content:space-between;">
+                <div class="card" style="margin:0; padding:14px; display:flex; flex-direction:column; justify-content:space-between; cursor:pointer;" onclick="app.openWorkoutCalendarModal()">
                     <div class="flex-between" style="align-items:flex-start; margin-bottom:6px;">
-                        <div>
+                        <div style="min-width:0;">
                             <div style="font-size:18px; font-weight:900; color:var(--text-primary); line-height:1.1;">${activeDays48} <span style="font-size:12px; font-weight:700; color:var(--text-secondary);">DAYS</span></div>
-                            <div style="font-size:11px; color:var(--text-secondary);">Workout Calendar (48d)</div>
+                            <div class="truncate-text" style="font-size:11px; color:var(--accent-color); font-weight:700;">Tap for Split Calendar</div>
                         </div>
-                        <i class="fas fa-calendar-check" style="color:#ff9500; font-size:16px;"></i>
+                        <i class="fas fa-calendar-days" style="color:#ff9500; font-size:16px; flex-shrink:0;"></i>
                     </div>
                     <div class="activity-heat-grid">${cellsHtml}</div>
                 </div>
@@ -2778,16 +2833,16 @@ const views = {
                             <span style="font-size:11px; font-weight:bold; color:var(--text-secondary);">Weight</span>
                             <i class="fas fa-weight-scale" style="color:#ff9500; font-size:13px;"></i>
                         </div>
-                        <div style="font-size:21px; font-weight:900; color:var(--text-primary); margin-top:2px;">${store.state.user.currentWeight} <span style="font-size:13px; font-weight:normal; color:var(--text-secondary);">${unit}</span></div>
-                        <div style="font-size:10.5px; color:var(--text-secondary);">Goal: ${store.state.user.targetWeight}${unit}</div>
+                        <div class="truncate-text" style="font-size:20px; font-weight:900; color:var(--text-primary); margin-top:2px;">${store.state.user.currentWeight} <span style="font-size:12px; font-weight:normal; color:var(--text-secondary);">${unit}</span></div>
+                        <div class="truncate-text" style="font-size:10.5px; color:var(--text-secondary);">Goal: ${store.state.user.targetWeight}${unit}</div>
                     </div>
                     <div class="card" style="margin:0; padding:12px 14px; flex:1; cursor:pointer; display:flex; flex-direction:column; justify-content:center;" onclick="app.navigate('analytics')">
                         <div class="flex-between">
-                            <span style="font-size:10.5px; font-weight:bold; color:var(--text-secondary);">4w PRs & World %</span>
+                            <span class="truncate-text" style="font-size:10.5px; font-weight:bold; color:var(--text-secondary);">4w PRs & World %</span>
                             <i class="fas fa-trophy" style="color:var(--accent-color); font-size:13px;"></i>
                         </div>
-                        <div style="font-size:15px; font-weight:900; color:var(--text-primary); margin-top:3px;">Strength Ranks</div>
-                        <div style="font-size:10.5px; color:var(--text-secondary);">View Top % Standards</div>
+                        <div class="truncate-text" style="font-size:15px; font-weight:900; color:var(--text-primary); margin-top:3px;">Strength Ranks</div>
+                        <div class="truncate-text" style="font-size:10.5px; color:var(--text-secondary);">View Top % Standards</div>
                     </div>
                 </div>
             </div>`;
@@ -2800,23 +2855,27 @@ const views = {
         const unit = utils.unitLabel();
         let html = `
             <div class="page-header">
-                <h1 style="margin:0; font-size:24px;">Workouts & Splits</h1>
-                <div style="display:flex; gap:8px;">
-                    <button class="btn btn-sm" onclick="app.openRoutineEditor('${active.id}')"><i class="fas fa-pen"></i> Edit Split</button>
-                    <button class="btn btn-sm btn-primary" onclick="app.openStartWorkoutModal()"><i class="fas fa-play"></i> Start</button>
+                <div style="min-width:0; flex:1;">
+                    <div class="truncate-text" style="font-size:11px; color:var(--text-secondary); font-weight:bold; text-transform:uppercase;">Splits, Schedule, Folders & Past Logs</div>
+                    <h1 style="margin:0; font-size:24px;">WORKOUTS</h1>
+                </div>
+                <div style="display:flex; gap:6px; flex-shrink:0;">
+                    <button class="btn btn-sm" style="padding:8px 10px;" onclick="app.openWorkoutCalendarModal()" title="Full Split Calendar"><i class="fas fa-calendar-days"></i></button>
+                    <button class="btn btn-sm" style="padding:8px 10px;" onclick="app.openRoutineEditor('${active.id}')"><i class="fas fa-pen"></i> Split</button>
+                    <button class="btn btn-sm btn-primary" style="padding:8px 12px;" onclick="app.openStartWorkoutModal()"><i class="fas fa-play"></i> Start</button>
                 </div>
             </div>
         `;
         html += `
         <div class="card" style="padding:14px;">
-            <div class="flex-between" style="gap:10px;">
-                <div style="flex:1;">
+            <div class="flex-between" style="gap:10px; flex-wrap:wrap;">
+                <div style="flex:1; min-width:160px;">
                     <div style="font-size:10px; text-transform:uppercase; font-weight:800; color:var(--text-secondary);">Active Training Split</div>
                     <select class="edit-input" style="margin:4px 0 0 0; font-weight:bold;" onchange="app.switchActiveRoutine(this.value)">
-                        ${store.state.routines.map(r => `<option value="${r.id}" ${r.id === active.id ? 'selected' : ''}>${r.name}</option>`).join('')}
+                        ${store.state.routines.map(r => `<option value="${r.id}" ${r.id === active.id ? 'selected' : ''}>${utils.truncate(r.name, 28)}</option>`).join('')}
                     </select>
                 </div>
-                <div style="display:flex; gap:6px; margin-top:16px;">
+                <div style="display:flex; gap:6px; margin-top:14px;">
                     <button class="btn btn-sm" onclick="app.createNewRoutine()"><i class="fas fa-plus"></i> Split</button>
                     <button class="btn btn-sm" onclick="workoutEngine.openExerciseModal('NEW')" title="Manage Master Exercises"><i class="fas fa-dumbbell"></i> Exercises</button>
                 </div>
@@ -2824,8 +2883,8 @@ const views = {
         </div>`;
         html += `
         <div class="flex-between" style="margin:16px 0 10px 0;">
-            <h2 style="font-size:17px; margin:0;">Weekly Schedule (${active.name})</h2>
-            <span style="font-size:11px; color:var(--text-secondary);"><i class="fas fa-arrows-up-down"></i> Use arrows or dropdown to move days</span>
+            <h2 class="truncate-text" style="font-size:16px; margin:0;">Weekly Schedule (${utils.truncate(active.name, 18)})</h2>
+            <button class="btn btn-sm" style="padding:4px 10px; font-size:11px; color:var(--accent-color); border-color:var(--accent-color);" onclick="app.openWorkoutCalendarModal()"><i class="fas fa-calendar-alt"></i> Calendar View</button>
         </div>
         <div class="weekly-plan-list">`;
         const orderedDays = [1, 2, 3, 4, 5, 6, 0];
@@ -2837,22 +2896,22 @@ const views = {
             const prevDayIdx = orderedDays[(orderPos - 1 + 7) % 7];
             const nextDayIdx = orderedDays[(orderPos + 1) % 7];
             html += `
-            <div class="weekly-plan-row" style="${isToday ? 'background:var(--accent-dim);' : ''} gap:8px;">
-                <div style="display:flex; align-items:center; gap:10px; flex:1; min-width:0;">
-                    <div style="width:40px; font-weight:900; font-size:13px; color:${isToday ? 'var(--accent-color)' : 'var(--text-secondary)'}; flex-shrink:0;">${utils.getDayShort(dayIdx).toUpperCase()}</div>
+            <div class="weekly-plan-row" style="${isToday ? 'background:var(--accent-dim);' : ''}">
+                <div style="display:flex; align-items:center; gap:8px; flex:1; min-width:0;">
+                    <div style="width:36px; font-weight:900; font-size:12px; color:${isToday ? 'var(--accent-color)' : 'var(--text-secondary)'}; flex-shrink:0;">${utils.getDayShort(dayIdx).toUpperCase()}</div>
                     <div style="min-width:0; flex:1;">
-                        <div style="font-weight:800; font-size:15px; color:var(--text-primary); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${label}</div>
-                        <div style="font-size:11px; color:var(--text-secondary);">${wList.length > 0 ? `${wList[0].exercises.length} exercises` : 'Rest Day'}</div>
+                        <div class="truncate-text" style="font-weight:800; font-size:14.5px; color:var(--text-primary);">${utils.truncate(label, 24)}</div>
+                        <div class="truncate-text" style="font-size:11px; color:var(--text-secondary);">${wList.length > 0 ? `${wList[0].exercises.length} exercises` : 'Rest Day'}</div>
                     </div>
                 </div>
-                <div style="display:flex; align-items:center; gap:5px; flex-shrink:0;">
-                    <button class="btn-icon" style="width:28px; height:28px; font-size:11px;" onclick="app.swapRoutineDays(${dayIdx}, ${prevDayIdx})" title="Move up to ${utils.getDayShort(prevDayIdx)}"><i class="fas fa-chevron-up"></i></button>
-                    <button class="btn-icon" style="width:28px; height:28px; font-size:11px;" onclick="app.swapRoutineDays(${dayIdx}, ${nextDayIdx})" title="Move down to ${utils.getDayShort(nextDayIdx)}"><i class="fas fa-chevron-down"></i></button>
-                    <select onchange="if(this.value !== '') { app.swapRoutineDays(${dayIdx}, parseInt(this.value)); }" style="background:var(--surface-elevated); color:var(--text-secondary); border:1px solid var(--border); border-radius:6px; padding:4px; font-size:11px; width:64px;" title="Swap with another day">
-                        <option value="">Swap...</option>
+                <div style="display:flex; align-items:center; gap:4px; flex-shrink:0;">
+                    <button class="btn-icon" style="width:26px; height:26px; font-size:10px;" onclick="app.swapRoutineDays(${dayIdx}, ${prevDayIdx})" title="Move up to ${utils.getDayShort(prevDayIdx)}"><i class="fas fa-chevron-up"></i></button>
+                    <button class="btn-icon" style="width:26px; height:26px; font-size:10px;" onclick="app.swapRoutineDays(${dayIdx}, ${nextDayIdx})" title="Move down to ${utils.getDayShort(nextDayIdx)}"><i class="fas fa-chevron-down"></i></button>
+                    <select onchange="if(this.value !== '') { app.swapRoutineDays(${dayIdx}, parseInt(this.value)); }" style="background:var(--surface-elevated); color:var(--text-secondary); border:1px solid var(--border); border-radius:6px; padding:3px; font-size:11px; width:58px;" title="Swap with another day">
+                        <option value="">Swap</option>
                         ${orderedDays.filter(d => d !== dayIdx).map(d => `<option value="${d}">⇄ ${utils.getDayShort(d)}</option>`).join('')}
                     </select>
-                    ${wList.length > 0 ? `<button class="btn btn-sm" style="padding:6px 10px; font-size:12px;" onclick="app.startRoutineWorkout('${active.id}', ${dayIdx}, 0)"><i class="fas fa-play"></i></button>` : ''}
+                    ${wList.length > 0 ? `<button class="btn btn-sm" style="padding:6px 9px; font-size:11px;" onclick="app.startRoutineWorkout('${active.id}', ${dayIdx}, 0)"><i class="fas fa-play"></i></button>` : ''}
                 </div>
             </div>`;
         });
@@ -2866,7 +2925,7 @@ const views = {
             (d.workouts || []).forEach((w, wIdx) => {
                 const col = tabColors[folderCount % tabColors.length];
                 folderCount++;
-                const exPreview = (w.exercises || []).slice(0, 3).map(e => e.name).join(', ');
+                const exPreview = utils.truncate((w.exercises || []).slice(0, 3).map(e => e.name).join(', '), 36);
                 html += `
                 <div class="routine-folder-card">
                     <div>
@@ -2876,25 +2935,25 @@ const views = {
                         </div>
                         <div class="routine-folder-body">
                             <div style="font-size:10px; font-weight:800; color:var(--text-secondary); text-transform:uppercase;">${utils.getDayShort(d.day)}</div>
-                            <div class="ex-title-2line" style="font-weight:900; font-size:16px; margin:2px 0 6px 0;">${w.name}</div>
+                            <div class="truncate-text" style="font-weight:900; font-size:15px; margin:2px 0 6px 0;">${utils.truncate(w.name, 18)}</div>
                             <div style="font-size:11px; color:var(--text-secondary); line-height:1.35; height:30px; overflow:hidden;">${exPreview || 'No exercises'}</div>
                         </div>
                     </div>
                     <div class="routine-folder-start" onclick="app.startRoutineWorkout('${active.id}', ${d.day}, ${wIdx})">
-                        <i class="fas fa-play" style="color:${col}; font-size:11px;"></i> <span>Start Session (${(w.exercises || []).length})</span>
+                        <i class="fas fa-play" style="color:${col}; font-size:11px;"></i> <span>Start (${(w.exercises || []).length})</span>
                     </div>
                 </div>`;
             });
         });
         html += `</div>`;
-        // Recent Workout History with Upload as .FIT / Upload as CSV
         const recentW = [...store.state.history.workouts].filter(w => !w.isSkipped).sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 12);
         html += `
         <div class="flex-between" style="margin:18px 0 10px 0; flex-wrap:wrap; gap:8px;">
             <h2 style="font-size:17px; margin:0;">Past Workout Data</h2>
-            <div style="display:flex; gap:6px;">
-                <button class="btn btn-sm" style="padding:6px 10px; font-size:12px; background:var(--info-dim); color:var(--info); border-color:var(--info);" onclick="app.triggerFitImport()"><i class="fas fa-file-arrow-up"></i> Upload as .FIT</button>
-                <button class="btn btn-sm" style="padding:6px 10px; font-size:12px; background:var(--success-dim); color:var(--success); border-color:var(--success);" onclick="app.triggerCsvImport()"><i class="fas fa-file-csv"></i> Upload as CSV</button>
+            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                <button class="btn btn-sm" style="padding:6px 10px; font-size:11.5px; background:var(--accent-dim); color:var(--accent-color); border-color:var(--accent-color);" onclick="document.getElementById('progress-photo-input').click()"><i class="fas fa-camera"></i> Upload Photo</button>
+                <button class="btn btn-sm" style="padding:6px 10px; font-size:11.5px; background:var(--info-dim); color:var(--info); border-color:var(--info);" onclick="app.triggerFitImport()"><i class="fas fa-file-arrow-up"></i> Upload .FIT</button>
+                <button class="btn btn-sm" style="padding:6px 10px; font-size:11.5px; background:var(--success-dim); color:var(--success); border-color:var(--success);" onclick="app.triggerCsvImport()"><i class="fas fa-file-csv"></i> Upload CSV</button>
             </div>
         </div>`;
         if (recentW.length === 0) {
@@ -2906,15 +2965,15 @@ const views = {
                 html += `
                 <div class="card" style="padding:14px;">
                     <div class="flex-between">
-                        <div>
+                        <div style="min-width:0; flex:1;">
                             <div style="font-size:11px; color:var(--text-secondary); font-weight:bold;">${utils.formatDate(w.date)}</div>
-                            <div style="font-weight:800; font-size:16px; color:var(--text-primary);">${w.name} ${w.isActivity ? '<span style="font-size:10px; background:var(--info-dim); color:var(--info); padding:2px 6px; border-radius:4px;">ACTIVITY</span>' : ''} ${w.fitFileName ? `<span style="font-size:10px; background:var(--info-dim); color:var(--info); padding:2px 6px; border-radius:4px;"><i class="fas fa-paperclip"></i> ${w.fitFileName}</span>` : ''}</div>
-                            ${!w.isActivity ? `<div style="font-size:12px; color:var(--text-secondary); margin-top:2px;">${totalSets} sets • ${Math.round(totalVol).toLocaleString()} ${unit} volume</div>` : ''}
+                            <div class="truncate-text" style="font-weight:800; font-size:15px; color:var(--text-primary);">${utils.truncate(w.name, 24)} ${w.isActivity ? '<span style="font-size:10px; background:var(--info-dim); color:var(--info); padding:2px 6px; border-radius:4px;">ACTIVITY</span>' : ''} ${w.fitFileName ? `<span style="font-size:10px; background:var(--info-dim); color:var(--info); padding:2px 6px; border-radius:4px;"><i class="fas fa-paperclip"></i> ${utils.truncate(w.fitFileName, 14)}</span>` : ''}</div>
+                            ${!w.isActivity ? `<div class="truncate-text" style="font-size:12px; color:var(--text-secondary); margin-top:2px;">${totalSets} sets • ${Math.round(totalVol).toLocaleString()} ${unit} volume</div>` : ''}
                         </div>
-                        <div style="display:flex; gap:6px; align-items:center;">
+                        <div style="display:flex; gap:5px; align-items:center; flex-shrink:0;">
                             <button class="btn btn-sm" style="padding:5px 8px; font-size:11px;" onclick="app.attachFitToPastWorkout('${w.id}')" title="Attach/Upload .FIT to this workout">.FIT</button>
                             <button class="btn btn-sm" style="padding:5px 8px; font-size:11px;" onclick="app.exportSingleWorkoutCSV('${w.id}')" title="Export/Upload as CSV">CSV</button>
-                            <button class="btn-icon" style="color:var(--pending); width:32px; height:32px;" onclick="app.deleteWorkoutEntry('${w.id}')" title="Delete Session"><i class="fas fa-trash"></i></button>
+                            <button class="btn-icon" style="color:var(--pending); width:30px; height:30px;" onclick="app.deleteWorkoutEntry('${w.id}')" title="Delete Session"><i class="fas fa-trash"></i></button>
                         </div>
                     </div>
                 </div>`;
@@ -2922,7 +2981,6 @@ const views = {
         }
         return html;
     },
-    /* ANALYTICS SECTION REVERTED EXACTLY TO SCREENSHOTS */
     renderAnalytics() {
         const unit = utils.unitLabel();
         const range = store.state.settings.chartRange || '90';
@@ -2932,7 +2990,6 @@ const views = {
         const volFilter = store.state.settings.lastVolFilter || 'total';
         const exFilter = store.state.settings.overloadExerciseFilter || 'ALL_MUSCLE';
         const hyper = utils.getWeeklyHypertrophyStatus();
-        // Compute 7d bodyweight avg & period trend change
         const daysLimit = range === 'ALL' ? 0 : parseInt(range);
         const cutoff = daysLimit ? (Date.now() - daysLimit * 86400000) : 0;
         const sortedBwAll = [...store.state.history.bodyweight].sort((a, b) => new Date(a.date) - new Date(b.date));
@@ -2950,7 +3007,6 @@ const views = {
         }
         const trendSign = trendDiff > 0 ? '+' : '';
         const goalLabelCap = bwGoal.charAt(0).toUpperCase() + bwGoal.slice(1);
-        // Exercises belonging to selected muscle for dropdown
         let muscleExercises = [];
         if (volFilter !== 'total') {
             const grouped = utils.getGroupedExercises();
@@ -2966,12 +3022,15 @@ const views = {
         }
         let html = `
             <div class="page-header">
-                <h1 style="margin:0; font-size:28px;">ANALYTICS</h1>
+                <div style="min-width:0; flex:1;">
+                    <div class="truncate-text" style="font-size:11px; color:var(--text-secondary); font-weight:bold; text-transform:uppercase;">Overload, Bodyweight, PRs & Hypertrophy</div>
+                    <h1 style="margin:0; font-size:24px;">ANALYTICS</h1>
+                </div>
             </div>
-            <!-- 1. PROGRESSIVE OVERLOAD CARD (Exact Screenshot 2 Match) -->
+            <!-- 1. PROGRESSIVE OVERLOAD CARD -->
             <div class="card" style="background: linear-gradient(145deg, var(--vol-bg1), var(--vol-bg2)); border: 1.5px solid var(--info); box-shadow: 0 8px 24px rgba(0,0,0,0.45); padding: 18px 16px;">
                 <div class="flex-between" style="align-items:flex-start; margin-bottom:14px;">
-                    <h2 style="margin:0; font-size:22px; color:var(--info); font-style:italic; letter-spacing:0.5px; line-height:1.2;">
+                    <h2 style="margin:0; font-size:20px; color:var(--info); font-style:italic; letter-spacing:0.5px; line-height:1.2;">
                         <i class="fas fa-chart-line"></i> PROGRESSIVE<br>OVERLOAD
                     </h2>
                     <select class="edit-input" style="width:auto; margin:0; padding:6px 12px; font-size:14px; font-weight:900; background:rgba(0,0,0,0.45); border:1px solid var(--border); color:#ffffff; border-radius:10px;" onchange="app.setChartRange(this.value)">
@@ -2993,16 +3052,16 @@ const views = {
                 ${volFilter !== 'total' ? `
                     <select class="edit-input" style="margin-bottom:10px; padding:12px 14px; font-weight:800; font-size:16px !important; background:rgba(0,0,0,0.35); border:1px solid var(--border); border-radius:12px; color:#ffffff;" onchange="app.setOverloadExerciseFilter(this.value)">
                         <option value="ALL_MUSCLE" ${exFilter === 'ALL_MUSCLE' ? 'selected' : ''}>All ${volFilter} Volume</option>
-                        ${muscleExercises.map(exName => `<option value="${exName}" ${exFilter === exName ? 'selected' : ''}>${exName}</option>`).join('')}
+                        ${muscleExercises.map(exName => `<option value="${exName}" ${exFilter === exName ? 'selected' : ''}>${utils.truncate(exName, 30)}</option>`).join('')}
                     </select>
                 ` : ''}
                 <div style="height:230px;"><canvas id="volChart"></canvas></div>
             </div>
-            <!-- 2. BODYWEIGHT CARD (Exact Screenshot 2 & 3 Match) -->
+            <!-- 2. BODYWEIGHT CARD -->
             <div class="card" style="background: linear-gradient(145deg, var(--bw-bg1), var(--bw-bg2)); border: 1.5px solid var(--warning); box-shadow: 0 8px 24px rgba(0,0,0,0.45); padding: 18px 16px;">
                 <div class="flex-between" style="align-items:flex-start; margin-bottom:8px;">
                     <div>
-                        <h2 style="margin:0; font-size:22px; color:var(--warning); display:flex; align-items:center; gap:8px;">
+                        <h2 style="margin:0; font-size:20px; color:var(--warning); display:flex; align-items:center; gap:8px;">
                             <i class="fas fa-weight-scale"></i> BODYWEIGHT
                         </h2>
                         <div style="display:flex; flex-direction:column; gap:8px; margin-top:10px; align-items:flex-start;">
@@ -3015,8 +3074,8 @@ const views = {
                         </div>
                     </div>
                     <div style="text-align:right;">
-                        <div style="font-size:24px; font-weight:900; color:#ffffff;">${avg7d} <span style="font-size:14px; font-weight:normal; color:var(--text-secondary);">${unit} (7d</span></div>
-                        <div style="font-size:14px; color:var(--text-secondary);">avg)</div>
+                        <div style="font-size:22px; font-weight:900; color:#ffffff;">${avg7d} <span style="font-size:13px; font-weight:normal; color:var(--text-secondary);">${unit} (7d</span></div>
+                        <div style="font-size:13px; color:var(--text-secondary);">avg)</div>
                     </div>
                 </div>
                 <div style="display:grid; grid-template-columns: 1fr auto; gap:10px; margin:14px 0 12px 0;">
@@ -3024,14 +3083,14 @@ const views = {
                     <button class="btn" style="width:auto; height:48px; padding:0 24px; background:var(--warning); color:#000000; font-weight:900; border:none; border-radius:12px;" onclick="app.saveInlineBodyweight()">Save</button>
                 </div>
                 <div style="height:220px;"><canvas id="bwChart"></canvas></div>
-                <div style="background:rgba(0,0,0,0.38); border:1px solid rgba(255,255,255,0.06); border-radius:12px; padding:12px; text-align:center; margin-top:12px; font-size:14px; color:#ffffff;">
+                <div style="background:rgba(0,0,0,0.38); border:1px solid rgba(255,255,255,0.06); border-radius:12px; padding:12px; text-align:center; margin-top:12px; font-size:13.5px; color:#ffffff;">
                     Trend change over selected period: <strong style="color:var(--warning);">${trendSign}${trendDiff.toFixed(1)} ${unit}</strong> (Goal: <strong>${goalLabelCap}</strong>)
                 </div>
             </div>
-            <!-- 3. THE PR ZONE & 4-WEEK MAXES (Exact Screenshot 1 & 3 Match) -->
+            <!-- 3. THE PR ZONE & 4-WEEK MAXES -->
             <div class="card" style="background: linear-gradient(145deg, var(--pr-bg1), var(--pr-bg2)); border: 1.5px solid var(--accent-color); box-shadow: 0 8px 24px rgba(0,0,0,0.45); padding: 18px 16px;">
                 <div class="flex-between" style="align-items:center; margin-bottom:8px; gap:8px;">
-                    <h2 style="margin:0; font-size:22px; color:var(--accent-color); line-height:1.25;">
+                    <h2 style="margin:0; font-size:20px; color:var(--accent-color); line-height:1.25;">
                         <i class="fas fa-trophy"></i> THE PR ZONE<br>& 4-WEEK<br>MAXES
                     </h2>
                     <button class="btn btn-sm btn-primary" style="padding:10px 14px; font-weight:900; border-radius:10px; flex-shrink:0;" onclick="app.promptTrackExercisePR()">+ Track Exercise</button>
@@ -3050,50 +3109,49 @@ const views = {
             html += `
                 <div style="background:rgba(0,0,0,0.28); border:1px solid var(--border); border-radius:14px; padding:16px; margin-bottom:14px;">
                     <div class="flex-between" style="align-items:flex-start;">
-                        <div>
-                            <div style="font-size:20px; font-weight:900; color:var(--info); text-transform:uppercase; letter-spacing:0.5px;">${st.lift}</div>
+                        <div style="min-width:0; flex:1;">
+                            <div class="truncate-text" style="font-size:18px; font-weight:900; color:var(--info); text-transform:uppercase; letter-spacing:0.5px;">${utils.truncate(st.lift, 22)}</div>
                             <span style="display:inline-block; margin-top:6px; padding:3px 12px; border-radius:14px; border:1px solid var(--info); color:var(--info); font-size:11px; font-weight:900; text-transform:uppercase; background:rgba(2,136,209,0.12);">${st.tier}</span>
                         </div>
-                        <div style="display:flex; align-items:flex-start; gap:10px;">
+                        <div style="display:flex; align-items:flex-start; gap:8px; flex-shrink:0;">
                             <div style="text-align:right;">
-                                <div style="font-size:26px; font-weight:900; color:#ffffff; line-height:1;">${st.e1rm} <span style="font-size:14px; font-weight:normal; color:var(--text-secondary);">${unit} 1RM</span></div>
-                                <div style="font-size:13px; font-weight:800; color:var(--success); margin-top:6px;"><i class="fas fa-globe"></i> Top ${st.topPercent}% World</div>
+                                <div style="font-size:24px; font-weight:900; color:#ffffff; line-height:1;">${st.e1rm} <span style="font-size:13px; font-weight:normal; color:var(--text-secondary);">${unit} 1RM</span></div>
+                                <div style="font-size:12px; font-weight:800; color:var(--success); margin-top:6px;"><i class="fas fa-globe"></i> Top ${st.topPercent}% World</div>
                             </div>
-                            <button class="btn-icon" style="width:34px; height:34px; background:rgba(211,47,47,0.15); border:1px solid var(--pending); color:var(--pending); border-radius:8px;" onclick="app.removeTrackedPR('${safeLift}')" title="Untrack Exercise"><i class="fas fa-minus"></i></button>
+                            <button class="btn-icon" style="width:32px; height:32px; background:rgba(211,47,47,0.15); border:1px solid var(--pending); color:var(--pending); border-radius:8px;" onclick="app.removeTrackedPR('${safeLift}')" title="Untrack Exercise"><i class="fas fa-minus"></i></button>
                         </div>
                     </div>
-                    <div style="font-size:13.5px; color:var(--text-secondary); margin-top:12px;">
+                    <div style="font-size:13px; color:var(--text-secondary); margin-top:12px;">
                         4w Best Set: <strong style="color:#ffffff;">${st.weight}${unit} × ${st.reps} reps</strong> • Ratio: <strong style="color:#ffffff;">${st.bwRatio}x BW</strong>
                     </div>
                     <div class="progress-bg" style="height:8px; margin-top:12px; background:rgba(255,255,255,0.08);">
                         <div class="progress-fill" style="width:${st.barFill}%; background:var(--info);"></div>
                     </div>
-                    <div class="flex-between" style="font-size:11px; color:var(--text-secondary); margin-top:8px; padding-bottom:12px; border-bottom:1px dashed rgba(255,255,255,0.12);">
-                        <span>Novice: ${aNov}${unit}</span>
-                        <span>Interm: ${aInt}${unit}</span>
+                    <div class="flex-between" style="font-size:10.5px; color:var(--text-secondary); margin-top:8px; padding-bottom:12px; border-bottom:1px dashed rgba(255,255,255,0.12);">
+                        <span>Nov: ${aNov}${unit}</span>
+                        <span>Int: ${aInt}${unit}</span>
                         <span>Adv: ${aAdv}${unit}</span>
                         <span>Elite: ${aEli}${unit}</span>
                     </div>
-                    <div style="display:grid; grid-template-columns: auto 1fr auto 1fr auto; gap:8px; align-items:center; margin-top:12px;">
-                        <span style="font-size:12px; color:var(--text-secondary); line-height:1.2;">Manual<br>Override:</span>
+                    <div style="display:grid; grid-template-columns: auto 1fr auto 1fr auto; gap:6px; align-items:center; margin-top:12px;">
+                        <span style="font-size:11px; color:var(--text-secondary); line-height:1.2;">Manual<br>Override:</span>
                         <input type="number" step="0.5" id="pr-w-${idx}" class="inline-edit" value="${st.weight || 0}" style="height:40px; border-radius:8px; background:rgba(0,0,0,0.4);">
                         <span style="color:var(--text-secondary); font-weight:bold;">×</span>
                         <input type="number" id="pr-r-${idx}" class="inline-edit" value="${st.reps || 1}" style="height:40px; border-radius:8px; background:rgba(0,0,0,0.4);">
-                        <button class="btn btn-sm" style="height:40px; padding:0 16px; background:var(--info); color:#000000; font-weight:900; border:none; border-radius:8px;" onclick="app.saveManualPROverride('${safeLift}', ${idx})">Update</button>
+                        <button class="btn btn-sm" style="height:40px; padding:0 14px; background:var(--info); color:#000000; font-weight:900; border:none; border-radius:8px;" onclick="app.saveManualPROverride('${safeLift}', ${idx})">Update</button>
                     </div>
                 </div>
             `;
         });
         html += `</div>`;
-        // 4. WEEKLY HYPERTROPHY CARD (Exact Screenshot 1 Match)
         html += `
             <div class="card" style="background: linear-gradient(145deg, var(--vol-bg1), var(--vol-bg2)); border: 1.5px solid var(--info); box-shadow: 0 8px 24px rgba(0,0,0,0.45); padding: 18px 16px;">
                 <div class="flex-between" style="align-items:flex-start; gap:8px;">
-                    <h2 style="margin:0; font-size:21px; color:var(--info); line-height:1.25;">
+                    <h2 style="margin:0; font-size:20px; color:var(--info); line-height:1.25;">
                         <i class="fas fa-dumbbell"></i> WEEKLY<br>HYPERTROPHY
                     </h2>
-                    <span style="border:1px solid var(--warning); background:rgba(245,124,0,0.15); color:var(--warning); padding:5px 12px; border-radius:10px; font-size:12.5px; font-weight:900; white-space:nowrap;">
-                        ${hyper.completedGroups}/${hyper.totalGroups} Targets Met (+${hyper.hypertrophyRP} RP)
+                    <span style="border:1px solid var(--warning); background:rgba(245,124,0,0.15); color:var(--warning); padding:5px 10px; border-radius:10px; font-size:12px; font-weight:900; white-space:nowrap;">
+                        ${hyper.completedGroups}/${hyper.totalGroups} Met (+${hyper.hypertrophyRP} RP)
                     </span>
                 </div>
                 <div style="font-size:13px; color:var(--text-secondary); margin-top:6px; margin-bottom:10px;">
@@ -3117,11 +3175,14 @@ const views = {
         const totalWater = (nutEntry.waterLog || []).reduce((s, e) => s + e.amount, 0);
         let html = `
             <div class="page-header">
-                <h1 style="margin:0; font-size:28px;">NUTRITION</h1>
-                <input type="date" class="edit-input" style="margin:0; padding:6px 10px; font-size:13px; font-weight:bold; width:auto;" value="${dStr}" onchange="app.changeNutritionDate(this.value)">
+                <div style="min-width:0; flex:1;">
+                    <div class="truncate-text" style="font-size:11px; color:var(--text-secondary); font-weight:bold; text-transform:uppercase;">Macros, Meals, Water & Quality Score</div>
+                    <h1 style="margin:0; font-size:24px;">NUTRITION</h1>
+                </div>
+                <input type="date" class="edit-input" style="margin:0; padding:6px 10px; font-size:13px; font-weight:bold; width:auto; flex-shrink:0;" value="${dStr}" onchange="app.changeNutritionDate(this.value)">
             </div>
             <div class="flex-between" style="margin-bottom:12px;">
-                <h2 style="margin:0; font-size:20px;">DAILY SUMMARY</h2>
+                <h2 style="margin:0; font-size:19px;">DAILY SUMMARY</h2>
                 <button class="btn btn-sm" style="background:transparent; border:1px solid var(--border); padding:6px 12px; font-size:12px;" onclick="app.copyPastNutritionDay('${dStr}')"><i class="fas fa-copy"></i> Copy Past Day</button>
             </div>
             <div class="nut-ring-grid">
@@ -3131,8 +3192,8 @@ const views = {
                 ${utils.renderMacroRingCard('Fat', nutEntry.fat, targets.fat, 'g', 'fat', '#ffd60a', 'fa-cheese')}
             </div>
             <div class="flex-between" style="margin:18px 0 12px 0; align-items:flex-start;">
-                <div style="flex:1; padding-right:10px;">
-                    <h2 style="margin:0 0 2px 0; font-size:20px;">MEALS</h2>
+                <div style="flex:1; padding-right:10px; min-width:0;">
+                    <h2 style="margin:0 0 2px 0; font-size:19px;">MEALS</h2>
                     <div style="font-size:12px; color:var(--text-secondary); line-height:1.35;">Tap a meal window to log from your Saved Meals or raw ingredients</div>
                 </div>
                 <button class="btn btn-sm btn-primary" style="width:auto; padding:10px 14px; font-weight:900;" onclick="app.openMealCreateModal('${dStr}')"><i class="fas fa-utensils"></i> + Create Meal</button>
@@ -3145,7 +3206,7 @@ const views = {
                     <div class="nut-meal-tile" onclick="app.openMealSearchModal('${dStr}', '${mw.type}')">
                         <img src="${mw.img}" alt="${mw.label}" class="nut-meal-tile-img">
                         <div class="nut-meal-tile-body">
-                            <div style="font-weight:900; font-size:17px; color:var(--text-primary);">${mw.label}</div>
+                            <div style="font-weight:900; font-size:16px; color:var(--text-primary);">${mw.label}</div>
                             <div style="font-size:12px; color:${windowCals > 0 ? 'var(--accent-color)' : 'var(--text-secondary)'}; margin-top:4px; font-weight:700;">
                                 ${windowCals > 0 ? `${windowCals} kcal (${mealsInWindow.length})` : '+ Add Meal'}
                             </div>
@@ -3163,9 +3224,9 @@ const views = {
                 </div>
                 ${nutEntry.loggedMeals.map((m, idx) => `
                     <div class="data-row flex-between" style="padding:8px 0;">
-                        <div>
-                            <div style="font-weight:bold; font-size:14px;"><span style="color:var(--accent-color); font-size:11px; text-transform:uppercase;">[${m.type || 'Meal'}]</span> ${m.name} ${m.grams ? `<span style="font-size:11px; color:var(--text-secondary);">(${m.grams}g)</span>` : ''}</div>
-                            <div style="font-size:11px; color:var(--text-secondary);">${Math.round(m.cal)} kcal • P: ${Math.round(m.pro)}g • C: ${Math.round(m.car)}g • F: ${Math.round(m.fat)}g</div>
+                        <div style="min-width:0; flex:1;">
+                            <div class="truncate-text" style="font-weight:bold; font-size:14px;"><span style="color:var(--accent-color); font-size:11px; text-transform:uppercase;">[${m.type || 'Meal'}]</span> ${utils.truncate(m.name, 26)} ${m.grams ? `<span style="font-size:11px; color:var(--text-secondary);">(${m.grams}g)</span>` : ''}</div>
+                            <div class="truncate-text" style="font-size:11px; color:var(--text-secondary);">${Math.round(m.cal)} kcal • P: ${Math.round(m.pro)}g • C: ${Math.round(m.car)}g • F: ${Math.round(m.fat)}g</div>
                         </div>
                         <button class="btn-icon" style="width:28px; height:28px; color:var(--pending);" onclick="app.removeLoggedMeal('${dStr}', ${idx})"><i class="fas fa-xmark"></i></button>
                     </div>
@@ -3195,8 +3256,8 @@ const views = {
         <div class="card" style="padding:20px 16px;">
             <div style="font-size:11px; font-weight:800; letter-spacing:1px; color:var(--text-secondary); text-transform:uppercase; margin-bottom:4px;">DAILY NUTRITION RATING</div>
             <div class="flex-between" style="align-items:flex-start;">
-                <div style="font-size:24px; font-weight:900; color:#ffffff; line-height:1.15;">NUTRITION<br>SCORE: <span style="color:var(--text-secondary);">${scoreObj.totalScore} / 100</span></div>
-                <span style="border:1px solid var(--border); padding:5px 14px; border-radius:20px; font-size:12px; font-weight:800; color:${scoreObj.color};">${scoreObj.grade}</span>
+                <div style="font-size:22px; font-weight:900; color:#ffffff; line-height:1.15;">NUTRITION<br>SCORE: <span style="color:var(--text-secondary);">${scoreObj.totalScore} / 100</span></div>
+                <span style="border:1px solid var(--border); padding:5px 12px; border-radius:20px; font-size:11.5px; font-weight:800; color:${scoreObj.color}; white-space:nowrap;">${scoreObj.grade}</span>
             </div>
             <div style="position:relative; width:124px; height:124px; margin:18px auto; display:flex; align-items:center; justify-content:center;">
                 <svg width="124" height="124" viewBox="0 0 124 124" style="transform: rotate(-90deg);">
@@ -3224,7 +3285,7 @@ const views = {
         html += `
         <div class="card" style="padding:18px 16px;">
             <div class="flex-between" style="margin-bottom:12px;">
-                <h2 style="margin:0; font-size:19px;"><i class="fas fa-clipboard-check text-accent"></i> RECOMMENDATIONS & NOTES</h2>
+                <h2 style="margin:0; font-size:18px;"><i class="fas fa-clipboard-check text-accent"></i> RECOMMENDATIONS & NOTES</h2>
                 <span style="font-size:11px; color:var(--text-secondary);">NZ Athlete Ref</span>
             </div>
             ${insights.map(ins => `
@@ -3242,7 +3303,6 @@ const views = {
         </div>`;
         return html;
     },
-    /* PROFILE TAB (Renamed from Data, with Medals Restored & .FIT / CSV Uploads) */
     renderData() {
         const unit = utils.unitLabel();
         const tab = app.manageSubTab || 'overview';
@@ -3255,8 +3315,8 @@ const views = {
         const unlockedCount = medals.filter(m => m.unlocked).length;
         let html = `
             <div class="page-header">
-                <div>
-                    <div style="font-size:11px; color:var(--text-secondary); font-weight:bold; text-transform:uppercase;">Medals, Splits, Logs & Backup</div>
+                <div style="min-width:0; flex:1;">
+                    <div class="truncate-text" style="font-size:11px; color:var(--text-secondary); font-weight:bold; text-transform:uppercase;">Medals, Splits, Logs & Backup</div>
                     <h1 style="margin:0; font-size:24px;">PROFILE</h1>
                 </div>
                 <button class="btn btn-sm" onclick="app.openSettingsModal()"><i class="fas fa-gear"></i> Settings</button>
@@ -3271,16 +3331,18 @@ const views = {
         if (tab === 'overview') {
             const photos = store.state.history.progressPhotos || [];
             html += `
-            <div class="card" style="display:flex; align-items:center; gap:16px;">
-                <img src="${store.state.user.avatar}" style="width:68px; height:68px; border-radius:50%; object-fit:cover; border:2px solid var(--accent-color);" onclick="app.promptProfileEdit()">
-                <div style="flex:1;">
-                    <div style="font-size:19px; font-weight:900;">${store.state.user.name} <span class="level-badge lvl-tier-${lvl.tierIdx}" style="font-size:11px; padding:2px 8px; margin-left:4px;" onclick="app.openLevelModal()">LVL ${lvl.level}</span></div>
-                    <div style="font-size:12px; color:var(--text-secondary);">${lvl.title} • ${lvl.totalXP} Lifetime XP</div>
-                    <div style="font-size:12px; color:var(--text-secondary); margin-top:2px;">BW: <strong>${store.state.user.currentWeight}${unit}</strong> → Goal: <strong>${store.state.user.targetWeight}${unit}</strong></div>
+            <div class="card" style="display:flex; align-items:center; gap:14px;">
+                <img src="${store.state.user.avatar}" style="width:64px; height:64px; border-radius:50%; object-fit:cover; border:2px solid var(--accent-color); flex-shrink:0;" onclick="app.promptProfileEdit()">
+                <div style="flex:1; min-width:0;">
+                    <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                        <span class="truncate-text" style="font-size:18px; font-weight:900;">${utils.truncate(store.state.user.name, 18)}</span>
+                        <span class="level-badge lvl-tier-${lvl.tierIdx}" style="font-size:11px; padding:2px 8px;" onclick="app.openLevelModal()">LVL ${lvl.level}</span>
+                    </div>
+                    <div class="truncate-text" style="font-size:12px; color:var(--text-secondary);">${lvl.title} • ${lvl.totalXP} Lifetime XP</div>
+                    <div class="truncate-text" style="font-size:12px; color:var(--text-secondary); margin-top:2px;">BW: <strong>${store.state.user.currentWeight}${unit}</strong> → Goal: <strong>${store.state.user.targetWeight}${unit}</strong></div>
                 </div>
                 <button class="btn-icon" onclick="app.promptProfileEdit()"><i class="fas fa-pen"></i></button>
             </div>
-            <!-- RESTORED MEDALS & ACHIEVEMENTS -->
             <div class="card">
                 <div class="flex-between" style="margin-bottom:8px;">
                     <h2 style="margin:0; font-size:17px;"><i class="fas fa-medal text-accent"></i> MEDALS & HONOURS</h2>
@@ -3302,8 +3364,8 @@ const views = {
                 <h2 style="margin:0 0 8px 0; font-size:17px;">Split & Routine Manager</h2>
                 ${store.state.routines.map(r => `
                     <div class="data-row flex-between">
-                        <div style="font-weight:bold; font-size:15px;">${r.name} ${r.id === store.state.activeRoutineId ? '<span style="font-size:10px; background:var(--accent-color); color:var(--bg-color); padding:2px 6px; border-radius:4px; font-weight:900;">ACTIVE</span>' : ''}</div>
-                        <div style="display:flex; gap:6px;">
+                        <div class="truncate-text" style="font-weight:bold; font-size:15px; flex:1;">${utils.truncate(r.name, 22)} ${r.id === store.state.activeRoutineId ? '<span style="font-size:10px; background:var(--accent-color); color:var(--bg-color); padding:2px 6px; border-radius:4px; font-weight:900;">ACTIVE</span>' : ''}</div>
+                        <div style="display:flex; gap:6px; flex-shrink:0;">
                             ${r.id !== store.state.activeRoutineId ? `<button class="btn btn-sm" onclick="app.switchActiveRoutine('${r.id}')">Activate</button>` : ''}
                             <button class="btn btn-sm" onclick="app.openRoutineEditor('${r.id}')"><i class="fas fa-pen"></i> Edit</button>
                         </div>
@@ -3357,9 +3419,9 @@ const views = {
                     const safeName = ex.name.replace(/'/g, "\\'");
                     html += `
                     <div class="data-row flex-between">
-                        <div>
-                            <div style="font-weight:bold; font-size:14px;">${ex.name}</div>
-                            <div style="font-size:11px; color:var(--text-secondary);">${utils.getMuscles(ex).join(', ')} • Default: ${ex.targetSets || 3} × ${ex.targetReps || '8-12'}</div>
+                        <div style="min-width:0; flex:1;">
+                            <div class="truncate-text" style="font-weight:bold; font-size:14px;">${utils.truncate(ex.name, 30)}</div>
+                            <div class="truncate-text" style="font-size:11px; color:var(--text-secondary);">${utils.getMuscles(ex).join(', ')} • Default: ${ex.targetSets || 3} × ${ex.targetReps || '8-12'}</div>
                         </div>
                         <button class="btn-icon" style="width:32px; height:32px;" onclick="workoutEngine.editExerciseFromModal('NEW', '${safeName}'); app.navigate('data');"><i class="fas fa-pen"></i></button>
                     </div>`;
@@ -3371,8 +3433,8 @@ const views = {
                 <div class="flex-between" style="margin-bottom:12px; flex-wrap:wrap; gap:8px;">
                     <h2 style="margin:0; font-size:17px;">Past Workout Logs (${allWorkouts.length})</h2>
                     <div style="display:flex; gap:6px; flex-wrap:wrap;">
-                        <button class="btn btn-sm" style="padding:6px 10px; font-size:12px; background:var(--info-dim); color:var(--info); border-color:var(--info);" onclick="app.triggerFitImport()"><i class="fas fa-file-arrow-up"></i> Upload as .FIT</button>
-                        <button class="btn btn-sm" style="padding:6px 10px; font-size:12px; background:var(--success-dim); color:var(--success); border-color:var(--success);" onclick="app.triggerCsvImport()"><i class="fas fa-file-csv"></i> Upload as CSV</button>
+                        <button class="btn btn-sm" style="padding:6px 10px; font-size:12px; background:var(--info-dim); color:var(--info); border-color:var(--info);" onclick="app.triggerFitImport()"><i class="fas fa-file-arrow-up"></i> Upload .FIT</button>
+                        <button class="btn btn-sm" style="padding:6px 10px; font-size:12px; background:var(--success-dim); color:var(--success); border-color:var(--success);" onclick="app.triggerCsvImport()"><i class="fas fa-file-csv"></i> Upload CSV</button>
                         <button class="btn btn-sm" style="padding:6px 10px; font-size:12px;" onclick="app.exportWorkoutsCSV()"><i class="fas fa-download"></i> Export CSV</button>
                     </div>
                 </div>`;
@@ -3384,15 +3446,15 @@ const views = {
                     const setsCount = (w.exercises || []).reduce((acc, ex) => acc + (ex.sets || []).filter(s => s.completed !== false).length, 0);
                     html += `
                     <div class="data-row flex-between">
-                        <div>
+                        <div style="min-width:0; flex:1;">
                             <div style="font-size:11px; color:var(--text-secondary); font-weight:bold;">${utils.formatDate(w.date)}</div>
-                            <div style="font-weight:800; font-size:15px;">${w.name} ${w.isSkipped ? '<span style="font-size:10px; color:var(--info);">(REST)</span>' : (w.isActivity ? '<span style="font-size:10px; color:var(--info);">(ACTIVITY)</span>' : '')} ${w.fitFileName ? `<span style="font-size:10px; background:var(--info-dim); color:var(--info); padding:2px 6px; border-radius:4px;"><i class="fas fa-paperclip"></i> ${w.fitFileName}</span>` : ''}</div>
-                            ${(!w.isSkipped && !w.isActivity) ? `<div style="font-size:11px; color:var(--text-secondary);">${setsCount} sets • ${Math.round(vol).toLocaleString()} ${unit}</div>` : ''}
+                            <div class="truncate-text" style="font-weight:800; font-size:15px;">${utils.truncate(w.name, 22)} ${w.isSkipped ? '<span style="font-size:10px; color:var(--info);">(REST)</span>' : (w.isActivity ? '<span style="font-size:10px; color:var(--info);">(ACTIVITY)</span>' : '')} ${w.fitFileName ? `<span style="font-size:10px; background:var(--info-dim); color:var(--info); padding:2px 6px; border-radius:4px;"><i class="fas fa-paperclip"></i> ${utils.truncate(w.fitFileName, 12)}</span>` : ''}</div>
+                            ${(!w.isSkipped && !w.isActivity) ? `<div class="truncate-text" style="font-size:11px; color:var(--text-secondary);">${setsCount} sets • ${Math.round(vol).toLocaleString()} ${unit}</div>` : ''}
                         </div>
-                        <div style="display:flex; gap:6px; align-items:center;">
-                            <button class="btn btn-sm" style="padding:4px 8px; font-size:11px;" onclick="app.attachFitToPastWorkout('${w.id}')">Upload .FIT</button>
+                        <div style="display:flex; gap:5px; align-items:center; flex-shrink:0;">
+                            <button class="btn btn-sm" style="padding:4px 8px; font-size:11px;" onclick="app.attachFitToPastWorkout('${w.id}')">.FIT</button>
                             <button class="btn btn-sm" style="padding:4px 8px; font-size:11px;" onclick="app.exportSingleWorkoutCSV('${w.id}')">CSV</button>
-                            <button class="btn-icon" style="color:var(--pending); width:32px; height:32px;" onclick="app.deleteWorkoutEntry('${w.id}')"><i class="fas fa-trash"></i></button>
+                            <button class="btn-icon" style="color:var(--pending); width:30px; height:30px;" onclick="app.deleteWorkoutEntry('${w.id}')"><i class="fas fa-trash"></i></button>
                         </div>
                     </div>`;
                 });
@@ -3448,10 +3510,13 @@ const app = {
     draftRoutine: null,
     fitUploadTargetMode: null,
     fitUploadWorkoutId: null,
+    calendarMonthOffset: 0,
+    selectedCalendarDate: null,
     init() {
         store.load();
         this.applyTheme(store.state.settings.theme || 'olympus');
         this.selectedNutritionDate = utils.getLocalISODate(new Date());
+        this.selectedCalendarDate = this.selectedNutritionDate;
         const currRank = utils.getWeeklyRankData();
         if (store.state.settings.lastSeenRankLadderIdx === null || store.state.settings.lastSeenRankLadderIdx === undefined) {
             store.state.settings.lastSeenRankLadderIdx = currRank.ladderIdx;
@@ -3500,6 +3565,163 @@ const app = {
         } else if (page === 'nutrition') main.innerHTML = views.renderNutrition();
         else if (page === 'data') main.innerHTML = views.renderData();
         main.scrollTop = 0;
+    },
+    /* FULL-FLEDGED WORKOUT CALENDAR & SPLIT INTEGRATION */
+    openWorkoutCalendarModal(monthOffset = null, selDate = null) {
+        if (monthOffset !== null) this.calendarMonthOffset = monthOffset;
+        if (selDate) this.selectedCalendarDate = selDate;
+        if (!this.selectedCalendarDate) this.selectedCalendarDate = utils.getLocalISODate(new Date());
+        const modal = document.getElementById('calendar-modal');
+        const activeSplit = utils.getActiveRoutine();
+        const now = new Date();
+        const targetMonthDate = new Date(now.getFullYear(), now.getMonth() + this.calendarMonthOffset, 1);
+        const year = targetMonthDate.getFullYear();
+        const month = targetMonthDate.getMonth();
+        const monthTitle = targetMonthDate.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const firstDayJs = new Date(year, month, 1).getDay();
+        const startOffset = (firstDayJs + 6) % 7; // Monday = 0
+        const todayIso = utils.getLocalISODate(now);
+        const dayHeaders = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        let calCellsHtml = dayHeaders.map(h => `<div class="chal-cal-hdr">${h}</div>`).join('');
+        for (let b = 0; b < startOffset; b++) {
+            calCellsHtml += `<div style="aspect-ratio:1/1.15;"></div>`;
+        }
+        for (let d = 1; d <= daysInMonth; d++) {
+            const dObj = new Date(year, month, d);
+            const dIso = utils.getLocalISODate(dObj);
+            const dow = dObj.getDay();
+            const splitDay = activeSplit.days.find(x => x.day === dow) || { day: dow, workouts: [] };
+            const scheduledWorkouts = splitDay.workouts || [];
+            const splitTitle = scheduledWorkouts.length > 0 ? scheduledWorkouts[0].name : 'Rest';
+            const loggedWorkouts = store.state.history.workouts.filter(w => utils.getLocalISODate(w.date) === dIso && !w.isSkipped);
+            const skippedRest = store.state.history.workouts.some(w => utils.getLocalISODate(w.date) === dIso && w.isSkipped);
+            let statusClass = '';
+            if (loggedWorkouts.length > 0) statusClass = 'cal-all-met';
+            else if (skippedRest) statusClass = 'cal-partial';
+            else if (dIso < todayIso && scheduledWorkouts.length > 0) statusClass = 'cal-missed';
+            const isSelected = dIso === this.selectedCalendarDate;
+            calCellsHtml += `
+                <div class="chal-cal-day ${statusClass} ${isSelected ? 'cal-active-sel' : ''}" onclick="app.openWorkoutCalendarModal(${this.calendarMonthOffset}, '${dIso}')">
+                    <div style="font-size:11px; font-weight:900; color:${dIso === todayIso ? 'var(--accent-color)' : 'var(--text-primary)'};">${d}</div>
+                    <div class="truncate-text" style="font-size:8.5px; color:${scheduledWorkouts.length > 0 ? 'var(--info)' : 'var(--text-secondary)'}; font-weight:800; text-align:center; width:100%;">${utils.truncate(splitTitle, 8)}</div>
+                    <div style="font-size:9px;">
+                        ${loggedWorkouts.length > 0 ? '<i class="fas fa-check-circle" style="color:var(--success);"></i>' : (scheduledWorkouts.length > 0 ? '<i class="fas fa-dumbbell" style="color:var(--text-secondary); opacity:0.55;"></i>' : '<i class="fas fa-moon" style="color:var(--text-secondary); opacity:0.35;"></i>')}
+                    </div>
+                </div>
+            `;
+        }
+        // Selected Day Details
+        const selParts = this.selectedCalendarDate.split('-');
+        const selDateObj = new Date(parseInt(selParts[0]), parseInt(selParts[1]) - 1, parseInt(selParts[2]));
+        const selDow = selDateObj.getDay();
+        const selSplitDay = activeSplit.days.find(x => x.day === selDow) || { day: selDow, workouts: [] };
+        const selScheduled = selSplitDay.workouts || [];
+        const selLogged = store.state.history.workouts.filter(w => utils.getLocalISODate(w.date) === this.selectedCalendarDate);
+        let html = `
+            <div class="workout-header-sticky">
+                <button class="btn btn-sm" style="width:auto;" onclick="document.getElementById('calendar-modal').style.display='none'">Close</button>
+                <div style="text-align:center; min-width:0; flex:1;">
+                    <div class="truncate-text" style="font-size:10px; color:var(--text-secondary); font-weight:800; text-transform:uppercase;">Split Calendar & Schedule</div>
+                    <div class="truncate-text" style="font-weight:900; font-size:16px;">${utils.truncate(activeSplit.name, 24)}</div>
+                </div>
+                <button class="btn btn-sm btn-primary" style="width:auto; padding:6px 10px; font-size:11px;" onclick="app.exportSplitToICS()" title="Sync Split to Apple / iPhone Calendar"><i class="fas fa-calendar-plus"></i> Sync iCal</button>
+            </div>
+            <div style="padding:16px; overflow-y:auto; flex:1; padding-bottom:90px;">
+                <div class="card" style="padding:14px;">
+                    <div class="flex-between" style="margin-bottom:10px;">
+                        <button class="btn-icon" onclick="app.openWorkoutCalendarModal(${this.calendarMonthOffset - 1})"><i class="fas fa-chevron-left"></i></button>
+                        <div style="font-size:17px; font-weight:900; color:var(--accent-color); text-transform:uppercase;">${monthTitle}</div>
+                        <button class="btn-icon" onclick="app.openWorkoutCalendarModal(${this.calendarMonthOffset + 1})"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                    <div class="chal-cal-grid">${calCellsHtml}</div>
+                    <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap; font-size:10.5px; color:var(--text-secondary); margin-top:12px;">
+                        <span><i class="fas fa-square" style="color:var(--success);"></i> Completed</span>
+                        <span><i class="fas fa-square" style="color:var(--info);"></i> Scheduled Split</span>
+                        <span><i class="fas fa-square" style="color:var(--pending);"></i> Missed</span>
+                    </div>
+                </div>
+                <div class="card" style="padding:16px; border:1.5px solid var(--accent-color);">
+                    <div class="flex-between" style="margin-bottom:8px;">
+                        <div>
+                            <div style="font-size:11px; color:var(--text-secondary); font-weight:800; text-transform:uppercase;">${utils.getDayName(selDow)} • ${utils.formatDateShort(selDateObj)}</div>
+                            <h2 style="margin:2px 0 0 0; font-size:18px;">${selScheduled.length > 0 ? selScheduled.map(w => w.name).join(' + ') : 'Scheduled Rest & Recovery Day'}</h2>
+                        </div>
+                        ${selScheduled.length > 0 ? `<button class="btn btn-sm btn-primary" onclick="document.getElementById('calendar-modal').style.display='none'; app.startRoutineWorkout('${activeSplit.id}', ${selDow}, 0);"><i class="fas fa-play"></i> Start</button>` : ''}
+                    </div>
+                    ${selScheduled.length > 0 ? selScheduled.map(w => `
+                        <div style="margin-top:10px; padding-top:10px; border-top:1px solid var(--border);">
+                            <div style="font-size:12px; font-weight:800; color:var(--info); margin-bottom:6px;">Split Prescription (${(w.exercises || []).length} Exercises):</div>
+                            ${(w.exercises || []).map((ex, idx) => `
+                                <div class="flex-between" style="font-size:13px; padding:4px 0; border-bottom:1px dashed rgba(255,255,255,0.06);">
+                                    <span class="truncate-text" style="font-weight:700;">${idx + 1}. ${utils.truncate(ex.name, 26)}</span>
+                                    <span style="color:var(--text-secondary); font-size:12px; flex-shrink:0;">${ex.targetSets || 3} sets × ${ex.targetReps || '8-12'}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `).join('') : `<div class="text-muted" style="font-size:13px;">Active recovery, walking, mobility, and hitting your daily protein & hydration targets.</div>`}
+                    ${selLogged.length > 0 ? `
+                        <div style="margin-top:14px; padding-top:12px; border-top:1px solid var(--success);">
+                            <div style="font-size:12px; font-weight:900; color:var(--success); text-transform:uppercase; margin-bottom:6px;"><i class="fas fa-check-circle"></i> Completed on this date:</div>
+                            ${selLogged.map(lw => `
+                                <div style="background:var(--success-dim); border:1px solid var(--success); border-radius:8px; padding:8px 10px; margin-bottom:6px; font-size:13px; font-weight:800;">
+                                    ${lw.name} ${lw.isSkipped ? '(Rest Logged)' : `• ${(lw.exercises || []).length} exercises`}
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+                </div>
+            </div>
+        `;
+        modal.innerHTML = html;
+        modal.style.display = 'flex';
+    },
+    exportSplitToICS() {
+        const activeSplit = utils.getActiveRoutine();
+        const now = new Date();
+        const monTs = utils.getMonday(now);
+        let icsLines = [
+            'BEGIN:VCALENDAR',
+            'VERSION:2.0',
+            'PRODID:-//IronTrack OS//Workout Split Calendar//EN',
+            'CALSCALE:GREGORIAN'
+        ];
+        const pad2 = (n) => String(n).padStart(2, '0');
+        const formatICSDate = (dObj, hour = 17, min = 0) => {
+            return `${dObj.getFullYear()}${pad2(dObj.getMonth() + 1)}${pad2(dObj.getDate())}T${pad2(hour)}${pad2(min)}00`;
+        };
+        for (let week = 0; week < 4; week++) {
+            for (let i = 0; i < 7; i++) {
+                const dObj = new Date(monTs + (week * 7 + i) * 86400000);
+                const dow = dObj.getDay();
+                const dayProg = activeSplit.days.find(x => x.day === dow);
+                if (dayProg && dayProg.workouts && dayProg.workouts.length > 0) {
+                    dayProg.workouts.forEach(w => {
+                        const exDesc = (w.exercises || []).map(e => `${e.name} (${e.targetSets}x${e.targetReps})`).join('\\n');
+                        icsLines.push(
+                            'BEGIN:VEVENT',
+                            `UID:${utils.generateId()}@irontrack.os`,
+                            `DTSTAMP:${formatICSDate(new Date(), 12, 0)}Z`,
+                            `DTSTART:${formatICSDate(dObj, 17, 0)}`,
+                            `DTEND:${formatICSDate(dObj, 18, 15)}`,
+                            `SUMMARY:IronTrack: ${w.name} (${activeSplit.name})`,
+                            `DESCRIPTION:${exDesc}`,
+                            'END:VEVENT'
+                        );
+                    });
+                }
+            }
+        }
+        icsLines.push('END:VCALENDAR');
+        const blob = new Blob([icsLines.join('\r\n')], { type: 'text/calendar;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `IronTrack_${activeSplit.name.replace(/\s+/g, '_')}_Schedule.ics`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
     },
     /* .FIT AND CSV WORKOUT UPLOAD HANDLERS */
     triggerActiveWorkoutFitUpload() {
@@ -3720,19 +3942,9 @@ const app = {
                     <div style="font-size:11px; color:var(--text-secondary);">Tap to view Monthly Rank Ladder</div>
                 </div>
             `;
-            toast.style.display = 'flex';
-            toast.onclick = () => { toast.style.display = 'none'; app.openRankModal(); };
-            setTimeout(() => { toast.style.display = 'none'; }, 5500);
-        }
-        const colors = [rank.color, '#ffd700', '#ffffff', '#00e5ff', '#34c759'];
-        for (let i = 0; i < 36; i++) {
-            const p = document.createElement('div');
-            p.className = 'confetti-piece';
-            p.style.left = Math.random() * 100 + 'vw';
-            p.style.background = colors[i % colors.length];
-            p.style.animationDuration = (1.8 + Math.random() * 1.4) + 's';
-            document.body.appendChild(p);
-            setTimeout(() => p.remove(), 3200);
+            toast.classList.add('show');
+            toast.onclick = () => { toast.classList.remove('show'); app.openRankModal(); };
+            setTimeout(() => { toast.classList.remove('show'); }, 5500);
         }
     },
     openLevelModal() {
@@ -3771,41 +3983,99 @@ const app = {
         `;
         modal.style.display = 'flex';
     },
+    /* RESTORED R6 STAGE RANKED VIEW + HISTORICAL DAILY RP GAIN/LOSS LOG */
     openRankModal() {
         const rank = utils.getWeeklyRankData();
         const breakdown = utils.getWeeklyRPBreakdown();
-        const modal = document.getElementById('rank-details-modal');
+        const modal = document.getElementById('rank-modal');
+        const prevCrest = rank.prevRank
+            ? `<div style="opacity:0.65; transform:scale(0.85);">
+                ${utils.renderRankCrestSVG(rank.prevRank.color, rank.prevRank.division, 0.72, false)}
+                <div class="truncate-text" style="font-size:11px; font-weight:800; color:var(--text-secondary); margin-top:4px;">${rank.prevRank.fullName}</div>
+                <div style="font-size:10px; color:var(--text-secondary);">${rank.prevRank.minRP} RP</div>
+               </div>`
+            : `<div style="opacity:0.35; font-size:11px; color:var(--text-secondary); padding-bottom:24px;">START<br>0 RP</div>`;
+        const nextCrest = rank.nextRank
+            ? `<div style="opacity:0.85; transform:scale(0.88);">
+                ${utils.renderRankCrestSVG(rank.nextRank.color, rank.nextRank.division, 0.72, false)}
+                <div class="truncate-text" style="font-size:11px; font-weight:800; color:${rank.nextRank.color}; margin-top:4px;">${rank.nextRank.fullName}</div>
+                <div style="font-size:10px; color:var(--text-secondary);">${rank.nextRank.minRP} RP</div>
+               </div>`
+            : `<div style="opacity:0.85; font-size:11px; font-weight:900; color:${rank.color}; padding-bottom:24px;">MAX TIER<br>CHAMPION</div>`;
+        const reqText = rank.isMax
+            ? 'CHAMPION RANK UNLOCKED'
+            : `${rank.rpNeededForNext} RP TO ${rank.nextRank ? rank.nextRank.fullName.toUpperCase() : 'NEXT RANK'}`;
         let html = `
             <div class="workout-header-sticky">
-                <button class="btn btn-sm" style="width:auto;" onclick="document.getElementById('rank-details-modal').style.display='none'">Close</button>
-                <div style="font-weight:bold; font-size:16px;">${rank.monthName} Ranked Status</div>
+                <button class="btn btn-sm" style="width:auto;" onclick="document.getElementById('rank-modal').style.display='none'">Close</button>
+                <div style="text-align:center; min-width:0; flex:1;">
+                    <div style="font-size:10px; color:var(--text-secondary); font-weight:800; text-transform:uppercase;">${rank.monthName} Season Ladder</div>
+                    <div style="font-weight:900; font-size:16px;">WEEKLY RANKED</div>
+                </div>
                 <div style="width:60px;"></div>
             </div>
-            <div style="padding:16px; overflow-y:auto; flex:1; padding-bottom:80px;">
-                <div class="card" style="text-align:center; padding:22px 16px; border:2px solid ${rank.color}; background:linear-gradient(145deg, var(--surface-color), ${rank.color}18);">
-                    <div>${utils.renderRankCrestSVG(rank.color, rank.division, 1.15, true)}</div>
-                    <div style="font-size:28px; font-weight:900; color:#ffffff; margin-top:8px; text-transform:uppercase;">${rank.fullName}</div>
-                    <div style="font-size:18px; font-weight:800; color:${rank.color}; margin-top:2px;">${rank.totalRP} RP</div>
-                    <div style="font-size:12px; color:var(--text-secondary); margin-top:4px;">
-                        ${rank.isMax ? 'Highest Division Reached!' : `${rank.rpNeededForNext} RP needed for ${rank.nextRank ? rank.nextRank.fullName : 'Next Division'}`}
+            <div style="padding:16px; overflow-y:auto; flex:1; padding-bottom:90px;">
+                <div class="r6-stage-card" style="border:2px solid ${rank.color}; box-shadow: 0 0 28px ${rank.color}30;">
+                    <div style="text-align:center; margin-bottom:14px;">
+                        <span style="font-size:11px; font-weight:900; letter-spacing:1.2px; text-transform:uppercase; color:${rank.color};">CURRENT STANDING • ${rank.totalRP} TOTAL RP</span>
                     </div>
-                    ${rank.championLockedByHypertrophy ? `<div style="margin-top:10px; padding:8px; border-radius:8px; background:var(--warning-dim); color:var(--warning); font-size:12px; font-weight:bold;">Champion Gate: Reach 90%+ Monthly Consistency (Currently ${rank.consistencyPct}%) to unlock Champion!</div>` : ''}
-                    <div class="progress-bg" style="height:10px; margin-top:14px;">
-                        <div class="progress-fill" style="width:${rank.progress}%; background:${rank.color};"></div>
+                    <div class="r6-rank-trio">
+                        ${prevCrest}
+                        <div>
+                            ${utils.renderRankCrestSVG(rank.color, rank.division, 1.12, true)}
+                            <div style="font-size:24px; font-weight:900; color:#ffffff; margin-top:6px; text-transform:uppercase; letter-spacing:0.5px;">${rank.fullName}</div>
+                            <div style="font-size:13px; font-weight:800; color:${rank.color};">${rank.rpInDiv} / ${rank.maxDivRP} Division RP</div>
+                        </div>
+                        ${nextCrest}
+                    </div>
+                    <div class="r6-line-wrap">
+                        <div class="r6-line-fill" style="width:${rank.progress}%; background:${rank.color}; box-shadow: 0 0 12px ${rank.color};"></div>
+                        <div class="r6-line-spark" style="left:${rank.progress}%;"></div>
+                    </div>
+                    <div style="text-align:center;">
+                        <div class="r6-req-pill"><span>${reqText}</span></div>
+                    </div>
+                    ${rank.championLockedByHypertrophy ? `<div style="margin-top:14px; padding:8px 12px; border-radius:8px; background:var(--warning-dim); color:var(--warning); font-size:12px; font-weight:bold; text-align:center;">Champion Gate: Reach 90%+ Monthly Consistency (Currently ${rank.consistencyPct}%) to unlock Champion!</div>` : ''}
+                </div>
+                <!-- HISTORICAL DAILY RP GAIN / LOSS LOG (e.g. 5/11 -10 RP, 4/11 +50 RP) -->
+                <div class="card" style="padding:16px;">
+                    <div class="flex-between" style="margin-bottom:10px;">
+                        <h3 style="margin:0; font-size:15px; color:var(--accent-color);"><i class="fas fa-clock-rotate-left"></i> HISTORICAL DAILY RP GAIN / LOSS</h3>
+                        <span style="font-size:11px; color:var(--text-secondary);">${rank.monthName}</span>
+                    </div>
+                    <div style="max-height:220px; overflow-y:auto; padding-right:4px;">
+                        ${rank.rpHistoryLog.length === 0 ? `<div class="text-muted">No daily RP history yet this month.</div>` : rank.rpHistoryLog.map(item => {
+                            const isPos = item.delta >= 0;
+                            const sign = item.delta > 0 ? '+' : '';
+                            const badgeCol = item.delta > 0 ? 'var(--success)' : (item.delta < 0 ? 'var(--pending)' : 'var(--text-secondary)');
+                            const badgeBg = item.delta > 0 ? 'var(--success-dim)' : (item.delta < 0 ? 'var(--pending-dim)' : 'var(--surface-elevated)');
+                            return `
+                            <div class="data-row flex-between" style="padding:8px 0;">
+                                <div style="min-width:0; flex:1;">
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <span style="font-weight:900; font-size:14px; color:var(--text-primary); min-width:42px;">${item.shortDate}</span>
+                                        <span class="truncate-text" style="font-size:12px; color:var(--text-secondary);">${utils.truncate(item.reasons, 30)}</span>
+                                    </div>
+                                </div>
+                                <div style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
+                                    <span style="font-weight:900; font-size:13px; color:${badgeCol}; background:${badgeBg}; border:1px solid ${badgeCol}; padding:2px 8px; border-radius:8px;">${sign}${item.delta} RP</span>
+                                </div>
+                            </div>`;
+                        }).join('')}
                     </div>
                 </div>
                 <h3 style="margin:16px 0 10px 0;">RP Pillar Breakdown</h3>
                 ${breakdown.map(b => `
                     <div class="card" style="padding:14px; margin-bottom:10px;">
                         <div class="flex-between">
-                            <div style="display:flex; align-items:center; gap:10px;">
-                                <i class="fas ${b.icon}" style="color:${b.color}; font-size:18px; width:24px; text-align:center;"></i>
-                                <div>
-                                    <div style="font-weight:800; font-size:15px;">${b.title}</div>
-                                    <div style="font-size:11px; color:var(--text-secondary);">${b.subtitle}</div>
+                            <div style="display:flex; align-items:center; gap:10px; min-width:0; flex:1;">
+                                <i class="fas ${b.icon}" style="color:${b.color}; font-size:18px; width:24px; text-align:center; flex-shrink:0;"></i>
+                                <div style="min-width:0; flex:1;">
+                                    <div class="truncate-text" style="font-weight:800; font-size:15px;">${b.title}</div>
+                                    <div class="truncate-text" style="font-size:11px; color:var(--text-secondary);">${b.subtitle}</div>
                                 </div>
                             </div>
-                            <div style="text-align:right;">
+                            <div style="text-align:right; flex-shrink:0;">
                                 <div style="font-weight:900; font-size:14px; color:${b.color};">+${b.rpEarned} RP</div>
                                 <div style="font-size:11px; color:var(--text-secondary);">${b.current}/${b.total} ${b.unit}</div>
                             </div>
@@ -3837,7 +4107,7 @@ const app = {
             html += `
             <div class="card" style="border:2px solid var(--success); background:var(--success-dim);">
                 <div style="font-size:11px; font-weight:900; color:var(--success); text-transform:uppercase;">Session In Progress</div>
-                <div style="font-size:18px; font-weight:900; margin:4px 0 12px 0;">${store.state.activeSession.name}</div>
+                <div class="truncate-text" style="font-size:18px; font-weight:900; margin:4px 0 12px 0;">${store.state.activeSession.name}</div>
                 <button class="btn btn-success" onclick="workoutEngine.resumeSession()"><i class="fas fa-play"></i> Resume Active Workout</button>
             </div>`;
         }
@@ -3847,9 +4117,9 @@ const app = {
                 html += `
                 <div class="card" style="border:1px solid var(--accent-color);">
                     <div class="flex-between">
-                        <div>
-                            <div style="font-weight:900; font-size:17px;">${w.name}</div>
-                            <div style="font-size:12px; color:var(--text-secondary); margin-top:2px;">${(w.exercises || []).map(e => e.name).join(', ')}</div>
+                        <div style="min-width:0; flex:1;">
+                            <div class="truncate-text" style="font-weight:900; font-size:17px;">${w.name}</div>
+                            <div class="truncate-text" style="font-size:12px; color:var(--text-secondary); margin-top:2px;">${(w.exercises || []).map(e => e.name).join(', ')}</div>
                         </div>
                         <button class="btn btn-sm btn-primary" onclick="app.startRoutineWorkout('${active.id}', ${todayProg.day}, ${idx})">Start</button>
                     </div>
@@ -3865,7 +4135,7 @@ const app = {
                 <button class="btn btn-sm" style="background:var(--info-dim); color:var(--info); border-color:var(--info);" onclick="document.getElementById('start-workout-modal').style.display='none'; app.triggerFitImport();"><i class="fas fa-file-arrow-up"></i> Upload .FIT</button>
                 <button class="btn btn-sm" style="background:var(--success-dim); color:var(--success); border-color:var(--success);" onclick="document.getElementById('start-workout-modal').style.display='none'; app.triggerCsvImport();"><i class="fas fa-file-csv"></i> Upload CSV</button>
             </div>
-            <h3 style="margin:16px 0 8px 0;">All Workouts in ${active.name}</h3>
+            <h3 style="margin:16px 0 8px 0;">All Workouts in ${utils.truncate(active.name, 22)}</h3>
         `;
         [1, 2, 3, 4, 5, 6, 0].forEach(dIdx => {
             const d = active.days.find(x => x.day === dIdx);
@@ -3874,9 +4144,9 @@ const app = {
                 html += `
                 <div class="card" style="padding:12px 14px; margin-bottom:8px;">
                     <div class="flex-between">
-                        <div>
+                        <div style="min-width:0; flex:1;">
                             <div style="font-size:10px; font-weight:800; color:var(--text-secondary); text-transform:uppercase;">${utils.getDayName(d.day)}</div>
-                            <div style="font-weight:800; font-size:15px;">${w.name}</div>
+                            <div class="truncate-text" style="font-weight:800; font-size:15px;">${w.name}</div>
                             <div style="font-size:11px; color:var(--text-secondary);">${(w.exercises || []).length} exercises</div>
                         </div>
                         <button class="btn btn-sm" onclick="app.startRoutineWorkout('${active.id}', ${d.day}, ${wIdx})"><i class="fas fa-play"></i> Start</button>
@@ -3996,7 +4266,7 @@ const app = {
         let html = `
             <div class="workout-header-sticky">
                 <button class="btn btn-sm" style="width:auto;" onclick="document.getElementById('routine-editor-modal').style.display='none'">Cancel</button>
-                <div style="font-weight:bold; font-size:16px;">Edit Split: ${r.name}</div>
+                <div class="truncate-text" style="font-weight:bold; font-size:16px;">Edit Split: ${utils.truncate(r.name, 18)}</div>
                 <button class="btn btn-sm btn-success" onclick="app.saveRoutineEditor()">Save</button>
             </div>
             <div style="padding:16px; overflow-y:auto; flex:1; padding-bottom:80px;">
@@ -4026,7 +4296,7 @@ const app = {
                         </div>
                         ${(w.exercises || []).map((ex, exIdx) => `
                             <div style="display:grid; grid-template-columns: 1fr 54px 72px auto; gap:6px; align-items:center; margin-bottom:6px;">
-                                <div style="font-size:13px; font-weight:bold; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${ex.name}</div>
+                                <div class="truncate-text" style="font-size:13px; font-weight:bold;">${ex.name}</div>
                                 <input type="number" class="inline-edit" value="${ex.targetSets || 3}" onchange="app.updateDraftExercise(${dayIdx}, ${wIdx}, ${exIdx}, 'targetSets', this.value)" title="Sets">
                                 <input type="text" class="inline-edit" value="${ex.targetReps || '8-12'}" onchange="app.updateDraftExercise(${dayIdx}, ${wIdx}, ${exIdx}, 'targetReps', this.value)" title="Reps">
                                 <button class="btn-icon" style="width:26px; height:26px; color:var(--pending);" onclick="app.removeDraftExercise(${dayIdx}, ${wIdx}, ${exIdx})"><i class="fas fa-xmark"></i></button>
@@ -4179,7 +4449,6 @@ const app = {
         const range = store.state.settings.chartRange || '90';
         const daysLimit = range === 'ALL' ? 0 : parseInt(range);
         const cutoff = daysLimit ? (Date.now() - daysLimit * 86400000) : 0;
-        // 1. Progressive Overload Volume Chart
         const volCtx = document.getElementById('volChart');
         if (volCtx && window.Chart) {
             const volHist = utils.getWorkoutVolumeHistory();
@@ -4234,7 +4503,6 @@ const app = {
                 }
             });
         }
-        // 2. Bodyweight Chart (with Daily Weight, 7d Trend, Target, and Optional Calories)
         const bwCtx = document.getElementById('bwChart');
         if (bwCtx && window.Chart) {
             const bwRaw = store.state.history.bodyweight
@@ -4309,7 +4577,6 @@ const app = {
                 }
             });
         }
-        // 3. Weekly Hypertrophy Horizontal Bar Chart
         const hyperCtx = document.getElementById('hyperChart');
         if (hyperCtx && window.Chart) {
             const hyper = utils.getWeeklyHypertrophyStatus();
@@ -4388,9 +4655,9 @@ const app = {
                     <div id="saved-meals-modal-list">
                         ${savedMeals.map((sm, idx) => `
                             <div class="card food-modal-item" data-name="${sm.name.toLowerCase()}" style="padding:12px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-                                <div style="flex:1; cursor:pointer;" onclick="app.logSavedMeal('${dStr}', ${idx}, '${mealWindowType}')">
-                                    <div style="font-weight:800; font-size:15px;">${sm.name}</div>
-                                    <div style="font-size:11px; color:var(--text-secondary);">${Math.round(sm.cal)} kcal • P: ${Math.round(sm.pro)}g • C: ${Math.round(sm.car)}g • F: ${Math.round(sm.fat)}g</div>
+                                <div style="flex:1; cursor:pointer; min-width:0;" onclick="app.logSavedMeal('${dStr}', ${idx}, '${mealWindowType}')">
+                                    <div class="truncate-text" style="font-weight:800; font-size:15px;">${sm.name}</div>
+                                    <div class="truncate-text" style="font-size:11px; color:var(--text-secondary);">${Math.round(sm.cal)} kcal • P: ${Math.round(sm.pro)}g • C: ${Math.round(sm.car)}g • F: ${Math.round(sm.fat)}g</div>
                                 </div>
                                 <button class="btn btn-sm btn-primary" style="width:auto;" onclick="app.logSavedMeal('${dStr}', ${idx}, '${mealWindowType}')">+ Log</button>
                             </div>
@@ -4401,9 +4668,9 @@ const app = {
                 <div id="raw-foods-modal-list">
                     ${NZ_ATHLETE_FOODS.map(f => `
                         <div class="card food-modal-item" data-name="${(f.name + ' ' + f.cat).toLowerCase()}" style="padding:12px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center; gap:10px;">
-                            <div style="flex:1; cursor:pointer;" onclick="app.promptLogRawFood('${dStr}', '${f.id}', '${mealWindowType}')">
-                                <div style="font-weight:bold; font-size:14px;">${f.name} <span style="font-size:10px; color:var(--text-secondary);">(${f.cat})</span></div>
-                                <div style="font-size:11px; color:var(--text-secondary);">Per 100g: ${f.cal} kcal • P: ${f.pro}g • C: ${f.car}g • F: ${f.fat}g</div>
+                            <div style="flex:1; cursor:pointer; min-width:0;" onclick="app.promptLogRawFood('${dStr}', '${f.id}', '${mealWindowType}')">
+                                <div class="truncate-text" style="font-weight:bold; font-size:14px;">${f.name} <span style="font-size:10px; color:var(--text-secondary);">(${f.cat})</span></div>
+                                <div class="truncate-text" style="font-size:11px; color:var(--text-secondary);">Per 100g: ${f.cal} kcal • P: ${f.pro}g • C: ${f.car}g • F: ${f.fat}g</div>
                             </div>
                             <button class="btn btn-sm" style="width:auto;" onclick="app.promptLogRawFood('${dStr}', '${f.id}', '${mealWindowType}')">+ Grams</button>
                         </div>
@@ -4541,11 +4808,11 @@ const app = {
                 <div style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">Pinned goals appear directly in Today's Action Plan on your Home Dashboard.</div>
                 ${goals.length === 0 ? `<div class="card text-muted" style="text-align:center;">No custom daily goals created yet. Tap + Add above!</div>` : goals.map((g, idx) => `
                     <div class="card flex-between" style="padding:12px 14px; margin-bottom:8px;">
-                        <div>
-                            <div style="font-weight:bold; font-size:15px;">${utils.getGoalLabel(g)}</div>
+                        <div style="min-width:0; flex:1;">
+                            <div class="truncate-text" style="font-weight:bold; font-size:15px;">${utils.getGoalLabel(g)}</div>
                             <div style="font-size:11px; color:var(--text-secondary);">${g.showInActionPlan ? 'Pinned to Home' : 'Hidden on Home'}</div>
                         </div>
-                        <div style="display:flex; gap:8px; align-items:center;">
+                        <div style="display:flex; gap:8px; align-items:center; flex-shrink:0;">
                             <input type="checkbox" ${g.showInActionPlan ? 'checked' : ''} onchange="app.toggleGoalPin(${idx}, this.checked)" style="width:20px; height:20px;">
                             <button class="btn-icon" style="width:28px; height:28px; color:var(--pending);" onclick="app.deletePinnedGoal(${idx})"><i class="fas fa-trash"></i></button>
                         </div>
@@ -4618,10 +4885,15 @@ const app = {
         if (!name || !name.trim()) return;
         const clean = name.trim().slice(0, MAX_EX_TITLE_LEN);
         const muscles = prompt("Muscle Group(s) (comma-separated, e.g. Chest, Triceps):", "Chest");
-        const parsed = (muscles || 'Other').split(',').map(s => s.trim()).filter(Boolean);
+        const parsedM = (muscles || 'Other').split(',').map(s => s.trim()).filter(Boolean);
         const sets = parseInt(prompt("Default Target Sets:", "3")) || 3;
-        const reps = prompt("Default Target Reps:", "8-12") || '8-12';
-        store.syncExerciseGlobally(clean, { name: clean, muscles: parsed.length ? parsed : ['Other'], targetSets: sets, targetReps: reps });
+        const reps = prompt("Default Target Reps (e.g. 8-12):", "8-12") || '8-12';
+        store.syncExerciseGlobally(clean, {
+            name: clean,
+            muscles: parsedM.length ? parsedM : ['Other'],
+            targetSets: sets,
+            targetReps: reps.trim()
+        });
         this.navigate('data');
     },
     handleProgressPhotoUpload(event) {
@@ -4632,123 +4904,126 @@ const app = {
             const img = new Image();
             img.onload = () => {
                 const canvas = document.createElement('canvas');
-                const maxW = 720;
-                const scale = Math.min(1, maxW / img.width);
-                canvas.width = Math.round(img.width * scale);
-                canvas.height = Math.round(img.height * scale);
+                const maxDim = 900;
+                let w = img.width, h = img.height;
+                if (w > h && w > maxDim) { h = Math.round(h * (maxDim / w)); w = maxDim; }
+                else if (h > maxDim) { w = Math.round(w * (maxDim / h)); h = maxDim; }
+                canvas.width = w;
+                canvas.height = h;
                 const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                const dataUrl = canvas.toDataURL('image/jpeg', 0.78);
+                ctx.drawImage(img, 0, 0, w, h);
+                const compressed = canvas.toDataURL('image/jpeg', 0.78);
                 if (!store.state.history.progressPhotos) store.state.history.progressPhotos = [];
                 store.state.history.progressPhotos.unshift({
                     id: utils.generateId(),
                     date: new Date().toISOString(),
-                    weight: store.state.user.currentWeight,
-                    dataUrl
+                    dataUrl: compressed
                 });
+                if (workoutEngine.activeWorkout) {
+                    if (!workoutEngine.activeWorkout.sessionPhotos) workoutEngine.activeWorkout.sessionPhotos = [];
+                    workoutEngine.activeWorkout.sessionPhotos.push(compressed);
+                    workoutEngine.saveSessionState();
+                    workoutEngine.renderActiveWorkout();
+                }
                 store.save();
-                this.navigate('data');
+                if (this.currentPage === 'data') this.navigate('data');
+                alert("Progress photo saved to your Physique Check-In Vault!");
             };
             img.src = e.target.result;
         };
         reader.readAsDataURL(file);
     },
     deleteProgressPhoto(idx) {
-        if (confirm("Remove this progress photo?")) {
+        if (confirm("Delete this progress photo?")) {
             store.state.history.progressPhotos.splice(idx, 1);
             store.save();
             this.navigate('data');
         }
     },
     exportJSON() {
-        const dataStr = JSON.stringify(store.state, null, 2);
-        const blob = new Blob([dataStr], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(store.state, null, 2));
         const a = document.createElement('a');
-        a.href = url;
-        a.download = `IronTrack_OS_Backup_${utils.getLocalISODate(new Date())}.json`;
+        a.setAttribute("href", dataStr);
+        a.setAttribute("download", `IronTrack_Backup_${utils.getLocalISODate(new Date())}.json`);
         document.body.appendChild(a);
         a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
+        a.remove();
     },
     importJSONPrompt() {
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = '.json,application/json';
-        input.onchange = (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = (ev) => {
-                try {
-                    const parsed = JSON.parse(ev.target.result);
-                    if (parsed && parsed.history) {
-                        localStorage.setItem('irontrack_os_v3', JSON.stringify(parsed));
-                        store.load();
-                        this.applyTheme(store.state.settings.theme || 'olympus');
-                        this.navigate('home');
-                        alert("Backup restored successfully!");
-                    }
-                } catch (err) {
-                    alert("Invalid JSON backup file.");
-                }
-            };
-            reader.readAsText(file);
-        };
-        input.click();
+        const raw = prompt("Paste your exported IronTrack JSON backup below:");
+        if (!raw || !raw.trim()) return;
+        try {
+            const parsed = JSON.parse(raw);
+            if (parsed && parsed.history && parsed.user) {
+                store.state = Object.assign(store.state, parsed);
+                store.save();
+                alert("Backup imported successfully!");
+                this.init();
+            } else {
+                alert("Invalid backup JSON format.");
+            }
+        } catch(e) {
+            alert("Could not parse JSON backup.");
+        }
     },
     openSettingsModal() {
         const modal = document.getElementById('settings-modal');
         const s = store.state.settings;
-        const f = s.features;
-        let html = `
+        const f = s.features || {};
+        modal.innerHTML = `
             <div class="workout-header-sticky">
                 <button class="btn btn-sm" style="width:auto;" onclick="document.getElementById('settings-modal').style.display='none'">Done</button>
-                <div style="font-weight:bold; font-size:16px;">OS Settings</div>
+                <div style="font-weight:bold; font-size:16px;">App Settings</div>
                 <div style="width:60px;"></div>
             </div>
             <div style="padding:16px; overflow-y:auto; flex:1; padding-bottom:80px;">
                 <div class="card">
-                    <h3 style="margin-top:0;">Theme & Units</h3>
+                    <h3 style="margin-top:0;">Appearance & Units</h3>
                     <div class="data-row flex-between">
-                        <span>Visual Theme</span>
-                        <select class="edit-input" style="width:auto; margin:0;" onchange="app.applyTheme(this.value); app.openSettingsModal(); app.navigate(app.currentPage);">
-                            <option value="olympus" ${s.theme === 'olympus' ? 'selected' : ''}>Olympus Gold & Obsidian</option>
-                            <option value="dark" ${s.theme === 'dark' ? 'selected' : ''}>Classic Dark Red</option>
-                            <option value="light" ${s.theme === 'light' ? 'selected' : ''}>Daylight Clean</option>
+                        <span>Theme</span>
+                        <select class="edit-input" style="width:140px; margin:0;" onchange="app.applyTheme(this.value); app.openSettingsModal(); app.navigate(app.currentPage);">
+                            <option value="olympus" ${s.theme === 'olympus' ? 'selected' : ''}>Olympus Gold</option>
+                            <option value="dark" ${s.theme === 'dark' ? 'selected' : ''}>Obsidian Dark</option>
+                            <option value="light" ${s.theme === 'light' ? 'selected' : ''}>Marble Light</option>
                         </select>
                     </div>
                     <div class="data-row flex-between">
                         <span>Weight Units</span>
-                        <select class="edit-input" style="width:auto; margin:0;" onchange="store.state.settings.units = this.value; store.save(); app.navigate(app.currentPage);">
+                        <select class="edit-input" style="width:140px; margin:0;" onchange="store.state.settings.units = this.value; store.save(); app.navigate(app.currentPage);">
                             <option value="kg" ${s.units === 'kg' ? 'selected' : ''}>Kilograms (kg)</option>
                             <option value="lbs" ${s.units === 'lbs' ? 'selected' : ''}>Pounds (lbs)</option>
                         </select>
                     </div>
                     <div class="data-row flex-between">
-                        <span>Rest Timer (seconds)</span>
-                        <input type="number" class="inline-edit" style="width:80px;" value="${s.restTimer || 120}" onchange="store.state.settings.restTimer = parseInt(this.value)||120; store.save();">
+                        <span>Default Rest Timer (sec)</span>
+                        <input type="number" class="inline-edit" style="width:90px;" value="${s.restTimer || 90}" onchange="store.state.settings.restTimer = parseInt(this.value) || 90; store.save();">
                     </div>
                 </div>
                 <div class="card">
-                    <h3 style="margin-top:0;">Dashboard Widgets</h3>
-                    ${[
-                        ['showQuote', 'Daily Stoic Quote'],
-                        ['showRankBanner', 'Ranked Status Banner'],
-                        ['showHeatmap', '28-Day Anatomy Recovery Map'],
-                        ['showWeekStrip', 'Mon-Sun Completion Strip'],
-                        ['showActivityGrid', '48-Day Workout Bento Grid']
-                    ].map(([key, label]) => `
-                        <div class="data-row flex-between">
-                            <span>${label}</span>
-                            <input type="checkbox" ${f[key] ? 'checked' : ''} onchange="store.state.settings.features['${key}'] = this.checked; store.save(); app.navigate(app.currentPage);" style="width:20px; height:20px;">
-                        </div>
-                    `).join('')}
+                    <h3 style="margin-top:0;">Dashboard Modules</h3>
+                    <div class="data-row flex-between">
+                        <span>Stoic Quote Banner</span>
+                        <input type="checkbox" style="width:20px; height:20px;" ${f.showQuote ? 'checked' : ''} onchange="store.state.settings.features.showQuote = this.checked; store.save(); app.navigate(app.currentPage);">
+                    </div>
+                    <div class="data-row flex-between">
+                        <span>Weekly Ranked Status Card</span>
+                        <input type="checkbox" style="width:20px; height:20px;" ${f.showRankBanner ? 'checked' : ''} onchange="store.state.settings.features.showRankBanner = this.checked; store.save(); app.navigate(app.currentPage);">
+                    </div>
+                    <div class="data-row flex-between">
+                        <span>28-Day Recovery Heatmap</span>
+                        <input type="checkbox" style="width:20px; height:20px;" ${f.showHeatmap ? 'checked' : ''} onchange="store.state.settings.features.showHeatmap = this.checked; store.save(); app.navigate(app.currentPage);">
+                    </div>
+                    <div class="data-row flex-between">
+                        <span>Weekly Check-In Strip</span>
+                        <input type="checkbox" style="width:20px; height:20px;" ${f.showWeekStrip ? 'checked' : ''} onchange="store.state.settings.features.showWeekStrip = this.checked; store.save(); app.navigate(app.currentPage);">
+                    </div>
+                    <div class="data-row flex-between">
+                        <span>48-Day Activity Bento Grid</span>
+                        <input type="checkbox" style="width:20px; height:20px;" ${f.showActivityGrid ? 'checked' : ''} onchange="store.state.settings.features.showActivityGrid = this.checked; store.save(); app.navigate(app.currentPage);">
+                    </div>
                 </div>
             </div>
         `;
-        modal.innerHTML = html;
         modal.style.display = 'flex';
     }
 };
