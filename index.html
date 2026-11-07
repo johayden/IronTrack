@@ -157,7 +157,7 @@
         #rest-timer-overlay { position: fixed; bottom: calc(80px + var(--safe-bottom)); left: 50%; transform: translateX(-50%); background: var(--accent-color); color: var(--bg-color); padding: 10px 20px; border-radius: 30px; box-shadow: 0 4px 16px var(--accent-dim); display: none; font-weight: bold; font-size: 18px; align-items: center; gap: 12px; z-index: 2010; cursor: pointer; transition: background-color 0.4s ease; border: 1px solid rgba(255,255,255,0.2); }
         /* Modals and Overlays */
         #active-workout-view { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 2000; display: none; flex-direction: column; overflow: hidden; transition: background-color 0.4s ease; }
-        #exercise-selection-modal, #start-workout-modal, #meal-search-modal, #meal-create-modal, #settings-modal, #rank-modal, #rank-details-modal, #routine-editor-modal, #pin-goals-modal, #calendar-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 2005; display: none; flex-direction: column; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding-bottom: calc(100px + var(--safe-bottom)); transition: background-color 0.4s ease; }
+        #exercise-selection-modal, #start-workout-modal, #meal-search-modal, #meal-create-modal, #settings-modal, #rank-modal, #rank-details-modal, #routine-editor-modal, #pin-goals-modal, #calendar-modal, #challenge-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 2005; display: none; flex-direction: column; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding-bottom: calc(100px + var(--safe-bottom)); transition: background-color 0.4s ease; }
         .flex-between { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
         canvas { max-width: 100%; margin-top: 10px; }
         .heatmap-svg { filter: drop-shadow(0 4px 10px rgba(0,0,0,0.45)); height: 240px; max-width: 320px; width: 100%; margin: 12px auto; display: flex; align-items: center; justify-content: center; }
@@ -376,6 +376,7 @@
 <div id="rank-details-modal"></div>
 <div id="routine-editor-modal"></div>
 <div id="pin-goals-modal"></div>
+<div id="challenge-modal"></div>
 <div id="calendar-modal"></div>
 <script>
 const MAX_EX_TITLE_LEN = 38;
@@ -391,36 +392,131 @@ const DEFAULT_PROGRAM = [
     { day: 5, workouts: [{ id: 'w5', name: 'Quad Legs', exercises: [ { name: 'Hack Squat', targetSets: 3, targetReps: '8-10' }, { name: 'Leg Press', targetSets: 3, targetReps: '10-12' }, { name: 'Leg Extension', targetSets: 3, targetReps: '12-15' }, { name: 'Seated Leg Curl', targetSets: 3, targetReps: '10-12' }, { name: 'Standing Calf Raise', targetSets: 4, targetReps: '10-15' } ] }] },
     { day: 6, workouts: [{ id: 'w6', name: 'Upper Body', exercises: [ { name: 'Bench Press', targetSets: 3, targetReps: '8-10' }, { name: 'Incline DB Press', targetSets: 3, targetReps: '8-10' }, { name: 'Lat Pulldown', targetSets: 3, targetReps: '8-12' }, { name: 'Cable Lateral Raise', targetSets: 3, targetReps: '12-15' }, { name: 'Seated Curl', targetSets: 3, targetReps: '10-12' }, { name: 'Dips', targetSets: 3, targetReps: 'AMRAP' } ] }] }
 ];
+/* COMPREHENSIVE MASTER EXERCISE DATABASE (Unchanged Storage & Image Scheme) */
 const EXERCISE_DB = {
+    // CHEST
     'Bench Press': { muscles: ['Chest', 'Shoulders', 'Triceps'], targetSets: 3, targetReps: '5-8' },
-    'Squat': { muscles: ['Quads', 'Hamstrings'], targetSets: 3, targetReps: '5-8' },
-    'Deadlift': { muscles: ['Hamstrings', 'Back'], targetSets: 3, targetReps: '5-8' },
+    'Incline Bench Press': { muscles: ['Chest', 'Shoulders', 'Triceps'], targetSets: 3, targetReps: '6-10' },
+    'Decline Bench Press': { muscles: ['Chest', 'Triceps'], targetSets: 3, targetReps: '8-12' },
+    'Flat DB Press': { muscles: ['Chest', 'Shoulders', 'Triceps'], targetSets: 3, targetReps: '8-12' },
     'Incline DB Press': { muscles: ['Chest', 'Shoulders', 'Triceps'], targetSets: 3, targetReps: '8-12' },
-    'Pec Deck': { muscles: ['Chest'], targetSets: 3, targetReps: '10-15' },
+    'Decline DB Press': { muscles: ['Chest', 'Triceps'], targetSets: 3, targetReps: '8-12' },
     'Flat Machine Press': { muscles: ['Chest', 'Triceps'], targetSets: 3, targetReps: '8-12' },
-    'Dips': { muscles: ['Chest', 'Triceps'], targetSets: 3, targetReps: 'AMRAP' },
+    'Incline Machine Press': { muscles: ['Chest', 'Shoulders', 'Triceps'], targetSets: 3, targetReps: '8-12' },
+    'Chest Fly': { muscles: ['Chest'], targetSets: 3, targetReps: '10-15' },
+    'Pec Deck': { muscles: ['Chest'], targetSets: 3, targetReps: '10-15' },
+    'Cable Chest Fly': { muscles: ['Chest'], targetSets: 3, targetReps: '10-15' },
+    'DB Chest Fly': { muscles: ['Chest'], targetSets: 3, targetReps: '10-15' },
+    'Dips': { muscles: ['Chest', 'Triceps', 'Shoulders'], targetSets: 3, targetReps: 'AMRAP' },
+    'Push-Ups': { muscles: ['Chest', 'Triceps', 'Shoulders'], targetSets: 3, targetReps: 'AMRAP' },
+    'DB Pullover': { muscles: ['Chest', 'Back'], targetSets: 3, targetReps: '10-12' },
+    // BACK
+    'Deadlift': { muscles: ['Hamstrings', 'Back'], targetSets: 3, targetReps: '5-8' },
     'Lat Pulldown': { muscles: ['Back', 'Biceps'], targetSets: 3, targetReps: '8-12' },
-    'Chest Supported Row': { muscles: ['Back', 'Biceps'], targetSets: 3, targetReps: '8-12' },
     'Pull-Ups': { muscles: ['Back', 'Biceps'], targetSets: 3, targetReps: 'AMRAP' },
+    'Chin-Ups': { muscles: ['Back', 'Biceps'], targetSets: 3, targetReps: 'AMRAP' },
+    'Chest Supported Row': { muscles: ['Back', 'Biceps'], targetSets: 3, targetReps: '8-12' },
+    'Barbell Row': { muscles: ['Back', 'Biceps'], targetSets: 3, targetReps: '6-10' },
+    'Pendlay Row': { muscles: ['Back', 'Biceps'], targetSets: 3, targetReps: '6-10' },
+    'Seated Cable Row': { muscles: ['Back', 'Biceps'], targetSets: 3, targetReps: '8-12' },
+    'Single-Arm DB Row': { muscles: ['Back', 'Biceps'], targetSets: 3, targetReps: '8-12' },
+    'T-Bar Row': { muscles: ['Back', 'Biceps'], targetSets: 3, targetReps: '8-12' },
+    'Machine Row': { muscles: ['Back', 'Biceps'], targetSets: 3, targetReps: '8-12' },
+    'Straight-Arm Lat Pulldown': { muscles: ['Back'], targetSets: 3, targetReps: '10-15' },
+    'Rack Pull': { muscles: ['Back', 'Hamstrings'], targetSets: 3, targetReps: '5-8' },
+    'Barbell Shrug': { muscles: ['Back', 'Shoulders'], targetSets: 3, targetReps: '10-15' },
+    'DB Shrug': { muscles: ['Back', 'Shoulders'], targetSets: 3, targetReps: '10-15' },
+    'Back Extension': { muscles: ['Back', 'Hamstrings'], targetSets: 3, targetReps: '10-15' },
+    // SHOULDERS
+    'Overhead Press': { muscles: ['Shoulders', 'Triceps'], targetSets: 3, targetReps: '6-10' },
+    'Seated DB Shoulder Press': { muscles: ['Shoulders', 'Triceps'], targetSets: 3, targetReps: '8-12' },
+    'Machine Shoulder Press': { muscles: ['Shoulders', 'Triceps'], targetSets: 3, targetReps: '8-12' },
+    'Arnold Press': { muscles: ['Shoulders', 'Triceps'], targetSets: 3, targetReps: '8-12' },
+    'Lateral Raise': { muscles: ['Shoulders'], targetSets: 4, targetReps: '12-15' },
     'Cable Lateral Raise': { muscles: ['Shoulders'], targetSets: 4, targetReps: '12-15' },
-    'Rear Delt Fly': { muscles: ['Shoulders'], targetSets: 3, targetReps: '12-15' },
+    'DB Lateral Raise': { muscles: ['Shoulders'], targetSets: 4, targetReps: '12-15' },
+    'Machine Lateral Raise': { muscles: ['Shoulders'], targetSets: 4, targetReps: '12-15' },
+    'Rear Delt Fly': { muscles: ['Shoulders', 'Back'], targetSets: 3, targetReps: '12-15' },
+    'Face Pull': { muscles: ['Shoulders', 'Back'], targetSets: 3, targetReps: '12-15' },
+    'Front Raise': { muscles: ['Shoulders'], targetSets: 3, targetReps: '10-15' },
+    'Upright Row': { muscles: ['Shoulders', 'Biceps'], targetSets: 3, targetReps: '10-12' },
+    // BICEPS
+    'Bicep Curl': { muscles: ['Biceps'], targetSets: 3, targetReps: '8-12' },
+    'Barbell Curl': { muscles: ['Biceps'], targetSets: 3, targetReps: '8-12' },
+    'EZ-Bar Curl': { muscles: ['Biceps'], targetSets: 3, targetReps: '8-12' },
     'Preacher Curl': { muscles: ['Biceps'], targetSets: 3, targetReps: '8-12' },
     'Hammer Curl': { muscles: ['Biceps'], targetSets: 3, targetReps: '10-12' },
     'Seated Curl': { muscles: ['Biceps'], targetSets: 3, targetReps: '10-12' },
+    'Incline DB Curl': { muscles: ['Biceps'], targetSets: 3, targetReps: '8-12' },
+    'Cable Curl': { muscles: ['Biceps'], targetSets: 3, targetReps: '10-15' },
+    'Bayesian Cable Curl': { muscles: ['Biceps'], targetSets: 3, targetReps: '10-15' },
+    'Spider Curl': { muscles: ['Biceps'], targetSets: 3, targetReps: '10-12' },
+    'Concentration Curl': { muscles: ['Biceps'], targetSets: 3, targetReps: '10-12' },
+    'Reverse Curl': { muscles: ['Biceps'], targetSets: 3, targetReps: '10-15' },
+    // TRICEPS
     'Tricep Pushdown': { muscles: ['Triceps'], targetSets: 3, targetReps: '10-15' },
     'Overhead Extension': { muscles: ['Triceps'], targetSets: 3, targetReps: '10-15' },
+    'Skullcrusher': { muscles: ['Triceps'], targetSets: 3, targetReps: '8-12' },
+    'JM Press': { muscles: ['Triceps', 'Chest'], targetSets: 3, targetReps: '6-10' },
+    'Close-Grip Bench Press': { muscles: ['Triceps', 'Chest'], targetSets: 3, targetReps: '6-10' },
+    'Tricep Dip Machine': { muscles: ['Triceps'], targetSets: 3, targetReps: '8-12' },
+    'Tricep Kickback': { muscles: ['Triceps'], targetSets: 3, targetReps: '10-15' },
+    // QUADS & GLUTES
+    'Squat': { muscles: ['Quads', 'Hamstrings'], targetSets: 3, targetReps: '5-8' },
+    'Front Squat': { muscles: ['Quads'], targetSets: 3, targetReps: '6-10' },
     'Hack Squat': { muscles: ['Quads'], targetSets: 3, targetReps: '8-10' },
+    'Pendulum Squat': { muscles: ['Quads'], targetSets: 3, targetReps: '8-12' },
+    'Belt Squat': { muscles: ['Quads'], targetSets: 3, targetReps: '8-12' },
+    'Goblet Squat': { muscles: ['Quads'], targetSets: 3, targetReps: '10-15' },
+    'Smith Machine Squat': { muscles: ['Quads', 'Hamstrings'], targetSets: 3, targetReps: '8-12' },
     'Leg Press': { muscles: ['Quads'], targetSets: 3, targetReps: '10-12' },
     'Leg Extension': { muscles: ['Quads'], targetSets: 3, targetReps: '12-15' },
-    'Bulgarian Split Squat': { muscles: ['Quads', 'Hamstrings'], targetSets: 3, targetReps: '8-12' },
     'Unilateral Leg Extension': { muscles: ['Quads'], targetSets: 3, targetReps: '10-15' },
+    'Bulgarian Split Squat': { muscles: ['Quads', 'Hamstrings'], targetSets: 3, targetReps: '8-12' },
+    'Walking Lunge': { muscles: ['Quads', 'Hamstrings'], targetSets: 3, targetReps: '10-12' },
+    'Reverse Lunge': { muscles: ['Quads', 'Hamstrings'], targetSets: 3, targetReps: '8-12' },
+    'Step-Up': { muscles: ['Quads', 'Hamstrings'], targetSets: 3, targetReps: '10-12' },
+    'Sissy Squat': { muscles: ['Quads'], targetSets: 3, targetReps: '10-15' },
+    'Hip Adductor Machine': { muscles: ['Quads', 'Hamstrings'], targetSets: 3, targetReps: '12-15' },
+    'Hip Abductor Machine': { muscles: ['Hamstrings', 'Quads'], targetSets: 3, targetReps: '12-15' },
+    // HAMSTRINGS & POSTERIOR CHAIN
     'Romanian Deadlift': { muscles: ['Hamstrings', 'Back'], targetSets: 3, targetReps: '8-10' },
+    'Stiff-Leg Deadlift': { muscles: ['Hamstrings', 'Back'], targetSets: 3, targetReps: '8-10' },
+    'Sumo Deadlift': { muscles: ['Hamstrings', 'Quads', 'Back'], targetSets: 3, targetReps: '5-8' },
     'Seated Hamstring Leg Curl': { muscles: ['Hamstrings'], targetSets: 3, targetReps: '8-12' },
     'Seated Leg Curl': { muscles: ['Hamstrings'], targetSets: 3, targetReps: '10-12' },
+    'Lying Leg Curl': { muscles: ['Hamstrings'], targetSets: 3, targetReps: '10-12' },
+    'Standing Single-Leg Curl': { muscles: ['Hamstrings'], targetSets: 3, targetReps: '10-15' },
+    'Nordic Hamstring Curl': { muscles: ['Hamstrings'], targetSets: 3, targetReps: '6-10' },
+    'Glute-Ham Raise': { muscles: ['Hamstrings', 'Back'], targetSets: 3, targetReps: '8-12' },
+    'Barbell Hip Thrust': { muscles: ['Hamstrings', 'Quads'], targetSets: 3, targetReps: '8-12' },
+    'Glute Bridge': { muscles: ['Hamstrings'], targetSets: 3, targetReps: '10-15' },
+    'Cable Pull-Through': { muscles: ['Hamstrings', 'Back'], targetSets: 3, targetReps: '12-15' },
+    'Good Morning': { muscles: ['Hamstrings', 'Back'], targetSets: 3, targetReps: '8-12' },
+    // CALVES
     'Standing Calf Raise': { muscles: ['Calves'], targetSets: 4, targetReps: '10-15' },
+    'Seated Calf Raise': { muscles: ['Calves'], targetSets: 4, targetReps: '12-15' },
+    'Leg Press Calf Raise': { muscles: ['Calves'], targetSets: 4, targetReps: '12-15' },
+    'Donkey Calf Raise': { muscles: ['Calves'], targetSets: 4, targetReps: '12-15' },
+    'Tibialis Raise': { muscles: ['Calves'], targetSets: 3, targetReps: '15-20' },
+    // ABS & CORE
     'Weighted Crunch': { muscles: ['Abs'], targetSets: 3, targetReps: '10-15' },
+    'Cable Crunch': { muscles: ['Abs'], targetSets: 3, targetReps: '10-15' },
+    'Machine Crunch': { muscles: ['Abs'], targetSets: 3, targetReps: '10-15' },
     'Hanging Leg Raise': { muscles: ['Abs'], targetSets: 4, targetReps: '10-15' },
-    'Incline Treadmill Walk': { muscles: ['Cardio'], targetSets: 1, targetReps: '30m' }
+    'Captain\'s Chair Leg Raise': { muscles: ['Abs'], targetSets: 3, targetReps: '10-15' },
+    'Ab Wheel Rollout': { muscles: ['Abs'], targetSets: 3, targetReps: '8-15' },
+    'Plank': { muscles: ['Abs'], targetSets: 3, targetReps: '60s' },
+    'Russian Twist': { muscles: ['Abs'], targetSets: 3, targetReps: '15-20' },
+    'Woodchopper': { muscles: ['Abs'], targetSets: 3, targetReps: '12-15' },
+    // CARDIO & CONDITIONING
+    'Incline Treadmill Walk': { muscles: ['Cardio'], targetSets: 1, targetReps: '30m' },
+    'Stairmaster': { muscles: ['Cardio'], targetSets: 1, targetReps: '20m' },
+    'Rowing Machine': { muscles: ['Cardio', 'Back'], targetSets: 1, targetReps: '15m' },
+    'Stationary Bike': { muscles: ['Cardio', 'Quads'], targetSets: 1, targetReps: '25m' },
+    'Assault AirBike': { muscles: ['Cardio'], targetSets: 1, targetReps: '15m' },
+    'SkiErg': { muscles: ['Cardio', 'Back'], targetSets: 1, targetReps: '15m' },
+    'Elliptical Cross-Trainer': { muscles: ['Cardio'], targetSets: 1, targetReps: '25m' }
 };
 const MUSCLE_GROUPS = ['Chest', 'Back', 'Shoulders', 'Biceps', 'Triceps', 'Quads', 'Hamstrings', 'Abs', 'Calves', 'Cardio', 'Other'];
 const HYPERTROPHY_GROUPS = ['Chest', 'Back', 'Shoulders', 'Biceps', 'Triceps', 'Quads', 'Hamstrings'];
@@ -450,6 +546,7 @@ const THEME_MAP = {
     dark: { nav: ['fa-home', 'fa-dumbbell', 'fa-bolt', 'fa-leaf', 'fa-user'], symbols: { streak: '🔥', pr: '🏆', bw: '⚖️', vol: '📊', rest: '🛋️', workout: '💪', success: '⭐', activity: '🏃‍♂️', cardGoal: '🎯', analytics: '📈', nutrition: '🍎', data: '🗄️' } },
     light: { nav: ['fa-home', 'fa-dumbbell', 'fa-bolt', 'fa-leaf', 'fa-user'], symbols: { streak: '🔥', pr: '🏆', bw: '⚖️', vol: '📊', rest: '🛋️', workout: '💪', success: '⭐', activity: '🏃‍♂️', cardGoal: '🎯', analytics: '📈', nutrition: '🍎', data: '🗄️' } }
 };
+const FOOD_CATEGORIES = ['All', 'Poultry & Eggs', 'Red Meat & Game', 'Seafood', 'Dairy', 'Plant Proteins', 'Starchy Carbs', 'Fruit', 'Vegetables', 'Nuts & Seeds', 'Other Staples'];
 /* COMPREHENSIVE NZ ATHLETE RAW INGREDIENT REFERENCE DATABASE (per 100g) */
 const NZ_ATHLETE_FOODS = [
     { id: 'f_req_potatoes', name: 'Potatoes (whole / general)', cat: 'Starchy Carbs', cal: 77, pro: 2, car: 17, fat: 0.1, micros: 'K high, Vit C, Fib ~2g', notes: 'Cheapest high-volume carb in NZ. High satiety and potassium; great post-workout with lean protein.', tone: 'good' },
@@ -919,6 +1016,7 @@ const utils = {
     formatDateShort: (dateObj) => dateObj.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }),
     getLocalISODate: (isoString) => {
         if (!isoString) return '';
+        if (typeof isoString === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(isoString)) return isoString;
         const d = new Date(isoString);
         if (isNaN(d)) return '';
         return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
@@ -971,13 +1069,13 @@ const utils = {
         const eq = '#9898a6';
         const body = '#e5e5ea';
         let art = '';
-        if (n.includes('lateral raise') || n.includes('side raise')) {
+        if (n.includes('lateral raise') || n.includes('side raise') || n.includes('front raise') || n.includes('upright row')) {
             art = `<path d="M18 52 Q24 28 38 24" fill="none" stroke="${c}" stroke-width="2" stroke-dasharray="3 2"/><path d="M82 52 Q76 28 62 24" fill="none" stroke="${c}" stroke-width="2" stroke-dasharray="3 2"/><circle cx="50" cy="22" r="7.5" fill="${body}"/><path d="M42 32 L58 32 L55 58 L45 58 Z" fill="${body}"/><circle cx="40" cy="34" r="5" fill="${c}"/><circle cx="60" cy="34" r="5" fill="${c}"/><line x1="38" y1="34" x2="16" y2="32" stroke="${body}" stroke-width="4.5" stroke-linecap="round"/><line x1="62" y1="34" x2="84" y2="32" stroke="${body}" stroke-width="4.5" stroke-linecap="round"/><rect x="9" y="26" width="8" height="12" rx="2" fill="${c}"/><rect x="83" y="26" width="8" height="12" rx="2" fill="${c}"/><line x1="46" y1="58" x2="43" y2="86" stroke="${body}" stroke-width="5" stroke-linecap="round"/><line x1="54" y1="58" x2="57" y2="86" stroke="${body}" stroke-width="5" stroke-linecap="round"/>`;
         } else if (n.includes('rear delt') || n.includes('reverse fly') || n.includes('face pull')) {
             art = `<path d="M22 44 Q14 34 14 26" fill="none" stroke="${c}" stroke-width="2" stroke-dasharray="3 2"/><path d="M78 44 Q86 34 86 26" fill="none" stroke="${c}" stroke-width="2" stroke-dasharray="3 2"/><circle cx="50" cy="26" r="7" fill="${body}"/><path d="M38 35 L62 35 L56 60 L44 60 Z" fill="#8e8e98"/><circle cx="38" cy="37" r="5.5" fill="${c}"/><circle cx="62" cy="37" r="5.5" fill="${c}"/><line x1="49" y1="35" x2="49" y2="59" stroke="#2c2c34" stroke-width="2"/><line x1="36" y1="37" x2="14" y2="30" stroke="${body}" stroke-width="4.5" stroke-linecap="round"/><line x1="64" y1="37" x2="86" y2="30" stroke="${body}" stroke-width="4.5" stroke-linecap="round"/><rect x="8" y="24" width="7" height="12" rx="2" fill="${c}"/><rect x="85" y="24" width="7" height="12" rx="2" fill="${c}"/><line x1="45" y1="60" x2="42" y2="86" stroke="${body}" stroke-width="5" stroke-linecap="round"/><line x1="55" y1="60" x2="58" y2="86" stroke="${body}" stroke-width="5" stroke-linecap="round"/>`;
         } else if (n.includes('incline') && n.includes('press')) {
             art = `<line x1="20" y1="78" x2="62" y2="42" stroke="${eq}" stroke-width="4" stroke-linecap="round"/><line x1="28" y1="72" x2="28" y2="88" stroke="${eq}" stroke-width="3.5"/><line x1="54" y1="50" x2="54" y2="88" stroke="${eq}" stroke-width="3.5"/><circle cx="57" cy="34" r="6.5" fill="${body}"/><line x1="52" y1="41" x2="34" y2="58" stroke="${c}" stroke-width="7" stroke-linecap="round"/><line x1="48" y1="44" x2="48" y2="18" stroke="${body}" stroke-width="4.5" stroke-linecap="round"/><rect x="38" y="13" width="20" height="6" rx="2" fill="${c}"/><line x1="34" y1="58" x2="22" y2="72" stroke="${body}" stroke-width="5" stroke-linecap="round"/><line x1="22" y1="72" x2="18" y2="88" stroke="${body}" stroke-width="4.5" stroke-linecap="round"/>`;
-        } else if (n.includes('bench press') || (n.includes('flat') && n.includes('press'))) {
+        } else if (n.includes('bench press') || (n.includes('flat') && n.includes('press')) || n.includes('decline') || n.includes('push-up') || n.includes('pullover') || n.includes('jm press')) {
             art = `<line x1="14" y1="66" x2="84" y2="66" stroke="${eq}" stroke-width="4.5" stroke-linecap="round"/><line x1="24" y1="66" x2="24" y2="88" stroke="${eq}" stroke-width="3.5"/><line x1="72" y1="66" x2="72" y2="88" stroke="${eq}" stroke-width="3.5"/><line x1="32" y1="22" x2="32" y2="66" stroke="${eq}" stroke-width="2.5"/><circle cx="26" cy="56" r="6" fill="${body}"/><line x1="33" y1="58" x2="62" y2="58" stroke="${c}" stroke-width="7" stroke-linecap="round"/><line x1="42" y1="56" x2="42" y2="26" stroke="${body}" stroke-width="4.5" stroke-linecap="round"/><rect x="33" y="16" width="18" height="10" rx="2" fill="${c}"/><line x1="62" y1="58" x2="78" y2="72" stroke="${body}" stroke-width="5" stroke-linecap="round"/><line x1="78" y1="72" x2="78" y2="88" stroke="${body}" stroke-width="4.5" stroke-linecap="round"/>`;
         } else if (n.includes('pec deck') || n.includes('fly')) {
             art = `<rect x="20" y="12" width="60" height="6" rx="2" fill="${eq}"/><circle cx="50" cy="28" r="7" fill="${body}"/><path d="M40 37 L60 37 L56 64 L44 64 Z" fill="${body}"/><ellipse cx="45" cy="44" rx="5" ry="4" fill="${c}"/><ellipse cx="55" cy="44" rx="5" ry="4" fill="${c}"/><path d="M40 42 Q26 42 36 52" fill="none" stroke="${body}" stroke-width="4.5" stroke-linecap="round"/><path d="M60 42 Q74 42 64 52" fill="none" stroke="${body}" stroke-width="4.5" stroke-linecap="round"/><line x1="35" y1="18" x2="36" y2="56" stroke="${c}" stroke-width="3.5"/><line x1="65" y1="18" x2="64" y2="56" stroke="${c}" stroke-width="3.5"/><line x1="45" y1="64" x2="42" y2="86" stroke="${body}" stroke-width="5" stroke-linecap="round"/><line x1="55" y1="64" x2="58" y2="86" stroke="${body}" stroke-width="5" stroke-linecap="round"/>`;
@@ -987,41 +1085,41 @@ const utils = {
             art = `<line x1="50" y1="6" x2="50" y2="26" stroke="${eq}" stroke-width="2.5"/><path d="M20 28 L32 24 L68 24 L80 28" fill="none" stroke="${c}" stroke-width="4" stroke-linecap="round"/><circle cx="50" cy="36" r="6.5" fill="${body}"/><path d="M38 45 L62 45 L55 68 L45 68 Z" fill="${c}"/><polyline points="38,46 26,38 24,27" fill="none" stroke="${body}" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/><polyline points="62,46 74,38 76,27" fill="none" stroke="${body}" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="36" y1="68" x2="64" y2="68" stroke="${eq}" stroke-width="4"/><line x1="45" y1="68" x2="40" y2="88" stroke="${body}" stroke-width="5" stroke-linecap="round"/><line x1="55" y1="68" x2="60" y2="88" stroke="${body}" stroke-width="5" stroke-linecap="round"/>`;
         } else if (n.includes('pull-up') || n.includes('pull up') || n.includes('chin-up') || n.includes('chin up')) {
             art = `<line x1="12" y1="16" x2="88" y2="16" stroke="${eq}" stroke-width="4.5" stroke-linecap="round"/><circle cx="50" cy="26" r="6.5" fill="${body}"/><path d="M37 35 L63 35 L55 60 L45 60 Z" fill="${c}"/><polyline points="38,37 26,28 28,16" fill="none" stroke="${body}" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/><polyline points="62,37 74,28 72,16" fill="none" stroke="${body}" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/><polyline points="46,60 45,76 52,84" fill="none" stroke="${body}" stroke-width="4.5" stroke-linecap="round"/><polyline points="54,60 53,76 46,84" fill="none" stroke="${body}" stroke-width="4.5" stroke-linecap="round"/>`;
-        } else if (n.includes('row')) {
+        } else if (n.includes('row') || n.includes('shrug')) {
             art = `<line x1="30" y1="74" x2="64" y2="38" stroke="${eq}" stroke-width="4" stroke-linecap="round"/><line x1="56" y1="46" x2="66" y2="88" stroke="${eq}" stroke-width="3.5"/><circle cx="64" cy="28" r="6.5" fill="${body}"/><line x1="58" y1="35" x2="36" y2="58" stroke="${c}" stroke-width="7.5" stroke-linecap="round"/><polyline points="54,39 44,32 52,50" fill="none" stroke="${body}" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="46" y="48" width="14" height="8" rx="2" fill="${c}"/><line x1="36" y1="58" x2="22" y2="86" stroke="${body}" stroke-width="5" stroke-linecap="round"/>`;
-        } else if (n.includes('preacher curl')) {
+        } else if (n.includes('preacher curl') || n.includes('spider curl')) {
             art = `<polygon points="46,42 64,58 64,88 46,88" fill="${eq}" opacity="0.45"/><line x1="46" y1="42" x2="66" y2="60" stroke="${eq}" stroke-width="4" stroke-linecap="round"/><circle cx="34" cy="24" r="7" fill="${body}"/><line x1="34" y1="32" x2="32" y2="66" stroke="${body}" stroke-width="7" stroke-linecap="round"/><line x1="36" y1="36" x2="54" y2="50" stroke="${c}" stroke-width="6" stroke-linecap="round"/><line x1="54" y1="50" x2="70" y2="32" stroke="${body}" stroke-width="4.5" stroke-linecap="round"/><circle cx="72" cy="30" r="6" fill="${c}"/><path d="M78 48 Q78 34 68 24" fill="none" stroke="${c}" stroke-width="2" stroke-dasharray="3 2"/>`;
-        } else if (n.includes('hammer curl')) {
+        } else if (n.includes('hammer curl') || n.includes('reverse curl')) {
             art = `<circle cx="44" cy="20" r="7" fill="${body}"/><path d="M36 29 L52 29 L50 58 L38 58 Z" fill="${body}"/><line x1="46" y1="32" x2="46" y2="50" stroke="${c}" stroke-width="6" stroke-linecap="round"/><line x1="46" y1="50" x2="66" y2="36" stroke="${body}" stroke-width="5" stroke-linecap="round"/><rect x="63" y="24" width="7" height="18" rx="2" fill="${c}"/><line x1="40" y1="58" x2="38" y2="86" stroke="${body}" stroke-width="5" stroke-linecap="round"/><line x1="48" y1="58" x2="50" y2="86" stroke="${body}" stroke-width="5" stroke-linecap="round"/>`;
-        } else if (n.includes('curl') && !n.includes('leg')) {
+        } else if (n.includes('curl') && !n.includes('leg') && !n.includes('nordic')) {
             art = `<line x1="28" y1="34" x2="28" y2="86" stroke="${eq}" stroke-width="4" stroke-linecap="round"/><line x1="28" y1="64" x2="52" y2="64" stroke="${eq}" stroke-width="4" stroke-linecap="round"/><circle cx="38" cy="22" r="7" fill="${body}"/><line x1="36" y1="30" x2="36" y2="60" stroke="${body}" stroke-width="7" stroke-linecap="round"/><line x1="38" y1="34" x2="42" y2="52" stroke="${c}" stroke-width="6.5" stroke-linecap="round"/><line x1="42" y1="52" x2="62" y2="36" stroke="${body}" stroke-width="4.5" stroke-linecap="round"/><rect x="56" y="30" width="14" height="7" rx="2" fill="${c}"/><polyline points="36,60 56,60 58,86" fill="none" stroke="${body}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>`;
-        } else if (n.includes('pushdown') || n.includes('pressdown')) {
+        } else if (n.includes('pushdown') || n.includes('pressdown') || n.includes('kickback')) {
             art = `<line x1="68" y1="8" x2="68" y2="88" stroke="${eq}" stroke-width="4"/><line x1="68" y1="12" x2="52" y2="12" stroke="${eq}" stroke-width="4"/><line x1="54" y1="12" x2="54" y2="58" stroke="${eq}" stroke-width="2" stroke-dasharray="2 2"/><circle cx="34" cy="22" r="7" fill="${body}"/><path d="M26 30 L42 30 L40 58 L28 58 Z" fill="${body}"/><line x1="36" y1="32" x2="38" y2="48" stroke="${c}" stroke-width="6" stroke-linecap="round"/><line x1="38" y1="48" x2="54" y2="60" stroke="${body}" stroke-width="4.5" stroke-linecap="round"/><polygon points="48,60 60,60 54,54" fill="${c}"/><line x1="30" y1="58" x2="28" y2="86" stroke="${body}" stroke-width="5" stroke-linecap="round"/><line x1="38" y1="58" x2="40" y2="86" stroke="${body}" stroke-width="5" stroke-linecap="round"/>`;
-        } else if (n.includes('overhead') && n.includes('extension')) {
+        } else if ((n.includes('overhead') && (n.includes('extension') || n.includes('press'))) || n.includes('shoulder press') || n.includes('arnold') || n.includes('skullcrusher')) {
             art = `<circle cx="50" cy="34" r="6.5" fill="${body}"/><path d="M40 43 L60 43 L56 72 L44 72 Z" fill="${body}"/><line x1="41" y1="44" x2="36" y2="20" stroke="${c}" stroke-width="5.5" stroke-linecap="round"/><line x1="59" y1="44" x2="64" y2="20" stroke="${c}" stroke-width="5.5" stroke-linecap="round"/><line x1="36" y1="20" x2="48" y2="28" stroke="${body}" stroke-width="4" stroke-linecap="round"/><line x1="64" y1="20" x2="52" y2="28" stroke="${body}" stroke-width="4" stroke-linecap="round"/><rect x="44" y="24" width="12" height="14" rx="3" fill="${c}"/><line x1="46" y1="72" x2="44" y2="90" stroke="${body}" stroke-width="5" stroke-linecap="round"/><line x1="54" y1="72" x2="56" y2="90" stroke="${body}" stroke-width="5" stroke-linecap="round"/>`;
-        } else if (n.includes('bulgarian') || n.includes('split squat') || n.includes('lunge')) {
+        } else if (n.includes('bulgarian') || n.includes('split squat') || n.includes('lunge') || n.includes('step-up')) {
             art = `<rect x="68" y="58" width="20" height="6" rx="2" fill="${eq}"/><line x1="72" y1="64" x2="72" y2="88" stroke="${eq}" stroke-width="3.5"/><line x1="84" y1="64" x2="84" y2="88" stroke="${eq}" stroke-width="3.5"/><circle cx="42" cy="20" r="6.5" fill="${body}"/><line x1="42" y1="28" x2="44" y2="54" stroke="${body}" stroke-width="7" stroke-linecap="round"/><line x1="44" y1="34" x2="44" y2="58" stroke="${body}" stroke-width="4" stroke-linecap="round"/><rect x="38" y="56" width="12" height="7" rx="2" fill="${c}"/><polyline points="44,54 24,58 24,86" fill="none" stroke="${c}" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><polyline points="44,54 56,68 74,60" fill="none" stroke="${body}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>`;
-        } else if (n.includes('hack squat')) {
+        } else if (n.includes('hack squat') || n.includes('pendulum') || n.includes('sissy')) {
             art = `<line x1="18" y1="84" x2="76" y2="18" stroke="${eq}" stroke-width="3" stroke-dasharray="4 3"/><line x1="42" y1="54" x2="66" y2="26" stroke="${eq}" stroke-width="5" stroke-linecap="round"/><circle cx="64" cy="20" r="6" fill="${body}"/><line x1="60" y1="28" x2="44" y2="48" stroke="${body}" stroke-width="6.5" stroke-linecap="round"/><polyline points="44,48 28,44 26,68" fill="none" stroke="${c}" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><line x1="16" y1="64" x2="36" y2="74" stroke="${eq}" stroke-width="4.5" stroke-linecap="round"/>`;
         } else if (n.includes('leg press')) {
             art = `<polyline points="16,66 34,82 54,82" fill="none" stroke="${eq}" stroke-width="4" stroke-linecap="round"/><line x1="50" y1="48" x2="82" y2="16" stroke="${eq}" stroke-width="3" stroke-dasharray="4 2"/><line x1="52" y1="30" x2="72" y2="50" stroke="${c}" stroke-width="6" stroke-linecap="round"/><circle cx="70" cy="30" r="7" fill="${c}"/><circle cx="22" cy="56" r="6" fill="${body}"/><line x1="26" y1="62" x2="38" y2="76" stroke="${body}" stroke-width="6.5" stroke-linecap="round"/><polyline points="38,76 42,54 58,42" fill="none" stroke="${c}" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>`;
-        } else if (n.includes('leg extension')) {
+        } else if (n.includes('leg extension') || n.includes('adductor') || n.includes('abductor')) {
             art = `<polyline points="22,34 22,64 52,64 52,88" fill="none" stroke="${eq}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="32" cy="22" r="6.5" fill="${body}"/><line x1="32" y1="30" x2="32" y2="58" stroke="${body}" stroke-width="7" stroke-linecap="round"/><line x1="32" y1="58" x2="56" y2="58" stroke="${c}" stroke-width="6.5" stroke-linecap="round"/><line x1="56" y1="58" x2="80" y2="42" stroke="${body}" stroke-width="5" stroke-linecap="round"/><circle cx="78" cy="46" r="5" fill="${c}"/><path d="M72 68 Q82 58 82 44" fill="none" stroke="${c}" stroke-width="2" stroke-dasharray="3 2"/>`;
-        } else if (n.includes('leg curl') || n.includes('hamstring')) {
+        } else if (n.includes('leg curl') || n.includes('hamstring') || n.includes('nordic') || n.includes('glute') || n.includes('hip thrust')) {
             art = `<polyline points="24,34 24,62 56,62 56,88" fill="none" stroke="${eq}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="34" cy="22" r="6.5" fill="${body}"/><line x1="34" y1="30" x2="34" y2="58" stroke="${body}" stroke-width="7" stroke-linecap="round"/><line x1="34" y1="58" x2="62" y2="58" stroke="${c}" stroke-width="6.5" stroke-linecap="round"/><line x1="62" y1="58" x2="48" y2="82" stroke="${body}" stroke-width="5" stroke-linecap="round"/><circle cx="46" cy="78" r="5" fill="${c}"/><path d="M74 62 Q68 78 52 84" fill="none" stroke="${c}" stroke-width="2" stroke-dasharray="3 2"/>`;
-        } else if (n.includes('romanian') || n.includes('rdl') || n.includes('stiff')) {
+        } else if (n.includes('romanian') || n.includes('rdl') || n.includes('stiff') || n.includes('good morning') || n.includes('back extension') || n.includes('pull-through')) {
             art = `<circle cx="68" cy="28" r="6.5" fill="${body}"/><line x1="62" y1="33" x2="32" y2="48" stroke="${body}" stroke-width="7" stroke-linecap="round"/><polyline points="32,48 36,68 34,86" fill="none" stroke="${c}" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><line x1="54" y1="37" x2="54" y2="66" stroke="${body}" stroke-width="4.5" stroke-linecap="round"/><circle cx="54" cy="68" r="9" fill="${c}"/><circle cx="54" cy="68" r="3" fill="#1a1a1f"/>`;
-        } else if (n.includes('deadlift')) {
+        } else if (n.includes('deadlift') || n.includes('rack pull')) {
             art = `<circle cx="56" cy="20" r="6.5" fill="${body}"/><line x1="52" y1="28" x2="34" y2="52" stroke="${c}" stroke-width="7" stroke-linecap="round"/><polyline points="34,52 44,68 42,86" fill="none" stroke="${c}" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><line x1="48" y1="34" x2="52" y2="62" stroke="${body}" stroke-width="4.5" stroke-linecap="round"/><line x1="20" y1="64" x2="82" y2="64" stroke="${eq}" stroke-width="3.5"/><rect x="22" y="52" width="7" height="24" rx="2" fill="${c}"/><rect x="73" y="52" width="7" height="24" rx="2" fill="${c}"/>`;
         } else if (n.includes('squat')) {
             art = `<circle cx="48" cy="20" r="6.5" fill="${body}"/><line x1="20" y1="28" x2="78" y2="28" stroke="${eq}" stroke-width="3.5"/><rect x="18" y="20" width="6" height="16" rx="1.5" fill="${c}"/><rect x="74" y="20" width="6" height="16" rx="1.5" fill="${c}"/><line x1="48" y1="28" x2="32" y2="54" stroke="${body}" stroke-width="7" stroke-linecap="round"/><polyline points="32,54 54,56 48,86" fill="none" stroke="${c}" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/>`;
-        } else if (n.includes('calf')) {
+        } else if (n.includes('calf') || n.includes('tibialis')) {
             art = `<rect x="28" y="80" width="44" height="8" rx="2" fill="${eq}"/><circle cx="50" cy="18" r="6.5" fill="${body}"/><path d="M40 26 L60 26 L56 52 L44 52 Z" fill="${body}"/><line x1="46" y1="52" x2="45" y2="78" stroke="${body}" stroke-width="5.5" stroke-linecap="round"/><line x1="54" y1="52" x2="55" y2="78" stroke="${body}" stroke-width="5.5" stroke-linecap="round"/><ellipse cx="44" cy="64" rx="4.5" ry="7" fill="${c}"/><ellipse cx="56" cy="64" rx="4.5" ry="7" fill="${c}"/><path d="M72 76 L72 56" stroke="${c}" stroke-width="2.5" stroke-linecap="round"/><polygon points="72,50 68,58 76,58" fill="${c}"/>`;
-        } else if (n.includes('hanging') && n.includes('raise')) {
+        } else if ((n.includes('hanging') || n.includes('captain')) && n.includes('raise')) {
             art = `<line x1="18" y1="12" x2="82" y2="12" stroke="${eq}" stroke-width="4" stroke-linecap="round"/><line x1="38" y1="12" x2="40" y2="32" stroke="${body}" stroke-width="4" stroke-linecap="round"/><line x1="52" y1="12" x2="50" y2="32" stroke="${body}" stroke-width="4" stroke-linecap="round"/><circle cx="45" cy="26" r="6" fill="${body}"/><line x1="45" y1="33" x2="45" y2="58" stroke="${c}" stroke-width="7" stroke-linecap="round"/><line x1="45" y1="58" x2="78" y2="54" stroke="${body}" stroke-width="5.5" stroke-linecap="round"/><path d="M68 74 Q78 66 78 52" fill="none" stroke="${c}" stroke-width="2" stroke-dasharray="3 2"/>`;
-        } else if (n.includes('crunch') || n.includes('sit-up') || n.includes('ab ')) {
+        } else if (n.includes('crunch') || n.includes('sit-up') || n.includes('ab ') || n.includes('plank') || n.includes('twist') || n.includes('woodchop')) {
             art = `<circle cx="58" cy="36" r="6.5" fill="${body}"/><path d="M36 44 Q48 34 54 48" fill="none" stroke="${c}" stroke-width="8" stroke-linecap="round"/><polyline points="54,48 64,44 60,34" fill="none" stroke="${body}" stroke-width="4" stroke-linecap="round"/><polyline points="36,44 34,74 18,78" fill="none" stroke="${body}" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="72" y1="10" x2="62" y2="34" stroke="${eq}" stroke-width="2.5" stroke-dasharray="3 2"/>`;
-        } else if (n.includes('treadmill') || n.includes('walk') || n.includes('run') || n.includes('cardio')) {
+        } else if (n.includes('treadmill') || n.includes('walk') || n.includes('run') || n.includes('cardio') || n.includes('stair') || n.includes('bike') || n.includes('elliptical') || n.includes('skierg') || n.includes('rowing')) {
             art = `<line x1="14" y1="84" x2="82" y2="68" stroke="${c}" stroke-width="5" stroke-linecap="round"/><polyline points="76,68 82,28 68,24" fill="none" stroke="${eq}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="48" cy="24" r="6.5" fill="${body}"/><line x1="48" y1="31" x2="46" y2="54" stroke="${body}" stroke-width="6.5" stroke-linecap="round"/><polyline points="48,36 60,44 66,38" fill="none" stroke="${body}" stroke-width="4" stroke-linecap="round"/><polyline points="46,54 34,76" fill="none" stroke="${body}" stroke-width="5" stroke-linecap="round"/><polyline points="46,54 58,64 56,74" fill="none" stroke="${c}" stroke-width="5" stroke-linecap="round"/>`;
         } else {
             art = `<line x1="20" y1="50" x2="80" y2="50" stroke="${eq}" stroke-width="5" stroke-linecap="round"/><rect x="22" y="32" width="10" height="36" rx="3" fill="${c}"/><rect x="14" y="38" width="6" height="24" rx="2" fill="${c}" opacity="0.8"/><rect x="68" y="32" width="10" height="36" rx="3" fill="${c}"/><rect x="80" y="38" width="6" height="24" rx="2" fill="${c}" opacity="0.8"/>`;
@@ -1284,12 +1382,16 @@ const utils = {
         if (g.type === 'cardio') return `Daily Walk`;
         if (g.type === 'water') return `Drink ${g.target || 'Water'}`;
         if (g.type === 'reading') return `Read ${g.target || 'Goal'}`;
-        return g.title || 'Custom Goal';
+        return g.customLabel || g.title || 'Custom Goal';
     },
     checkGoalSuccess: (dStr, g) => {
         const parts = dStr.split('-'); const dObj = new Date(parts[0], parts[1]-1, parts[2]); const dayIndex = dObj.getDay();
         const active = utils.getActiveRoutine(); const prog = active.days.find(x => x.day === dayIndex); const isRest = !prog || prog.workouts.length === 0;
-        if (['water', 'reading', 'custom'].includes(g.type)) { return !!(store.state.history.challengeLogs && store.state.history.challengeLogs[dStr] && store.state.history.challengeLogs[dStr][g.id]); }
+        if (['water', 'reading', 'custom', 'steps'].includes(g.type)) {
+            const cLogs = store.state.challenge && store.state.challenge.logs && store.state.challenge.logs[dStr] && store.state.challenge.logs[dStr][g.id];
+            const hLogs = store.state.history.challengeLogs && store.state.history.challengeLogs[dStr] && store.state.history.challengeLogs[dStr][g.id];
+            return !!(cLogs || hLogs);
+        }
         else if (g.type === 'workout') { const count = store.state.history.workouts.filter(w => utils.getLocalISODate(w.date) === dStr && !w.isSkipped && !w.isActivity).length; const loggedRest = store.state.history.workouts.some(w => utils.getLocalISODate(w.date) === dStr && w.isSkipped); return count >= (g.count || 1) || isRest || loggedRest; }
         else if (g.type === 'weight') { return store.state.history.bodyweight.some(w => w && w.date && utils.getLocalISODate(w.date) === dStr); }
         else if (g.type === 'nutrition') { const nut = store.state.history.nutrition.find(n => n && n.date && utils.getLocalISODate(n.date) === dStr); if (!nut) return false; return nut.cal > 0; }
@@ -1297,7 +1399,7 @@ const utils = {
         return false;
     },
     checkDaySuccess: (dStr) => {
-        const c = store.state.challenge; if (!c || !c.isActive || c.goals.length === 0) return false;
+        const c = store.state.challenge; if (!c || !c.isActive || !c.goals || c.goals.length === 0) return false;
         let possible = 0; let met = 0;
         for (let g of c.goals) {
             if (g.createdAt && dStr < g.createdAt) continue;
@@ -1309,8 +1411,8 @@ const utils = {
     },
     calculateStreak: () => {
         let streak = 0; let d = new Date();
-        if (store.state.challenge && store.state.challenge.isActive) {
-            const start = new Date(store.state.challenge.startDate + 'T00:00:00');
+        if (store.state.challenge && store.state.challenge.isActive && store.state.challenge.startDate) {
+            const start = new Date(store.state.challenge.startDate.slice(0,10) + 'T00:00:00');
             if (utils.checkDaySuccess(utils.getLocalISODate(d))) streak++; d.setDate(d.getDate() - 1);
             while(d >= start) { if (utils.checkDaySuccess(utils.getLocalISODate(d))) { streak++; d.setDate(d.getDate() - 1); } else break; }
         } else {
@@ -1328,18 +1430,19 @@ const utils = {
         } return streak;
     },
     getChallengeStats: () => {
-        const c = store.state.challenge; if (!c || !c.isActive) return null;
-        const start = new Date(c.startDate + 'T00:00:00'); const end = new Date(c.endDate + 'T00:00:00'); const today = new Date(); today.setHours(0,0,0,0);
+        const c = store.state.challenge; if (!c || !c.isActive || !c.startDate || !c.endDate) return null;
+        const start = new Date(c.startDate.slice(0,10) + 'T00:00:00'); const end = new Date(c.endDate.slice(0,10) + 'T00:00:00'); const today = new Date(); today.setHours(0,0,0,0);
         let dayTotal = Math.round((end - start) / (1000*60*60*24)) + 1; let dayCurrent = Math.round((today - start) / (1000*60*60*24)) + 1;
         if (dayCurrent < 1) dayCurrent = 0; if (dayCurrent > dayTotal) dayCurrent = dayTotal;
         let possibleGoals = 0; let metGoals = 0; let checkEnd = today < end ? today : end;
-        for (let d = new Date(start); d <= checkEnd; d.setDate(d.getDate() + 1)) { let dStr = utils.getLocalISODate(d); c.goals.forEach(g => { if (!g.createdAt || dStr >= g.createdAt) { possibleGoals++; if (utils.checkGoalSuccess(dStr, g)) metGoals++; } }); }
+        for (let d = new Date(start); d <= checkEnd; d.setDate(d.getDate() + 1)) { let dStr = utils.getLocalISODate(d); (c.goals||[]).forEach(g => { if (!g.createdAt || dStr >= g.createdAt) { possibleGoals++; if (utils.checkGoalSuccess(dStr, g)) metGoals++; } }); }
         let successRate = possibleGoals === 0 ? 0 : Math.round((metGoals / possibleGoals) * 100); return { title: c.title, dayCurrent, dayTotal, streak: utils.calculateStreak(), successRate, possibleGoals, metGoals };
     },
     getCssVar: (varName, defaultHex) => { const val = getComputedStyle(document.documentElement).getPropertyValue(varName).trim(); return val ? val : defaultHex; },
     getGroupedExercises: () => {
         let allExercises = [];
         (store.state.customExercises||[]).forEach(ex => { if(!allExercises.find(e => e.name === ex.name)) allExercises.push(ex); });
+        Object.keys(EXERCISE_DB).forEach(name => { if(!allExercises.find(e => e.name === name)) allExercises.push({ name, ...EXERCISE_DB[name] }); });
         store.state.routines.forEach(r => r.days.forEach(d => d.workouts.forEach(w => w.exercises.forEach(ex => { if(!allExercises.find(e => e.name === ex.name)) allExercises.push(ex); }))));
         let grouped = {};
         allExercises.forEach(ex => {
@@ -1508,7 +1611,7 @@ const utils = {
                 waterLiters += dayWaterL;
             }
             let dayChalMet = 0;
-            if (store.state.challenge && store.state.challenge.isActive) {
+            if (store.state.challenge && store.state.challenge.isActive && store.state.challenge.goals) {
                 store.state.challenge.goals.forEach(g => {
                     if (!g.createdAt || dStr >= g.createdAt) {
                         if (utils.checkGoalSuccess(dStr, g)) { dayChalMet++; challengeTasksMet++; }
@@ -1998,7 +2101,7 @@ const utils = {
         const pro = Math.round(nutEntry.pro || 0);
         const fat = Math.round(nutEntry.fat || 0);
         if (cal === 0 && (!nutEntry.loggedMeals || nutEntry.loggedMeals.length === 0)) {
-            insights.push({ tone: 'bad', icon: 'fa-triangle-exclamation', text: '• No nutrition logged yet today — tap Breakfast, Lunch, Dinner, or Snacks above to log your saved meals.' });
+            insights.push({ tone: 'bad', icon: 'fa-triangle-exclamation', text: '• No nutrition logged yet today — tap Breakfast, Lunch, Dinner, or Snacks above to log your saved meals or raw ingredients.' });
             return insights;
         }
         if (pro >= targets.pro * 0.95) {
@@ -2454,7 +2557,7 @@ const workoutEngine = {
     changeVariation(exIdx, val) {
         const ex = this.activeWorkout.exercises[exIdx];
         if (val === 'ADD_NEW') {
-            const newVar = prompt(`Enter new variation/setting for ${ex.name} (e.g. 'Pin 3', 'Incline 30°', 'Wide Grip'):`);
+            const newVar = prompt(`Enter new variation/setting for ${ex.name} (e.g. 'Pin 3', 'Incline 30°', 'Wide Grip', 'Cable', 'DB'):`);
             if (newVar && newVar.trim() !== '') {
                 const cleanVar = newVar.trim();
                 if (!store.state.variations[ex.name]) store.state.variations[ex.name] = [];
@@ -2564,6 +2667,10 @@ const workoutEngine = {
         this.selectExercise(targetIdx, cleanName);
     },
     selectExercise(targetIdx, newName) {
+        if (!this.activeWorkout) {
+            document.getElementById('exercise-selection-modal').style.display = 'none';
+            return;
+        }
         const master = utils.getMasterExercise(newName);
         const past = store.getExerciseHistory(newName, ''); const lastSession = past[0] || null;
         let tSets = master.targetSets || 3; let tReps = master.targetReps || '8-12';
@@ -3225,7 +3332,7 @@ const views = {
                     <div class="data-row flex-between" style="padding:8px 0;">
                         <div style="min-width:0; flex:1;">
                             <div class="truncate-text" style="font-weight:bold; font-size:14px;"><span style="color:var(--accent-color); font-size:11px; text-transform:uppercase;">[${m.type || 'Meal'}]</span> ${utils.truncate(m.name, 26)} ${m.grams ? `<span style="font-size:11px; color:var(--text-secondary);">(${m.grams}g)</span>` : ''}</div>
-                            <div class="truncate-text" style="font-size:11px; color:var(--text-secondary);">${Math.round(m.cal)} kcal • P: ${Math.round(m.pro)}g • C: ${Math.round(m.car)}g • F: ${Math.round(m.fat)}g</div>
+                            <div class="truncate-text" style="font-size:11px; color:var(--text-secondary);">${Math.round(m.cal)} kcal • P: ${Math.round(m.pro * 10)/10}g • C: ${Math.round(m.car * 10)/10}g • F: ${Math.round(m.fat * 10)/10}g</div>
                         </div>
                         <button class="btn-icon" style="width:28px; height:28px; color:var(--pending);" onclick="app.removeLoggedMeal('${dStr}', ${idx})"><i class="fas fa-xmark"></i></button>
                     </div>
@@ -3416,11 +3523,15 @@ const views = {
                 html += `<h3 style="margin-top:14px; margin-bottom:6px; color:var(--accent-color); border-bottom:1px solid var(--border); padding-bottom:4px;">${muscle}</h3>`;
                 groupedEx[muscle].forEach(ex => {
                     const safeName = ex.name.replace(/'/g, "\\'");
+                    const thumb = utils.getExerciseImage(ex.name, utils.getPrimaryMuscle(ex));
                     html += `
                     <div class="data-row flex-between">
-                        <div style="min-width:0; flex:1;">
-                            <div class="truncate-text" style="font-weight:bold; font-size:14px;">${utils.truncate(ex.name, 30)}</div>
-                            <div class="truncate-text" style="font-size:11px; color:var(--text-secondary);">${utils.getMuscles(ex).join(', ')} • Default: ${ex.targetSets || 3} × ${ex.targetReps || '8-12'}</div>
+                        <div style="display:flex; align-items:center; gap:10px; min-width:0; flex:1;">
+                            <img src="${thumb}" alt="${ex.name}" style="width:40px; height:40px; border-radius:8px; object-fit:cover; flex-shrink:0; border:1px solid var(--border); background:#121217;">
+                            <div style="min-width:0; flex:1;">
+                                <div class="truncate-text" style="font-weight:bold; font-size:14px;">${utils.truncate(ex.name, 30)}</div>
+                                <div class="truncate-text" style="font-size:11px; color:var(--text-secondary);">${utils.getMuscles(ex).join(', ')} • Default: ${ex.targetSets || 3} × ${ex.targetReps || '8-12'}</div>
+                            </div>
                         </div>
                         <button class="btn-icon" style="width:32px; height:32px;" onclick="workoutEngine.editExerciseFromModal('NEW', '${safeName}'); app.navigate('data');"><i class="fas fa-pen"></i></button>
                     </div>`;
@@ -3505,6 +3616,8 @@ const app = {
     manageSubTab: 'overview',
     selectedNutritionDate: null,
     activeMealWindow: 'Breakfast',
+    mealSearchTab: 'saved',
+    rawIngredientCatFilter: 'All',
     chartInstances: {},
     draftRoutine: null,
     draftMealBuilder: null,
@@ -3566,7 +3679,7 @@ const app = {
         else if (page === 'data') main.innerHTML = views.renderData();
         main.scrollTop = 0;
     },
-    /* FULL-FLEDGED WORKOUT CALENDAR & SPLIT INTEGRATION (FULL TEXT - NO ELLIPSIS TRUNCATION) */
+    /* FULL-FLEDGED WORKOUT CALENDAR & SPLIT INTEGRATION */
     openWorkoutCalendarModal(monthOffset = null, selDate = null) {
         if (monthOffset !== null) this.calendarMonthOffset = monthOffset;
         if (selDate) this.selectedCalendarDate = selDate;
@@ -3982,7 +4095,7 @@ const app = {
         `;
         modal.style.display = 'flex';
     },
-    /* RESTORED R6 STAGE RANKED VIEW + HISTORICAL DAILY RP GAIN/LOSS LOG */
+    /* R6 STAGE RANKED VIEW + HISTORICAL DAILY RP GAIN/LOSS LOG */
     openRankModal() {
         const rank = utils.getWeeklyRankData();
         const breakdown = utils.getWeeklyRPBreakdown();
@@ -4604,16 +4717,18 @@ const app = {
             });
         }
     },
-    /* NUTRITION ACTIONS — INTERACTIVE MODALS & LIVE AUTO-SYNC */
+    /* NUTRITION ACTIONS — 2-TAB SAVED MEALS / CATEGORISED RAW INGREDIENTS & LIVE AUTO-SYNC */
     changeNutritionDate(newDateStr) {
         if (!newDateStr) return;
-        this.selectedNutritionDate = newDateStr;
+        this.selectedNutritionDate = utils.getLocalISODate(newDateStr);
         this.navigate('nutrition');
     },
     getOrCreateNutritionEntry(dStr) {
-        let entry = store.state.history.nutrition.find(n => utils.getLocalISODate(n.date) === dStr);
+        const cleanDate = utils.getLocalISODate(dStr || this.selectedNutritionDate || new Date());
+        this.selectedNutritionDate = cleanDate;
+        let entry = store.state.history.nutrition.find(n => utils.getLocalISODate(n.date) === cleanDate);
         if (!entry) {
-            entry = { date: dStr + 'T12:00:00.000Z', cal: 0, pro: 0, car: 0, fat: 0, loggedMeals: [], waterLog: [] };
+            entry = { date: cleanDate + 'T12:00:00.000Z', cal: 0, pro: 0, car: 0, fat: 0, loggedMeals: [], waterLog: [] };
             store.state.history.nutrition.push(entry);
         }
         if (!entry.loggedMeals) entry.loggedMeals = [];
@@ -4649,57 +4764,113 @@ const app = {
             setTimeout(() => this.initCharts(), 40);
         }
     },
+    setMealSearchTab(tabName, dStr, mealWindowType) {
+        this.mealSearchTab = tabName;
+        this.openMealSearchModal(dStr, mealWindowType);
+    },
+    setRawIngredientCategory(cat, dStr, mealWindowType) {
+        this.rawIngredientCatFilter = cat;
+        this.openMealSearchModal(dStr, mealWindowType);
+    },
     openMealSearchModal(dStr, mealWindowType = 'Breakfast') {
+        const cleanDate = utils.getLocalISODate(dStr || this.selectedNutritionDate || new Date());
+        this.selectedNutritionDate = cleanDate;
         this.activeMealWindow = mealWindowType;
         const modal = document.getElementById('meal-search-modal');
         const savedMeals = store.state.savedMeals || [];
-        const entry = this.getOrCreateNutritionEntry(dStr);
+        const entry = this.getOrCreateNutritionEntry(cleanDate);
         const loggedInWindow = (entry.loggedMeals || []).filter(m => (m.type || 'Meal').toLowerCase() === mealWindowType.toLowerCase());
+        const tab = this.mealSearchTab || 'saved';
+        const activeCat = this.rawIngredientCatFilter || 'All';
+
+        let groupedRaw = {};
+        NZ_ATHLETE_FOODS.forEach(f => {
+            if (activeCat !== 'All' && f.cat !== activeCat) return;
+            if (!groupedRaw[f.cat]) groupedRaw[f.cat] = [];
+            groupedRaw[f.cat].push(f);
+        });
+
         let html = `
             <div class="workout-header-sticky">
                 <button class="btn btn-sm" style="width:auto;" onclick="document.getElementById('meal-search-modal').style.display='none'">Close</button>
                 <div style="font-weight:bold; font-size:16px;">Log ${mealWindowType}</div>
-                <button class="btn btn-sm btn-primary" style="width:auto;" onclick="document.getElementById('meal-search-modal').style.display='none'; app.openMealCreateModal('${dStr}', '${mealWindowType}')">+ Custom</button>
+                <button class="btn btn-sm btn-primary" style="width:auto;" onclick="document.getElementById('meal-search-modal').style.display='none'; app.openMealCreateModal('${cleanDate}', '${mealWindowType}')">+ Create Meal</button>
             </div>
             <div style="padding:16px; overflow-y:auto; flex:1; padding-bottom:80px;">
                 ${loggedInWindow.length > 0 ? `
                     <div class="card" style="padding:12px; margin-bottom:14px; border-color:var(--success); background:var(--success-dim);">
                         <div style="font-size:11px; font-weight:900; color:var(--success); text-transform:uppercase; margin-bottom:6px;">Logged in ${mealWindowType} (${loggedInWindow.length})</div>
-                        ${loggedInWindow.map(m => `<div style="font-size:13px; font-weight:700; display:flex; justify-content:space-between; padding:2px 0;"><span>${m.name} ${m.grams ? `(${m.grams}g)` : ''}</span><span>${Math.round(m.cal)} kcal • ${Math.round(m.pro)}g P</span></div>`).join('')}
+                        ${loggedInWindow.map(m => `<div style="font-size:13px; font-weight:700; display:flex; justify-content:space-between; padding:2px 0;"><span>${m.name} ${m.grams ? `(${m.grams}g)` : ''}</span><span>${Math.round(m.cal)} kcal • ${Math.round(m.pro * 10)/10}g P</span></div>`).join('')}
                     </div>
                 ` : ''}
-                <input type="text" class="edit-input" placeholder="Search saved meals or NZ raw foods..." oninput="app.filterFoodModal(this.value)">
-                ${savedMeals.length > 0 ? `
-                    <h3 style="margin:12px 0 8px 0; color:var(--accent-color);">Your Saved Meals</h3>
-                    <div id="saved-meals-modal-list">
-                        ${savedMeals.map((sm, idx) => `
-                            <div class="card food-modal-item" data-name="${sm.name.toLowerCase()}" style="padding:12px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center; gap:8px;">
-                                <div style="flex:1; cursor:pointer; min-width:0;" onclick="app.logSavedMeal('${dStr}', ${idx}, '${mealWindowType}')">
-                                    <div class="truncate-text" style="font-weight:800; font-size:15px;">${sm.name}</div>
-                                    <div class="truncate-text" style="font-size:11px; color:var(--text-secondary);">${Math.round(sm.cal)} kcal • P: ${Math.round(sm.pro)}g • C: ${Math.round(sm.car)}g • F: ${Math.round(sm.fat)}g</div>
-                                </div>
-                                <div style="display:flex; gap:6px; align-items:center;">
-                                    <button class="btn btn-sm btn-primary" style="width:auto;" onclick="app.logSavedMeal('${dStr}', ${idx}, '${mealWindowType}')">+ Log</button>
-                                    <button class="btn-icon" style="width:30px; height:30px; color:var(--pending);" onclick="event.stopPropagation(); app.deleteSavedMeal(${idx}, '${dStr}', '${mealWindowType}')" title="Delete Saved Meal"><i class="fas fa-trash"></i></button>
-                                </div>
+                <!-- 2 TABS: SAVED MEALS & RAW INGREDIENTS -->
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-bottom:14px;">
+                    <button class="btn btn-sm ${tab === 'saved' ? 'btn-primary' : ''}" style="padding:11px; font-size:13.5px; font-weight:900;" onclick="app.setMealSearchTab('saved', '${cleanDate}', '${mealWindowType}')">
+                        <i class="fas fa-utensils"></i> Saved Meals (${savedMeals.length})
+                    </button>
+                    <button class="btn btn-sm ${tab === 'raw' ? 'btn-primary' : ''}" style="padding:11px; font-size:13.5px; font-weight:900;" onclick="app.setMealSearchTab('raw', '${cleanDate}', '${mealWindowType}')">
+                        <i class="fas fa-carrot"></i> Raw Ingredients (${NZ_ATHLETE_FOODS.length})
+                    </button>
+                </div>
+                <input type="text" class="edit-input" placeholder="${tab === 'saved' ? 'Search your saved meals...' : 'Search raw ingredients (e.g. chicken, broccoli, potato)...'}" oninput="app.filterFoodModal(this.value)">
+        `;
+
+        if (tab === 'saved') {
+            html += `
+                <div class="flex-between" style="margin:10px 0 8px 0;">
+                    <h3 style="margin:0; color:var(--accent-color);">Saved Meals Library</h3>
+                    <button class="btn btn-sm" style="padding:5px 10px; font-size:11.5px;" onclick="document.getElementById('meal-search-modal').style.display='none'; app.openMealCreateModal('${cleanDate}', '${mealWindowType}')">+ New Saved Meal</button>
+                </div>
+                <div id="saved-meals-modal-list">
+                    ${savedMeals.length === 0 ? `
+                        <div class="card text-muted" style="text-align:center; padding:22px;">
+                            No saved meals yet.<br>Tap <strong>+ Create Meal</strong> to build a meal manually by calories/macros or by combining raw ingredients!
+                        </div>
+                    ` : savedMeals.map((sm, idx) => `
+                        <div class="card food-modal-item" data-name="${sm.name.toLowerCase()}" style="padding:12px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center; gap:8px;">
+                            <div style="flex:1; cursor:pointer; min-width:0;" onclick="app.logSavedMeal('${cleanDate}', ${idx}, '${mealWindowType}')">
+                                <div class="truncate-text" style="font-weight:800; font-size:15px;">${sm.name}</div>
+                                <div class="truncate-text" style="font-size:11.5px; color:var(--text-secondary);">${Math.round(sm.cal)} kcal • P: ${Math.round(sm.pro * 10)/10}g • C: ${Math.round(sm.car * 10)/10}g • F: ${Math.round(sm.fat * 10)/10}g</div>
+                                ${(sm.ingredients && sm.ingredients.length > 0) ? `<div class="truncate-text" style="font-size:10.5px; color:var(--accent-color); margin-top:2px;">${sm.ingredients.map(i => `${i.name} (${i.grams}g)`).join(', ')}</div>` : ''}
                             </div>
-                        `).join('')}
-                    </div>
-                ` : ''}
-                <h3 style="margin:16px 0 8px 0; color:var(--accent-color);">NZ Athlete Raw & Whole Foods (Per 100g)</h3>
-                <div id="raw-foods-modal-list">
-                    ${NZ_ATHLETE_FOODS.map(f => `
-                        <div class="card food-modal-item" data-name="${(f.name + ' ' + f.cat).toLowerCase()}" style="padding:12px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center; gap:10px;">
-                            <div style="flex:1; cursor:pointer; min-width:0;" onclick="app.promptLogRawFood('${dStr}', '${f.id}', '${mealWindowType}')">
-                                <div class="truncate-text" style="font-weight:bold; font-size:14px;">${f.name} <span style="font-size:10px; color:var(--text-secondary);">(${f.cat})</span></div>
-                                <div class="truncate-text" style="font-size:11px; color:var(--text-secondary);">Per 100g: ${f.cal} kcal • P: ${f.pro}g • C: ${f.car}g • F: ${f.fat}g</div>
+                            <div style="display:flex; gap:6px; align-items:center; flex-shrink:0;">
+                                <button class="btn btn-sm btn-primary" style="width:auto;" onclick="app.logSavedMeal('${cleanDate}', ${idx}, '${mealWindowType}')">+ Log</button>
+                                <button class="btn-icon" style="width:30px; height:30px; color:var(--pending);" onclick="event.stopPropagation(); app.deleteSavedMeal(${idx}, '${cleanDate}', '${mealWindowType}')" title="Delete Saved Meal"><i class="fas fa-trash"></i></button>
                             </div>
-                            <button class="btn btn-sm btn-primary" style="width:auto; padding:8px 12px;" onclick="app.promptLogRawFood('${dStr}', '${f.id}', '${mealWindowType}')">+ Log</button>
                         </div>
                     `).join('')}
                 </div>
-            </div>
-        `;
+            `;
+        } else {
+            html += `
+                <div class="vol-pill-row" style="margin-top:4px; margin-bottom:12px;">
+                    ${FOOD_CATEGORIES.map(cat => `
+                        <button class="vol-pill-btn ${activeCat === cat ? 'active' : ''}" style="padding:6px 12px; font-size:12px;" onclick="app.setRawIngredientCategory('${cat.replace(/'/g, "\\'")}', '${cleanDate}', '${mealWindowType}')">
+                            ${cat}
+                        </button>
+                    `).join('')}
+                </div>
+                <div id="raw-foods-modal-list">
+                    ${Object.keys(groupedRaw).map(catName => `
+                        <div class="raw-cat-group" style="margin-bottom:14px;">
+                            <h3 style="margin:12px 0 8px 0; color:var(--accent-color); border-bottom:1px solid var(--border); padding-bottom:4px; font-size:14px;">
+                                ${catName.toUpperCase()} <span style="font-size:11px; color:var(--text-secondary); font-weight:normal;">(${groupedRaw[catName].length} items • per 100g)</span>
+                            </h3>
+                            ${groupedRaw[catName].map(f => `
+                                <div class="card food-modal-item" data-name="${(f.name + ' ' + f.cat).toLowerCase()}" style="padding:12px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center; gap:10px;">
+                                    <div style="flex:1; cursor:pointer; min-width:0;" onclick="app.promptLogRawFood('${cleanDate}', '${f.id}', '${mealWindowType}')">
+                                        <div class="truncate-text" style="font-weight:bold; font-size:14.5px;">${f.name}</div>
+                                        <div class="truncate-text" style="font-size:11px; color:var(--text-secondary);">Per 100g: ${f.cal} kcal • P: ${f.pro}g • C: ${f.car}g • F: ${f.fat}g</div>
+                                    </div>
+                                    <button class="btn btn-sm btn-primary" style="width:auto; padding:8px 12px;" onclick="app.promptLogRawFood('${cleanDate}', '${f.id}', '${mealWindowType}')">+ Log</button>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+        html += `</div>`;
         modal.innerHTML = html;
         modal.style.display = 'flex';
     },
@@ -4720,7 +4891,9 @@ const app = {
     logSavedMeal(dStr, savedIdx, mealWindowType) {
         const sm = store.state.savedMeals[savedIdx];
         if (!sm) return;
-        const entry = this.getOrCreateNutritionEntry(dStr);
+        const cleanDate = utils.getLocalISODate(dStr || this.selectedNutritionDate || new Date());
+        this.selectedNutritionDate = cleanDate;
+        const entry = this.getOrCreateNutritionEntry(cleanDate);
         entry.loggedMeals.push({
             name: sm.name,
             type: mealWindowType || this.activeMealWindow || 'Breakfast',
@@ -4737,13 +4910,15 @@ const app = {
     promptLogRawFood(dStr, foodId, mealWindowType) {
         const food = NZ_ATHLETE_FOODS.find(f => f.id === foodId);
         if (!food) return;
+        const cleanDate = utils.getLocalISODate(dStr || this.selectedNutritionDate || new Date());
+        this.selectedNutritionDate = cleanDate;
         const winType = mealWindowType || this.activeMealWindow || 'Breakfast';
         const modal = document.getElementById('meal-create-modal');
         modal.innerHTML = `
             <div class="workout-header-sticky">
                 <button class="btn btn-sm" style="width:auto;" onclick="document.getElementById('meal-create-modal').style.display='none'">Cancel</button>
                 <div class="truncate-text" style="font-weight:bold; font-size:16px;">Log ${food.name}</div>
-                <button class="btn btn-sm btn-success" style="width:auto;" onclick="app.confirmLogRawFood('${dStr}', '${food.id}')">Add</button>
+                <button class="btn btn-sm btn-success" style="width:auto;" onclick="app.confirmLogRawFood('${cleanDate}', '${food.id}')">Add</button>
             </div>
             <div style="padding:16px; overflow-y:auto; flex:1;">
                 <div class="card">
@@ -4757,42 +4932,73 @@ const app = {
                     <label style="font-size:11px; color:var(--text-secondary); font-weight:bold; text-transform:uppercase; display:block; margin-top:10px;">Portion Weight (Grams)</label>
                     <input type="number" id="raw-food-grams" class="edit-input" value="150" step="5" min="1" oninput="app.updateRawFoodPreview('${food.id}', this.value)" style="font-size:22px !important; font-weight:900; text-align:center; height:52px; margin-top:4px;">
                     <div style="display:grid; grid-template-columns: repeat(6, 1fr); gap:6px; margin-bottom:14px;">
-                        ${[50, 100, 150, 200, 250, 300].map(g => `<button type="button" class="btn btn-sm" style="padding:8px 2px; font-size:12px;" onclick="document.getElementById('raw-food-grams').value=${g}; app.updateRawFoodPreview('${food.id}', ${g});">${g}g</button>`).join('')}
+                        ${[50, 100, 150, 200, 250, 300].map(g => `<button type="button" class    promptLogRawFood(dStr, foodId, mealWindowType) {
+        const food = NZ_ATHLETE_FOODS.find(f => f.id === foodId);
+        if (!food) return;
+        const cleanDate = utils.getLocalISODate(dStr || this.selectedNutritionDate || new Date());
+        this.selectedNutritionDate = cleanDate;
+        const winType = mealWindowType || this.activeMealWindow || 'Breakfast';
+        const modal = document.getElementById('meal-create-modal');
+        modal.innerHTML = `
+            <div class="workout-header-sticky">
+                <button class="btn btn-sm" style="width:auto;" onclick="document.getElementById('meal-create-modal').style.display='none'">Cancel</button>
+                <div class="truncate-text" style="font-weight:bold; font-size:16px;">Log ${food.name}</div>
+                <button class="btn btn-sm btn-success" style="width:auto;" onclick="app.confirmLogRawFood('${cleanDate}', '${food.id}')">Add</button>
+            </div>
+            <div style="padding:16px; overflow-y:auto; flex:1;">
+                <div class="card">
+                    <div style="font-size:11px; color:var(--accent-color); font-weight:800; text-transform:uppercase;">${food.cat}</div>
+                    <h2 style="margin:4px 0 6px 0; font-size:20px;">${food.name}</h2>
+                    <div style="font-size:12px; color:var(--text-secondary); margin-bottom:14px;">${food.micros} — ${food.notes}</div>
+                    <label style="font-size:11px; color:var(--text-secondary); font-weight:bold; text-transform:uppercase;">Meal Window</label>
+                    <select id="raw-food-window" class="edit-input" style="font-weight:bold; margin-top:4px;">
+                        ${MEAL_WINDOW_CONFIG.map(mw => `<option value="${mw.type}" ${mw.type === winType ? 'selected' : ''}>${mw.label}</option>`).join('')}
+                    </select>
+                    <label style="font-size:11px; color:var(--text-secondary); font-weight:bold; text-transform:uppercase; display:block; margin-top:10px;">Portion Weight (Grams)</label>
+                    <input type="number" id="raw-food-grams" class="edit-input" value="150" step="5" min="1" oninput="app.updateRawFoodPreview('${food.id}', this.value)" style="font-size:22px !important; font-weight:900; text-align:center; height:52px; margin-top:4px;">
+                    <div style="display:grid; grid-template-columns: repeat(6, 1fr); gap:6px; margin-bottom:14px;">
+                        ${[50, 100, 150, 200, 250, 300].map(g => `<button type="button" class="btn btn-sm" style="padding:8px 0; font-size:12px;" onclick="document.getElementById('raw-food-grams').value=${g}; app.updateRawFoodPreview('${food.id}', ${g});">${g}g</button>`).join('')}
                     </div>
-                    <div id="raw-food-macro-preview" style="background:var(--surface-elevated); padding:12px; border-radius:10px; border:1px solid var(--border); text-align:center;"></div>
-                    <button class="btn btn-primary" style="margin-top:14px;" onclick="app.confirmLogRawFood('${dStr}', '${food.id}')"><i class="fas fa-check"></i> Log to Nutrition</button>
+                    <div id="raw-food-macro-preview" style="background:var(--surface-elevated); padding:14px; border-radius:12px; border:1px solid var(--border); text-align:center;">
+                        <div style="font-size:22px; font-weight:900; color:var(--accent-color);">${Math.round(food.cal * 1.5)} kcal</div>
+                        <div style="font-size:13px; color:var(--text-primary); margin-top:4px; font-weight:bold;">
+                            Protein: ${(food.pro * 1.5).toFixed(1)}g • Carbs: ${(food.car * 1.5).toFixed(1)}g • Fat: ${(food.fat * 1.5).toFixed(1)}g
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" style="margin-top:16px;" onclick="app.confirmLogRawFood('${cleanDate}', '${food.id}')"><i class="fas fa-check"></i> Add to Daily Log</button>
                 </div>
             </div>
         `;
         modal.style.display = 'flex';
-        this.updateRawFoodPreview(food.id, 150);
     },
     updateRawFoodPreview(foodId, gramsVal) {
         const food = NZ_ATHLETE_FOODS.find(f => f.id === foodId);
-        const el = document.getElementById('raw-food-macro-preview');
-        if (!food || !el) return;
+        if (!food) return;
         const g = Math.max(0, parseFloat(gramsVal) || 0);
-        const m = g / 100;
-        el.innerHTML = `
-            <div style="font-size:20px; font-weight:900; color:var(--accent-color);">${Math.round(food.cal * m)} kcal</div>
-            <div style="font-size:13px; color:var(--text-primary); margin-top:4px; font-weight:bold;">
-                Protein: ${(food.pro * m).toFixed(1)}g • Carbs: ${(food.car * m).toFixed(1)}g • Fat: ${(food.fat * m).toFixed(1)}g
-            </div>
-        `;
+        const mult = g / 100;
+        const box = document.getElementById('raw-food-macro-preview');
+        if (box) {
+            box.innerHTML = `
+                <div style="font-size:22px; font-weight:900; color:var(--accent-color);">${Math.round(food.cal * mult)} kcal</div>
+                <div style="font-size:13px; color:var(--text-primary); margin-top:4px; font-weight:bold;">
+                    Protein: ${(food.pro * mult).toFixed(1)}g • Carbs: ${(food.car * mult).toFixed(1)}g • Fat: ${(food.fat * mult).toFixed(1)}g
+                </div>
+            `;
+        }
     },
     confirmLogRawFood(dStr, foodId) {
         const food = NZ_ATHLETE_FOODS.find(f => f.id === foodId);
         if (!food) return;
-        const gEl = document.getElementById('raw-food-grams');
-        const wEl = document.getElementById('raw-food-window');
-        const grams = Math.max(1, parseFloat(gEl ? gEl.value : 150) || 150);
-        const winType = wEl ? wEl.value : (this.activeMealWindow || 'Breakfast');
+        const grams = Math.max(1, parseFloat(document.getElementById('raw-food-grams')?.value) || 100);
+        const winType = document.getElementById('raw-food-window')?.value || this.activeMealWindow || 'Breakfast';
         const mult = grams / 100;
-        const entry = this.getOrCreateNutritionEntry(dStr);
+        const cleanDate = utils.getLocalISODate(dStr || this.selectedNutritionDate || new Date());
+        this.selectedNutritionDate = cleanDate;
+        const entry = this.getOrCreateNutritionEntry(cleanDate);
         entry.loggedMeals.push({
             name: food.name,
             foodId: food.id,
-            grams: Math.round(grams),
+            grams: grams,
             type: winType,
             cal: Math.round(food.cal * mult),
             pro: Math.round(food.pro * mult * 10) / 10,
@@ -4804,255 +5010,303 @@ const app = {
         document.getElementById('meal-search-modal').style.display = 'none';
         this.refreshAllNutritionViews();
     },
-    openMealCreateModal(dStr, defaultWindow = null) {
-        const winType = defaultWindow || this.activeMealWindow || 'Breakfast';
+    openMealCreateModal(dStr, defaultWindow = 'Breakfast') {
+        const cleanDate = utils.getLocalISODate(dStr || this.selectedNutritionDate || new Date());
+        this.selectedNutritionDate = cleanDate;
         this.draftMealBuilder = {
-            dStr: dStr || this.selectedNutritionDate || utils.getLocalISODate(new Date()),
-            windowType: winType,
+            dateStr: cleanDate,
+            windowType: defaultWindow,
+            mode: 'ingredients',
             name: '',
-            cal: 0,
-            pro: 0,
-            car: 0,
-            fat: 0,
-            saveToLibrary: true,
+            cal: '',
+            pro: '',
+            car: '',
+            fat: '',
+            selectedCat: 'All',
+            selectedFoodId: NZ_ATHLETE_FOODS[0].id,
+            selectedGrams: 150,
             ingredients: []
         };
+        this.renderMealCreateModal();
+        document.getElementById('meal-create-modal').style.display = 'flex';
+    },
+    setMealBuilderMode(modeName) {
+        if (!this.draftMealBuilder) return;
+        this.draftMealBuilder.mode = modeName;
+        this.renderMealCreateModal();
+    },
+    setBuilderCategoryFilter(catName) {
+        if (!this.draftMealBuilder) return;
+        this.draftMealBuilder.selectedCat = catName;
+        const filtered = catName === 'All' ? NZ_ATHLETE_FOODS : NZ_ATHLETE_FOODS.filter(f => f.cat === catName);
+        if (filtered.length > 0) this.draftMealBuilder.selectedFoodId = filtered[0].id;
         this.renderMealCreateModal();
     },
     renderMealCreateModal() {
         const modal = document.getElementById('meal-create-modal');
         const b = this.draftMealBuilder;
-        let html = `
+        if (!b) return;
+        let ingTotals = { cal: 0, pro: 0, car: 0, fat: 0 };
+        b.ingredients.forEach(ing => {
+            ingTotals.cal += ing.cal;
+            ingTotals.pro += ing.pro;
+            ingTotals.car += ing.car;
+            ingTotals.fat += ing.fat;
+        });
+        const filteredBuilderFoods = b.selectedCat === 'All'
+            ? NZ_ATHLETE_FOODS
+            : NZ_ATHLETE_FOODS.filter(f => f.cat === b.selectedCat);
+
+        modal.innerHTML = `
             <div class="workout-header-sticky">
                 <button class="btn btn-sm" style="width:auto;" onclick="document.getElementById('meal-create-modal').style.display='none'">Cancel</button>
-                <div style="font-weight:bold; font-size:16px;">Create / Log Meal</div>
-                <button class="btn btn-sm btn-success" style="width:auto;" onclick="app.saveCustomMealFromModal()">Log Meal</button>
+                <div style="font-weight:bold; font-size:16px;">Create Custom Meal</div>
+                <button class="btn btn-sm btn-success" style="width:auto;" onclick="app.saveCustomMeal(true)">Save & Log</button>
             </div>
             <div style="padding:16px; overflow-y:auto; flex:1; padding-bottom:90px;">
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-bottom:14px;">
+                    <button class="btn btn-sm ${b.mode === 'ingredients' ? 'btn-primary' : ''}" onclick="app.setMealBuilderMode('ingredients')">
+                        <i class="fas fa-bowl-food"></i> Build from Raw Foods
+                    </button>
+                    <button class="btn btn-sm ${b.mode === 'manual' ? 'btn-primary' : ''}" onclick="app.setMealBuilderMode('manual')">
+                        <i class="fas fa-keyboard"></i> Manual Macros
+                    </button>
+                </div>
                 <div class="card">
+                    <label style="font-size:11px; color:var(--text-secondary); font-weight:bold; text-transform:uppercase;">Meal Name</label>
+                    <input type="text" class="edit-input" placeholder="e.g. Post-Workout Chicken & Rice Bowl" value="${b.name}" oninput="app.draftMealBuilder.name = this.value">
                     <label style="font-size:11px; color:var(--text-secondary); font-weight:bold; text-transform:uppercase;">Meal Window</label>
-                    <select id="cm-window" class="edit-input" style="font-weight:bold; margin-top:4px;" onchange="app.draftMealBuilder.windowType = this.value">
+                    <select class="edit-input" onchange="app.draftMealBuilder.windowType = this.value">
                         ${MEAL_WINDOW_CONFIG.map(mw => `<option value="${mw.type}" ${mw.type === b.windowType ? 'selected' : ''}>${mw.label}</option>`).join('')}
                     </select>
-                    <label style="font-size:11px; color:var(--text-secondary); font-weight:bold; text-transform:uppercase;">Meal / Food Name</label>
-                    <input type="text" id="cm-name" class="edit-input" placeholder="e.g. Post-Workout Chicken & Rice" value="${b.name}" oninput="app.draftMealBuilder.name = this.value">
-
-                    <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:10px; margin-top:4px;">
-                        <div>
-                            <label style="font-size:11px; color:var(--text-secondary); font-weight:bold;">Calories (kcal)</label>
-                            <input type="number" id="cm-cal" class="edit-input" value="${b.cal}" oninput="app.draftMealBuilder.cal = parseFloat(this.value)||0">
-                        </div>
-                        <div>
-                            <label style="font-size:11px; color:var(--text-secondary); font-weight:bold;">Protein (g)</label>
-                            <input type="number" step="0.5" id="cm-pro" class="edit-input" value="${b.pro}" oninput="app.draftMealBuilder.pro = parseFloat(this.value)||0">
-                        </div>
-                        <div>
-                            <label style="font-size:11px; color:var(--text-secondary); font-weight:bold;">Carbs (g)</label>
-                            <input type="number" step="0.5" id="cm-car" class="edit-input" value="${b.car}" oninput="app.draftMealBuilder.car = parseFloat(this.value)||0">
-                        </div>
-                        <div>
-                            <label style="font-size:11px; color:var(--text-secondary); font-weight:bold;">Fat (g)</label>
-                            <input type="number" step="0.5" id="cm-fat" class="edit-input" value="${b.fat}" oninput="app.draftMealBuilder.fat = parseFloat(this.value)||0">
-                        </div>
-                    </div>
-
-                    <label style="display:flex; align-items:center; gap:8px; font-size:13px; font-weight:bold; margin-top:4px; cursor:pointer;">
-                        <input type="checkbox" ${b.saveToLibrary ? 'checked' : ''} onchange="app.draftMealBuilder.saveToLibrary = this.checked" style="width:18px; height:18px;">
-                        <span>Save to My Saved Meals library for 1-tap logging</span>
-                    </label>
                 </div>
-
-                <div class="card">
-                    <h3 style="margin:0 0 8px 0; font-size:15px; color:var(--accent-color);"><i class="fas fa-plus-circle"></i> Build from NZ Raw Ingredients (Auto-Sums Macros)</h3>
-                    <div style="display:grid; grid-template-columns: 1fr 90px auto; gap:8px; align-items:center;">
-                        <select id="cm-ing-select" class="edit-input" style="margin:0;">
-                            ${NZ_ATHLETE_FOODS.map(f => `<option value="${f.id}">${f.name} (${f.cal}kcal/100g)</option>`).join('')}
-                        </select>
-                        <input type="number" id="cm-ing-grams" class="edit-input" value="100" placeholder="Grams" style="margin:0; text-align:center;">
-                        <button class="btn btn-sm btn-primary" style="height:44px; padding:0 12px;" onclick="app.addIngredientToDraftMeal()">+ Add</button>
-                    </div>
-
-                    ${b.ingredients.length > 0 ? `
-                        <div style="margin-top:12px; border-top:1px solid var(--border); padding-top:8px;">
-                            ${b.ingredients.map((ing, iIdx) => `
-                                <div class="flex-between" style="font-size:12.5px; padding:4px 0;">
-                                    <span><strong>${ing.name}</strong> (${ing.grams}g) — ${ing.cal} kcal, ${ing.pro}g P</span>
-                                    <button class="btn-icon" style="width:24px; height:24px; color:var(--pending);" onclick="app.removeIngredientFromDraftMeal(${iIdx})"><i class="fas fa-xmark"></i></button>
-                                </div>
+                ${b.mode === 'ingredients' ? `
+                    <div class="card">
+                        <h3 style="margin:0 0 8px 0; color:var(--accent-color);">Add Raw Ingredient (100+ NZ Foods)</h3>
+                        <div class="vol-pill-row" style="margin-bottom:10px;">
+                            ${FOOD_CATEGORIES.map(cat => `
+                                <button type="button" class="vol-pill-btn ${b.selectedCat === cat ? 'active' : ''}" style="padding:5px 10px; font-size:11.5px;" onclick="app.setBuilderCategoryFilter('${cat.replace(/'/g, "\\'")}')">
+                                    ${cat}
+                                </button>
                             `).join('')}
                         </div>
-                    ` : ''}
+                        <select id="builder-food-select" class="edit-input" onchange="app.draftMealBuilder.selectedFoodId = this.value">
+                            ${filteredBuilderFoods.map(f => `<option value="${f.id}" ${f.id === b.selectedFoodId ? 'selected' : ''}>${f.name} (${f.cal} kcal, ${f.pro}g P / 100g)</option>`).join('')}
+                        </select>
+                        <div style="display:grid; grid-template-columns: 1fr auto; gap:8px; align-items:center;">
+                            <input type="number" id="builder-food-grams" class="edit-input" style="margin:0;" value="${b.selectedGrams}" placeholder="Grams (g)" oninput="app.draftMealBuilder.selectedGrams = parseFloat(this.value) || 100">
+                            <button class="btn btn-primary" style="width:auto; padding:12px 18px;" onclick="app.addIngredientToDraftMeal()">+ Add Item</button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="flex-between" style="margin-bottom:8px;">
+                            <h3 style="margin:0;">Meal Ingredients (${b.ingredients.length})</h3>
+                            <span style="font-size:13px; font-weight:900; color:var(--accent-color);">${Math.round(ingTotals.cal)} kcal</span>
+                        </div>
+                        ${b.ingredients.length === 0 ? `<div class="text-muted" style="font-size:13px;">No ingredients added yet. Select foods above!</div>` : b.ingredients.map((ing, idx) => `
+                            <div class="data-row flex-between" style="padding:8px 0;">
+                                <div>
+                                    <div style="font-weight:bold; font-size:14px;">${ing.name} (${ing.grams}g)</div>
+                                    <div style="font-size:11px; color:var(--text-secondary);">${Math.round(ing.cal)} kcal • P: ${ing.pro.toFixed(1)}g • C: ${ing.car.toFixed(1)}g • F: ${ing.fat.toFixed(1)}g</div>
+                                </div>
+                                <button class="btn-icon" style="width:28px; height:28px; color:var(--pending);" onclick="app.removeIngredientFromDraftMeal(${idx})"><i class="fas fa-trash"></i></button>
+                            </div>
+                        `).join('')}
+                        <div style="margin-top:12px; padding-top:10px; border-top:1px solid var(--border); font-size:13px; font-weight:800; display:flex; justify-content:space-between;">
+                            <span>Total Macros:</span>
+                            <span>P: ${ingTotals.pro.toFixed(1)}g • C: ${ingTotals.car.toFixed(1)}g • F: ${ingTotals.fat.toFixed(1)}g</span>
+                        </div>
+                    </div>
+                ` : `
+                    <div class="card">
+                        <h3 style="margin:0 0 10px 0; color:var(--accent-color);">Manual Calories & Macros</h3>
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                            <div>
+                                <label style="font-size:11px; color:var(--text-secondary);">Calories (kcal)</label>
+                                <input type="number" class="edit-input" value="${b.cal}" oninput="app.draftMealBuilder.cal = this.value" placeholder="650">
+                            </div>
+                            <div>
+                                <label style="font-size:11px; color:var(--text-secondary);">Protein (g)</label>
+                                <input type="number" class="edit-input" value="${b.pro}" oninput="app.draftMealBuilder.pro = this.value" placeholder="50">
+                            </div>
+                            <div>
+                                <label style="font-size:11px; color:var(--text-secondary);">Carbs (g)</label>
+                                <input type="number" class="edit-input" value="${b.car}" oninput="app.draftMealBuilder.car = this.value" placeholder="70">
+                            </div>
+                            <div>
+                                <label style="font-size:11px; color:var(--text-secondary);">Fat (g)</label>
+                                <input type="number" class="edit-input" value="${b.fat}" oninput="app.draftMealBuilder.fat = this.value" placeholder="15">
+                            </div>
+                        </div>
+                    </div>
+                `}
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                    <button class="btn" onclick="app.saveCustomMeal(false)"><i class="fas fa-bookmark"></i> Save to Library Only</button>
+                    <button class="btn btn-primary" onclick="app.saveCustomMeal(true)"><i class="fas fa-check"></i> Save & Log Today</button>
                 </div>
-
-                <button class="btn btn-success" onclick="app.saveCustomMealFromModal()"><i class="fas fa-check"></i> Save & Log to ${b.windowType}</button>
             </div>
         `;
-        modal.innerHTML = html;
-        modal.style.display = 'flex';
     },
     addIngredientToDraftMeal() {
-        const sel = document.getElementById('cm-ing-select');
-        const gEl = document.getElementById('cm-ing-grams');
-        if (!sel || !gEl) return;
-        const food = NZ_ATHLETE_FOODS.find(f => f.id === sel.value);
+        const b = this.draftMealBuilder;
+        if (!b) return;
+        const food = NZ_ATHLETE_FOODS.find(f => f.id === b.selectedFoodId);
         if (!food) return;
-        const grams = Math.max(1, parseFloat(gEl.value) || 100);
-        const mult = grams / 100;
-        const item = {
+        const g = Math.max(1, parseFloat(b.selectedGrams) || 100);
+        const mult = g / 100;
+        b.ingredients.push({
             foodId: food.id,
             name: food.name,
-            grams: Math.round(grams),
+            grams: g,
             cal: Math.round(food.cal * mult),
             pro: Math.round(food.pro * mult * 10) / 10,
             car: Math.round(food.car * mult * 10) / 10,
             fat: Math.round(food.fat * mult * 10) / 10
-        };
-        this.draftMealBuilder.ingredients.push(item);
-        this.recalcDraftMealBuilder();
+        });
         this.renderMealCreateModal();
     },
     removeIngredientFromDraftMeal(idx) {
+        if (!this.draftMealBuilder) return;
         this.draftMealBuilder.ingredients.splice(idx, 1);
-        this.recalcDraftMealBuilder();
         this.renderMealCreateModal();
     },
-    recalcDraftMealBuilder() {
-        const b = this.draftMealBuilder;
-        let c = 0, p = 0, cb = 0, f = 0;
-        b.ingredients.forEach(ing => {
-            c += ing.cal; p += ing.pro; cb += ing.car; f += ing.fat;
-        });
-        b.cal = Math.round(c);
-        b.pro = Math.round(p * 10) / 10;
-        b.car = Math.round(cb * 10) / 10;
-        b.fat = Math.round(f * 10) / 10;
-        if (!b.name && b.ingredients.length > 0) {
-            b.name = b.ingredients.map(i => i.name).slice(0, 2).join(' + ');
-        }
-    },
-    saveCustomMealFromModal() {
+    saveCustomMeal(alsoLogToday = true) {
         const b = this.draftMealBuilder;
         if (!b) return;
-        const finalName = (b.name || '').trim() || `${b.windowType} Meal`;
-        const mealObj = {
-            name: finalName,
-            type: b.windowType || 'Breakfast',
-            cal: Math.round(parseFloat(b.cal) || 0),
-            pro: Math.round((parseFloat(b.pro) || 0) * 10) / 10,
-            car: Math.round((parseFloat(b.car) || 0) * 10) / 10,
-            fat: Math.round((parseFloat(b.fat) || 0) * 10) / 10,
-            ingredients: b.ingredients || []
-        };
-        if (b.saveToLibrary) {
-            if (!store.state.savedMeals) store.state.savedMeals = [];
-            store.state.savedMeals.push({ ...mealObj });
+        let cal = 0, pro = 0, car = 0, fat = 0;
+        if (b.mode === 'ingredients') {
+            b.ingredients.forEach(ing => {
+                cal += ing.cal; pro += ing.pro; car += ing.car; fat += ing.fat;
+            });
+        } else {
+            cal = parseFloat(b.cal) || 0;
+            pro = parseFloat(b.pro) || 0;
+            car = parseFloat(b.car) || 0;
+            fat = parseFloat(b.fat) || 0;
+            if (cal === 0 && (pro > 0 || car > 0 || fat > 0)) {
+                cal = Math.round(pro * 4 + car * 4 + fat * 9);
+            }
         }
-        const entry = this.getOrCreateNutritionEntry(b.dStr);
-        entry.loggedMeals.push(mealObj);
-        this.recalcNutritionTotals(entry);
+        const mealName = (b.name || '').trim() || (b.ingredients.length > 0 ? b.ingredients.map(i => i.name).slice(0, 2).join(' + ') : 'Custom Meal');
+        const mealObj = {
+            id: utils.generateId(),
+            name: mealName,
+            cal: Math.round(cal),
+            pro: Math.round(pro * 10) / 10,
+            car: Math.round(car * 10) / 10,
+            fat: Math.round(fat * 10) / 10,
+            ingredients: b.mode === 'ingredients' ? [...b.ingredients] : []
+        };
+        if (!store.state.savedMeals) store.state.savedMeals = [];
+        store.state.savedMeals.unshift(mealObj);
+        const cleanDate = utils.getLocalISODate(b.dateStr || this.selectedNutritionDate || new Date());
+        this.selectedNutritionDate = cleanDate;
+        if (alsoLogToday) {
+            const entry = this.getOrCreateNutritionEntry(cleanDate);
+            entry.loggedMeals.push({
+                name: mealObj.name,
+                type: b.windowType || 'Breakfast',
+                cal: mealObj.cal,
+                pro: mealObj.pro,
+                car: mealObj.car,
+                fat: mealObj.fat,
+                ingredients: mealObj.ingredients
+            });
+            this.recalcNutritionTotals(entry);
+        } else {
+            store.save();
+        }
         document.getElementById('meal-create-modal').style.display = 'none';
         document.getElementById('meal-search-modal').style.display = 'none';
         this.refreshAllNutritionViews();
     },
     promptQuickMacros(dStr) {
-        this.openMealCreateModal(dStr, this.activeMealWindow || 'Snacks');
+        const cleanDate = utils.getLocalISODate(dStr || this.selectedNutritionDate || new Date());
+        this.selectedNutritionDate = cleanDate;
+        const name = prompt("Quick Entry Name:", "Quick Macro Add");
+        if (name === null) return;
+        const cal = parseFloat(prompt("Calories (kcal):", "400")) || 0;
+        const pro = parseFloat(prompt("Protein (g):", "35")) || 0;
+        const car = parseFloat(prompt("Carbs (g):", "40")) || 0;
+        const fat = parseFloat(prompt("Fat (g):", "10")) || 0;
+        const entry = this.getOrCreateNutritionEntry(cleanDate);
+        entry.loggedMeals.push({ name: name.trim() || 'Quick Entry', type: 'Snacks', cal, pro, car, fat });
+        this.recalcNutritionTotals(entry);
+        this.refreshAllNutritionViews();
     },
-    removeLoggedMeal(dStr, idx) {
-        const entry = this.getOrCreateNutritionEntry(dStr);
-        if (entry.loggedMeals && entry.loggedMeals[idx]) {
-            entry.loggedMeals.splice(idx, 1);
+    removeLoggedMeal(dStr, mealIdx) {
+        const cleanDate = utils.getLocalISODate(dStr || this.selectedNutritionDate || new Date());
+        const entry = this.getOrCreateNutritionEntry(cleanDate);
+        if (entry.loggedMeals && entry.loggedMeals[mealIdx]) {
+            entry.loggedMeals.splice(mealIdx, 1);
             this.recalcNutritionTotals(entry);
             this.refreshAllNutritionViews();
         }
     },
     addWater(dStr, ml) {
-        const entry = this.getOrCreateNutritionEntry(dStr);
-        entry.waterLog.push({ amount: ml, time: new Date().toISOString() });
+        const cleanDate = utils.getLocalISODate(dStr || this.selectedNutritionDate || new Date());
+        const entry = this.getOrCreateNutritionEntry(cleanDate);
+        entry.waterLog.push({ time: new Date().toISOString(), amount: ml });
         store.save();
         this.checkRankPromotion();
         this.refreshAllNutritionViews();
     },
     copyPastNutritionDay(targetDateStr) {
+        const cleanTarget = utils.getLocalISODate(targetDateStr || this.selectedNutritionDate || new Date());
         const pastDays = store.state.history.nutrition
-            .filter(n => utils.getLocalISODate(n.date) !== targetDateStr && (n.cal > 0 || (n.loggedMeals && n.loggedMeals.length > 0)))
+            .filter(n => utils.getLocalISODate(n.date) !== cleanTarget && n.cal > 0)
             .sort((a, b) => new Date(b.date) - new Date(a.date));
         if (pastDays.length === 0) {
-            alert("No previous logged nutrition days found to copy from.");
+            alert("No previous nutrition days found to copy.");
             return;
         }
-        const latest = pastDays[0];
-        const srcIso = utils.getLocalISODate(latest.date);
-        if (!confirm(`Copy ${Math.round(latest.cal)} kcal (${(latest.loggedMeals || []).length} items) from ${srcIso} into ${targetDateStr}?`)) return;
-        const target = this.getOrCreateNutritionEntry(targetDateStr);
-        (latest.loggedMeals || []).forEach(m => target.loggedMeals.push(JSON.parse(JSON.stringify(m))));
-        this.recalcNutritionTotals(target);
-        this.refreshAllNutritionViews();
+        const source = pastDays[0];
+        if (confirm(`Copy ${Math.round(source.cal)} kcal (${source.pro}g P) from ${utils.formatDate(source.date)} into ${cleanTarget}?`)) {
+            const target = this.getOrCreateNutritionEntry(cleanTarget);
+            target.loggedMeals = JSON.parse(JSON.stringify(source.loggedMeals || []));
+            target.cal = source.cal;
+            target.pro = source.pro;
+            target.car = source.car;
+            target.fat = source.fat;
+            store.save();
+            this.refreshAllNutritionViews();
+        }
     },
     promptNutritionTargets() {
         const t = store.state.settings.nutritionTargets || { cal: 2200, pro: 160, car: 250, fat: 70, water: 4000 };
-        const modal = document.getElementById('meal-create-modal');
-        modal.innerHTML = `
-            <div class="workout-header-sticky">
-                <button class="btn btn-sm" style="width:auto;" onclick="document.getElementById('meal-create-modal').style.display='none'">Cancel</button>
-                <div style="font-weight:bold; font-size:16px;">Nutrition & Water Targets</div>
-                <button class="btn btn-sm btn-success" style="width:auto;" onclick="app.saveNutritionTargetsModal()">Save</button>
-            </div>
-            <div style="padding:16px; overflow-y:auto; flex:1;">
-                <div class="card">
-                    <label style="font-size:11px; color:var(--text-secondary); font-weight:bold;">Daily Calorie Target (kcal)</label>
-                    <input type="number" id="nt-cal" class="edit-input" value="${t.cal}">
-                    <label style="font-size:11px; color:var(--text-secondary); font-weight:bold;">Daily Protein Target (g)</label>
-                    <input type="number" id="nt-pro" class="edit-input" value="${t.pro}">
-                    <label style="font-size:11px; color:var(--text-secondary); font-weight:bold;">Daily Carbohydrate Target (g)</label>
-                    <input type="number" id="nt-car" class="edit-input" value="${t.car}">
-                    <label style="font-size:11px; color:var(--text-secondary); font-weight:bold;">Daily Fat Target (g)</label>
-                    <input type="number" id="nt-fat" class="edit-input" value="${t.fat}">
-                    <label style="font-size:11px; color:var(--text-secondary); font-weight:bold;">Daily Water Target (ml)</label>
-                    <input type="number" id="nt-water" class="edit-input" value="${t.water || 4000}">
-                    <button class="btn btn-primary" onclick="app.saveNutritionTargetsModal()">Save Targets</button>
-                </div>
-            </div>
-        `;
-        modal.style.display = 'flex';
-    },
-    saveNutritionTargetsModal() {
-        const t = store.state.settings.nutritionTargets || {};
-        t.cal = parseInt(document.getElementById('nt-cal').value) || 2200;
-        t.pro = parseInt(document.getElementById('nt-pro').value) || 160;
-        t.car = parseInt(document.getElementById('nt-car').value) || 250;
-        t.fat = parseInt(document.getElementById('nt-fat').value) || 70;
-        t.water = parseInt(document.getElementById('nt-water').value) || 4000;
-        store.state.settings.nutritionTargets = t;
+        const cal = parseInt(prompt("Daily Calorie Target (kcal):", t.cal)) || t.cal;
+        const pro = parseInt(prompt("Daily Protein Target (g):", t.pro)) || t.pro;
+        const car = parseInt(prompt("Daily Carbohydrate Target (g):", t.car)) || t.car;
+        const fat = parseInt(prompt("Daily Fat Target (g):", t.fat)) || t.fat;
+        const water = parseInt(prompt("Daily Water Target (ml):", t.water || 4000)) || 4000;
+        store.state.settings.nutritionTargets = { cal, pro, car, fat, water };
         store.save();
-        document.getElementById('meal-create-modal').style.display = 'none';
         this.refreshAllNutritionViews();
     },
     /* PIN GOALS & CHALLENGE */
     openPinGoalsModal() {
-        if (!store.state.challenge) {
-            store.state.challenge = { isActive: true, name: 'Daily Discipline', duration: 75, startDate: new Date().toISOString(), goals: [], logs: {} };
-        }
+        const modal = document.getElementById('challenge-modal');
+        if (!store.state.challenge) store.state.challenge = { isActive: true, name: 'Daily Discipline', goals: [] };
         store.state.challenge.isActive = true;
         const goals = store.state.challenge.goals || [];
-        const modal = document.getElementById('challenge-modal');
         let html = `
             <div class="workout-header-sticky">
-                <button class="btn btn-sm" style="width:auto;" onclick="document.getElementById('challenge-modal').style.display='none'">Close</button>
-                <div style="font-weight:bold; font-size:16px;">Pinned Action Plan Goals</div>
-                <button class="btn btn-sm btn-primary" style="width:auto;" onclick="app.addPinnedGoalPrompt()">+ Add</button>
+                <button class="btn btn-sm" style="width:auto;" onclick="document.getElementById('challenge-modal').style.display='none'; app.navigate(app.currentPage);">Done</button>
+                <div style="font-weight:bold; font-size:16px;">Pin Daily Goals</div>
+                <button class="btn btn-sm btn-primary" style="width:auto;" onclick="app.promptAddChallengeGoal()">+ Add Goal</button>
             </div>
             <div style="padding:16px; overflow-y:auto; flex:1;">
                 <div class="card">
-                    <div style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">Pinned goals appear directly inside Today's Action Plan on your Home Dashboard.</div>
-                    ${goals.length === 0 ? `<div class="text-muted">No custom goals pinned yet. Tap + Add above!</div>` : goals.map((g, idx) => `
+                    <div style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">Pinned goals appear directly inside your Dashboard Action Plan and award +30 XP when completed.</div>
+                    ${goals.length === 0 ? `<div class="text-muted">No custom goals yet. Tap + Add Goal above!</div>` : goals.map((g, idx) => `
                         <div class="data-row flex-between">
                             <div>
-                                <div style="font-weight:bold; font-size:14px;">${utils.getGoalLabel(g)}</div>
+                                <div style="font-weight:bold; font-size:15px;">${utils.getGoalLabel(g)}</div>
                                 <div style="font-size:11px; color:var(--text-secondary);">${g.showInActionPlan ? 'Pinned to Dashboard' : 'Hidden'}</div>
                             </div>
                             <div style="display:flex; gap:6px;">
-                                <button class="btn btn-sm" onclick="app.toggleGoalPin(${idx})">${g.showInActionPlan ? 'Unpin' : 'Pin'}</button>
-                                <button class="btn-icon" style="width:30px; height:30px; color:var(--pending);" onclick="app.deletePinnedGoal(${idx})"><i class="fas fa-trash"></i></button>
+                                <button class="btn btn-sm ${g.showInActionPlan ? 'btn-primary' : ''}" onclick="store.state.challenge.goals[${idx}].showInActionPlan = !store.state.challenge.goals[${idx}].showInActionPlan; store.save(); app.openPinGoalsModal();">${g.showInActionPlan ? 'Pinned' : 'Pin'}</button>
+                                <button class="btn-icon" style="color:var(--pending); width:32px; height:32px;" onclick="store.state.challenge.goals.splice(${idx}, 1); store.save(); app.openPinGoalsModal();"><i class="fas fa-trash"></i></button>
                             </div>
                         </div>
                     `).join('')}
@@ -5062,76 +5316,52 @@ const app = {
         modal.innerHTML = html;
         modal.style.display = 'flex';
     },
-    addPinnedGoalPrompt() {
-        const label = prompt("Enter Custom Daily Goal (e.g. '10k Steps', 'Creatine 5g', 'Read 10 Pages'):");
+    promptAddChallengeGoal() {
+        const label = prompt("Enter Daily Habit / Goal (e.g. '10,000 Steps', 'Creatine 5g', 'Read 20 Mins'):");
         if (!label || !label.trim()) return;
+        if (!store.state.challenge.goals) store.state.challenge.goals = [];
         store.state.challenge.goals.push({
             id: 'g_' + utils.generateId(),
             type: 'custom',
-            customLabel: label.trim(),
-            target: 1,
+            customName: label.trim(),
             showInActionPlan: true
         });
         store.save();
         this.openPinGoalsModal();
-        this.navigate(this.currentPage);
-    },
-    toggleGoalPin(idx) {
-        const g = store.state.challenge.goals[idx];
-        if (g) {
-            g.showInActionPlan = !g.showInActionPlan;
-            store.save();
-            this.openPinGoalsModal();
-            this.navigate(this.currentPage);
-        }
-    },
-    deletePinnedGoal(idx) {
-        store.state.challenge.goals.splice(idx, 1);
-        store.save();
-        this.openPinGoalsModal();
-        this.navigate(this.currentPage);
     },
     toggleChallengeGoal(dateStr, goalId, goalType) {
-        if (goalType === 'custom' || goalType === 'steps') {
-            if (!store.state.challenge.logs[dateStr]) store.state.challenge.logs[dateStr] = {};
-            store.state.challenge.logs[dateStr][goalId] = !store.state.challenge.logs[dateStr][goalId];
+        if (goalType === 'custom') {
+            if (!store.state.challengeChecks) store.state.challengeChecks = {};
+            if (!store.state.challengeChecks[dateStr]) store.state.challengeChecks[dateStr] = {};
+            store.state.challengeChecks[dateStr][goalId] = !store.state.challengeChecks[dateStr][goalId];
             store.save();
             this.navigate(this.currentPage);
-        } else if (goalType === 'water') {
-            this.navigate('nutrition');
-        } else if (goalType === 'workout') {
-            this.openStartWorkoutModal();
         }
     },
-    /* PROFILE, PHOTOS, BACKUP & SETTINGS */
+    /* PROFILE, PHOTOS, SETTINGS & BACKUP */
     setManageSubTab(sub) {
         this.manageSubTab = sub;
         this.navigate('data');
-    },
-    promptProfileEdit() {
-        const unit = utils.unitLabel();
-        const name = prompt("Athlete Display Name:", store.state.user.name);
-        if (name !== null && name.trim()) store.state.user.name = name.trim();
-        const curW = prompt(`Current Bodyweight (${unit}):`, store.state.user.currentWeight);
-        if (curW !== null && !isNaN(parseFloat(curW))) store.state.user.currentWeight = parseFloat(curW);
-        const tarW = prompt(`Goal Bodyweight (${unit}):`, store.state.user.targetWeight);
-        if (tarW !== null && !isNaN(parseFloat(tarW))) store.state.user.targetWeight = parseFloat(tarW);
-        store.save();
-        this.navigate(this.currentPage);
     },
     promptCreateMasterExercise() {
         const name = prompt(`New Exercise Name (Max ${MAX_EX_TITLE_LEN} chars):`);
         if (!name || !name.trim()) return;
         const cleanName = name.trim().slice(0, MAX_EX_TITLE_LEN);
         const muscles = prompt("Muscle Group(s) (comma-separated, e.g. Chest, Triceps):", "Chest");
-        const sets = prompt("Default Sets:", "3");
-        const reps = prompt("Default Rep Range:", "8-12");
-        store.syncExerciseGlobally(cleanName, {
-            name: cleanName,
-            muscles: (muscles || 'Other').split(',').map(s => s.trim()).filter(Boolean),
-            targetSets: parseInt(sets) || 3,
-            targetReps: (reps || '8-12').trim()
-        });
+        const parsedM = (muscles || 'Other').split(',').map(s => s.trim()).filter(Boolean);
+        const sets = parseInt(prompt("Default Target Sets:", "3")) || 3;
+        const reps = prompt("Default Target Reps (e.g. 8-12):", "8-12") || '8-12';
+        store.syncExerciseGlobally(cleanName, { name: cleanName, muscles: parsedM, targetSets: sets, targetReps: reps.trim() });
+        this.navigate('data');
+    },
+    promptProfileEdit() {
+        const name = prompt("Athlete Name:", store.state.user.name);
+        if (name !== null && name.trim()) store.state.user.name = name.trim();
+        const curW = parseFloat(prompt(`Current Bodyweight (${utils.unitLabel()}):`, store.state.user.currentWeight));
+        if (!isNaN(curW) && curW > 0) store.state.user.currentWeight = curW;
+        const tarW = parseFloat(prompt(`Target Goal Bodyweight (${utils.unitLabel()}):`, store.state.user.targetWeight));
+        if (!isNaN(tarW) && tarW > 0) store.state.user.targetWeight = tarW;
+        store.save();
         this.navigate(this.currentPage);
     },
     handleProgressPhotoUpload(event) {
@@ -5142,29 +5372,28 @@ const app = {
             const img = new Image();
             img.onload = () => {
                 const canvas = document.createElement('canvas');
-                const maxDim = 700;
+                const maxDim = 900;
                 let w = img.width, h = img.height;
                 if (w > h && w > maxDim) { h = Math.round(h * (maxDim / w)); w = maxDim; }
                 else if (h > maxDim) { w = Math.round(w * (maxDim / h)); h = maxDim; }
                 canvas.width = w; canvas.height = h;
                 const ctx = canvas.getContext('2d');
                 ctx.drawImage(img, 0, 0, w, h);
-                const dataUrl = canvas.toDataURL('image/jpeg', 0.72);
+                const compressedUrl = canvas.toDataURL('image/jpeg', 0.78);
                 if (!store.state.history.progressPhotos) store.state.history.progressPhotos = [];
                 store.state.history.progressPhotos.unshift({
                     id: utils.generateId(),
                     date: new Date().toISOString(),
                     weight: store.state.user.currentWeight,
-                    dataUrl
+                    dataUrl: compressedUrl
                 });
-                if (workoutEngine.activeWorkout) {
+                store.save();
+                if (workoutEngine.activeWorkout && document.getElementById('active-workout-view').style.display === 'flex') {
                     if (!workoutEngine.activeWorkout.sessionPhotos) workoutEngine.activeWorkout.sessionPhotos = [];
-                    workoutEngine.activeWorkout.sessionPhotos.push(dataUrl);
+                    workoutEngine.activeWorkout.sessionPhotos.push(compressedUrl);
                     workoutEngine.saveSessionState();
                     workoutEngine.renderActiveWorkout();
-                }
-                store.save();
-                if (!workoutEngine.activeWorkout || document.getElementById('active-workout-view').style.display === 'none') {
+                } else {
                     this.navigate(this.currentPage);
                 }
             };
@@ -5179,85 +5408,88 @@ const app = {
             this.navigate('data');
         }
     },
-    exportJSON() {
-        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(store.state));
-        const a = document.createElement('a');
-        a.setAttribute("href", dataStr);
-        a.setAttribute("download", `irontrack_backup_${utils.getLocalISODate(new Date())}.json`);
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-    },
-    importJSONPrompt() {
-        const raw = prompt("Paste your exported IronTrack JSON backup string below:");
-        if (!raw) return;
-        try {
-            const parsed = JSON.parse(raw);
-            if (parsed && parsed.history && parsed.routines) {
-                store.state = parsed;
-                store.save();
-                this.init();
-                alert("Backup restored successfully!");
-            } else {
-                alert("Invalid backup JSON structure.");
-            }
-        } catch(e) {
-            alert("Could not parse JSON backup.");
-        }
-    },
     openSettingsModal() {
-        const s = store.state.settings;
-        const f = s.features;
         const modal = document.getElementById('settings-modal');
+        const s = store.state.settings;
+        const f = s.features || {};
         modal.innerHTML = `
             <div class="workout-header-sticky">
-                <button class="btn btn-sm" style="width:auto;" onclick="document.getElementById('settings-modal').style.display='none'">Close</button>
-                <div style="font-weight:bold; font-size:16px;">Settings & Customisation</div>
+                <button class="btn btn-sm" style="width:auto;" onclick="document.getElementById('settings-modal').style.display='none'; app.navigate(app.currentPage);">Done</button>
+                <div style="font-weight:bold; font-size:16px;">App Settings</div>
                 <div style="width:60px;"></div>
             </div>
             <div style="padding:16px; overflow-y:auto; flex:1; padding-bottom:80px;">
                 <div class="card">
-                    <h3 style="margin-top:0;">Theme & Units</h3>
+                    <h3 style="margin-top:0;">Theme & Appearance</h3>
+                    <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:8px;">
+                        <button class="btn btn-sm ${s.theme === 'olympus' ? 'btn-primary' : ''}" onclick="app.applyTheme('olympus'); app.openSettingsModal();">Olympus</button>
+                        <button class="btn btn-sm ${s.theme === 'dark' ? 'btn-primary' : ''}" onclick="app.applyTheme('dark'); app.openSettingsModal();">Dark</button>
+                        <button class="btn btn-sm ${s.theme === 'light' ? 'btn-primary' : ''}" onclick="app.applyTheme('light'); app.openSettingsModal();">Light</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3 style="margin-top:0;">Units & Rest Timer</h3>
                     <div class="data-row flex-between">
-                        <span>Visual Theme</span>
-                        <select class="edit-input" style="width:auto; margin:0;" onchange="app.applyTheme(this.value); app.openSettingsModal(); app.navigate(app.currentPage);">
-                            <option value="olympus" ${s.theme === 'olympus' ? 'selected' : ''}>Olympus Gold & Marble</option>
-                            <option value="dark" ${s.theme === 'dark' ? 'selected' : ''}>Tactical Dark</option>
-                            <option value="light" ${s.theme === 'light' ? 'selected' : ''}>Minimal Light</option>
+                        <span>Weight Unit</span>
+                        <select class="edit-input" style="width:110px; margin:0;" onchange="store.state.settings.units = this.value; store.save();">
+                            <option value="kg" ${s.units === 'kg' ? 'selected' : ''}>kg</option>
+                            <option value="lbs" ${s.units === 'lbs' ? 'selected' : ''}>lbs</option>
                         </select>
                     </div>
                     <div class="data-row flex-between">
-                        <span>Weight Units</span>
-                        <select class="edit-input" style="width:auto; margin:0;" onchange="store.state.settings.units = this.value; store.save(); app.navigate(app.currentPage);">
-                            <option value="kg" ${s.units === 'kg' ? 'selected' : ''}>Kilograms (kg)</option>
-                            <option value="lbs" ${s.units === 'lbs' ? 'selected' : ''}>Pounds (lbs)</option>
-                        </select>
+                        <span>Auto Rest Timer (sec)</span>
+                        <input type="number" class="inline-edit" style="width:90px;" value="${s.restTimer || 120}" onchange="store.state.settings.restTimer = parseInt(this.value) || 0; store.save();">
                     </div>
                     <div class="data-row flex-between">
-                        <span>Auto Rest Timer (Seconds)</span>
-                        <input type="number" class="inline-edit" style="width:80px;" value="${s.restTimer || 120}" onchange="store.state.settings.restTimer = parseInt(this.value)||0; store.save();">
+                        <span>Target Weekly Workouts</span>
+                        <input type="number" class="inline-edit" style="width:90px;" value="${s.weeklyTarget || 5}" onchange="store.state.settings.weeklyTarget = parseInt(this.value) || 5; store.save();">
                     </div>
                 </div>
                 <div class="card">
                     <h3 style="margin-top:0;">Dashboard Widgets</h3>
                     ${[
-                        ['showRankBanner', 'Monthly Ranked Crest Banner'],
-                        ['showHeatmap', '28-Day Recovery Anatomy Map'],
-                        ['showWeekStrip', 'Mon-Sun Weekly Check Strip'],
-                        ['showActivityGrid', '48-Day Consistency Heat Grid & Split Calendar'],
-                        ['showQuote', 'Marcus Aurelius Stoic Quote']
+                        ['showRankBanner', 'Weekly Ranked Banner'],
+                        ['showHeatmap', '28-Day Recovery Anatomy Heatmap'],
+                        ['showWeekStrip', 'Mon-Sun Consistency Strip'],
+                        ['showActivityGrid', '48-Day Activity Bento Grid'],
+                        ['showQuote', 'Daily Stoic Quote']
                     ].map(([key, label]) => `
                         <div class="data-row flex-between">
                             <span>${label}</span>
-                            <input type="checkbox" ${f[key] ? 'checked' : ''} style="width:20px; height:20px;" onchange="store.state.settings.features['${key}'] = this.checked; store.save(); app.navigate(app.currentPage);">
+                            <input type="checkbox" ${f[key] ? 'checked' : ''} onchange="store.state.settings.features['${key}'] = this.checked; store.save();" style="width:20px; height:20px;">
                         </div>
                     `).join('')}
                 </div>
             </div>
         `;
         modal.style.display = 'flex';
+    },
+    exportJSON() {
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(store.state));
+        const dlAnchor = document.createElement('a');
+        dlAnchor.setAttribute("href", dataStr);
+        dlAnchor.setAttribute("download", `irontrack_backup_${utils.getLocalISODate(new Date())}.json`);
+        document.body.appendChild(dlAnchor);
+        dlAnchor.click();
+        dlAnchor.remove();
+    },
+    importJSONPrompt() {
+        const raw = prompt("Paste exported IronTrack JSON backup string below:");
+        if (!raw || !raw.trim()) return;
+        try {
+            const parsed = JSON.parse(raw);
+            if (parsed && parsed.history) {
+                store.state = { ...store.state, ...parsed };
+                store.save();
+                alert("Backup restored successfully!");
+                this.navigate('home');
+            }
+        } catch(e) {
+            alert("Invalid JSON backup string.");
+        }
     }
 };
+
 window.addEventListener('DOMContentLoaded', () => app.init());
 </script>
 </body>
