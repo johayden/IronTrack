@@ -203,18 +203,17 @@
             100% { transform: scale(1) rotate(0deg); opacity: 1; }
         }
         .promo-crest-anim { animation: promoCrestPop 0.75s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-        /* Nutrition & Workout Dashboard Image-Matched Styles */
+        /* Nutrition & Workout Dashboard Image-Matched Styles - 2x2 Grid for iPhone One-Screen Fit */
         .nut-meal-carousel {
-            display: flex; gap: 12px; overflow-x: auto; padding: 4px 2px 14px 2px; margin-bottom: 12px; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 2px 0 12px 0; margin-bottom: 10px;
         }
-        .nut-meal-carousel::-webkit-scrollbar { display: none; }
         .nut-meal-tile {
-            min-width: 132px; flex: 1; background: var(--surface-color); border-radius: 16px; overflow: hidden; border: var(--card-border);
+            min-width: 0; background: var(--surface-color); border-radius: 14px; overflow: hidden; border: var(--card-border);
             box-shadow: 0 6px 16px rgba(0,0,0,0.28); cursor: pointer; transition: transform 0.2s ease, border-color 0.2s ease; display: flex; flex-direction: column;
         }
         .nut-meal-tile:active { transform: scale(0.96); }
-        .nut-meal-tile-img { width: 100%; height: 100px; object-fit: cover; display: block; background: var(--surface-elevated); }
-        .nut-meal-tile-body { padding: 10px 10px; text-align: center; background: var(--surface-color); flex: 1; display: flex; flex-direction: column; justify-content: center; }
+        .nut-meal-tile-img { width: 100%; height: 68px; object-fit: cover; display: block; background: var(--surface-elevated); }
+        .nut-meal-tile-body { padding: 7px 8px; text-align: center; background: var(--surface-color); flex: 1; display: flex; flex-direction: column; justify-content: center; }
         .nut-ring-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px; }
         .nut-ring-card {
             background: var(--surface-color); border-radius: 18px; padding: 14px; border: var(--card-border);
@@ -256,11 +255,11 @@
         .vol-pill-btn.active {
             background: var(--info); border-color: var(--info); color: #ffffff; box-shadow: 0 0 12px rgba(2, 136, 209, 0.45);
         }
-        /* Challenge & Full Workout Calendar Grid */
-        .chal-cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 10px; }
+        /* Challenge & Full Workout Calendar Grid - Full Text Without Ellipsis */
+        .chal-cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-top: 10px; }
         .chal-cal-hdr { text-align: center; font-size: 10px; font-weight: 800; color: var(--text-secondary); text-transform: uppercase; padding-bottom: 4px; }
         .chal-cal-day {
-            aspect-ratio: 1 / 1.15; border-radius: 10px; background: var(--surface-elevated); border: 1px solid var(--border);
+            min-height: 62px; border-radius: 10px; background: var(--surface-elevated); border: 1px solid var(--border);
             display: flex; flex-direction: column; align-items: center; justify-content: space-between; cursor: pointer; padding: 4px 2px; transition: all 0.2s ease; min-width: 0; overflow: hidden;
         }
         .chal-cal-day.cal-all-met { background: var(--success-dim); border: 1.5px solid var(--success); box-shadow: 0 0 8px rgba(52,199,89,0.2); }
@@ -3181,22 +3180,12 @@ const views = {
                 </div>
                 <input type="date" class="edit-input" style="margin:0; padding:6px 10px; font-size:13px; font-weight:bold; width:auto; flex-shrink:0;" value="${dStr}" onchange="app.changeNutritionDate(this.value)">
             </div>
-            <div class="flex-between" style="margin-bottom:12px;">
-                <h2 style="margin:0; font-size:19px;">DAILY SUMMARY</h2>
-                <button class="btn btn-sm" style="background:transparent; border:1px solid var(--border); padding:6px 12px; font-size:12px;" onclick="app.copyPastNutritionDay('${dStr}')"><i class="fas fa-copy"></i> Copy Past Day</button>
-            </div>
-            <div class="nut-ring-grid">
-                ${utils.renderMacroRingCard('Calories', nutEntry.cal, targets.cal, 'kcal', 'kcal', '#32d74b', 'fa-fire')}
-                ${utils.renderMacroRingCard('Protein', nutEntry.pro, targets.pro, 'g', 'protein', '#ff453a', 'fa-drumstick-bite')}
-                ${utils.renderMacroRingCard('Carbs', nutEntry.car, targets.car, 'g', 'carbs', '#ff9f0a', 'fa-bowl-rice')}
-                ${utils.renderMacroRingCard('Fat', nutEntry.fat, targets.fat, 'g', 'fat', '#ffd60a', 'fa-cheese')}
-            </div>
-            <div class="flex-between" style="margin:18px 0 12px 0; align-items:flex-start;">
-                <div style="flex:1; padding-right:10px; min-width:0;">
-                    <h2 style="margin:0 0 2px 0; font-size:19px;">MEALS</h2>
-                    <div style="font-size:12px; color:var(--text-secondary); line-height:1.35;">Tap a meal window to log from your Saved Meals or raw ingredients</div>
+            <div class="flex-between" style="margin-bottom:10px; align-items:center;">
+                <div style="min-width:0;">
+                    <h2 style="margin:0; font-size:18px;">MEALS</h2>
+                    <div style="font-size:11.5px; color:var(--text-secondary);">Tap Breakfast, Lunch, Dinner, or Snacks to log</div>
                 </div>
-                <button class="btn btn-sm btn-primary" style="width:auto; padding:10px 14px; font-weight:900;" onclick="app.openMealCreateModal('${dStr}')"><i class="fas fa-utensils"></i> + Create Meal</button>
+                <button class="btn btn-sm btn-primary" style="width:auto; padding:8px 12px; font-weight:900;" onclick="app.openMealCreateModal('${dStr}')"><i class="fas fa-utensils"></i> + Create Meal</button>
             </div>
             <div class="nut-meal-carousel">
                 ${MEAL_WINDOW_CONFIG.map(mw => {
@@ -3206,13 +3195,23 @@ const views = {
                     <div class="nut-meal-tile" onclick="app.openMealSearchModal('${dStr}', '${mw.type}')">
                         <img src="${mw.img}" alt="${mw.label}" class="nut-meal-tile-img">
                         <div class="nut-meal-tile-body">
-                            <div style="font-weight:900; font-size:16px; color:var(--text-primary);">${mw.label}</div>
-                            <div style="font-size:12px; color:${windowCals > 0 ? 'var(--accent-color)' : 'var(--text-secondary)'}; margin-top:4px; font-weight:700;">
+                            <div style="font-weight:900; font-size:14.5px; color:var(--text-primary); line-height:1.15;">${mw.label}</div>
+                            <div style="font-size:11.5px; color:${windowCals > 0 ? 'var(--accent-color)' : 'var(--text-secondary)'}; margin-top:2px; font-weight:700;">
                                 ${windowCals > 0 ? `${windowCals} kcal (${mealsInWindow.length})` : '+ Add Meal'}
                             </div>
                         </div>
                     </div>`;
                 }).join('')}
+            </div>
+            <div class="flex-between" style="margin-bottom:12px; margin-top:6px;">
+                <h2 style="margin:0; font-size:19px;">DAILY SUMMARY</h2>
+                <button class="btn btn-sm" style="background:transparent; border:1px solid var(--border); padding:6px 12px; font-size:12px;" onclick="app.copyPastNutritionDay('${dStr}')"><i class="fas fa-copy"></i> Copy Past Day</button>
+            </div>
+            <div class="nut-ring-grid">
+                ${utils.renderMacroRingCard('Calories', nutEntry.cal, targets.cal, 'kcal', 'kcal', '#32d74b', 'fa-fire')}
+                ${utils.renderMacroRingCard('Protein', nutEntry.pro, targets.pro, 'g', 'protein', '#ff453a', 'fa-drumstick-bite')}
+                ${utils.renderMacroRingCard('Carbs', nutEntry.car, targets.car, 'g', 'carbs', '#ff9f0a', 'fa-bowl-rice')}
+                ${utils.renderMacroRingCard('Fat', nutEntry.fat, targets.fat, 'g', 'fat', '#ffd60a', 'fa-cheese')}
             </div>
         `;
         if (nutEntry.loggedMeals && nutEntry.loggedMeals.length > 0) {
@@ -3508,6 +3507,7 @@ const app = {
     activeMealWindow: 'Breakfast',
     chartInstances: {},
     draftRoutine: null,
+    draftMealBuilder: null,
     fitUploadTargetMode: null,
     fitUploadWorkoutId: null,
     calendarMonthOffset: 0,
@@ -3566,7 +3566,7 @@ const app = {
         else if (page === 'data') main.innerHTML = views.renderData();
         main.scrollTop = 0;
     },
-    /* FULL-FLEDGED WORKOUT CALENDAR & SPLIT INTEGRATION */
+    /* FULL-FLEDGED WORKOUT CALENDAR & SPLIT INTEGRATION (FULL TEXT - NO ELLIPSIS TRUNCATION) */
     openWorkoutCalendarModal(monthOffset = null, selDate = null) {
         if (monthOffset !== null) this.calendarMonthOffset = monthOffset;
         if (selDate) this.selectedCalendarDate = selDate;
@@ -3580,12 +3580,12 @@ const app = {
         const monthTitle = targetMonthDate.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
         const daysInMonth = new Date(year, month + 1, 0).getDate();
         const firstDayJs = new Date(year, month, 1).getDay();
-        const startOffset = (firstDayJs + 6) % 7; // Monday = 0
+        const startOffset = (firstDayJs + 6) % 7;
         const todayIso = utils.getLocalISODate(now);
         const dayHeaders = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
         let calCellsHtml = dayHeaders.map(h => `<div class="chal-cal-hdr">${h}</div>`).join('');
         for (let b = 0; b < startOffset; b++) {
-            calCellsHtml += `<div style="aspect-ratio:1/1.15;"></div>`;
+            calCellsHtml += `<div style="min-height:62px;"></div>`;
         }
         for (let d = 1; d <= daysInMonth; d++) {
             const dObj = new Date(year, month, d);
@@ -3593,7 +3593,7 @@ const app = {
             const dow = dObj.getDay();
             const splitDay = activeSplit.days.find(x => x.day === dow) || { day: dow, workouts: [] };
             const scheduledWorkouts = splitDay.workouts || [];
-            const splitTitle = scheduledWorkouts.length > 0 ? scheduledWorkouts[0].name : 'Rest';
+            const splitTitle = scheduledWorkouts.length > 0 ? scheduledWorkouts.map(w => w.name).join(' / ') : 'Rest';
             const loggedWorkouts = store.state.history.workouts.filter(w => utils.getLocalISODate(w.date) === dIso && !w.isSkipped);
             const skippedRest = store.state.history.workouts.some(w => utils.getLocalISODate(w.date) === dIso && w.isSkipped);
             let statusClass = '';
@@ -3604,14 +3604,13 @@ const app = {
             calCellsHtml += `
                 <div class="chal-cal-day ${statusClass} ${isSelected ? 'cal-active-sel' : ''}" onclick="app.openWorkoutCalendarModal(${this.calendarMonthOffset}, '${dIso}')">
                     <div style="font-size:11px; font-weight:900; color:${dIso === todayIso ? 'var(--accent-color)' : 'var(--text-primary)'};">${d}</div>
-                    <div class="truncate-text" style="font-size:8.5px; color:${scheduledWorkouts.length > 0 ? 'var(--info)' : 'var(--text-secondary)'}; font-weight:800; text-align:center; width:100%;">${utils.truncate(splitTitle, 8)}</div>
+                    <div style="font-size:8px; line-height:1.15; color:${scheduledWorkouts.length > 0 ? 'var(--info)' : 'var(--text-secondary)'}; font-weight:800; text-align:center; width:100%; word-break:break-word; white-space:normal; padding:1px 0;">${splitTitle}</div>
                     <div style="font-size:9px;">
                         ${loggedWorkouts.length > 0 ? '<i class="fas fa-check-circle" style="color:var(--success);"></i>' : (scheduledWorkouts.length > 0 ? '<i class="fas fa-dumbbell" style="color:var(--text-secondary); opacity:0.55;"></i>' : '<i class="fas fa-moon" style="color:var(--text-secondary); opacity:0.35;"></i>')}
                     </div>
                 </div>
             `;
         }
-        // Selected Day Details
         const selParts = this.selectedCalendarDate.split('-');
         const selDateObj = new Date(parseInt(selParts[0]), parseInt(selParts[1]) - 1, parseInt(selParts[2]));
         const selDow = selDateObj.getDay();
@@ -3622,8 +3621,8 @@ const app = {
             <div class="workout-header-sticky">
                 <button class="btn btn-sm" style="width:auto;" onclick="document.getElementById('calendar-modal').style.display='none'">Close</button>
                 <div style="text-align:center; min-width:0; flex:1;">
-                    <div class="truncate-text" style="font-size:10px; color:var(--text-secondary); font-weight:800; text-transform:uppercase;">Split Calendar & Schedule</div>
-                    <div class="truncate-text" style="font-weight:900; font-size:16px;">${utils.truncate(activeSplit.name, 24)}</div>
+                    <div style="font-size:10px; color:var(--text-secondary); font-weight:800; text-transform:uppercase;">Split Calendar & Schedule</div>
+                    <div style="font-weight:900; font-size:16px;">${activeSplit.name}</div>
                 </div>
                 <button class="btn btn-sm btn-primary" style="width:auto; padding:6px 10px; font-size:11px;" onclick="app.exportSplitToICS()" title="Sync Split to Apple / iPhone Calendar"><i class="fas fa-calendar-plus"></i> Sync iCal</button>
             </div>
@@ -3654,7 +3653,7 @@ const app = {
                             <div style="font-size:12px; font-weight:800; color:var(--info); margin-bottom:6px;">Split Prescription (${(w.exercises || []).length} Exercises):</div>
                             ${(w.exercises || []).map((ex, idx) => `
                                 <div class="flex-between" style="font-size:13px; padding:4px 0; border-bottom:1px dashed rgba(255,255,255,0.06);">
-                                    <span class="truncate-text" style="font-weight:700;">${idx + 1}. ${utils.truncate(ex.name, 26)}</span>
+                                    <span style="font-weight:700; word-break:break-word;">${idx + 1}. ${ex.name}</span>
                                     <span style="color:var(--text-secondary); font-size:12px; flex-shrink:0;">${ex.targetSets || 3} sets × ${ex.targetReps || '8-12'}</span>
                                 </div>
                             `).join('')}
@@ -4037,7 +4036,6 @@ const app = {
                     </div>
                     ${rank.championLockedByHypertrophy ? `<div style="margin-top:14px; padding:8px 12px; border-radius:8px; background:var(--warning-dim); color:var(--warning); font-size:12px; font-weight:bold; text-align:center;">Champion Gate: Reach 90%+ Monthly Consistency (Currently ${rank.consistencyPct}%) to unlock Champion!</div>` : ''}
                 </div>
-                <!-- HISTORICAL DAILY RP GAIN / LOSS LOG (e.g. 5/11 -10 RP, 4/11 +50 RP) -->
                 <div class="card" style="padding:16px;">
                     <div class="flex-between" style="margin-bottom:10px;">
                         <h3 style="margin:0; font-size:15px; color:var(--accent-color);"><i class="fas fa-clock-rotate-left"></i> HISTORICAL DAILY RP GAIN / LOSS</h3>
@@ -4045,7 +4043,6 @@ const app = {
                     </div>
                     <div style="max-height:220px; overflow-y:auto; padding-right:4px;">
                         ${rank.rpHistoryLog.length === 0 ? `<div class="text-muted">No daily RP history yet this month.</div>` : rank.rpHistoryLog.map(item => {
-                            const isPos = item.delta >= 0;
                             const sign = item.delta > 0 ? '+' : '';
                             const badgeCol = item.delta > 0 ? 'var(--success)' : (item.delta < 0 ? 'var(--pending)' : 'var(--text-secondary)');
                             const badgeBg = item.delta > 0 ? 'var(--success-dim)' : (item.delta < 0 ? 'var(--pending-dim)' : 'var(--surface-elevated)');
@@ -4607,7 +4604,7 @@ const app = {
             });
         }
     },
-    /* NUTRITION ACTIONS */
+    /* NUTRITION ACTIONS — INTERACTIVE MODALS & LIVE AUTO-SYNC */
     changeNutritionDate(newDateStr) {
         if (!newDateStr) return;
         this.selectedNutritionDate = newDateStr;
@@ -4632,34 +4629,59 @@ const app = {
             f += parseFloat(m.fat) || 0;
         });
         entry.cal = Math.round(c);
-        entry.pro = Math.round(p);
-        entry.car = Math.round(cb);
-        entry.fat = Math.round(f);
+        entry.pro = Math.round(p * 10) / 10;
+        entry.car = Math.round(cb * 10) / 10;
+        entry.fat = Math.round(f * 10) / 10;
         store.save();
         this.checkRankPromotion();
+    },
+    refreshAllNutritionViews() {
+        const main = document.getElementById('main-content');
+        if (!main) return;
+        if (this.currentPage === 'nutrition') {
+            main.innerHTML = views.renderNutrition();
+        } else if (this.currentPage === 'home') {
+            main.innerHTML = views.renderHome();
+        } else if (this.currentPage === 'data') {
+            main.innerHTML = views.renderData();
+        } else if (this.currentPage === 'analytics') {
+            main.innerHTML = views.renderAnalytics();
+            setTimeout(() => this.initCharts(), 40);
+        }
     },
     openMealSearchModal(dStr, mealWindowType = 'Breakfast') {
         this.activeMealWindow = mealWindowType;
         const modal = document.getElementById('meal-search-modal');
         const savedMeals = store.state.savedMeals || [];
+        const entry = this.getOrCreateNutritionEntry(dStr);
+        const loggedInWindow = (entry.loggedMeals || []).filter(m => (m.type || 'Meal').toLowerCase() === mealWindowType.toLowerCase());
         let html = `
             <div class="workout-header-sticky">
                 <button class="btn btn-sm" style="width:auto;" onclick="document.getElementById('meal-search-modal').style.display='none'">Close</button>
                 <div style="font-weight:bold; font-size:16px;">Log ${mealWindowType}</div>
-                <button class="btn btn-sm btn-primary" style="width:auto;" onclick="document.getElementById('meal-search-modal').style.display='none'; app.openMealCreateModal('${dStr}')">+ Custom</button>
+                <button class="btn btn-sm btn-primary" style="width:auto;" onclick="document.getElementById('meal-search-modal').style.display='none'; app.openMealCreateModal('${dStr}', '${mealWindowType}')">+ Custom</button>
             </div>
             <div style="padding:16px; overflow-y:auto; flex:1; padding-bottom:80px;">
+                ${loggedInWindow.length > 0 ? `
+                    <div class="card" style="padding:12px; margin-bottom:14px; border-color:var(--success); background:var(--success-dim);">
+                        <div style="font-size:11px; font-weight:900; color:var(--success); text-transform:uppercase; margin-bottom:6px;">Logged in ${mealWindowType} (${loggedInWindow.length})</div>
+                        ${loggedInWindow.map(m => `<div style="font-size:13px; font-weight:700; display:flex; justify-content:space-between; padding:2px 0;"><span>${m.name} ${m.grams ? `(${m.grams}g)` : ''}</span><span>${Math.round(m.cal)} kcal • ${Math.round(m.pro)}g P</span></div>`).join('')}
+                    </div>
+                ` : ''}
                 <input type="text" class="edit-input" placeholder="Search saved meals or NZ raw foods..." oninput="app.filterFoodModal(this.value)">
                 ${savedMeals.length > 0 ? `
                     <h3 style="margin:12px 0 8px 0; color:var(--accent-color);">Your Saved Meals</h3>
                     <div id="saved-meals-modal-list">
                         ${savedMeals.map((sm, idx) => `
-                            <div class="card food-modal-item" data-name="${sm.name.toLowerCase()}" style="padding:12px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+                            <div class="card food-modal-item" data-name="${sm.name.toLowerCase()}" style="padding:12px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center; gap:8px;">
                                 <div style="flex:1; cursor:pointer; min-width:0;" onclick="app.logSavedMeal('${dStr}', ${idx}, '${mealWindowType}')">
                                     <div class="truncate-text" style="font-weight:800; font-size:15px;">${sm.name}</div>
                                     <div class="truncate-text" style="font-size:11px; color:var(--text-secondary);">${Math.round(sm.cal)} kcal • P: ${Math.round(sm.pro)}g • C: ${Math.round(sm.car)}g • F: ${Math.round(sm.fat)}g</div>
                                 </div>
-                                <button class="btn btn-sm btn-primary" style="width:auto;" onclick="app.logSavedMeal('${dStr}', ${idx}, '${mealWindowType}')">+ Log</button>
+                                <div style="display:flex; gap:6px; align-items:center;">
+                                    <button class="btn btn-sm btn-primary" style="width:auto;" onclick="app.logSavedMeal('${dStr}', ${idx}, '${mealWindowType}')">+ Log</button>
+                                    <button class="btn-icon" style="width:30px; height:30px; color:var(--pending);" onclick="event.stopPropagation(); app.deleteSavedMeal(${idx}, '${dStr}', '${mealWindowType}')" title="Delete Saved Meal"><i class="fas fa-trash"></i></button>
+                                </div>
                             </div>
                         `).join('')}
                     </div>
@@ -4672,7 +4694,7 @@ const app = {
                                 <div class="truncate-text" style="font-weight:bold; font-size:14px;">${f.name} <span style="font-size:10px; color:var(--text-secondary);">(${f.cat})</span></div>
                                 <div class="truncate-text" style="font-size:11px; color:var(--text-secondary);">Per 100g: ${f.cal} kcal • P: ${f.pro}g • C: ${f.car}g • F: ${f.fat}g</div>
                             </div>
-                            <button class="btn btn-sm" style="width:auto;" onclick="app.promptLogRawFood('${dStr}', '${f.id}', '${mealWindowType}')">+ Grams</button>
+                            <button class="btn btn-sm btn-primary" style="width:auto; padding:8px 12px;" onclick="app.promptLogRawFood('${dStr}', '${f.id}', '${mealWindowType}')">+ Log</button>
                         </div>
                     `).join('')}
                 </div>
@@ -4680,6 +4702,13 @@ const app = {
         `;
         modal.innerHTML = html;
         modal.style.display = 'flex';
+    },
+    deleteSavedMeal(idx, dStr, mealWindowType) {
+        if (store.state.savedMeals && store.state.savedMeals[idx]) {
+            store.state.savedMeals.splice(idx, 1);
+            store.save();
+            this.openMealSearchModal(dStr, mealWindowType);
+        }
     },
     filterFoodModal(q) {
         const query = (q || '').toLowerCase().trim();
@@ -4694,175 +4723,384 @@ const app = {
         const entry = this.getOrCreateNutritionEntry(dStr);
         entry.loggedMeals.push({
             name: sm.name,
-            type: mealWindowType || 'Meal',
-            cal: sm.cal,
-            pro: sm.pro,
-            car: sm.car,
-            fat: sm.fat,
+            type: mealWindowType || this.activeMealWindow || 'Breakfast',
+            cal: parseFloat(sm.cal) || 0,
+            pro: parseFloat(sm.pro) || 0,
+            car: parseFloat(sm.car) || 0,
+            fat: parseFloat(sm.fat) || 0,
             ingredients: sm.ingredients ? [...sm.ingredients] : []
         });
         this.recalcNutritionTotals(entry);
         document.getElementById('meal-search-modal').style.display = 'none';
-        this.navigate('nutrition');
+        this.refreshAllNutritionViews();
     },
     promptLogRawFood(dStr, foodId, mealWindowType) {
         const food = NZ_ATHLETE_FOODS.find(f => f.id === foodId);
         if (!food) return;
-        const gramsInput = prompt(`How many grams of "${food.name}"? (Macros scale from 100g reference):`, "150");
-        if (gramsInput === null) return;
-        const grams = parseFloat(gramsInput);
-        if (isNaN(grams) || grams <= 0) return;
+        const winType = mealWindowType || this.activeMealWindow || 'Breakfast';
+        const modal = document.getElementById('meal-create-modal');
+        modal.innerHTML = `
+            <div class="workout-header-sticky">
+                <button class="btn btn-sm" style="width:auto;" onclick="document.getElementById('meal-create-modal').style.display='none'">Cancel</button>
+                <div class="truncate-text" style="font-weight:bold; font-size:16px;">Log ${food.name}</div>
+                <button class="btn btn-sm btn-success" style="width:auto;" onclick="app.confirmLogRawFood('${dStr}', '${food.id}')">Add</button>
+            </div>
+            <div style="padding:16px; overflow-y:auto; flex:1;">
+                <div class="card">
+                    <div style="font-size:11px; color:var(--accent-color); font-weight:800; text-transform:uppercase;">${food.cat}</div>
+                    <h2 style="margin:4px 0 6px 0; font-size:20px;">${food.name}</h2>
+                    <div style="font-size:12px; color:var(--text-secondary); margin-bottom:14px;">${food.micros} — ${food.notes}</div>
+                    <label style="font-size:11px; color:var(--text-secondary); font-weight:bold; text-transform:uppercase;">Meal Window</label>
+                    <select id="raw-food-window" class="edit-input" style="font-weight:bold; margin-top:4px;">
+                        ${MEAL_WINDOW_CONFIG.map(mw => `<option value="${mw.type}" ${mw.type === winType ? 'selected' : ''}>${mw.label}</option>`).join('')}
+                    </select>
+                    <label style="font-size:11px; color:var(--text-secondary); font-weight:bold; text-transform:uppercase; display:block; margin-top:10px;">Portion Weight (Grams)</label>
+                    <input type="number" id="raw-food-grams" class="edit-input" value="150" step="5" min="1" oninput="app.updateRawFoodPreview('${food.id}', this.value)" style="font-size:22px !important; font-weight:900; text-align:center; height:52px; margin-top:4px;">
+                    <div style="display:grid; grid-template-columns: repeat(6, 1fr); gap:6px; margin-bottom:14px;">
+                        ${[50, 100, 150, 200, 250, 300].map(g => `<button type="button" class="btn btn-sm" style="padding:8px 2px; font-size:12px;" onclick="document.getElementById('raw-food-grams').value=${g}; app.updateRawFoodPreview('${food.id}', ${g});">${g}g</button>`).join('')}
+                    </div>
+                    <div id="raw-food-macro-preview" style="background:var(--surface-elevated); padding:12px; border-radius:10px; border:1px solid var(--border); text-align:center;"></div>
+                    <button class="btn btn-primary" style="margin-top:14px;" onclick="app.confirmLogRawFood('${dStr}', '${food.id}')"><i class="fas fa-check"></i> Log to Nutrition</button>
+                </div>
+            </div>
+        `;
+        modal.style.display = 'flex';
+        this.updateRawFoodPreview(food.id, 150);
+    },
+    updateRawFoodPreview(foodId, gramsVal) {
+        const food = NZ_ATHLETE_FOODS.find(f => f.id === foodId);
+        const el = document.getElementById('raw-food-macro-preview');
+        if (!food || !el) return;
+        const g = Math.max(0, parseFloat(gramsVal) || 0);
+        const m = g / 100;
+        el.innerHTML = `
+            <div style="font-size:20px; font-weight:900; color:var(--accent-color);">${Math.round(food.cal * m)} kcal</div>
+            <div style="font-size:13px; color:var(--text-primary); margin-top:4px; font-weight:bold;">
+                Protein: ${(food.pro * m).toFixed(1)}g • Carbs: ${(food.car * m).toFixed(1)}g • Fat: ${(food.fat * m).toFixed(1)}g
+            </div>
+        `;
+    },
+    confirmLogRawFood(dStr, foodId) {
+        const food = NZ_ATHLETE_FOODS.find(f => f.id === foodId);
+        if (!food) return;
+        const gEl = document.getElementById('raw-food-grams');
+        const wEl = document.getElementById('raw-food-window');
+        const grams = Math.max(1, parseFloat(gEl ? gEl.value : 150) || 150);
+        const winType = wEl ? wEl.value : (this.activeMealWindow || 'Breakfast');
         const mult = grams / 100;
         const entry = this.getOrCreateNutritionEntry(dStr);
         entry.loggedMeals.push({
             name: food.name,
             foodId: food.id,
             grams: Math.round(grams),
-            type: mealWindowType || 'Meal',
+            type: winType,
             cal: Math.round(food.cal * mult),
             pro: Math.round(food.pro * mult * 10) / 10,
             car: Math.round(food.car * mult * 10) / 10,
             fat: Math.round(food.fat * mult * 10) / 10
         });
         this.recalcNutritionTotals(entry);
+        document.getElementById('meal-create-modal').style.display = 'none';
         document.getElementById('meal-search-modal').style.display = 'none';
-        this.navigate('nutrition');
+        this.refreshAllNutritionViews();
     },
-    openMealCreateModal(dStr) {
-        const name = prompt("Custom Meal / Food Name:");
-        if (!name || !name.trim()) return;
-        const cal = parseFloat(prompt("Calories (kcal):", "450")) || 0;
-        const pro = parseFloat(prompt("Protein (g):", "35")) || 0;
-        const car = parseFloat(prompt("Carbs (g):", "45")) || 0;
-        const fat = parseFloat(prompt("Fat (g):", "12")) || 0;
-        const saveForLater = confirm("Save this meal to your Saved Meals library for 1-tap logging later?");
-        if (saveForLater) {
-            store.state.savedMeals.push({ name: name.trim(), cal, pro, car, fat });
-        }
-        const entry = this.getOrCreateNutritionEntry(dStr);
-        entry.loggedMeals.push({ name: name.trim(), type: this.activeMealWindow || 'Meal', cal, pro, car, fat });
-        this.recalcNutritionTotals(entry);
-        this.navigate('nutrition');
+    openMealCreateModal(dStr, defaultWindow = null) {
+        const winType = defaultWindow || this.activeMealWindow || 'Breakfast';
+        this.draftMealBuilder = {
+            dStr: dStr || this.selectedNutritionDate || utils.getLocalISODate(new Date()),
+            windowType: winType,
+            name: '',
+            cal: 0,
+            pro: 0,
+            car: 0,
+            fat: 0,
+            saveToLibrary: true,
+            ingredients: []
+        };
+        this.renderMealCreateModal();
     },
-    promptQuickMacros(dStr) {
-        this.openMealCreateModal(dStr);
-    },
-    removeLoggedMeal(dStr, mealIdx) {
-        const entry = this.getOrCreateNutritionEntry(dStr);
-        entry.loggedMeals.splice(mealIdx, 1);
-        this.recalcNutritionTotals(entry);
-        this.navigate('nutrition');
-    },
-    addWater(dStr, ml) {
-        const entry = this.getOrCreateNutritionEntry(dStr);
-        entry.waterLog.push({ time: new Date().toISOString(), amount: ml });
-        store.save();
-        this.checkRankPromotion();
-        this.navigate('nutrition');
-    },
-    copyPastNutritionDay(targetDateStr) {
-        const pastWithCals = store.state.history.nutrition
-            .filter(n => n.cal > 0 && utils.getLocalISODate(n.date) !== targetDateStr)
-            .sort((a, b) => new Date(b.date) - new Date(a.date));
-        if (pastWithCals.length === 0) {
-            alert("No previous nutrition days found to copy.");
-            return;
-        }
-        const last = pastWithCals[0];
-        if (confirm(`Copy meals from ${utils.formatDate(last.date)} (${Math.round(last.cal)} kcal, ${Math.round(last.pro)}g Protein) to ${targetDateStr}?`)) {
-            const targetEntry = this.getOrCreateNutritionEntry(targetDateStr);
-            targetEntry.loggedMeals = JSON.parse(JSON.stringify(last.loggedMeals || []));
-            targetEntry.cal = last.cal;
-            targetEntry.pro = last.pro;
-            targetEntry.car = last.car;
-            targetEntry.fat = last.fat;
-            store.save();
-            this.navigate('nutrition');
-        }
-    },
-    promptNutritionTargets() {
-        const t = store.state.settings.nutritionTargets;
-        const cal = parseInt(prompt("Daily Calorie Target (kcal):", t.cal)) || t.cal;
-        const pro = parseInt(prompt("Daily Protein Target (g):", t.pro)) || t.pro;
-        const car = parseInt(prompt("Daily Carbohydrate Target (g):", t.car)) || t.car;
-        const fat = parseInt(prompt("Daily Fat Target (g):", t.fat)) || t.fat;
-        const water = parseInt(prompt("Daily Water Target (ml):", t.water || 4000)) || 4000;
-        store.state.settings.nutritionTargets = { cal, pro, car, fat, water };
-        store.save();
-        this.navigate('nutrition');
-    },
-    /* PIN GOALS & CHALLENGE */
-    openPinGoalsModal() {
-        const modal = document.getElementById('pin-goals-modal');
-        if (!store.state.challenge) {
-            store.state.challenge = { isActive: true, title: 'Daily Habits', startDate: utils.getLocalISODate(new Date()), endDate: '2026-12-31', goals: [] };
-        }
-        const goals = store.state.challenge.goals || [];
+    renderMealCreateModal() {
+        const modal = document.getElementById('meal-create-modal');
+        const b = this.draftMealBuilder;
         let html = `
             <div class="workout-header-sticky">
-                <button class="btn btn-sm" style="width:auto;" onclick="document.getElementById('pin-goals-modal').style.display='none'">Done</button>
-                <div style="font-weight:bold; font-size:16px;">Pin Daily Goals</div>
-                <button class="btn btn-sm btn-primary" style="width:auto;" onclick="app.addPinnedGoal()">+ Add</button>
+                <button class="btn btn-sm" style="width:auto;" onclick="document.getElementById('meal-create-modal').style.display='none'">Cancel</button>
+                <div style="font-weight:bold; font-size:16px;">Create / Log Meal</div>
+                <button class="btn btn-sm btn-success" style="width:auto;" onclick="app.saveCustomMealFromModal()">Log Meal</button>
             </div>
-            <div style="padding:16px; overflow-y:auto; flex:1;">
-                <div style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">Pinned goals appear directly in Today's Action Plan on your Home Dashboard.</div>
-                ${goals.length === 0 ? `<div class="card text-muted" style="text-align:center;">No custom daily goals created yet. Tap + Add above!</div>` : goals.map((g, idx) => `
-                    <div class="card flex-between" style="padding:12px 14px; margin-bottom:8px;">
-                        <div style="min-width:0; flex:1;">
-                            <div class="truncate-text" style="font-weight:bold; font-size:15px;">${utils.getGoalLabel(g)}</div>
-                            <div style="font-size:11px; color:var(--text-secondary);">${g.showInActionPlan ? 'Pinned to Home' : 'Hidden on Home'}</div>
+            <div style="padding:16px; overflow-y:auto; flex:1; padding-bottom:90px;">
+                <div class="card">
+                    <label style="font-size:11px; color:var(--text-secondary); font-weight:bold; text-transform:uppercase;">Meal Window</label>
+                    <select id="cm-window" class="edit-input" style="font-weight:bold; margin-top:4px;" onchange="app.draftMealBuilder.windowType = this.value">
+                        ${MEAL_WINDOW_CONFIG.map(mw => `<option value="${mw.type}" ${mw.type === b.windowType ? 'selected' : ''}>${mw.label}</option>`).join('')}
+                    </select>
+                    <label style="font-size:11px; color:var(--text-secondary); font-weight:bold; text-transform:uppercase;">Meal / Food Name</label>
+                    <input type="text" id="cm-name" class="edit-input" placeholder="e.g. Post-Workout Chicken & Rice" value="${b.name}" oninput="app.draftMealBuilder.name = this.value">
+
+                    <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:10px; margin-top:4px;">
+                        <div>
+                            <label style="font-size:11px; color:var(--text-secondary); font-weight:bold;">Calories (kcal)</label>
+                            <input type="number" id="cm-cal" class="edit-input" value="${b.cal}" oninput="app.draftMealBuilder.cal = parseFloat(this.value)||0">
                         </div>
-                        <div style="display:flex; gap:8px; align-items:center; flex-shrink:0;">
-                            <input type="checkbox" ${g.showInActionPlan ? 'checked' : ''} onchange="app.toggleGoalPin(${idx}, this.checked)" style="width:20px; height:20px;">
-                            <button class="btn-icon" style="width:28px; height:28px; color:var(--pending);" onclick="app.deletePinnedGoal(${idx})"><i class="fas fa-trash"></i></button>
+                        <div>
+                            <label style="font-size:11px; color:var(--text-secondary); font-weight:bold;">Protein (g)</label>
+                            <input type="number" step="0.5" id="cm-pro" class="edit-input" value="${b.pro}" oninput="app.draftMealBuilder.pro = parseFloat(this.value)||0">
+                        </div>
+                        <div>
+                            <label style="font-size:11px; color:var(--text-secondary); font-weight:bold;">Carbs (g)</label>
+                            <input type="number" step="0.5" id="cm-car" class="edit-input" value="${b.car}" oninput="app.draftMealBuilder.car = parseFloat(this.value)||0">
+                        </div>
+                        <div>
+                            <label style="font-size:11px; color:var(--text-secondary); font-weight:bold;">Fat (g)</label>
+                            <input type="number" step="0.5" id="cm-fat" class="edit-input" value="${b.fat}" oninput="app.draftMealBuilder.fat = parseFloat(this.value)||0">
                         </div>
                     </div>
-                `).join('')}
+
+                    <label style="display:flex; align-items:center; gap:8px; font-size:13px; font-weight:bold; margin-top:4px; cursor:pointer;">
+                        <input type="checkbox" ${b.saveToLibrary ? 'checked' : ''} onchange="app.draftMealBuilder.saveToLibrary = this.checked" style="width:18px; height:18px;">
+                        <span>Save to My Saved Meals library for 1-tap logging</span>
+                    </label>
+                </div>
+
+                <div class="card">
+                    <h3 style="margin:0 0 8px 0; font-size:15px; color:var(--accent-color);"><i class="fas fa-plus-circle"></i> Build from NZ Raw Ingredients (Auto-Sums Macros)</h3>
+                    <div style="display:grid; grid-template-columns: 1fr 90px auto; gap:8px; align-items:center;">
+                        <select id="cm-ing-select" class="edit-input" style="margin:0;">
+                            ${NZ_ATHLETE_FOODS.map(f => `<option value="${f.id}">${f.name} (${f.cal}kcal/100g)</option>`).join('')}
+                        </select>
+                        <input type="number" id="cm-ing-grams" class="edit-input" value="100" placeholder="Grams" style="margin:0; text-align:center;">
+                        <button class="btn btn-sm btn-primary" style="height:44px; padding:0 12px;" onclick="app.addIngredientToDraftMeal()">+ Add</button>
+                    </div>
+
+                    ${b.ingredients.length > 0 ? `
+                        <div style="margin-top:12px; border-top:1px solid var(--border); padding-top:8px;">
+                            ${b.ingredients.map((ing, iIdx) => `
+                                <div class="flex-between" style="font-size:12.5px; padding:4px 0;">
+                                    <span><strong>${ing.name}</strong> (${ing.grams}g) — ${ing.cal} kcal, ${ing.pro}g P</span>
+                                    <button class="btn-icon" style="width:24px; height:24px; color:var(--pending);" onclick="app.removeIngredientFromDraftMeal(${iIdx})"><i class="fas fa-xmark"></i></button>
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+                </div>
+
+                <button class="btn btn-success" onclick="app.saveCustomMealFromModal()"><i class="fas fa-check"></i> Save & Log to ${b.windowType}</button>
             </div>
         `;
         modal.innerHTML = html;
         modal.style.display = 'flex';
     },
-    addPinnedGoal() {
-        const title = prompt("Enter Daily Goal / Habit (e.g. 'Take Creatine 5g', '10k Steps', 'Read 10 Pages'):");
-        if (!title || !title.trim()) return;
+    addIngredientToDraftMeal() {
+        const sel = document.getElementById('cm-ing-select');
+        const gEl = document.getElementById('cm-ing-grams');
+        if (!sel || !gEl) return;
+        const food = NZ_ATHLETE_FOODS.find(f => f.id === sel.value);
+        if (!food) return;
+        const grams = Math.max(1, parseFloat(gEl.value) || 100);
+        const mult = grams / 100;
+        const item = {
+            foodId: food.id,
+            name: food.name,
+            grams: Math.round(grams),
+            cal: Math.round(food.cal * mult),
+            pro: Math.round(food.pro * mult * 10) / 10,
+            car: Math.round(food.car * mult * 10) / 10,
+            fat: Math.round(food.fat * mult * 10) / 10
+        };
+        this.draftMealBuilder.ingredients.push(item);
+        this.recalcDraftMealBuilder();
+        this.renderMealCreateModal();
+    },
+    removeIngredientFromDraftMeal(idx) {
+        this.draftMealBuilder.ingredients.splice(idx, 1);
+        this.recalcDraftMealBuilder();
+        this.renderMealCreateModal();
+    },
+    recalcDraftMealBuilder() {
+        const b = this.draftMealBuilder;
+        let c = 0, p = 0, cb = 0, f = 0;
+        b.ingredients.forEach(ing => {
+            c += ing.cal; p += ing.pro; cb += ing.car; f += ing.fat;
+        });
+        b.cal = Math.round(c);
+        b.pro = Math.round(p * 10) / 10;
+        b.car = Math.round(cb * 10) / 10;
+        b.fat = Math.round(f * 10) / 10;
+        if (!b.name && b.ingredients.length > 0) {
+            b.name = b.ingredients.map(i => i.name).slice(0, 2).join(' + ');
+        }
+    },
+    saveCustomMealFromModal() {
+        const b = this.draftMealBuilder;
+        if (!b) return;
+        const finalName = (b.name || '').trim() || `${b.windowType} Meal`;
+        const mealObj = {
+            name: finalName,
+            type: b.windowType || 'Breakfast',
+            cal: Math.round(parseFloat(b.cal) || 0),
+            pro: Math.round((parseFloat(b.pro) || 0) * 10) / 10,
+            car: Math.round((parseFloat(b.car) || 0) * 10) / 10,
+            fat: Math.round((parseFloat(b.fat) || 0) * 10) / 10,
+            ingredients: b.ingredients || []
+        };
+        if (b.saveToLibrary) {
+            if (!store.state.savedMeals) store.state.savedMeals = [];
+            store.state.savedMeals.push({ ...mealObj });
+        }
+        const entry = this.getOrCreateNutritionEntry(b.dStr);
+        entry.loggedMeals.push(mealObj);
+        this.recalcNutritionTotals(entry);
+        document.getElementById('meal-create-modal').style.display = 'none';
+        document.getElementById('meal-search-modal').style.display = 'none';
+        this.refreshAllNutritionViews();
+    },
+    promptQuickMacros(dStr) {
+        this.openMealCreateModal(dStr, this.activeMealWindow || 'Snacks');
+    },
+    removeLoggedMeal(dStr, idx) {
+        const entry = this.getOrCreateNutritionEntry(dStr);
+        if (entry.loggedMeals && entry.loggedMeals[idx]) {
+            entry.loggedMeals.splice(idx, 1);
+            this.recalcNutritionTotals(entry);
+            this.refreshAllNutritionViews();
+        }
+    },
+    addWater(dStr, ml) {
+        const entry = this.getOrCreateNutritionEntry(dStr);
+        entry.waterLog.push({ amount: ml, time: new Date().toISOString() });
+        store.save();
+        this.checkRankPromotion();
+        this.refreshAllNutritionViews();
+    },
+    copyPastNutritionDay(targetDateStr) {
+        const pastDays = store.state.history.nutrition
+            .filter(n => utils.getLocalISODate(n.date) !== targetDateStr && (n.cal > 0 || (n.loggedMeals && n.loggedMeals.length > 0)))
+            .sort((a, b) => new Date(b.date) - new Date(a.date));
+        if (pastDays.length === 0) {
+            alert("No previous logged nutrition days found to copy from.");
+            return;
+        }
+        const latest = pastDays[0];
+        const srcIso = utils.getLocalISODate(latest.date);
+        if (!confirm(`Copy ${Math.round(latest.cal)} kcal (${(latest.loggedMeals || []).length} items) from ${srcIso} into ${targetDateStr}?`)) return;
+        const target = this.getOrCreateNutritionEntry(targetDateStr);
+        (latest.loggedMeals || []).forEach(m => target.loggedMeals.push(JSON.parse(JSON.stringify(m))));
+        this.recalcNutritionTotals(target);
+        this.refreshAllNutritionViews();
+    },
+    promptNutritionTargets() {
+        const t = store.state.settings.nutritionTargets || { cal: 2200, pro: 160, car: 250, fat: 70, water: 4000 };
+        const modal = document.getElementById('meal-create-modal');
+        modal.innerHTML = `
+            <div class="workout-header-sticky">
+                <button class="btn btn-sm" style="width:auto;" onclick="document.getElementById('meal-create-modal').style.display='none'">Cancel</button>
+                <div style="font-weight:bold; font-size:16px;">Nutrition & Water Targets</div>
+                <button class="btn btn-sm btn-success" style="width:auto;" onclick="app.saveNutritionTargetsModal()">Save</button>
+            </div>
+            <div style="padding:16px; overflow-y:auto; flex:1;">
+                <div class="card">
+                    <label style="font-size:11px; color:var(--text-secondary); font-weight:bold;">Daily Calorie Target (kcal)</label>
+                    <input type="number" id="nt-cal" class="edit-input" value="${t.cal}">
+                    <label style="font-size:11px; color:var(--text-secondary); font-weight:bold;">Daily Protein Target (g)</label>
+                    <input type="number" id="nt-pro" class="edit-input" value="${t.pro}">
+                    <label style="font-size:11px; color:var(--text-secondary); font-weight:bold;">Daily Carbohydrate Target (g)</label>
+                    <input type="number" id="nt-car" class="edit-input" value="${t.car}">
+                    <label style="font-size:11px; color:var(--text-secondary); font-weight:bold;">Daily Fat Target (g)</label>
+                    <input type="number" id="nt-fat" class="edit-input" value="${t.fat}">
+                    <label style="font-size:11px; color:var(--text-secondary); font-weight:bold;">Daily Water Target (ml)</label>
+                    <input type="number" id="nt-water" class="edit-input" value="${t.water || 4000}">
+                    <button class="btn btn-primary" onclick="app.saveNutritionTargetsModal()">Save Targets</button>
+                </div>
+            </div>
+        `;
+        modal.style.display = 'flex';
+    },
+    saveNutritionTargetsModal() {
+        const t = store.state.settings.nutritionTargets || {};
+        t.cal = parseInt(document.getElementById('nt-cal').value) || 2200;
+        t.pro = parseInt(document.getElementById('nt-pro').value) || 160;
+        t.car = parseInt(document.getElementById('nt-car').value) || 250;
+        t.fat = parseInt(document.getElementById('nt-fat').value) || 70;
+        t.water = parseInt(document.getElementById('nt-water').value) || 4000;
+        store.state.settings.nutritionTargets = t;
+        store.save();
+        document.getElementById('meal-create-modal').style.display = 'none';
+        this.refreshAllNutritionViews();
+    },
+    /* PIN GOALS & CHALLENGE */
+    openPinGoalsModal() {
+        if (!store.state.challenge) {
+            store.state.challenge = { isActive: true, name: 'Daily Discipline', duration: 75, startDate: new Date().toISOString(), goals: [], logs: {} };
+        }
         store.state.challenge.isActive = true;
-        if (!store.state.challenge.startDate) store.state.challenge.startDate = utils.getLocalISODate(new Date());
-        if (!store.state.challenge.endDate) store.state.challenge.endDate = '2026-12-31';
+        const goals = store.state.challenge.goals || [];
+        const modal = document.getElementById('challenge-modal');
+        let html = `
+            <div class="workout-header-sticky">
+                <button class="btn btn-sm" style="width:auto;" onclick="document.getElementById('challenge-modal').style.display='none'">Close</button>
+                <div style="font-weight:bold; font-size:16px;">Pinned Action Plan Goals</div>
+                <button class="btn btn-sm btn-primary" style="width:auto;" onclick="app.addPinnedGoalPrompt()">+ Add</button>
+            </div>
+            <div style="padding:16px; overflow-y:auto; flex:1;">
+                <div class="card">
+                    <div style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">Pinned goals appear directly inside Today's Action Plan on your Home Dashboard.</div>
+                    ${goals.length === 0 ? `<div class="text-muted">No custom goals pinned yet. Tap + Add above!</div>` : goals.map((g, idx) => `
+                        <div class="data-row flex-between">
+                            <div>
+                                <div style="font-weight:bold; font-size:14px;">${utils.getGoalLabel(g)}</div>
+                                <div style="font-size:11px; color:var(--text-secondary);">${g.showInActionPlan ? 'Pinned to Dashboard' : 'Hidden'}</div>
+                            </div>
+                            <div style="display:flex; gap:6px;">
+                                <button class="btn btn-sm" onclick="app.toggleGoalPin(${idx})">${g.showInActionPlan ? 'Unpin' : 'Pin'}</button>
+                                <button class="btn-icon" style="width:30px; height:30px; color:var(--pending);" onclick="app.deletePinnedGoal(${idx})"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+        modal.innerHTML = html;
+        modal.style.display = 'flex';
+    },
+    addPinnedGoalPrompt() {
+        const label = prompt("Enter Custom Daily Goal (e.g. '10k Steps', 'Creatine 5g', 'Read 10 Pages'):");
+        if (!label || !label.trim()) return;
         store.state.challenge.goals.push({
             id: 'g_' + utils.generateId(),
             type: 'custom',
-            title: title.trim(),
-            showInActionPlan: true,
-            createdAt: utils.getLocalISODate(new Date())
+            customLabel: label.trim(),
+            target: 1,
+            showInActionPlan: true
         });
         store.save();
         this.openPinGoalsModal();
-        if (this.currentPage === 'home') this.navigate('home');
+        this.navigate(this.currentPage);
     },
-    toggleGoalPin(idx, pinned) {
-        if (store.state.challenge && store.state.challenge.goals[idx]) {
-            store.state.challenge.goals[idx].showInActionPlan = pinned;
+    toggleGoalPin(idx) {
+        const g = store.state.challenge.goals[idx];
+        if (g) {
+            g.showInActionPlan = !g.showInActionPlan;
             store.save();
-            if (this.currentPage === 'home') this.navigate('home');
+            this.openPinGoalsModal();
+            this.navigate(this.currentPage);
         }
     },
     deletePinnedGoal(idx) {
-        if (store.state.challenge && store.state.challenge.goals[idx]) {
-            store.state.challenge.goals.splice(idx, 1);
-            store.save();
-            this.openPinGoalsModal();
-            if (this.currentPage === 'home') this.navigate('home');
-        }
+        store.state.challenge.goals.splice(idx, 1);
+        store.save();
+        this.openPinGoalsModal();
+        this.navigate(this.currentPage);
     },
-    toggleChallengeGoal(dStr, goalId, goalType) {
-        if (['water', 'reading', 'custom'].includes(goalType)) {
-            if (!store.state.history.challengeLogs) store.state.history.challengeLogs = {};
-            if (!store.state.history.challengeLogs[dStr]) store.state.history.challengeLogs[dStr] = {};
-            store.state.history.challengeLogs[dStr][goalId] = !store.state.history.challengeLogs[dStr][goalId];
+    toggleChallengeGoal(dateStr, goalId, goalType) {
+        if (goalType === 'custom' || goalType === 'steps') {
+            if (!store.state.challenge.logs[dateStr]) store.state.challenge.logs[dateStr] = {};
+            store.state.challenge.logs[dateStr][goalId] = !store.state.challenge.logs[dateStr][goalId];
             store.save();
-            this.checkRankPromotion();
             this.navigate(this.currentPage);
+        } else if (goalType === 'water') {
+            this.navigate('nutrition');
+        } else if (goalType === 'workout') {
+            this.openStartWorkoutModal();
         }
     },
     /* PROFILE, PHOTOS, BACKUP & SETTINGS */
@@ -4871,30 +5109,30 @@ const app = {
         this.navigate('data');
     },
     promptProfileEdit() {
-        const name = prompt("Display Name:", store.state.user.name);
+        const unit = utils.unitLabel();
+        const name = prompt("Athlete Display Name:", store.state.user.name);
         if (name !== null && name.trim()) store.state.user.name = name.trim();
-        const cw = parseFloat(prompt(`Current Weight (${utils.unitLabel()}):`, store.state.user.currentWeight));
-        if (!isNaN(cw) && cw > 0) store.state.user.currentWeight = cw;
-        const tw = parseFloat(prompt(`Goal Weight (${utils.unitLabel()}):`, store.state.user.targetWeight));
-        if (!isNaN(tw) && tw > 0) store.state.user.targetWeight = tw;
+        const curW = prompt(`Current Bodyweight (${unit}):`, store.state.user.currentWeight);
+        if (curW !== null && !isNaN(parseFloat(curW))) store.state.user.currentWeight = parseFloat(curW);
+        const tarW = prompt(`Goal Bodyweight (${unit}):`, store.state.user.targetWeight);
+        if (tarW !== null && !isNaN(parseFloat(tarW))) store.state.user.targetWeight = parseFloat(tarW);
         store.save();
         this.navigate(this.currentPage);
     },
     promptCreateMasterExercise() {
         const name = prompt(`New Exercise Name (Max ${MAX_EX_TITLE_LEN} chars):`);
         if (!name || !name.trim()) return;
-        const clean = name.trim().slice(0, MAX_EX_TITLE_LEN);
+        const cleanName = name.trim().slice(0, MAX_EX_TITLE_LEN);
         const muscles = prompt("Muscle Group(s) (comma-separated, e.g. Chest, Triceps):", "Chest");
-        const parsedM = (muscles || 'Other').split(',').map(s => s.trim()).filter(Boolean);
-        const sets = parseInt(prompt("Default Target Sets:", "3")) || 3;
-        const reps = prompt("Default Target Reps (e.g. 8-12):", "8-12") || '8-12';
-        store.syncExerciseGlobally(clean, {
-            name: clean,
-            muscles: parsedM.length ? parsedM : ['Other'],
-            targetSets: sets,
-            targetReps: reps.trim()
+        const sets = prompt("Default Sets:", "3");
+        const reps = prompt("Default Rep Range:", "8-12");
+        store.syncExerciseGlobally(cleanName, {
+            name: cleanName,
+            muscles: (muscles || 'Other').split(',').map(s => s.trim()).filter(Boolean),
+            targetSets: parseInt(sets) || 3,
+            targetReps: (reps || '8-12').trim()
         });
-        this.navigate('data');
+        this.navigate(this.currentPage);
     },
     handleProgressPhotoUpload(event) {
         const file = event.target.files && event.target.files[0];
@@ -4904,30 +5142,31 @@ const app = {
             const img = new Image();
             img.onload = () => {
                 const canvas = document.createElement('canvas');
-                const maxDim = 900;
+                const maxDim = 700;
                 let w = img.width, h = img.height;
                 if (w > h && w > maxDim) { h = Math.round(h * (maxDim / w)); w = maxDim; }
                 else if (h > maxDim) { w = Math.round(w * (maxDim / h)); h = maxDim; }
-                canvas.width = w;
-                canvas.height = h;
+                canvas.width = w; canvas.height = h;
                 const ctx = canvas.getContext('2d');
                 ctx.drawImage(img, 0, 0, w, h);
-                const compressed = canvas.toDataURL('image/jpeg', 0.78);
+                const dataUrl = canvas.toDataURL('image/jpeg', 0.72);
                 if (!store.state.history.progressPhotos) store.state.history.progressPhotos = [];
                 store.state.history.progressPhotos.unshift({
                     id: utils.generateId(),
                     date: new Date().toISOString(),
-                    dataUrl: compressed
+                    weight: store.state.user.currentWeight,
+                    dataUrl
                 });
                 if (workoutEngine.activeWorkout) {
                     if (!workoutEngine.activeWorkout.sessionPhotos) workoutEngine.activeWorkout.sessionPhotos = [];
-                    workoutEngine.activeWorkout.sessionPhotos.push(compressed);
+                    workoutEngine.activeWorkout.sessionPhotos.push(dataUrl);
                     workoutEngine.saveSessionState();
                     workoutEngine.renderActiveWorkout();
                 }
                 store.save();
-                if (this.currentPage === 'data') this.navigate('data');
-                alert("Progress photo saved to your Physique Check-In Vault!");
+                if (!workoutEngine.activeWorkout || document.getElementById('active-workout-view').style.display === 'none') {
+                    this.navigate(this.currentPage);
+                }
             };
             img.src = e.target.result;
         };
@@ -4941,86 +5180,78 @@ const app = {
         }
     },
     exportJSON() {
-        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(store.state, null, 2));
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(store.state));
         const a = document.createElement('a');
         a.setAttribute("href", dataStr);
-        a.setAttribute("download", `IronTrack_Backup_${utils.getLocalISODate(new Date())}.json`);
+        a.setAttribute("download", `irontrack_backup_${utils.getLocalISODate(new Date())}.json`);
         document.body.appendChild(a);
         a.click();
         a.remove();
     },
     importJSONPrompt() {
-        const raw = prompt("Paste your exported IronTrack JSON backup below:");
-        if (!raw || !raw.trim()) return;
+        const raw = prompt("Paste your exported IronTrack JSON backup string below:");
+        if (!raw) return;
         try {
             const parsed = JSON.parse(raw);
-            if (parsed && parsed.history && parsed.user) {
-                store.state = Object.assign(store.state, parsed);
+            if (parsed && parsed.history && parsed.routines) {
+                store.state = parsed;
                 store.save();
-                alert("Backup imported successfully!");
                 this.init();
+                alert("Backup restored successfully!");
             } else {
-                alert("Invalid backup JSON format.");
+                alert("Invalid backup JSON structure.");
             }
         } catch(e) {
             alert("Could not parse JSON backup.");
         }
     },
     openSettingsModal() {
-        const modal = document.getElementById('settings-modal');
         const s = store.state.settings;
-        const f = s.features || {};
+        const f = s.features;
+        const modal = document.getElementById('settings-modal');
         modal.innerHTML = `
             <div class="workout-header-sticky">
-                <button class="btn btn-sm" style="width:auto;" onclick="document.getElementById('settings-modal').style.display='none'">Done</button>
-                <div style="font-weight:bold; font-size:16px;">App Settings</div>
+                <button class="btn btn-sm" style="width:auto;" onclick="document.getElementById('settings-modal').style.display='none'">Close</button>
+                <div style="font-weight:bold; font-size:16px;">Settings & Customisation</div>
                 <div style="width:60px;"></div>
             </div>
             <div style="padding:16px; overflow-y:auto; flex:1; padding-bottom:80px;">
                 <div class="card">
-                    <h3 style="margin-top:0;">Appearance & Units</h3>
+                    <h3 style="margin-top:0;">Theme & Units</h3>
                     <div class="data-row flex-between">
-                        <span>Theme</span>
-                        <select class="edit-input" style="width:140px; margin:0;" onchange="app.applyTheme(this.value); app.openSettingsModal(); app.navigate(app.currentPage);">
-                            <option value="olympus" ${s.theme === 'olympus' ? 'selected' : ''}>Olympus Gold</option>
-                            <option value="dark" ${s.theme === 'dark' ? 'selected' : ''}>Obsidian Dark</option>
-                            <option value="light" ${s.theme === 'light' ? 'selected' : ''}>Marble Light</option>
+                        <span>Visual Theme</span>
+                        <select class="edit-input" style="width:auto; margin:0;" onchange="app.applyTheme(this.value); app.openSettingsModal(); app.navigate(app.currentPage);">
+                            <option value="olympus" ${s.theme === 'olympus' ? 'selected' : ''}>Olympus Gold & Marble</option>
+                            <option value="dark" ${s.theme === 'dark' ? 'selected' : ''}>Tactical Dark</option>
+                            <option value="light" ${s.theme === 'light' ? 'selected' : ''}>Minimal Light</option>
                         </select>
                     </div>
                     <div class="data-row flex-between">
                         <span>Weight Units</span>
-                        <select class="edit-input" style="width:140px; margin:0;" onchange="store.state.settings.units = this.value; store.save(); app.navigate(app.currentPage);">
+                        <select class="edit-input" style="width:auto; margin:0;" onchange="store.state.settings.units = this.value; store.save(); app.navigate(app.currentPage);">
                             <option value="kg" ${s.units === 'kg' ? 'selected' : ''}>Kilograms (kg)</option>
                             <option value="lbs" ${s.units === 'lbs' ? 'selected' : ''}>Pounds (lbs)</option>
                         </select>
                     </div>
                     <div class="data-row flex-between">
-                        <span>Default Rest Timer (sec)</span>
-                        <input type="number" class="inline-edit" style="width:90px;" value="${s.restTimer || 90}" onchange="store.state.settings.restTimer = parseInt(this.value) || 90; store.save();">
+                        <span>Auto Rest Timer (Seconds)</span>
+                        <input type="number" class="inline-edit" style="width:80px;" value="${s.restTimer || 120}" onchange="store.state.settings.restTimer = parseInt(this.value)||0; store.save();">
                     </div>
                 </div>
                 <div class="card">
-                    <h3 style="margin-top:0;">Dashboard Modules</h3>
-                    <div class="data-row flex-between">
-                        <span>Stoic Quote Banner</span>
-                        <input type="checkbox" style="width:20px; height:20px;" ${f.showQuote ? 'checked' : ''} onchange="store.state.settings.features.showQuote = this.checked; store.save(); app.navigate(app.currentPage);">
-                    </div>
-                    <div class="data-row flex-between">
-                        <span>Weekly Ranked Status Card</span>
-                        <input type="checkbox" style="width:20px; height:20px;" ${f.showRankBanner ? 'checked' : ''} onchange="store.state.settings.features.showRankBanner = this.checked; store.save(); app.navigate(app.currentPage);">
-                    </div>
-                    <div class="data-row flex-between">
-                        <span>28-Day Recovery Heatmap</span>
-                        <input type="checkbox" style="width:20px; height:20px;" ${f.showHeatmap ? 'checked' : ''} onchange="store.state.settings.features.showHeatmap = this.checked; store.save(); app.navigate(app.currentPage);">
-                    </div>
-                    <div class="data-row flex-between">
-                        <span>Weekly Check-In Strip</span>
-                        <input type="checkbox" style="width:20px; height:20px;" ${f.showWeekStrip ? 'checked' : ''} onchange="store.state.settings.features.showWeekStrip = this.checked; store.save(); app.navigate(app.currentPage);">
-                    </div>
-                    <div class="data-row flex-between">
-                        <span>48-Day Activity Bento Grid</span>
-                        <input type="checkbox" style="width:20px; height:20px;" ${f.showActivityGrid ? 'checked' : ''} onchange="store.state.settings.features.showActivityGrid = this.checked; store.save(); app.navigate(app.currentPage);">
-                    </div>
+                    <h3 style="margin-top:0;">Dashboard Widgets</h3>
+                    ${[
+                        ['showRankBanner', 'Monthly Ranked Crest Banner'],
+                        ['showHeatmap', '28-Day Recovery Anatomy Map'],
+                        ['showWeekStrip', 'Mon-Sun Weekly Check Strip'],
+                        ['showActivityGrid', '48-Day Consistency Heat Grid & Split Calendar'],
+                        ['showQuote', 'Marcus Aurelius Stoic Quote']
+                    ].map(([key, label]) => `
+                        <div class="data-row flex-between">
+                            <span>${label}</span>
+                            <input type="checkbox" ${f[key] ? 'checked' : ''} style="width:20px; height:20px;" onchange="store.state.settings.features['${key}'] = this.checked; store.save(); app.navigate(app.currentPage);">
+                        </div>
+                    `).join('')}
                 </div>
             </div>
         `;
