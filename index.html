@@ -4907,32 +4907,7 @@ const app = {
         document.getElementById('meal-search-modal').style.display = 'none';
         this.refreshAllNutritionViews();
     },
-    promptLogRawFood(dStr, foodId, mealWindowType) {
-        const food = NZ_ATHLETE_FOODS.find(f => f.id === foodId);
-        if (!food) return;
-        const cleanDate = utils.getLocalISODate(dStr || this.selectedNutritionDate || new Date());
-        this.selectedNutritionDate = cleanDate;
-        const winType = mealWindowType || this.activeMealWindow || 'Breakfast';
-        const modal = document.getElementById('meal-create-modal');
-        modal.innerHTML = `
-            <div class="workout-header-sticky">
-                <button class="btn btn-sm" style="width:auto;" onclick="document.getElementById('meal-create-modal').style.display='none'">Cancel</button>
-                <div class="truncate-text" style="font-weight:bold; font-size:16px;">Log ${food.name}</div>
-                <button class="btn btn-sm btn-success" style="width:auto;" onclick="app.confirmLogRawFood('${cleanDate}', '${food.id}')">Add</button>
-            </div>
-            <div style="padding:16px; overflow-y:auto; flex:1;">
-                <div class="card">
-                    <div style="font-size:11px; color:var(--accent-color); font-weight:800; text-transform:uppercase;">${food.cat}</div>
-                    <h2 style="margin:4px 0 6px 0; font-size:20px;">${food.name}</h2>
-                    <div style="font-size:12px; color:var(--text-secondary); margin-bottom:14px;">${food.micros} — ${food.notes}</div>
-                    <label style="font-size:11px; color:var(--text-secondary); font-weight:bold; text-transform:uppercase;">Meal Window</label>
-                    <select id="raw-food-window" class="edit-input" style="font-weight:bold; margin-top:4px;">
-                        ${MEAL_WINDOW_CONFIG.map(mw => `<option value="${mw.type}" ${mw.type === winType ? 'selected' : ''}>${mw.label}</option>`).join('')}
-                    </select>
-                    <label style="font-size:11px; color:var(--text-secondary); font-weight:bold; text-transform:uppercase; display:block; margin-top:10px;">Portion Weight (Grams)</label>
-                    <input type="number" id="raw-food-grams" class="edit-input" value="150" step="5" min="1" oninput="app.updateRawFoodPreview('${food.id}', this.value)" style="font-size:22px !important; font-weight:900; text-align:center; height:52px; margin-top:4px;">
-                    <div style="display:grid; grid-template-columns: repeat(6, 1fr); gap:6px; margin-bottom:14px;">
-                        ${[50, 100, 150, 200, 250, 300].map(g => `<button type="button" class    promptLogRawFood(dStr, foodId, mealWindowType) {
+        promptLogRawFood(dStr, foodId, mealWindowType) {
         const food = NZ_ATHLETE_FOODS.find(f => f.id === foodId);
         if (!food) return;
         const cleanDate = utils.getLocalISODate(dStr || this.selectedNutritionDate || new Date());
