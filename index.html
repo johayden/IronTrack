@@ -753,6 +753,10 @@ const store = {
         if(!state.settings.overloadMuscleFilter) state.settings.overloadMuscleFilter = 'All';
         if(!state.settings.lastVolFilter) state.settings.lastVolFilter = 'total';
         if(!state.settings.overloadExerciseFilter) state.settings.overloadExerciseFilter = 'ALL_MUSCLE';
+        if(!state.history) state.history = { workouts: [], bodyweight: [], nutrition: [], cardio: [], challengeLogs: {}, manualPRs: [], progressPhotos: [] };
+        if(!state.history.workouts) state.history.workouts = [];
+        if(!state.history.bodyweight) state.history.bodyweight = [];
+        if(!state.history.nutrition) state.history.nutrition = [];
         if(!state.history.cardio) state.history.cardio = [];
         if(!state.history.manualPRs) state.history.manualPRs = [];
         if(!state.history.progressPhotos) state.history.progressPhotos = [];
@@ -794,23 +798,78 @@ const store = {
                 if (!existing.targetReps) existing.targetReps = rx.targetReps || '8-12';
             }
         }))));
+        if(!state.challenge) state.challenge = { isActive: false, title: '', startDate: '', endDate: '', goals: [], logs: {} };
+        if(!state.challenge.logs) state.challenge.logs = {};
         if(state.challenge && state.challenge.goals) {
             state.challenge.goals.forEach(g => {
                 if (g.showInActionPlan === undefined) g.showInActionPlan = (g.type === 'cardio');
             });
         }
         if(state.history.nutrition) {
+            const mergedByDate = {};
             state.history.nutrition.forEach(n => {
-                if(!n.loggedMeals) n.loggedMeals = [];
-                if(n.waterLog === undefined) n.waterLog = [];
+                if (!n || !n.date) return;
+                if (!Array.isArray(n.loggedMeals)) n.loggedMeals = [];
+                if (!Array.isArray(n.waterLog)) n.waterLog = [];
+                n.cal = parseFloat(n.cal) || 0;
+                n.pro = parseFloat(n.pro) || 0;
+                n.car = parseFloat(n.car) || 0;
+                n.fat = parseFloat(n.fat) || 0;
+                if (n.loggedMeals.length === 0 && (n.cal > 0 || n.pro > 0 || n.car > 0 || n.fat > 0)) {
+                    n.loggedMeals.push({
+                        name: 'Logged Macros',
+                        type: 'Breakfast',
+                        cal: n.cal,
+                        pro: n.pro,
+                        car: n.car,
+                        fat: n.fat
+                    });
+                }
+                const dKey = utils.getLocalISODate(n.date);
+                if (!dKey) return;
+                if (!mergedByDate[dKey]) {
+                    mergedByDate[dKey] = {
+                        date: dKey + 'T12:00:00.000Z',
+                        cal: 0,
+                        pro: 0,
+                        car: 0,
+                        fat: 0,
+                        loggedMeals: [...n.loggedMeals],
+                        waterLog: [...n.waterLog]
+                    };
+                } else {
+                    mergedByDate[dKey].loggedMeals.push(...n.loggedMeals);
+                    mergedByDate[dKey].waterLog.push(...n.waterLog);
+                }
+            });
+            state.history.nutrition = Object.values(mergedByDate).map(entry => {
+                let c = 0, p = 0, cb = 0, f = 0;
+                entry.loggedMeals.forEach(m => {
+                    c += parseFloat(m.cal) || 0;
+                    p += parseFloat(m.pro) || 0;
+                    cb += parseFloat(m.car) || 0;
+                    f += parseFloat(m.fat) || 0;
+                });
+                entry.cal = Math.round(c);
+                entry.pro = Math.round(p * 10) / 10;
+                entry.car = Math.round(cb * 10) / 10;
+                entry.fat = Math.round(f * 10) / 10;
+                return entry;
             });
         }
         return state;
     },
     load() {
         const saved = localStorage.getItem('irontrack_state');
-        if (saved) { this.state = this.migrate(JSON.parse(saved)); }
-        else {
+        if (saved) {
+            try {
+                this.state = this.migrate(JSON.parse(saved));
+            } catch(e) {
+                this.state.routines = [{ id: 'default_1', name: 'Main Split', days: JSON.parse(JSON.stringify(DEFAULT_PROGRAM)) }];
+                this.state = this.migrate(this.state);
+            }
+            this.save();
+        } else {
             this.state.routines = [{ id: 'default_1', name: 'Main Split', days: JSON.parse(JSON.stringify(DEFAULT_PROGRAM)) }];
             this.state = this.migrate(this.state);
             this.save();
@@ -1017,6 +1076,7 @@ const utils = {
     getLocalISODate: (isoString) => {
         if (!isoString) return '';
         if (typeof isoString === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(isoString)) return isoString;
+        if (typeof isoString === 'string' && /^\d{4}-\d{2}-\d{2}T/.test(isoString)) return isoString.slice(0, 10);
         const d = new Date(isoString);
         if (isNaN(d)) return '';
         return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
@@ -1679,7 +1739,7 @@ const utils = {
             hyper
         };
     },
-        getWeeklyRPBreakdown: () => {
+    getWeeklyRPBreakdown: () => {
         const m = utils.getMonthlyRankMetrics();
         const hGroups = HYPERTROPHY_GROUPS;
         const getTierStyle = (ratio) => {
@@ -3616,7 +3676,7 @@ const app = {
     manageSubTab: 'overview',
     selectedNutritionDate: null,
     activeMealWindow: 'Breakfast',
-    mealSearchTab: 'saved',
+    mealSearchTab: null,
     rawIngredientCatFilter: 'All',
     chartInstances: {},
     draftRoutine: null,
@@ -4731,8 +4791,8 @@ const app = {
             entry = { date: cleanDate + 'T12:00:00.000Z', cal: 0, pro: 0, car: 0, fat: 0, loggedMeals: [], waterLog: [] };
             store.state.history.nutrition.push(entry);
         }
-        if (!entry.loggedMeals) entry.loggedMeals = [];
-        if (!entry.waterLog) entry.waterLog = [];
+        if (!Array.isArray(entry.loggedMeals)) entry.loggedMeals = [];
+        if (!Array.isArray(entry.waterLog)) entry.waterLog = [];
         return entry;
     },
     recalcNutritionTotals(entry) {
@@ -4770,6 +4830,7 @@ const app = {
     },
     setRawIngredientCategory(cat, dStr, mealWindowType) {
         this.rawIngredientCatFilter = cat;
+        this.mealSearchTab = 'raw';
         this.openMealSearchModal(dStr, mealWindowType);
     },
     openMealSearchModal(dStr, mealWindowType = 'Breakfast') {
@@ -4780,7 +4841,10 @@ const app = {
         const savedMeals = store.state.savedMeals || [];
         const entry = this.getOrCreateNutritionEntry(cleanDate);
         const loggedInWindow = (entry.loggedMeals || []).filter(m => (m.type || 'Meal').toLowerCase() === mealWindowType.toLowerCase());
-        const tab = this.mealSearchTab || 'saved';
+        if (!this.mealSearchTab) {
+            this.mealSearchTab = savedMeals.length > 0 ? 'saved' : 'raw';
+        }
+        const tab = this.mealSearchTab;
         const activeCat = this.rawIngredientCatFilter || 'All';
 
         let groupedRaw = {};
@@ -4824,7 +4888,7 @@ const app = {
                 <div id="saved-meals-modal-list">
                     ${savedMeals.length === 0 ? `
                         <div class="card text-muted" style="text-align:center; padding:22px;">
-                            No saved meals yet.<br>Tap <strong>+ Create Meal</strong> to build a meal manually by calories/macros or by combining raw ingredients!
+                            No saved meals yet.<br>Tap <strong>Raw Ingredients</strong> above to log foods immediately, or tap <strong>+ Create Meal</strong> to build a custom meal!
                         </div>
                     ` : savedMeals.map((sm, idx) => `
                         <div class="card food-modal-item" data-name="${sm.name.toLowerCase()}" style="padding:12px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center; gap:8px;">
@@ -4862,7 +4926,10 @@ const app = {
                                         <div class="truncate-text" style="font-weight:bold; font-size:14.5px;">${f.name}</div>
                                         <div class="truncate-text" style="font-size:11px; color:var(--text-secondary);">Per 100g: ${f.cal} kcal • P: ${f.pro}g • C: ${f.car}g • F: ${f.fat}g</div>
                                     </div>
-                                    <button class="btn btn-sm btn-primary" style="width:auto; padding:8px 12px;" onclick="app.promptLogRawFood('${cleanDate}', '${f.id}', '${mealWindowType}')">+ Log</button>
+                                    <div style="display:flex; gap:6px; align-items:center; flex-shrink:0;">
+                                        <button class="btn btn-sm" style="width:auto; padding:8px 10px; font-size:11.5px;" onclick="app.quickLogRawFood100g('${cleanDate}', '${f.id}', '${mealWindowType}')" title="Instant 1-Tap Log 100g">+100g</button>
+                                        <button class="btn btn-sm btn-primary" style="width:auto; padding:8px 12px;" onclick="app.promptLogRawFood('${cleanDate}', '${f.id}', '${mealWindowType}')">+ Log</button>
+                                    </div>
                                 </div>
                             `).join('')}
                         </div>
@@ -4873,6 +4940,26 @@ const app = {
         html += `</div>`;
         modal.innerHTML = html;
         modal.style.display = 'flex';
+    },
+    quickLogRawFood100g(dStr, foodId, mealWindowType) {
+        const food = NZ_ATHLETE_FOODS.find(f => f.id === foodId);
+        if (!food) return;
+        const cleanDate = utils.getLocalISODate(dStr || this.selectedNutritionDate || new Date());
+        this.selectedNutritionDate = cleanDate;
+        const entry = this.getOrCreateNutritionEntry(cleanDate);
+        entry.loggedMeals.push({
+            foodId: food.id,
+            name: food.name,
+            grams: 100,
+            type: mealWindowType || this.activeMealWindow || 'Breakfast',
+            cal: Math.round(food.cal),
+            pro: Math.round(food.pro * 10) / 10,
+            car: Math.round(food.car * 10) / 10,
+            fat: Math.round(food.fat * 10) / 10
+        });
+        this.recalcNutritionTotals(entry);
+        document.getElementById('meal-search-modal').style.display = 'none';
+        this.refreshAllNutritionViews();
     },
     deleteSavedMeal(idx, dStr, mealWindowType) {
         if (store.state.savedMeals && store.state.savedMeals[idx]) {
@@ -5097,7 +5184,7 @@ const app = {
                     </select>
                     <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-top:6px;">
                         <button type="button" class="btn btn-sm ${mb.mode === 'ingredients' ? 'btn-primary' : ''}" onclick="app.setMealBuilderMode('ingredients')">
-                            <i class="fas fa-Scale-balanced"></i> By Raw Ingredients
+                            <i class="fas fa-scale-balanced"></i> By Raw Ingredients
                         </button>
                         <button type="button" class="btn btn-sm ${mb.mode === 'manual' ? 'btn-primary' : ''}" onclick="app.setMealBuilderMode('manual')">
                             <i class="fas fa-keyboard"></i> By Manual Macros
@@ -5262,112 +5349,58 @@ const app = {
         this.refreshAllNutritionViews();
     },
     copyPastNutritionDay(targetDateStr) {
-        const pastWithMeals = store.state.history.nutrition
-            .filter(n => utils.getLocalISODate(n.date) !== targetDateStr && n.cal > 0)
+        const cleanTarget = utils.getLocalISODate(targetDateStr || this.selectedNutritionDate || new Date());
+        const pastDays = store.state.history.nutrition
+            .filter(n => utils.getLocalISODate(n.date) !== cleanTarget && n.cal > 0)
             .sort((a, b) => new Date(b.date) - new Date(a.date));
-        if (pastWithMeals.length === 0) {
-            alert("No previous nutrition days found to copy from.");
+        if (pastDays.length === 0) {
+            alert("No previous logged nutrition days found to copy from.");
             return;
         }
-        const source = pastWithMeals[0];
-        if (!confirm(`Copy ${Math.round(source.cal)} kcal (${source.pro}g P) from ${utils.formatDate(source.date)} into ${targetDateStr}?`)) return;
-        const target = this.getOrCreateNutritionEntry(targetDateStr);
-        target.loggedMeals = JSON.parse(JSON.stringify(source.loggedMeals || []));
-        this.recalcNutritionTotals(target);
-        this.refreshAllNutritionViews();
+        const source = pastDays[0];
+        if (confirm(`Copy meals from ${utils.formatDate(source.date)} (${Math.round(source.cal)} kcal) into ${cleanTarget}?`)) {
+            const targetEntry = this.getOrCreateNutritionEntry(cleanTarget);
+            targetEntry.loggedMeals = JSON.parse(JSON.stringify(source.loggedMeals || []));
+            this.recalcNutritionTotals(targetEntry);
+            this.refreshAllNutritionViews();
+        }
     },
     promptNutritionTargets() {
         const t = store.state.settings.nutritionTargets || { cal: 2200, pro: 160, car: 250, fat: 70, water: 4000 };
         const cal = parseInt(prompt("Daily Calorie Target (kcal):", t.cal)) || t.cal;
         const pro = parseInt(prompt("Daily Protein Target (g):", t.pro)) || t.pro;
-        const car = parseInt(prompt("Daily Carbohydrate Target (g):", t.car)) || t.car;
+        const car = parseInt(prompt("Daily Carbs Target (g):", t.car)) || t.car;
         const fat = parseInt(prompt("Daily Fat Target (g):", t.fat)) || t.fat;
         const water = parseInt(prompt("Daily Water Target (ml):", t.water || 4000)) || 4000;
         store.state.settings.nutritionTargets = { cal, pro, car, fat, water };
         store.save();
         this.refreshAllNutritionViews();
     },
-    openPinGoalsModal() {
-        const modal = document.getElementById('challenge-modal');
-        if (!store.state.challenge.goals) store.state.challenge.goals = [];
-        store.state.challenge.isActive = true;
-        store.save();
-        const goals = store.state.challenge.goals;
-        modal.innerHTML = `
-            <div class="workout-header-sticky">
-                <button class="btn btn-sm" style="width:auto;" onclick="document.getElementById('challenge-modal').style.display='none'; app.navigate(app.currentPage);">Done</button>
-                <div style="font-weight:bold; font-size:16px;">Pin Daily Goals</div>
-                <button class="btn btn-sm btn-primary" style="width:auto;" onclick="app.promptAddPinnedGoal()">+ Add</button>
-            </div>
-            <div style="padding:16px; overflow-y:auto; flex:1;">
-                <div class="card">
-                    <div style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">Pinned goals appear directly inside Today's Action Plan on your Dashboard and award +30 XP when checked off.</div>
-                    ${goals.length === 0 ? `<div class="text-muted" style="padding:16px; text-align:center;">No custom pinned goals yet. Tap + Add above!</div>` : goals.map((g, idx) => `
-                        <div class="data-row flex-between">
-                            <div>
-                                <div style="font-weight:bold; font-size:15px;">${utils.getGoalLabel(g)}</div>
-                                <div style="font-size:11px; color:var(--text-secondary);">${g.showInActionPlan ? 'Pinned to Dashboard' : 'Hidden'}</div>
-                            </div>
-                            <div style="display:flex; gap:8px; align-items:center;">
-                                <input type="checkbox" ${g.showInActionPlan ? 'checked' : ''} onchange="store.state.challenge.goals[${idx}].showInActionPlan = this.checked; store.save(); app.openPinGoalsModal();" style="width:20px; height:20px;">
-                                <button class="btn-icon" style="width:30px; height:30px; color:var(--pending);" onclick="store.state.challenge.goals.splice(${idx}, 1); store.save(); app.openPinGoalsModal();"><i class="fas fa-trash"></i></button>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
-        `;
-        modal.style.display = 'flex';
-    },
-    promptAddPinnedGoal() {
-        const label = prompt("Enter Daily Habit / Goal to Pin (e.g. '10,000 Steps', '5g Creatine', '8h Sleep', 'Read 10 Pages'):");
-        if (!label || !label.trim()) return;
-        store.state.challenge.isActive = true;
-        store.state.challenge.goals.push({
-            id: 'g_' + utils.generateId(),
-            type: 'custom',
-            customLabel: label.trim(),
-            showInActionPlan: true
-        });
-        store.save();
-        this.openPinGoalsModal();
-    },
-    toggleChallengeGoal(dateStr, goalId, goalType) {
-        if (goalType === 'custom' || goalType === 'no_sugar' || goalType === 'no_alcohol') {
-            if (!store.state.challenge.logs[dateStr]) store.state.challenge.logs[dateStr] = {};
-            store.state.challenge.logs[dateStr][goalId] = !store.state.challenge.logs[dateStr][goalId];
-            store.save();
-            this.navigate(this.currentPage);
-        }
-    },
-    setManageSubTab(sub) {
-        this.manageSubTab = sub;
+    /* PROFILE, GOALS, PHOTOS & SETTINGS */
+    setManageSubTab(tab) {
+        this.manageSubTab = tab;
         this.navigate('data');
+    },
+    promptProfileEdit() {
+        const name = prompt("Athlete Display Name:", store.state.user.name);
+        if (name !== null && name.trim()) store.state.user.name = name.trim();
+        const curW = prompt(`Current Bodyweight (${utils.unitLabel()}):`, store.state.user.currentWeight);
+        if (curW !== null && !isNaN(parseFloat(curW))) store.state.user.currentWeight = parseFloat(curW);
+        const tarW = prompt(`Target Goal Weight (${utils.unitLabel()}):`, store.state.user.targetWeight);
+        if (tarW !== null && !isNaN(parseFloat(tarW))) store.state.user.targetWeight = parseFloat(tarW);
+        store.save();
+        this.navigate(this.currentPage);
     },
     promptCreateMasterExercise() {
         const name = prompt(`New Exercise Name (Max ${MAX_EX_TITLE_LEN} chars):`);
         if (!name || !name.trim()) return;
-        const cleanName = name.trim().slice(0, MAX_EX_TITLE_LEN);
-        const muscles = prompt("Muscle Group(s) (comma-separated, e.g. Chest, Triceps):", "Chest");
-        if (muscles === null) return;
+        const clean = name.trim().slice(0, MAX_EX_TITLE_LEN);
+        const musclesInput = prompt("Muscle Group(s) (comma-separated, e.g. Chest, Triceps):", "Chest");
+        const muscles = (musclesInput || 'Other').split(',').map(s => s.trim()).filter(Boolean);
         const sets = parseInt(prompt("Default Target Sets:", "3")) || 3;
-        const reps = prompt("Default Target Reps:", "8-12") || '8-12';
-        store.syncExerciseGlobally(cleanName, {
-            name: cleanName,
-            muscles: muscles.split(',').map(s => s.trim()).filter(Boolean),
-            targetSets: sets,
-            targetReps: reps
-        });
+        const reps = prompt("Default Target Reps (e.g. 8-12):", "8-12") || '8-12';
+        store.syncExerciseGlobally(clean, { name: clean, muscles: muscles.length ? muscles : ['Other'], targetSets: sets, targetReps: reps });
         this.navigate('data');
-    },
-    promptProfileEdit() {
-        const u = store.state.user;
-        const name = prompt("Athlete Display Name:", u.name);
-        if (name !== null && name.trim()) u.name = name.trim();
-        const tw = prompt(`Target Goal Weight (${utils.unitLabel()}):`, u.targetWeight);
-        if (tw !== null && !isNaN(parseFloat(tw))) u.targetWeight = parseFloat(tw);
-        store.save();
-        this.navigate(this.currentPage);
     },
     handleProgressPhotoUpload(event) {
         const file = event.target.files && event.target.files[0];
@@ -5377,31 +5410,29 @@ const app = {
             const img = new Image();
             img.onload = () => {
                 const canvas = document.createElement('canvas');
-                const maxDim = 700;
+                const maxDim = 900;
                 let w = img.width, h = img.height;
-                if (w > h && w > maxDim) { h = Math.round((h * maxDim) / w); w = maxDim; }
-                else if (h > maxDim) { w = Math.round((w * maxDim) / h); h = maxDim; }
+                if (w > h && w > maxDim) { h = Math.round(h * (maxDim / w)); w = maxDim; }
+                else if (h >= w && h > maxDim) { w = Math.round(w * (maxDim / h)); h = maxDim; }
                 canvas.width = w; canvas.height = h;
                 const ctx = canvas.getContext('2d');
                 ctx.drawImage(img, 0, 0, w, h);
-                const dataUrl = canvas.toDataURL('image/jpeg', 0.72);
+                const compressedUrl = canvas.toDataURL('image/jpeg', 0.78);
                 if (!store.state.history.progressPhotos) store.state.history.progressPhotos = [];
                 store.state.history.progressPhotos.unshift({
                     id: utils.generateId(),
                     date: new Date().toISOString(),
                     weight: store.state.user.currentWeight,
-                    dataUrl
+                    dataUrl: compressedUrl
                 });
                 if (workoutEngine.activeWorkout) {
                     if (!workoutEngine.activeWorkout.sessionPhotos) workoutEngine.activeWorkout.sessionPhotos = [];
-                    workoutEngine.activeWorkout.sessionPhotos.push(dataUrl);
+                    workoutEngine.activeWorkout.sessionPhotos.push(compressedUrl);
                     workoutEngine.saveSessionState();
                     workoutEngine.renderActiveWorkout();
                 }
                 store.save();
-                if (!workoutEngine.activeWorkout || document.getElementById('active-workout-view').style.display === 'none') {
-                    this.navigate(this.currentPage);
-                }
+                if (!workoutEngine.activeWorkout) this.navigate(this.currentPage);
             };
             img.src = e.target.result;
         };
@@ -5414,14 +5445,98 @@ const app = {
             this.navigate('data');
         }
     },
+    openPinGoalsModal() {
+        const modal = document.getElementById('pin-goals-modal');
+        if (!store.state.challenge.goals || store.state.challenge.goals.length === 0) {
+            store.state.challenge.isActive = true;
+            store.state.challenge.title = 'Daily Discipline';
+            store.state.challenge.startDate = new Date().toISOString();
+            store.state.challenge.endDate = new Date(Date.now() + 75 * 86400000).toISOString();
+            store.state.challenge.goals = [
+                { id: 'g_walk', type: 'cardio', customLabel: 'Daily 30m Walk', showInActionPlan: true },
+                { id: 'g_creatine', type: 'custom', customLabel: 'Take 5g Creatine', showInActionPlan: true },
+                { id: 'g_steps', type: 'steps', customLabel: 'Hit 10,000 Steps', showInActionPlan: false }
+            ];
+            store.save();
+        }
+        const goals = store.state.challenge.goals;
+        let html = `
+            <div class="workout-header-sticky">
+                <button class="btn btn-sm" style="width:auto;" onclick="document.getElementById('pin-goals-modal').style.display='none'">Close</button>
+                <div style="font-weight:bold; font-size:16px;">Pin Daily Goals</div>
+                <button class="btn btn-sm btn-primary" onclick="app.promptAddPinnedGoal()">+ Goal</button>
+            </div>
+            <div style="padding:16px; overflow-y:auto; flex:1;">
+                <div class="card">
+                    <div style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">Pinned goals appear directly inside Today's Action Plan on your Home Dashboard.</div>
+                    ${goals.map((g, idx) => `
+                        <div class="data-row flex-between">
+                            <div>
+                                <div style="font-weight:bold; font-size:15px;">${utils.getGoalLabel(g)}</div>
+                                <div style="font-size:11px; color:var(--text-secondary);">${g.showInActionPlan ? 'Pinned to Home' : 'Hidden'}</div>
+                            </div>
+                            <div style="display:flex; gap:8px; align-items:center;">
+                                <button class="btn btn-sm ${g.showInActionPlan ? 'btn-primary' : ''}" onclick="app.toggleGoalPin(${idx})">${g.showInActionPlan ? 'Pinned' : 'Pin'}</button>
+                                <button class="btn-icon" style="color:var(--pending); width:30px; height:30px;" onclick="app.deletePinnedGoal(${idx})"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+        modal.innerHTML = html;
+        modal.style.display = 'flex';
+    },
+    promptAddPinnedGoal() {
+        const label = prompt("Enter Custom Daily Habit / Goal (e.g. 'Take 5g Creatine', '10k Steps', 'Stretch 10m'):");
+        if (!label || !label.trim()) return;
+        store.state.challenge.isActive = true;
+        store.state.challenge.goals.push({
+            id: 'g_' + utils.generateId(),
+            type: 'custom',
+            customLabel: label.trim(),
+            showInActionPlan: true,
+            createdAt: utils.getLocalISODate(new Date())
+        });
+        store.save();
+        this.openPinGoalsModal();
+        this.navigate(this.currentPage);
+    },
+    toggleGoalPin(idx) {
+        const g = store.state.challenge.goals[idx];
+        if (g) {
+            g.showInActionPlan = !g.showInActionPlan;
+            store.save();
+            this.openPinGoalsModal();
+            this.navigate(this.currentPage);
+        }
+    },
+    deletePinnedGoal(idx) {
+        store.state.challenge.goals.splice(idx, 1);
+        store.save();
+        this.openPinGoalsModal();
+        this.navigate(this.currentPage);
+    },
+    toggleChallengeGoal(dStr, goalId, goalType) {
+        if (goalType === 'cardio') {
+            this.logQuickActivity();
+            return;
+        }
+        if (!store.state.challenge.logs) store.state.challenge.logs = {};
+        if (!store.state.challenge.logs[dStr]) store.state.challenge.logs[dStr] = {};
+        store.state.challenge.logs[dStr][goalId] = !store.state.challenge.logs[dStr][goalId];
+        store.save();
+        this.checkRankPromotion();
+        this.navigate(this.currentPage);
+    },
     openSettingsModal() {
         const modal = document.getElementById('settings-modal');
         const s = store.state.settings;
-        const f = s.features;
+        const f = s.features || {};
         modal.innerHTML = `
             <div class="workout-header-sticky">
-                <button class="btn btn-sm" style="width:auto;" onclick="document.getElementById('settings-modal').style.display='none'; app.navigate(app.currentPage);">Done</button>
-                <div style="font-weight:bold; font-size:16px;">Settings & Customisation</div>
+                <button class="btn btn-sm" style="width:auto;" onclick="document.getElementById('settings-modal').style.display='none'">Close</button>
+                <div style="font-weight:bold; font-size:16px;">OS Settings</div>
                 <div style="width:60px;"></div>
             </div>
             <div style="padding:16px; overflow-y:auto; flex:1; padding-bottom:80px;">
@@ -5434,33 +5549,42 @@ const app = {
                     </div>
                 </div>
                 <div class="card">
-                    <h3 style="margin-top:0;">Workout & Units</h3>
-                    <div class="data-row flex-between">
-                        <span>Weight Units</span>
-                        <select class="edit-input" style="width:110px; margin:0;" onchange="store.state.settings.units = this.value; store.save();">
-                            <option value="kg" ${s.units === 'kg' ? 'selected' : ''}>kg</option>
-                            <option value="lbs" ${s.units === 'lbs' ? 'selected' : ''}>lbs</option>
-                        </select>
-                    </div>
+                    <h3 style="margin-top:0;">Workout & Timer Preferences</h3>
                     <div class="data-row flex-between">
                         <span>Auto Rest Timer (Seconds)</span>
-                        <input type="number" class="inline-edit" style="width:90px;" value="${s.restTimer || 120}" onchange="store.state.settings.restTimer = parseInt(this.value) || 0; store.save();">
+                        <input type="number" class="inline-edit" style="width:90px;" value="${s.restTimer || 120}" onchange="store.state.settings.restTimer = parseInt(this.value)||0; store.save();">
+                    </div>
+                    <div class="data-row flex-between">
+                        <span>Rest Timer Alarm Sound</span>
+                        <button class="btn btn-sm ${!s.restTimerMuted ? 'btn-primary' : ''}" onclick="workoutEngine.toggleRestTimerMute(); app.openSettingsModal();">${s.restTimerMuted ? 'Muted' : 'Sound ON'}</button>
+                    </div>
+                    <div class="data-row flex-between">
+                        <span>Weight Units</span>
+                        <button class="btn btn-sm" onclick="store.state.settings.units = (store.state.settings.units === 'kg' ? 'lbs' : 'kg'); store.save(); app.openSettingsModal(); app.navigate(app.currentPage);">${(s.units || 'kg').toUpperCase()}</button>
                     </div>
                 </div>
                 <div class="card">
                     <h3 style="margin-top:0;">Dashboard Widgets</h3>
-                    ${[
-                        { k: 'showRankBanner', l: 'Monthly Ranked Banner' },
-                        { k: 'showQuote', l: 'Daily Stoic Quote' },
-                        { k: 'showWeekStrip', l: 'Weekly Consistency Strip' },
-                        { k: 'showActivityGrid', l: '48-Day Activity Bento Grid' },
-                        { k: 'showHeatmap', l: '28-Day Recovery Anatomy Map' }
-                    ].map(item => `
-                        <div class="data-row flex-between">
-                            <span>${item.l}</span>
-                            <input type="checkbox" ${f[item.k] ? 'checked' : ''} onchange="store.state.settings.features['${item.k}'] = this.checked; store.save();" style="width:20px; height:20px;">
-                        </div>
-                    `).join('')}
+                    <div class="data-row flex-between">
+                        <span>Daily Stoic Quote</span>
+                        <button class="btn btn-sm ${f.showQuote ? 'btn-primary' : ''}" onclick="store.state.settings.features.showQuote = !store.state.settings.features.showQuote; store.save(); app.openSettingsModal(); app.navigate(app.currentPage);">${f.showQuote ? 'ON' : 'OFF'}</button>
+                    </div>
+                    <div class="data-row flex-between">
+                        <span>Weekly Ranked Status Banner</span>
+                        <button class="btn btn-sm ${f.showRankBanner ? 'btn-primary' : ''}" onclick="store.state.settings.features.showRankBanner = !store.state.settings.features.showRankBanner; store.save(); app.openSettingsModal(); app.navigate(app.currentPage);">${f.showRankBanner ? 'ON' : 'OFF'}</button>
+                    </div>
+                    <div class="data-row flex-between">
+                        <span>28-Day Muscle Recovery Heatmap</span>
+                        <button class="btn btn-sm ${f.showHeatmap ? 'btn-primary' : ''}" onclick="store.state.settings.features.showHeatmap = !store.state.settings.features.showHeatmap; store.save(); app.openSettingsModal(); app.navigate(app.currentPage);">${f.showHeatmap ? 'ON' : 'OFF'}</button>
+                    </div>
+                    <div class="data-row flex-between">
+                        <span>Weekly Check-In Strip</span>
+                        <button class="btn btn-sm ${f.showWeekStrip ? 'btn-primary' : ''}" onclick="store.state.settings.features.showWeekStrip = !store.state.settings.features.showWeekStrip; store.save(); app.openSettingsModal(); app.navigate(app.currentPage);">${f.showWeekStrip ? 'ON' : 'OFF'}</button>
+                    </div>
+                    <div class="data-row flex-between">
+                        <span>48-Day Activity Bento Grid</span>
+                        <button class="btn btn-sm ${f.showActivityGrid ? 'btn-primary' : ''}" onclick="store.state.settings.features.showActivityGrid = !store.state.settings.features.showActivityGrid; store.save(); app.openSettingsModal(); app.navigate(app.currentPage);">${f.showActivityGrid ? 'ON' : 'OFF'}</button>
+                    </div>
                 </div>
             </div>
         `;
@@ -5468,27 +5592,25 @@ const app = {
     },
     exportJSON() {
         const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(store.state, null, 2));
-        const dlAnchor = document.createElement('a');
-        dlAnchor.setAttribute("href", dataStr);
-        dlAnchor.setAttribute("download", `irontrack_backup_${utils.getLocalISODate(new Date())}.json`);
-        document.body.appendChild(dlAnchor);
-        dlAnchor.click();
-        dlAnchor.remove();
+        const a = document.createElement('a');
+        a.setAttribute("href", dataStr);
+        a.setAttribute("download", `irontrack_backup_${utils.getLocalISODate(new Date())}.json`);
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
     },
     importJSONPrompt() {
-        const raw = prompt("Paste your exported IronTrack JSON backup string below:");
-        if (!raw) return;
+        const raw = prompt("Paste your exported IronTrack JSON backup below:");
+        if (!raw || !raw.trim()) return;
         try {
             const parsed = JSON.parse(raw);
-            if (parsed && parsed.history) {
-                store.state = parsed;
-                store.save();
-                store.load();
-                this.navigate('home');
-                alert("Backup restored successfully!");
-            }
+            store.state = store.migrate(parsed);
+            store.save();
+            this.applyTheme(store.state.settings.theme || 'olympus');
+            this.navigate('home');
+            alert("Backup restored successfully!");
         } catch(e) {
-            alert("Invalid JSON format.");
+            alert("Invalid JSON data.");
         }
     }
 };
