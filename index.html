@@ -2993,36 +2993,71 @@ const workoutEngine = {
         this.saveSessionState(); this.renderActiveWorkout(true);
     },
     finishWorkout() {
-        clearInterval(this.timerInterval); this.stopRestTimer();
-        this.activeWorkout.duration = this.secondsElapsed;
-        this.activeWorkout.date = new Date().toISOString();
-        const mappedExercises = this.activeWorkout.exercises.map(ex => {
-            const doneSets = ex.sets.filter(s => s.completed);
-            const fallbackSets = doneSets.length > 0 ? doneSets : ex.sets.filter(s => (parseFloat(s.weight) || 0) > 0 || (parseFloat(s.reps) || 0) > 0).map(s => ({ ...s, completed: true }));
-            return {
-                name: ex.name,
-                muscles: utils.getMuscles(ex),
-                variation: ex.variation || '',
-                sets: fallbackSets
-            };
-        }).filter(ex => ex.sets.length > 0);
-        this.activeWorkout.exercises = mappedExercises;
-        store.addWorkout(this.activeWorkout);
-        this.activeWorkout.exercises.forEach(ex => {
-            let n = ex.name.toLowerCase();
-            let isBench = n.includes('bench press') && !n.includes('dumbbell') && !n.includes('db');
-            let isSquat = n.includes('squat') && !n.includes('split') && !n.includes('hack') && !n.includes('goblet');
-            let isDeadlift = n.includes('deadlift') && !n.includes('romanian') && !n.includes('rdl') && !n.includes('stiff');
-            ex.sets.forEach(s => {
-                let e1rm = s.reps === 1 ? s.weight : Math.round(s.weight * (1 + s.reps / 30));
-                if (isBench) { let cur = store.state.prs.Bench.reps === 1 ? store.state.prs.Bench.weight : Math.round(store.state.prs.Bench.weight * (1 + store.state.prs.Bench.reps / 30)); if (e1rm > cur) store.state.prs.Bench = { weight: s.weight, reps: s.reps }; }
-                if (isSquat) { let cur = store.state.prs.Squat.reps === 1 ? store.state.prs.Squat.weight : Math.round(store.state.prs.Squat.weight * (1 + store.state.prs.Squat.reps / 30)); if (e1rm > cur) store.state.prs.Squat = { weight: s.weight, reps: s.reps }; }
-                if (isDeadlift) { let cur = store.state.prs.Deadlift.reps === 1 ? store.state.prs.Deadlift.weight : Math.round(store.state.prs.Deadlift.weight * (1 + store.state.prs.Deadlift.reps / 30)); if (e1rm > cur) store.state.prs.Deadlift = { weight: s.weight, reps: s.reps }; }
-            });
-        });
-        store.state.activeSession = null; store.save();
-        document.getElementById('active-workout-view').style.display = 'none';
-        this.activeWorkout = null; app.navigate('home', false);
+        try {
+            clearInterval(this.timerInterval);
+            this.stopRestTimer();
+            const session = this.activeWorkout || store.state.activeSession;
+            if (session) {
+                session.duration = this.secondsElapsed || 0;
+                session.date = new Date().toISOString();
+                const mappedExercises = (session.exercises || []).map(ex => {
+                    const setsArr = Array.isArray(ex.sets) ? ex.sets : [];
+                    const doneSets = setsArr.filter(s => s && s.completed);
+                    const fallbackSets = doneSets.length > 0
+                        ? doneSets
+                        : setsArr.filter(s => s && ((parseFloat(s.weight) || 0) > 0 || (parseFloat(s.reps) || 0) > 0)).map(s => ({ ...s, completed: true }));
+                    return {
+                        name: ex.name || 'Exercise',
+                        muscles: utils.getMuscles(ex),
+                        variation: ex.variation || '',
+                        sets: fallbackSets
+                    };
+                }).filter(ex => ex.sets.length > 0);
+                session.exercises = mappedExercises;
+                store.addWorkout(session);
+                if (!store.state.prs || typeof store.state.prs !== 'object') {
+                    store.state.prs = { Bench: { weight: 0, reps: 0 }, Squat: { weight: 0, reps: 0 }, Deadlift: { weight: 0, reps: 0 } };
+                }
+                ['Bench', 'Squat', 'Deadlift'].forEach(k => {
+                    if (!store.state.prs[k] || typeof store.state.prs[k] !== 'object') {
+                        store.state.prs[k] = { weight: parseFloat(store.state.prs[k]) || 0, reps: 1 };
+                    }
+                });
+                session.exercises.forEach(ex => {
+                    let n = (ex.name || '').toLowerCase();
+                    let isBench = n.includes('bench press') && !n.includes('dumbbell') && !n.includes('db');
+                    let isSquat = n.includes('squat') && !n.includes('split') && !n.includes('hack') && !n.includes('goblet');
+                    let isDeadlift = n.includes('deadlift') && !n.includes('romanian') && !n.includes('rdl') && !n.includes('stiff');
+                    (ex.sets || []).forEach(s => {
+                        const w = parseFloat(s.weight) || 0;
+                        const r = parseInt(s.reps) || 0;
+                        if (w <= 0 || r <= 0) return;
+                        let e1rm = r === 1 ? w : Math.round(w * (1 + r / 30));
+                        if (isBench) {
+                            let cur = store.state.prs.Bench.reps === 1 ? store.state.prs.Bench.weight : Math.round(store.state.prs.Bench.weight * (1 + store.state.prs.Bench.reps / 30));
+                            if (e1rm > cur) store.state.prs.Bench = { weight: w, reps: r };
+                        }
+                        if (isSquat) {
+                            let cur = store.state.prs.Squat.reps === 1 ? store.state.prs.Squat.weight : Math.round(store.state.prs.Squat.weight * (1 + store.state.prs.Squat.reps / 30));
+                            if (e1rm > cur) store.state.prs.Squat = { weight: w, reps: r };
+                        }
+                        if (isDeadlift) {
+                            let cur = store.state.prs.Deadlift.reps === 1 ? store.state.prs.Deadlift.weight : Math.round(store.state.prs.Deadlift.weight * (1 + store.state.prs.Deadlift.reps / 30));
+                            if (e1rm > cur) store.state.prs.Deadlift = { weight: w, reps: r };
+                        }
+                    });
+                });
+            }
+        } catch (err) {
+            console.error('Error finishing workout:', err);
+        } finally {
+            store.state.activeSession = null;
+            this.activeWorkout = null;
+            store.save();
+            const activeView = document.getElementById('active-workout-view');
+            if (activeView) activeView.style.display = 'none';
+            app.navigate('home', false);
+        }
     },
     cancelWorkout() {
         if(confirm("Discard this workout completely? Progress will be lost.")) {
