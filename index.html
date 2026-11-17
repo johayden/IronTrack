@@ -5201,7 +5201,7 @@ const app = {
         }
     },
 
-        /* ============================================================================
+    /* ============================================================================
        COMPLETE NUTRITION, MEAL LOGGING, RAW INGREDIENT & MEAL BUILDER SYSTEM
        ============================================================================ */
     getOrCreateNutritionDay(dateStr) {
@@ -5250,6 +5250,7 @@ const app = {
         if (mealWindowType) this.activeMealWindow = mealWindowType;
         if (tab) this.mealSearchTab = tab;
         if (!this.mealSearchTab) this.mealSearchTab = 'raw';
+
         const dStr = this.selectedNutritionDate || utils.getLocalISODate(new Date());
         const mType = this.activeMealWindow || 'Breakfast';
         const curTab = this.mealSearchTab;
@@ -5257,10 +5258,13 @@ const app = {
         const loggedInWindow = (nutEntry.loggedMeals || []).filter(m => (m.type || 'Meal').toLowerCase() === mType.toLowerCase());
         const windowCals = Math.round(loggedInWindow.reduce((s, m) => s + (parseFloat(m.cal) || 0), 0));
         const windowPro = Math.round(loggedInWindow.reduce((s, m) => s + (parseFloat(m.pro) || 0), 0));
+
         const modal = document.getElementById('meal-search-modal');
         if (!modal) return;
+
         const categories = ['All', ...new Set(NZ_ATHLETE_FOODS.map(f => f.cat))];
         const activeCat = this.rawIngredientCatFilter || 'All';
+
         let html = `
             <div class="workout-header-sticky">
                 <button type="button" class="btn btn-sm" style="width:auto;" onclick="document.getElementById('meal-search-modal').style.display='none'">Done</button>
@@ -5282,6 +5286,7 @@ const app = {
                     <button type="button" class="btn btn-sm ${curTab === 'quick' ? 'btn-primary' : ''}" onclick="app.openMealSearchModal('${dStr}', '${mType}', 'quick')"><i class="fas fa-bolt"></i> Custom Macro</button>
                 </div>
         `;
+
         if (loggedInWindow.length > 0) {
             html += `
                 <div class="card" style="padding:12px; margin-bottom:14px; border:1px solid var(--accent-color); background:var(--accent-dim);">
@@ -5300,6 +5305,7 @@ const app = {
                 </div>
             `;
         }
+
         if (curTab === 'raw') {
             html += `
                 <div class="input-group" style="margin-bottom:10px;">
@@ -5380,6 +5386,7 @@ const app = {
                 </div>
             `;
         }
+
         html += `</div>`;
         modal.innerHTML = html;
         modal.style.display = 'flex';
@@ -5402,6 +5409,7 @@ const app = {
         const mType = mealWindowType || this.activeMealWindow || 'Breakfast';
         const defaultGrams = food.defaultGrams || 150;
         const modal = document.getElementById('meal-search-modal');
+
         modal.innerHTML = `
             <div class="workout-header-sticky">
                 <button type="button" class="btn btn-sm" style="width:auto;" onclick="app.openMealSearchModal('${dStr}', '${mType}', 'raw')"><i class="fas fa-arrow-left"></i> Back</button>
@@ -5416,12 +5424,16 @@ const app = {
                     <div style="font-size:12px; color:var(--accent-color); font-weight:800; text-transform:uppercase;">${food.cat} • ${food.micros}</div>
                     <h2 style="margin:4px 0 8px 0; font-size:22px;">${food.name}</h2>
                     <div style="font-size:13px; color:var(--text-secondary); margin-bottom:16px; line-height:1.4;">${food.notes}</div>
+
                     <label style="font-size:12px; font-weight:800; color:var(--text-secondary); text-transform:uppercase;">Weight / Portion (Grams)</label>
                     <input type="number" id="raw-food-grams" class="edit-input" value="${defaultGrams}" min="1" max="3000" step="5" style="font-size:22px !important; font-weight:900; text-align:center; height:54px; margin-top:6px;" oninput="app.updateRawFoodPreview('${food.id}', this.value)">
+
                     <div style="display:grid; grid-template-columns: repeat(5, 1fr); gap:6px; margin-bottom:16px;">
                         ${[50, 100, 150, 200, 300].map(g => `<button type="button" class="btn btn-sm" style="padding:8px 0; font-size:12px;" onclick="document.getElementById('raw-food-grams').value=${g}; app.updateRawFoodPreview('${food.id}', ${g});">${g}g</button>`).join('')}
                     </div>
+
                     <div id="raw-food-macro-preview" style="background:var(--surface-elevated); padding:14px; border-radius:12px; border:1px solid var(--border); margin-bottom:18px;"></div>
+
                     <button type="button" class="btn btn-success" style="font-size:16px; padding:16px;" onclick="app.confirmLogRawFood('${food.id}', '${dStr}', '${mType}')">
                         <i class="fas fa-check-circle"></i> Log to ${mType}
                     </button>
@@ -5458,6 +5470,7 @@ const app = {
         const mult = grams / 100;
         const dStr = dateStr || this.selectedNutritionDate || utils.getLocalISODate(new Date());
         const mType = mealWindowType || this.activeMealWindow || 'Breakfast';
+
         const nutEntry = this.getOrCreateNutritionDay(dStr);
         nutEntry.loggedMeals.push({
             id: utils.generateId(),
@@ -5502,6 +5515,7 @@ const app = {
         const proEl = document.getElementById('quick-macro-pro');
         const carEl = document.getElementById('quick-macro-car');
         const fatEl = document.getElementById('quick-macro-fat');
+
         const name = (nameEl && nameEl.value.trim()) ? nameEl.value.trim() : `${mealWindowType} Entry`;
         let cal = parseFloat(calEl ? calEl.value : 0) || 0;
         const pro = parseFloat(proEl ? proEl.value : 0) || 0;
@@ -5618,6 +5632,7 @@ const app = {
         const dStr = this.selectedNutritionDate || utils.getLocalISODate(new Date());
         const mType = this.activeMealWindow || 'Breakfast';
         const draft = this.draftMealBuilder || { name: '', ingredients: [] };
+
         let totCal = 0, totPro = 0, totCar = 0, totFat = 0;
         draft.ingredients.forEach(ing => {
             totCal += ing.cal || 0;
@@ -5625,6 +5640,7 @@ const app = {
             totCar += ing.car || 0;
             totFat += ing.fat || 0;
         });
+
         let html = `
             <div class="workout-header-sticky">
                 <button type="button" class="btn btn-sm" style="width:auto;" onclick="document.getElementById('meal-create-modal').style.display='none'">Cancel</button>
@@ -5733,6 +5749,7 @@ const app = {
         store.save();
         this.openMealSearchModal(this.selectedNutritionDate, this.activeMealWindow, 'saved');
     },
+
     /* ACTION PLAN OVERRIDES, PINNED GOALS, PROFILE & SETTINGS */
     toggleActionPlanOverride(dateStr, key, autoState) {
         if (!store.state.history.actionOverrides) store.state.history.actionOverrides = {};
