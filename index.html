@@ -5962,6 +5962,244 @@ const app = {
         reader.readAsText(file);
     }
 };
+/* ============================================================================
+   SURGICAL FUNCTIONALITY PATCH (100% ORIGINAL UI PRESERVED)
+   Paste right above: window.addEventListener('DOMContentLoaded', () => app.init());
+   ============================================================================ */
+(function applyFunctionalFixes() {
+    // 1. Helper: Map between Home Action Plan keys and Challenge Goal types
+    const goalTypeToActionKey = {
+        workout: 'workout',
+        activity: 'activity',
+        weight: 'weight',
+        nutrition: 'nutrition',
+        protein: 'nutrition'
+    };
+
+    // 2. Fix utils.checkGoalSuccess so manual Action Plan check-offs also count toward Challenge & Pinned Goals
+    const origCheckGoalSuccess = utils.checkGoalSuccess.bind(utils);
+    utils.checkGoalSuccess = function(dateStr, g) {
+        if (!g) return false;
+        const c = store.state.challenge;
+        if (c && c.logs && c.logs[dateStr] && c.logs[dateStr][g.id] !== undefined) {
+            return !!c.logs[dateStr][g.id];
+        }
+        const mappedKey = goalTypeToActionKey[g.type];
+        const ov = store.state.history.actionOverrides && store.state.history.actionOverrides[dateStr];
+        if (mappedKey && ov && ov[mappedKey] !== undefined) {
+            if (g.type === 'protein') {
+                // Only auto-pass protein via nutrition override if explicitly checked true
+                if (ov[mappedKey] === true) return true;
+            } else {
+                return !!ov[mappedKey];
+            }
+        }
+        return origCheckGoalSuccess(dateStr, g);
+    };
+
+    // 3. Fix utils.getActionPlanItemSuccess so Challenge Modal toggles also reflect on Home Action Plan
+    const origGetActionPlanItemSuccess = utils.getActionPlanItemSuccess.bind(utils);
+    utils.getActionPlanItemSuccess = function(dateStr, key, autoDone) {
+        const ov = store.state.history.actionOverrides && store.state.history.actionOverrides[dateStr];
+        if (ov && ov[key] !== undefined) return !!ov[key];
+        const c = store.state.challenge;
+        if (c && c.logs && c.logs[dateStr] && Array.isArray(c.goals)) {
+            const matchingGoal = c.goals.find(g => goalTypeToActionKey[g.type] === key);
+            if (matchingGoal && c.logs[dateStr][matchingGoal.id] !== undefined) {
+                return !!c.logs[dateStr][matchingGoal.id];
+            }
+        }
+        return origGetActionPlanItemSuccess(dateStr, key, autoDone);
+    };
+
+    // 4. Bidirectional Sync when toggling Home Action Plan check circles
+    app.toggleActionPlanOverride = function(dateStr, key, autoDone) {
+        if (!store.state.history.actionOverrides) store.state.history.actionOverrides = {};
+        if (!store.state.history.actionOverrides[dateStr]) store.state.history.actionOverrides[dateStr] = {};
+        const currentVal = utils.getActionPlanItemSuccess(dateStr, key, autoDone);
+        const nextVal = !currentVal;
+        store.state.history.actionOverrides[dateStr][key] = nextVal;
+
+        // Sync with matching 75-Day Lock-In Challenge goals
+        const c = store.state.challenge;
+        if (c && Array.isArray(c.goals)) {
+            if (!c.logs) c.logs = {};
+            if (!c.logs[dateStr]) c.logs[dateStr] = {};
+            c.goals.forEach(g => {
+                if (goalTypeToActionKey[g.type] === key) {
+                    c.logs[dateStr][g.id] = nextVal;
+                }
+            });
+        }
+
+        store.save();
+        this.checkRankPromotion();
+        this.navigate(this.currentPage, true);
+    };
+
+    // 5. Bidirectional Sync when toggling goals inside 75-Day Lock-In Challenge or Pinned Goals
+    app.toggleChallengeGoalManual = function(dateStr, goalId) {
+        const c = store.state.challenge;
+        if (!c) return;
+        if (!c.logs) c.logs = {};
+        if (!c.logs[dateStr]) c.logs[dateStr] = {};
+        const gObj = (c.goals || []).find(x => x.id === goalId);
+        const cur = gObj ? utils.checkGoalSuccess(dateStr, gObj) : !!c.logs[dateStr][goalId];
+        const nextVal = !cur;
+        c.logs[dateStr][goalId] = nextVal;
+
+        // Sync back to Home Action Plan override if this goal maps to a core Action Plan item
+        if (gObj && goalTypeToActionKey[gObj.type]) {
+            const actionKey = goalTypeToActionKey[gObj.type];
+            if (!store.state.history.actionOverrides) store.state.history.actionOverrides = {};
+            if (!store.state.history.actionOverrides[dateStr]) store.state.history.actionOverrides[dateStr] = {};
+            store.state.history.actionOverrides[dateStr][actionKey] = nextVal;
+        }
+
+        store.save();
+        const modal = document.getElementById('challenge-modal');
+        if (modal && modal.style.display === 'flex') {
+            this.openChallengeModal();
+        }
+        this.navigate(this.currentPage, true);
+    };
+
+    // 6. Protect Active Workout typed inputs before toggling set checkmarks
+    const origToggleSet = workoutEngine.toggleSet.bind(workoutEngine);
+    workoutEngine.toggleSet = function(exIdx, setIdx) {
+        if (this.activeWorkout && this.activeWorkout.exercises && this.activeWorkout.exercises[exIdx]) {
+            const setCards = document.querySelectorAll('#workout-exercises-container .exercise-card');
+            const card = setCards[exIdx];
+            if (card) {
+                const rows = card.querySelectorAll('.set-row');
+                const row = rows[setIdx];
+                if (row) {
+                    const inputs = row.querySelectorAll('input[type="number"]');
+                    if (inputs[0] && inputs[0].value !== '') this.updateSet(exIdx, setIdx, 'weight', inputs[0].value);
+                    if (inputs[1] && inputs[1].value !== '') this.updateSet(exIdx, setIdx, 'reps', inputs[1].value);
+                    if (inputs[2] && inputs[2].value !== '') this.updateSet(exIdx, setIdx, 'rpe', inputs[2].value);
+                }
+            }
+        }
+        return origToggleSet(exIdx, setIdx);
+    };
+
+    // 7. Reusable PWA-safe Modal Helper using existing #pin-goals-modal container & original CSS classes
+    app.openQuickInputModal = function(title, subtitle, fields, onConfirm) {
+        const modal = document.getElementById('pin-goals-modal');
+        if (!modal) return;
+        modal.innerHTML = `
+            <div class="workout-header-sticky">
+                <button type="button" class="btn btn-sm" style="width:auto;" onclick="document.getElementById('pin-goals-modal').style.display='none'">Cancel</button>
+                <div style="text-align:center; min-width:0; flex:1;">
+                    <div style="font-size:10px; color:var(--accent-color); font-weight:900; text-transform:uppercase;">${subtitle || 'QUICK LOG'}</div>
+                    <div class="truncate-text" style="font-weight:900; font-size:16px;">${title}</div>
+                </div>
+                <button type="button" class="btn btn-sm btn-success" id="quick-modal-save-btn" style="width:auto;">Save</button>
+            </div>
+            <div style="padding:16px; overflow-y:auto; flex:1;">
+                <div class="card" style="padding:16px;">
+                    ${fields.map(f => `
+                        <div style="margin-bottom:12px;">
+                            <label style="font-size:11px; color:var(--text-secondary); font-weight:800; text-transform:uppercase; display:block; margin-bottom:4px;">${f.label}</label>
+                            <input type="${f.type || 'text'}" id="qm-field-${f.id}" class="edit-input" value="${f.value !== undefined ? f.value : ''}" placeholder="${f.placeholder || ''}" ${f.step ? `step="${f.step}"` : ''}>
+                        </div>
+                    `).join('')}
+                    <button type="button" class="btn btn-primary" id="quick-modal-confirm-btn" style="margin-top:6px;"><i class="fas fa-check"></i> Confirm</button>
+                </div>
+            </div>
+        `;
+        modal.style.display = 'flex';
+        const submit = () => {
+            const values = {};
+            fields.forEach(f => {
+                const el = document.getElementById('qm-field-' + f.id);
+                values[f.id] = el ? el.value : '';
+            });
+            modal.style.display = 'none';
+            onConfirm(values);
+        };
+        document.getElementById('quick-modal-save-btn').onclick = submit;
+        document.getElementById('quick-modal-confirm-btn').onclick = submit;
+        const firstInput = document.getElementById('qm-field-' + fields[0].id);
+        if (firstInput) setTimeout(() => firstInput.focus(), 50);
+    };
+
+    // 8. Replace blocking window.prompt() on Bodyweight & Quick Activity with non-freezing modal
+    app.promptQuickBodyweight = function() {
+        const unit = utils.unitLabel();
+        this.openQuickInputModal(
+            `Log Morning Weight (${unit})`,
+            'BODYWEIGHT TRACKER',
+            [{ id: 'bw', label: `Current Weight (${unit})`, type: 'number', step: '0.1', value: store.state.user.currentWeight || 80 }],
+            (vals) => {
+                const num = parseFloat(vals.bw);
+                if (isNaN(num) || num <= 0) return;
+                const todayStr = utils.getLocalISODate(new Date());
+                const existing = store.state.history.bodyweight.find(b => utils.getLocalISODate(b.date) === todayStr);
+                if (existing) {
+                    existing.weight = num;
+                    store.state.user.currentWeight = num;
+                    store.save();
+                } else {
+                    store.addBodyweight({ date: new Date().toISOString(), weight: num });
+                }
+                this.checkRankPromotion();
+                this.navigate(this.currentPage, true);
+            }
+        );
+    };
+
+    app.logQuickActivity = function(defaultTitle = 'Outdoor Run / Walk') {
+        this.openQuickInputModal(
+            'Log Daily Activity',
+            'CARDIO & STEPS',
+            [
+                { id: 'name', label: 'Activity Type', type: 'text', value: defaultTitle },
+                { id: 'mins', label: 'Duration (Minutes)', type: 'number', value: 30 },
+                { id: 'cals', label: 'Active Calories Burned (kcal)', type: 'number', value: 250 }
+            ],
+            (vals) => {
+                const name = (vals.name || '').trim() || defaultTitle;
+                const mins = Math.max(1, parseInt(vals.mins) || 30);
+                const cals = Math.max(0, parseInt(vals.cals) || 0);
+                store.addCardio({
+                    id: utils.generateId(),
+                    date: new Date().toISOString(),
+                    name,
+                    durationMinutes: mins,
+                    caloriesBurned: cals,
+                    isActivity: true,
+                    exercises: []
+                });
+                this.checkRankPromotion();
+                this.navigate(this.currentPage, true);
+            }
+        );
+    };
+
+    // 9. Ensure JSON backup import runs state migration and applies saved theme
+    app.handleJSONFileImport = function(event) {
+        const file = event.target.files && event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                const parsed = JSON.parse(e.target.result);
+                if (!parsed || typeof parsed !== 'object') throw new Error('Invalid JSON');
+                store.state = store.migrate(Object.assign({}, store.state, parsed));
+                store.save();
+                this.applyTheme(store.state.settings.theme || 'olympus');
+                this.navigate('home', false);
+                alert('Backup restored successfully!');
+            } catch (err) {
+                alert('Failed to restore JSON backup: ' + err.message);
+            }
+            event.target.value = '';
+        };
+        reader.readAsText(file);
+    };
+})();
 window.addEventListener('DOMContentLoaded', () => app.init());
 </script>
 <input type="file" id="progress-photo-input" accept="image/*" style="display:none;" onchange="app.handleProgressPhotoUpload(event)">
