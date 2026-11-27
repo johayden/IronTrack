@@ -1,3 +1,7 @@
+<!-- ============================================================================
+     IRONTRACK OS — FULL UPDATED CODE (PART 1 OF 4)
+     Paste this block first (Top of file: <!DOCTYPE html> to utils.getLiftWorldStats)
+     ============================================================================ -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -363,9 +367,6 @@
         <i id="rest-timer-mute-icon" class="fas fa-volume-high" style="font-size:13px;"></i>
     </button>
 </div>
-<input type="file" id="progress-photo-input" accept="image/*" capture="environment" style="display:none;" onchange="app.handleProgressPhotoUpload(event)">
-<input type="file" id="fit-file-input" accept=".fit,application/octet-stream" style="display:none;" onchange="app.handleWorkoutFileUpload(event, 'fit')">
-<input type="file" id="csv-file-input" accept=".csv,text/csv" style="display:none;" onchange="app.handleWorkoutFileUpload(event, 'csv')">
 <div id="active-workout-view"></div>
 <div id="exercise-selection-modal"></div>
 <div id="start-workout-modal"></div>
@@ -708,6 +709,7 @@ const store = {
             restTimerMuted: false,
             theme: 'olympus',
             units: 'kg',
+            timeZone: 'Pacific/Auckland',
             gender: 'male',
             worldRankBasis: 'lifters',
             remindersEnabled: false,
@@ -744,6 +746,7 @@ const store = {
         if(!state.settings.chartRange) state.settings.chartRange = '90';
         if(state.settings.restTimerMuted === undefined) state.settings.restTimerMuted = false;
         if(!state.settings.units) state.settings.units = 'kg';
+        if(!state.settings.timeZone) state.settings.timeZone = 'Pacific/Auckland';
         if(!state.settings.gender) state.settings.gender = 'male';
         if(!state.settings.worldRankBasis) state.settings.worldRankBasis = 'lifters';
         if(state.settings.remindersEnabled === undefined) state.settings.remindersEnabled = false;
@@ -857,9 +860,11 @@ const store = {
                         loggedMeals: [...n.loggedMeals],
                         waterLog: [...n.waterLog]
                     };
+                    if (n.customTargets) mergedByDate[dKey].customTargets = { ...n.customTargets };
                 } else {
                     mergedByDate[dKey].loggedMeals.push(...n.loggedMeals);
                     mergedByDate[dKey].waterLog.push(...n.waterLog);
+                    if (n.customTargets) mergedByDate[dKey].customTargets = { ...n.customTargets };
                 }
             });
             state.history.nutrition = Object.values(mergedByDate).map(entry => {
@@ -1137,19 +1142,110 @@ const utils = {
         return s.length > maxLen ? s.slice(0, maxLen - 1).trim() + '…' : s;
     },
     unitLabel: () => (store.state.settings && store.state.settings.units === 'lbs') ? 'lbs' : 'kg',
-    formatDate: (isoString) => new Date(isoString).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }),
-    formatDateShort: (dateObj) => dateObj.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }),
+    getConfiguredTimeZone: () => {
+        const tz = store.state && store.state.settings && store.state.settings.timeZone;
+        if (!tz || tz === 'auto') {
+            try { return Intl.DateTimeFormat().resolvedOptions().timeZone || 'Pacific/Auckland'; } catch (e) { return 'Pacific/Auckland'; }
+        }
+        return tz;
+    },
+    formatDate: (isoString) => {
+        if (typeof isoString === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(isoString)) {
+            const [y, m, d] = isoString.split('-').map(Number);
+            return new Date(y, m - 1, d).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
+        }
+        if (typeof isoString === 'string' && /^\d{4}-\d{2}-\d{2}T12:00:00/.test(isoString)) {
+            const [y, m, d] = isoString.slice(0, 10).split('-').map(Number);
+            return new Date(y, m - 1, d).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
+        }
+        const dt = new Date(isoString);
+        if (isNaN(dt)) return String(isoString || '');
+        try {
+            return dt.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', timeZone: utils.getConfiguredTimeZone() });
+        } catch (e) {
+            return dt.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
+        }
+    },
+    formatDateShort: (dateObj) => {
+        const dt = dateObj instanceof Date ? dateObj : new Date(dateObj);
+        if (isNaN(dt)) return '';
+        try {
+            return dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: utils.getConfiguredTimeZone() });
+        } catch (e) {
+            return dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+        }
+    },
     getLocalISODate: (isoString) => {
         if (!isoString) return '';
-        if (typeof isoString === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(isoString)) return isoString;
-        const d = new Date(isoString);
+        if (typeof isoString === 'string') {
+            if (/^\d{4}-\d{2}-\d{2}$/.test(isoString)) return isoString;
+            if (/^\d{4}-\d{2}-\d{2}T12:00:00/.test(isoString)) return isoString.slice(0, 10);
+        }
+        const d = (isoString instanceof Date) ? isoString : new Date(isoString);
         if (isNaN(d)) {
-            if (typeof isoString === 'string' && /^\d{4}-\d{2}-\d{2}T/.test(isoString)) return isoString.slice(0, 10);
+            if (typeof isoString === 'string' && /^\d{4}-\d{2}-\d{2}/.test(isoString)) return isoString.slice(0, 10);
             return '';
         }
+        try {
+            const tz = utils.getConfiguredTimeZone();
+            const parts = new Intl.DateTimeFormat('en-CA', { timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(d);
+            const y = parts.find(p => p.type === 'year')?.value;
+            const m = parts.find(p => p.type === 'month')?.value;
+            const day = parts.find(p => p.type === 'day')?.value;
+            if (y && m && day) return `${y}-${m}-${day}`;
+        } catch (e) {}
         return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
     },
-    getMonday: (dateInput) => { const d = new Date(dateInput); const day = d.getDay(); const diff = d.getDate() - day + (day === 0 ? -6 : 1); return new Date(d.setDate(diff)).setHours(0,0,0,0); },
+    isoDateToLocalNoonMs: (dateInput) => {
+        const iso = utils.getLocalISODate(dateInput || new Date());
+        if (/^\d{4}-\d{2}-\d{2}$/.test(iso)) {
+            const [y, m, d] = iso.split('-').map(Number);
+            return new Date(y, m - 1, d, 0, 0, 0, 0).getTime();
+        }
+        return new Date(dateInput).setHours(0, 0, 0, 0);
+    },
+    getDayIndexForISODate: (isoStr) => {
+        const iso = utils.getLocalISODate(isoStr || new Date());
+        if (/^\d{4}-\d{2}-\d{2}$/.test(iso)) {
+            const [y, m, d] = iso.split('-').map(Number);
+            return new Date(y, m - 1, d, 12, 0, 0).getDay();
+        }
+        return new Date().getDay();
+    },
+    getTargetsForDate: (dateStr) => {
+        const defaults = (store.state.settings && store.state.settings.nutritionTargets)
+            ? store.state.settings.nutritionTargets
+            : { cal: 2200, pro: 160, car: 250, fat: 70, water: 4000 };
+        const dStr = utils.getLocalISODate(dateStr || new Date());
+        const nutEntry = (store.state.history && store.state.history.nutrition || []).find(n => n && utils.getLocalISODate(n.date) === dStr);
+        if (nutEntry && nutEntry.customTargets) {
+            return {
+                cal: parseFloat(nutEntry.customTargets.cal) || defaults.cal || 2200,
+                pro: parseFloat(nutEntry.customTargets.pro) || defaults.pro || 160,
+                car: parseFloat(nutEntry.customTargets.car) || defaults.car || 250,
+                fat: parseFloat(nutEntry.customTargets.fat) || defaults.fat || 70,
+                water: parseFloat(nutEntry.customTargets.water) || defaults.water || 4000
+            };
+        }
+        return {
+            cal: parseFloat(defaults.cal) || 2200,
+            pro: parseFloat(defaults.pro) || 160,
+            car: parseFloat(defaults.car) || 250,
+            fat: parseFloat(defaults.fat) || 70,
+            water: parseFloat(defaults.water) || 4000
+        };
+    },
+    getMonday: (dateInput) => {
+        const iso = utils.getLocalISODate(dateInput || new Date());
+        if (/^\d{4}-\d{2}-\d{2}$/.test(iso)) {
+            const [y, m, day] = iso.split('-').map(Number);
+            const localD = new Date(y, m - 1, day);
+            const dow = localD.getDay();
+            const diff = localD.getDate() - dow + (dow === 0 ? -6 : 1);
+            return new Date(localD.setDate(diff)).setHours(0,0,0,0);
+        }
+        const d = new Date(dateInput); const day = d.getDay(); const diff = d.getDate() - day + (day === 0 ? -6 : 1); return new Date(d.setDate(diff)).setHours(0,0,0,0);
+    },
     calcVolume: (sets) => sets.filter(s => s.completed).reduce((acc, s) => acc + ((parseFloat(s.weight)||0) * (parseFloat(s.reps)||0)), 0),
     calculateSMA: (data, period) => {
         if (!data || data.length === 0) return []; let sma = [];
@@ -1159,7 +1255,11 @@ const utils = {
     getDayName: (dayIndex) => ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayIndex],
     getDayShort: (dayIndex) => ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][dayIndex],
     getActiveRoutine: () => store.state.routines.find(r => r.id === store.state.activeRoutineId) || store.state.routines[0],
-    getTodayProgram: () => { const d = new Date().getDay(); const active = utils.getActiveRoutine(); return active.days.find(p => p.day === d) || { day: d, workouts: [] }; },
+    getTodayProgram: () => {
+        const d = utils.getDayIndexForISODate(new Date());
+        const active = utils.getActiveRoutine();
+        return active.days.find(p => p.day === d) || { day: d, workouts: [] };
+    },
     getAllMuscleGroups: () => {
         const list = [...MUSCLE_GROUPS];
         (store.state.customMuscleGroups || []).forEach(m => {
@@ -1317,7 +1417,7 @@ const utils = {
             .sort((a, b) => new Date(a.date) - new Date(b.date));
         sortedWorkouts.forEach(w => {
             const dateStr = utils.getLocalISODate(w.date);
-            const ts = new Date(w.date).setHours(0,0,0,0);
+            const ts = utils.isoDateToLocalNoonMs(w.date);
             (w.exercises||[]).forEach(ex => {
                 let exVol = utils.calcVolume(ex.sets);
                 if (exVol > 0) {
@@ -1338,6 +1438,11 @@ const utils = {
         const musclesArr = {}; Object.keys(muscles).forEach(m => { musclesArr[m] = Object.values(muscles[m]).sort((a,b)=>a.x-b.x); });
         const exercisesArr = {}; Object.keys(exercises).forEach(e => { exercisesArr[e] = Object.values(exercises[e]).sort((a,b)=>a.x-b.x); });
         const totalArr = Object.values(total).sort((a,b)=>a.x-b.x);
+/* ============================================================================
+   IRONTRACK OS — FULL UPDATED CODE (PART 2 OF 4)
+   Replaces the cutoff line `return { muscles: musclesArr, byMuscle: muscles`
+   at the end of Part 1 and continues through the end of `workoutEngine`.
+   ============================================================================ */
         return { muscles: musclesArr, byMuscle: musclesArr, total: totalArr, exercises: exercisesArr, byExercise: exercisesArr };
     },
     getE1RMHistory: (daysLimit = 28) => {
@@ -1576,6 +1681,7 @@ const utils = {
     },
     getGoalLabel: (g) => {
         if (g.customLabel) return g.customLabel;
+        if (g.customName) return g.customName;
         if (g.title) return g.title;
         if (g.type === 'workout') return `Complete ${g.count||1} Strength Session(s)`;
         if (g.type === 'weight') return `Log Bodyweight`;
@@ -1595,7 +1701,7 @@ const utils = {
         if (cLogs && cLogs[g.id] !== undefined) return !!cLogs[g.id];
         const hLogs = store.state.history.challengeLogs && store.state.history.challengeLogs[dStr];
         if (hLogs && hLogs[g.id] !== undefined) return !!hLogs[g.id];
-        const parts = dStr.split('-'); const dObj = new Date(parts[0], parts[1]-1, parts[2]); const dayIndex = dObj.getDay();
+        const dayIndex = utils.getDayIndexForISODate(dStr);
         const active = utils.getActiveRoutine(); const prog = active.days.find(x => x.day === dayIndex); const isRest = !prog || prog.workouts.length === 0;
         if (['water', 'reading', 'custom', 'steps'].includes(g.type)) {
             return false;
@@ -1613,7 +1719,7 @@ const utils = {
         else if (g.type === 'nutrition') {
             const nut = store.state.history.nutrition.find(n => n && n.date && utils.getLocalISODate(n.date) === dStr);
             const totalW = (nut && nut.waterLog) ? nut.waterLog.reduce((s, e) => s + e.amount, 0) : 0;
-            const auto = !!(nut && (nut.cal > 0 || totalW > 0));
+            const auto = !!(nut && (nut.cal > 0 || totalW > 0 || (nut.loggedMeals && nut.loggedMeals.length > 0)));
             return utils.getActionPlanItemSuccess(dStr, 'nutrition', auto);
         }
         else if (g.type === 'cardio') {
@@ -1635,31 +1741,43 @@ const utils = {
         return (met / possible) >= 0.75;
     },
     calculateStreak: () => {
-        let streak = 0; let d = new Date();
+        let streak = 0;
+        const todayIso = utils.getLocalISODate(new Date());
+        const tParts = todayIso.split('-').map(Number);
+        let d = new Date(tParts[0], tParts[1] - 1, tParts[2], 12, 0, 0);
+        const fmtLocalD = (dt) => `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`;
         if (store.state.challenge && store.state.challenge.isActive && store.state.challenge.startDate) {
-            const start = new Date(store.state.challenge.startDate.slice(0,10) + 'T00:00:00');
-            if (utils.checkDaySuccess(utils.getLocalISODate(d))) streak++; d.setDate(d.getDate() - 1);
-            while(d >= start) { if (utils.checkDaySuccess(utils.getLocalISODate(d))) { streak++; d.setDate(d.getDate() - 1); } else break; }
+            const sIso = utils.getLocalISODate(store.state.challenge.startDate);
+            const sParts = sIso.split('-').map(Number);
+            const start = new Date(sParts[0], sParts[1] - 1, sParts[2], 0, 0, 0);
+            if (utils.checkDaySuccess(fmtLocalD(d))) streak++; d.setDate(d.getDate() - 1);
+            while(d >= start) { if (utils.checkDaySuccess(fmtLocalD(d))) { streak++; d.setDate(d.getDate() - 1); } else break; }
         } else {
             const wDates = [...new Set(store.state.history.workouts.map(e => utils.getLocalISODate(e.date)))]; const bDates = [...new Set(store.state.history.bodyweight.map(e => utils.getLocalISODate(e.date)))]; const nDates = [...new Set(store.state.history.nutrition.filter(n => n.cal > 0).map(e => utils.getLocalISODate(e.date)))];
             const isComplete = (dStr) => {
-                const parts = dStr.split('-'); const dObj = new Date(parts[0], parts[1]-1, parts[2]); const dayIndex = dObj.getDay(); const active = utils.getActiveRoutine(); const prog = active.days.find(x => x.day === dayIndex); const isRest = !prog || prog.workouts.length === 0; const loggedRest = store.state.history.workouts.some(w => utils.getLocalISODate(w.date) === dStr && w.isSkipped);
+                const dayIndex = utils.getDayIndexForISODate(dStr); const active = utils.getActiveRoutine(); const prog = active.days.find(x => x.day === dayIndex); const isRest = !prog || prog.workouts.length === 0; const loggedRest = store.state.history.workouts.some(w => utils.getLocalISODate(w.date) === dStr && w.isSkipped);
                 let possible = 3; let met = 0;
                 if(wDates.includes(dStr) || isRest || loggedRest) met++;
                 if(bDates.includes(dStr)) met++;
                 if(nDates.includes(dStr)) met++;
                 return (met / possible) >= 0.66;
             };
-            if (isComplete(utils.getLocalISODate(d))) streak++; d.setDate(d.getDate() - 1);
-            while(true) { if (isComplete(utils.getLocalISODate(d))) { streak++; d.setDate(d.getDate() - 1); } else break; }
+            if (isComplete(fmtLocalD(d))) streak++; d.setDate(d.getDate() - 1);
+            while(true) { if (isComplete(fmtLocalD(d))) { streak++; d.setDate(d.getDate() - 1); } else break; }
         } return streak;
     },
     getChallengeStats: () => {
         const c = store.state.challenge;
         if (!c || !c.isActive || !c.startDate || !c.endDate) return null;
-        const start = new Date(c.startDate.slice(0,10) + 'T00:00:00');
-        const end = new Date(c.endDate.slice(0,10) + 'T00:00:00');
-        const today = new Date(); today.setHours(0,0,0,0);
+        const sIso = utils.getLocalISODate(c.startDate);
+        const eIso = utils.getLocalISODate(c.endDate);
+        const todayIso = utils.getLocalISODate(new Date());
+        const sParts = sIso.split('-').map(Number);
+        const eParts = eIso.split('-').map(Number);
+        const tParts = todayIso.split('-').map(Number);
+        const start = new Date(sParts[0], sParts[1] - 1, sParts[2], 0, 0, 0);
+        const end = new Date(eParts[0], eParts[1] - 1, eParts[2], 0, 0, 0);
+        const today = new Date(tParts[0], tParts[1] - 1, tParts[2], 0, 0, 0);
         let dayTotal = Math.max(1, Math.round((end - start) / (1000*60*60*24)) + 1);
         let dayCurrent = Math.round((today - start) / (1000*60*60*24)) + 1;
         if (dayCurrent < 1) dayCurrent = 1;
@@ -1668,7 +1786,7 @@ const utils = {
         let checkEnd = today < end ? today : end;
         if (checkEnd < start) checkEnd = new Date(start);
         for (let d = new Date(start); d <= checkEnd; d.setDate(d.getDate() + 1)) {
-            let dStr = utils.getLocalISODate(d);
+            let dStr = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
             (c.goals||[]).forEach(g => {
                 if (!g.createdAt || dStr >= g.createdAt) {
                     possibleGoals++;
@@ -1728,12 +1846,12 @@ const utils = {
         let weekSets = {};
         hGroups.forEach(m => weekSets[m] = 0);
         store.state.history.workouts.forEach(w => {
-            if (w.isSkipped || w.isActivity) return;
-            const wTs = new Date(w.date).getTime();
+            if (!w || w.isSkipped || w.isActivity) return;
+            const wTs = utils.isoDateToLocalNoonMs(w.date);
             if (wTs >= mon && wTs < nextMon) {
                 (w.exercises || []).forEach(ex => {
                     const mNames = utils.getMuscles(ex);
-                    const completedCount = (ex.sets || []).filter(s => s.completed).length;
+                    const completedCount = (ex.sets || []).filter(s => s.completed !== false).length;
                     mNames.forEach(m => {
                         if (weekSets[m] !== undefined) weekSets[m] += completedCount;
                     });
@@ -1755,7 +1873,7 @@ const utils = {
         });
         const allCompleted = completedGroups >= HYPERTROPHY_GROUPS.length;
         if (allCompleted) hypertrophyRP += 150;
-        return { weekSets, completedGroups, totalGroups: hGroups.length, allCompleted, hypertrophyRP, totalCappedSets };
+        return { weekSets, setsByGroup: weekSets, completedGroups, totalGroups: hGroups.length, allCompleted, hypertrophyRP, totalCappedSets };
     },
     getTotalRP: () => {
         let rp = 0;
@@ -1807,10 +1925,11 @@ const utils = {
         };
     },
     getMonthlyRankMetrics: () => {
-        const now = new Date();
-        const year = now.getFullYear();
-        const month = now.getMonth();
-        const daysElapsed = now.getDate();
+        const todayIso = utils.getLocalISODate(new Date());
+        const parts = todayIso.split('-').map(Number);
+        const year = parts[0];
+        const month = parts[1] - 1;
+        const daysElapsed = parts[2];
         const daysInMonth = new Date(year, month + 1, 0).getDate();
         const activeRoutine = utils.getActiveRoutine();
         let rp = 0;
@@ -1826,8 +1945,8 @@ const utils = {
         let dailyDeltaToday = 0;
         let rpHistoryLog = [];
         for (let dayNum = 1; dayNum <= daysElapsed; dayNum++) {
-            const dObj = new Date(year, month, dayNum);
-            const dStr = utils.getLocalISODate(dObj);
+            const dObj = new Date(year, month, dayNum, 12, 0, 0);
+            const dStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(dayNum).padStart(2, '0')}`;
             const dayIdx = dObj.getDay();
             const prog = activeRoutine.days.find(x => x.day === dayIdx);
             const isScheduledWorkoutDay = prog && prog.workouts && prog.workouts.length > 0;
@@ -1847,7 +1966,8 @@ const utils = {
             const hasBw = utils.getActionPlanItemSuccess(dStr, 'weight', store.state.history.bodyweight.some(w => utils.getLocalISODate(w.date) === dStr));
             if (hasBw) bwDays++;
             const nut = store.state.history.nutrition.find(n => utils.getLocalISODate(n.date) === dStr);
-            const hasNut = utils.getActionPlanItemSuccess(dStr, 'nutrition', !!(nut && nut.cal > 0));
+            const totalWDay = (nut && nut.waterLog) ? nut.waterLog.reduce((s, e) => s + e.amount, 0) : 0;
+            const hasNut = utils.getActionPlanItemSuccess(dStr, 'nutrition', !!(nut && (nut.cal > 0 || totalWDay > 0 || (nut.loggedMeals && nut.loggedMeals.length > 0))));
             if (hasNut) nutDays++;
             const hasCardio = utils.getActionPlanItemSuccess(dStr, 'activity', store.state.history.cardio.some(c => utils.getLocalISODate(c.date) === dStr));
             if (hasCardio) cardioDays++;
@@ -1906,7 +2026,7 @@ const utils = {
         const hyper = utils.getWeeklyHypertrophyStatus();
         rp += Math.round(hyper.hypertrophyRP * 0.5);
         const consistencyPct = daysElapsed > 0 ? Math.round((consistentDays / daysElapsed) * 100) : 100;
-        const monthName = now.toLocaleDateString('en-GB', { month: 'long' });
+        const monthName = new Date(year, month, 15).toLocaleDateString('en-GB', { month: 'long' });
         return {
             rp,
             consistencyPct,
@@ -1940,7 +2060,7 @@ const utils = {
                 pct: Math.round(clamped * 100)
             };
         };
-                const categories = [
+        const categories = [
             {
                 id: 'consistency',
                 title: `${m.monthName} Consistency Gate`,
@@ -2246,6 +2366,7 @@ const utils = {
         const tPro = Math.max(1, parseFloat(targets.pro) || 160);
         const tCar = Math.max(1, parseFloat(targets.car) || 250);
         const tFat = Math.max(1, parseFloat(targets.fat) || 70);
+        const tWater = Math.max(500, parseFloat(targets.water) || 3500);
         let totalWater = 0;
         if (nutEntry.waterLog) totalWater = nutEntry.waterLog.reduce((s, e) => s + e.amount, 0);
         if (cal === 0 && (!nutEntry.loggedMeals || nutEntry.loggedMeals.length === 0) && totalWater === 0) {
@@ -2318,7 +2439,7 @@ const utils = {
         } else if ((nutEntry.loggedMeals || []).length > 0 || cal > 0) {
             qualityScore = Math.min(14, 8 + (nutEntry.loggedMeals || []).length * 2);
         }
-        const waterPts = Math.min(5, Math.round((totalWater / 3500) * 5));
+        const waterPts = Math.min(5, Math.round((totalWater / tWater) * 5));
         const mealTypesLogged = new Set((nutEntry.loggedMeals || []).map(m => m.type)).size;
         const structurePts = Math.min(5, Math.round((mealTypesLogged / 3) * 5));
         const hydrationTimingScore = waterPts + structurePts;
@@ -2339,7 +2460,7 @@ const utils = {
                 { name: 'Protein Anchor', score: proScore, max: 25, desc: `${Math.round(pro)}g / ${tPro}g target` },
                 { name: 'Carb & Fat Balance', score: macroBalanceScore, max: 20, desc: `Carbs ${carSub}/10 (${Math.round(car)}g) • Fats ${fatSub}/10 (${Math.round(fat)}g)` },
                 { name: 'Whole-Food Quality & Variety', score: qualityScore, max: 20, desc: `${uniqueFoods.size} whole foods across ${uniqueCats.size} food groups` },
-                { name: 'Hydration & Meal Structure', score: hydrationTimingScore, max: 10, desc: `${totalWater}ml water • ${mealTypesLogged} meals` }
+                { name: 'Hydration & Meal Structure', score: hydrationTimingScore, max: 10, desc: `${totalWater}ml / ${tWater}ml water • ${mealTypesLogged} meals` }
             ]
         };
     },
@@ -2994,6 +3115,7 @@ const workoutEngine = {
     },
     finishWorkout() {
         try {
+            const prevRank = utils.getWeeklyRankData();
             clearInterval(this.timerInterval);
             this.stopRestTimer();
             const session = this.activeWorkout || store.state.activeSession;
@@ -3048,26 +3170,46 @@ const workoutEngine = {
                     });
                 });
             }
-        } catch (err) {
-            console.error('Error finishing workout:', err);
-        } finally {
-            store.state.activeSession = null;
             this.activeWorkout = null;
+            store.state.activeSession = null;
             store.save();
-            const activeView = document.getElementById('active-workout-view');
-            if (activeView) activeView.style.display = 'none';
+            const newRank = utils.getWeeklyRankData();
+            if (newRank.ladderIdx > prevRank.ladderIdx) {
+                store.state.settings.lastSeenRankLadderIdx = newRank.ladderIdx;
+                store.save();
+                setTimeout(() => app.triggerRankPromotionCelebration(newRank), 350);
+            }
+        } catch (err) {
+            console.error("Finish workout error:", err);
+        } finally {
+            const viewEl = document.getElementById('active-workout-view');
+            if (viewEl) {
+                viewEl.style.display = 'none';
+                viewEl.innerHTML = '';
+            }
             app.navigate('home', false);
         }
     },
     cancelWorkout() {
-        if(confirm("Discard this workout completely? Progress will be lost.")) {
-            clearInterval(this.timerInterval); this.stopRestTimer();
-            store.state.activeSession = null; store.save();
-            document.getElementById('active-workout-view').style.display = 'none';
-            this.activeWorkout = null; app.navigate(app.currentPage, true);
+        if (confirm("Discard current workout? Unsaved progress for this session will be lost.")) {
+            clearInterval(this.timerInterval);
+            this.stopRestTimer();
+            this.activeWorkout = null;
+            store.state.activeSession = null;
+            store.save();
+            const viewEl = document.getElementById('active-workout-view');
+            if (viewEl) {
+                viewEl.style.display = 'none';
+                viewEl.innerHTML = '';
+            }
+            app.navigate(app.currentPage, true);
         }
     }
 };
+/* ============================================================================
+   IRONTRACK OS — FULL UPDATED CODE (PART 3 OF 4)
+   Paste this directly below `workoutEngine` (contains the complete `views` object)
+   ============================================================================ */
 const views = {
     renderHome() {
         const todayStr = utils.getLocalISODate(new Date());
@@ -3078,7 +3220,7 @@ const views = {
         const bwLogged = utils.getActionPlanItemSuccess(todayStr, 'weight', bwAuto);
         const nutEntry = store.state.history.nutrition.find(e => utils.getLocalISODate(e.date) === todayStr);
         const totalWaterToday = (nutEntry && nutEntry.waterLog) ? nutEntry.waterLog.reduce((s, e) => s + e.amount, 0) : 0;
-        const nutAuto = !!(nutEntry && (nutEntry.cal > 0 || totalWaterToday > 0));
+        const nutAuto = !!(nutEntry && (nutEntry.cal > 0 || totalWaterToday > 0 || (nutEntry.loggedMeals && nutEntry.loggedMeals.length > 0)));
         const nutLogged = utils.getActionPlanItemSuccess(todayStr, 'nutrition', nutAuto);
         const workoutsToday = store.state.history.workouts.filter(w => utils.getLocalISODate(w.date) === todayStr && !w.isSkipped && !w.isActivity);
         const activitiesToday = store.state.history.workouts.filter(w => utils.getLocalISODate(w.date) === todayStr && w.isActivity);
@@ -3093,7 +3235,7 @@ const views = {
         let html = `
             <div class="page-header">
                 <div style="min-width:0; flex:1;">
-                    <div class="truncate-text" style="font-size:11px; color:var(--text-secondary); text-transform:uppercase; font-weight:800; letter-spacing:0.6px;">${utils.formatDate(today.toISOString())}</div>
+                    <div class="truncate-text" style="font-size:11px; color:var(--text-secondary); text-transform:uppercase; font-weight:800; letter-spacing:0.6px;">${utils.formatDate(todayStr)}</div>
                     <h1 style="margin:2px 0 0 0; font-size:24px;">DASHBOARD</h1>
                 </div>
                 <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
@@ -3108,7 +3250,8 @@ const views = {
             </div>
         `;
         if (store.state.settings.features.showQuote) {
-            const dayHash = today.getFullYear() * 400 + today.getMonth() * 32 + today.getDate();
+            const [tY, tM, tD] = todayStr.split('-').map(Number);
+            const dayHash = tY * 400 + tM * 32 + tD;
             const randomQuote = QUOTES[dayHash % QUOTES.length];
             html += `<div style="padding: 2px 10px 14px 10px; margin-bottom: 6px; text-align: center;">
                 <p style="font-style: italic; color: var(--text-primary); font-size: 14px; line-height: 1.45; margin: 0; opacity: 0.92;">"${randomQuote}"</p>
@@ -3180,7 +3323,7 @@ const views = {
                 </div>
                 <i class="fas fa-weight-scale" style="color:var(--text-secondary); font-size:17px; flex-shrink:0;"></i>
             </div>
-            <div class="objective-row ${nutLogged ? 'completed' : ''}" style="margin-bottom:0;" onclick="app.navigate('nutrition')">
+            <div class="objective-row ${nutLogged ? 'completed' : ''}" style="margin-bottom:0;" onclick="app.selectedNutritionDate='${todayStr}'; app.navigate('nutrition');">
                 <div class="check-circle" onclick="event.stopPropagation(); app.toggleActionPlanOverride('${todayStr}', 'nutrition', ${nutAuto})" title="Tap to manually toggle completion"><i class="fas fa-check"></i></div>
                 <div style="flex:1; min-width:0;">
                     <div class="truncate-text" style="font-weight:800; font-size:15px;">Track Nutrition & Water</div>
@@ -3230,7 +3373,7 @@ const views = {
             html += `<div class="week-check-strip">`;
             for (let i = 0; i < 7; i++) {
                 const dObj = new Date(monTs + i * 86400000);
-                const dIso = utils.getLocalISODate(dObj);
+                const dIso = `${dObj.getFullYear()}-${String(dObj.getMonth() + 1).padStart(2, '0')}-${String(dObj.getDate()).padStart(2, '0')}`;
                 const isToday = dIso === todayStr;
                 const wDoneDay = store.state.history.workouts.some(w => utils.getLocalISODate(w.date) === dIso);
                 const nDoneDay = store.state.history.nutrition.some(n => utils.getLocalISODate(n.date) === dIso && n.cal > 0);
@@ -3249,9 +3392,11 @@ const views = {
         if (store.state.settings.features.showActivityGrid) {
             let cellsHtml = '';
             let activeDays48 = 0;
+            const [baseY, baseM, baseD] = todayStr.split('-').map(Number);
+            const baseNoon = new Date(baseY, baseM - 1, baseD, 12, 0, 0).getTime();
             for (let i = 47; i >= 0; i--) {
-                const d = new Date(today.getTime() - i * 86400000);
-                const dIso = utils.getLocalISODate(d);
+                const d = new Date(baseNoon - i * 86400000);
+                const dIso = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
                 const hasW = store.state.history.workouts.some(w => utils.getLocalISODate(w.date) === dIso);
                 const hasN = store.state.history.nutrition.some(n => utils.getLocalISODate(n.date) === dIso && n.cal > 0);
                 if (hasW) activeDays48++;
@@ -3295,7 +3440,7 @@ const views = {
     },
     renderWorkouts() {
         const active = utils.getActiveRoutine();
-        const todayIdx = new Date().getDay();
+        const todayIdx = utils.getDayIndexForISODate(new Date());
         const unit = utils.unitLabel();
         let html = `
             <div class="page-header">
@@ -3607,12 +3752,14 @@ const views = {
         return html;
     },
     renderNutrition() {
-        const dStr = app.selectedNutritionDate || utils.getLocalISODate(new Date());
-        let nutEntry = store.state.history.nutrition.find(n => utils.getLocalISODate(n.date) === dStr);
+        const dStr = utils.getLocalISODate(app.selectedNutritionDate || new Date());
+        app.selectedNutritionDate = dStr;
+        let nutEntry = store.state.history.nutrition.find(n => n && utils.getLocalISODate(n.date) === dStr);
         if (!nutEntry) {
             nutEntry = { date: dStr + 'T12:00:00.000Z', cal: 0, pro: 0, car: 0, fat: 0, loggedMeals: [], waterLog: [] };
         }
-        const targets = store.state.settings.nutritionTargets || { cal: 2200, pro: 160, car: 250, fat: 70, water: 4000 };
+        const targets = utils.getTargetsForDate(dStr);
+        const hasCustomDayTargets = !!(nutEntry && nutEntry.customTargets);
         const waterTarget = targets.water || 4000;
         const scoreObj = utils.getNutritionScore(nutEntry, targets);
         const insights = utils.getDailyNutritionInsights(nutEntry, targets);
@@ -3623,11 +3770,22 @@ const views = {
                     <div class="truncate-text" style="font-size:11px; color:var(--text-secondary); font-weight:bold; text-transform:uppercase;">Macros, Meals, Water & Quality Score</div>
                     <h1 style="margin:0; font-size:24px;">NUTRITION</h1>
                 </div>
-                <input type="date" class="edit-input" style="margin:0; padding:6px 10px; font-size:13px; font-weight:bold; width:auto; flex-shrink:0;" value="${dStr}" onchange="app.changeNutritionDate(this.value)">
+                <div style="display:flex; gap:6px; align-items:center;">
+                    <input type="date" class="edit-input" style="margin:0; padding:6px 10px; font-size:13px; font-weight:bold; width:auto; flex-shrink:0;" value="${dStr}" onchange="app.changeNutritionDate(this.value)">
+                    <button type="button" class="btn-icon" onclick="app.promptNutritionTargets('${dStr}')" title="Edit Macro & Water Targets for this date or globally"><i class="fas fa-sliders"></i></button>
+                </div>
             </div>
+            ${hasCustomDayTargets ? `
+            <div style="background:var(--accent-dim); border:1px solid var(--accent-color); color:var(--accent-color); padding:8px 12px; border-radius:10px; margin-bottom:12px; font-size:12px; font-weight:800; display:flex; justify-content:space-between; align-items:center;">
+                <span><i class="fas fa-calendar-day"></i> Custom Targets Active for ${dStr} (${targets.cal} kcal)</span>
+                <div style="display:flex; gap:6px;">
+                    <button type="button" class="btn btn-sm" style="padding:3px 8px; font-size:10.5px;" onclick="app.promptNutritionTargets('${dStr}')">Edit</button>
+                    <button type="button" class="btn btn-sm" style="padding:3px 8px; font-size:10.5px; color:var(--pending); border-color:var(--pending);" onclick="app.resetDayNutritionTargets('${dStr}')">Reset</button>
+                </div>
+            </div>` : ''}
             <div class="flex-between" style="margin-bottom:10px; align-items:center;">
                 <div style="min-width:0;">
-                    <h2 style="margin:0; font-size:18px;">MEALS</h2>
+                    <h2 style="margin:0; font-size:18px;">MEALS (${utils.formatDate(dStr)})</h2>
                     <div style="font-size:11.5px; color:var(--text-secondary);">Tap Breakfast, Lunch, Dinner, or Snacks to log</div>
                 </div>
                 <button type="button" class="btn btn-sm btn-primary" style="width:auto; padding:8px 12px; font-weight:900;" onclick="app.openMealCreateModal('${dStr}')"><i class="fas fa-utensils"></i> + Create Meal</button>
@@ -3648,9 +3806,12 @@ const views = {
                     </div>`;
                 }).join('')}
             </div>
-            <div class="flex-between" style="margin-bottom:12px; margin-top:6px;">
+            <div class="flex-between" style="margin-bottom:12px; margin-top:6px; gap:6px; flex-wrap:wrap;">
                 <h2 style="margin:0; font-size:19px;">DAILY SUMMARY</h2>
-                <button type="button" class="btn btn-sm" style="background:transparent; border:1px solid var(--border); padding:6px 12px; font-size:12px;" onclick="app.copyPastNutritionDay('${dStr}')"><i class="fas fa-copy"></i> Copy Past Day</button>
+                <div style="display:flex; gap:6px;">
+                    <button type="button" class="btn btn-sm" style="background:transparent; border:1px solid var(--border); padding:6px 10px; font-size:11.5px;" onclick="app.promptNutritionTargets('${dStr}')"><i class="fas fa-bullseye text-accent"></i> Edit Targets</button>
+                    <button type="button" class="btn btn-sm" style="background:transparent; border:1px solid var(--border); padding:6px 10px; font-size:11.5px;" onclick="app.copyPastNutritionDay('${dStr}')"><i class="fas fa-copy"></i> Copy Day</button>
+                </div>
             </div>
             <div class="nut-ring-grid">
                 ${utils.renderMacroRingCard('Calories', nutEntry.cal, targets.cal, 'kcal', 'kcal', '#32d74b', 'fa-fire')}
@@ -3663,33 +3824,48 @@ const views = {
             html += `
             <div class="card" style="padding:14px;">
                 <div class="flex-between" style="margin-bottom:8px;">
-                    <h3 style="margin:0; font-size:14px; color:var(--accent-color);">TODAY'S LOGGED ITEMS (${nutEntry.loggedMeals.length})</h3>
+                    <h3 style="margin:0; font-size:14px; color:var(--accent-color);">LOGGED ITEMS ON ${dStr} (${nutEntry.loggedMeals.length})</h3>
                     <button type="button" class="btn btn-sm" style="padding:4px 8px; font-size:11px;" onclick="app.promptQuickMacros('${dStr}')">+ Quick Macro</button>
                 </div>
                 ${nutEntry.loggedMeals.map((m, idx) => `
                     <div class="data-row flex-between" style="padding:8px 0;">
-                        <div style="min-width:0; flex:1;">
-                            <div class="truncate-text" style="font-weight:bold; font-size:14px;"><span style="color:var(--accent-color); font-size:11px; text-transform:uppercase;">[${m.type || 'Meal'}]</span> ${utils.truncate(m.name, 26)} ${m.grams ? `<span style="font-size:11px; color:var(--text-secondary);">(${m.grams}g)</span>` : ''}</div>
+                        <div style="min-width:0; flex:1; cursor:pointer;" onclick="app.editLoggedMealModal('${dStr}', ${idx})" title="Tap to edit this logged meal">
+                            <div class="truncate-text" style="font-weight:bold; font-size:14px;"><span style="color:var(--accent-color); font-size:11px; text-transform:uppercase;">[${m.type || 'Meal'}]</span> ${utils.truncate(m.name, 24)} ${m.grams ? `<span style="font-size:11px; color:var(--text-secondary);">(${m.grams}g)</span>` : ''}</div>
                             <div class="truncate-text" style="font-size:11px; color:var(--text-secondary);">${Math.round(m.cal)} kcal • P: ${Math.round(m.pro * 10)/10}g • C: ${Math.round(m.car * 10)/10}g • F: ${Math.round(m.fat * 10)/10}g</div>
                         </div>
-                        <button type="button" class="btn-icon" style="width:28px; height:28px; color:var(--pending);" onclick="app.removeLoggedMeal('${dStr}', ${idx})"><i class="fas fa-xmark"></i></button>
+                        <div style="display:flex; gap:5px; flex-shrink:0;">
+                            <button type="button" class="btn-icon" style="width:28px; height:28px;" onclick="app.editLoggedMealModal('${dStr}', ${idx})" title="Edit Meal / Portion"><i class="fas fa-pen" style="font-size:11px;"></i></button>
+                            <button type="button" class="btn-icon" style="width:28px; height:28px; color:var(--pending);" onclick="app.removeLoggedMeal('${dStr}', ${idx})" title="Delete Meal"><i class="fas fa-xmark"></i></button>
+                        </div>
                     </div>
                 `).join('')}
+            </div>`;
+        } else {
+            html += `
+            <div class="card" style="padding:14px;">
+                <div class="flex-between">
+                    <span class="text-muted" style="font-size:13px;">No meals logged for ${dStr} yet.</span>
+                    <button type="button" class="btn btn-sm" style="padding:5px 10px; font-size:11.5px;" onclick="app.promptQuickMacros('${dStr}')">+ Quick Macro</button>
+                </div>
             </div>`;
         }
         html += `
         <div class="card" style="padding:16px;">
             <div class="flex-between" style="margin-bottom:10px;">
                 <h2 style="margin:0; font-size:18px;"><i class="fas fa-droplet" style="color:var(--info);"></i> WATER INTAKE</h2>
-                <div style="font-size:16px; font-weight:900;">${totalWater} <span style="font-size:13px; color:var(--text-secondary); font-weight:normal;">/ ${waterTarget} ml</span></div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <div style="font-size:16px; font-weight:900;">${totalWater} <span style="font-size:13px; color:var(--text-secondary); font-weight:normal;">/ ${waterTarget} ml</span></div>
+                    <button type="button" class="btn-icon" style="width:28px; height:28px;" onclick="app.promptEditWater('${dStr}')" title="Set exact water intake for this date"><i class="fas fa-pen" style="font-size:11px;"></i></button>
+                </div>
             </div>
             <div class="progress-bg" style="height:10px; margin-bottom:12px;">
                 <div class="progress-fill" style="width:${Math.min(100, (totalWater / waterTarget) * 100)}%; background:var(--info);"></div>
             </div>
-            <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:8px;">
+            <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:8px;">
                 <button type="button" class="btn btn-sm" onclick="app.addWater('${dStr}', 250)">+250 ml</button>
                 <button type="button" class="btn btn-sm" onclick="app.addWater('${dStr}', 500)">+500 ml</button>
                 <button type="button" class="btn btn-sm" onclick="app.addWater('${dStr}', 750)">+750 ml</button>
+                <button type="button" class="btn btn-sm" style="color:var(--info); border-color:var(--info);" onclick="app.promptEditWater('${dStr}')">Set ml</button>
             </div>
         </div>`;
         const sPct = Math.min(100, Math.max(0, scoreObj.totalScore));
@@ -3739,9 +3915,12 @@ const views = {
                 </div>
             `).join('')}
         </div>
-        <div class="card" style="padding:16px; cursor:pointer;" onclick="app.promptNutritionTargets()">
+        <div class="card" style="padding:16px; cursor:pointer;" onclick="app.promptNutritionTargets('${dStr}')">
             <div class="flex-between">
-                <h2 style="margin:0; font-size:18px;"><i class="fas fa-sliders text-accent"></i> NUTRITION SETTINGS</h2>
+                <div>
+                    <h2 style="margin:0; font-size:18px;"><i class="fas fa-sliders text-accent"></i> NUTRITION SETTINGS & TARGETS</h2>
+                    <div style="font-size:11.5px; color:var(--text-secondary); margin-top:2px;">Edit macro/water goals for ${dStr} or global defaults</div>
+                </div>
                 <i class="fas fa-chevron-right" style="color:var(--text-secondary);"></i>
             </div>
         </div>`;
@@ -3752,7 +3931,7 @@ const views = {
         const tab = app.manageSubTab || 'overview';
         const allWorkouts = [...store.state.history.workouts].sort((a,b) => new Date(b.date) - new Date(a.date));
         const allBw = [...store.state.history.bodyweight].sort((a,b) => new Date(b.date) - new Date(a.date));
-        const allNut = [...store.state.history.nutrition].filter(n => n.cal > 0).sort((a,b) => new Date(b.date) - new Date(a.date));
+        const allNut = [...store.state.history.nutrition].filter(n => n && (n.cal > 0 || (n.loggedMeals && n.loggedMeals.length > 0) || (n.waterLog && n.waterLog.length > 0) || n.customTargets)).sort((a,b) => utils.getLocalISODate(b.date).localeCompare(utils.getLocalISODate(a.date)));
         const groupedEx = utils.getGroupedExercises();
         const lvl = utils.getAccountLevelData();
         const medals = utils.getProfileMedals();
@@ -3954,13 +4133,18 @@ const views = {
                 </div>
                 ${allNut.length === 0 ? `<div class="text-muted">No nutrition days logged.</div>` : allNut.slice(0, 25).map(n => {
                     const iso = utils.getLocalISODate(n.date);
+                    const tForDay = utils.getTargetsForDate(iso);
                     return `
                     <div class="data-row flex-between">
-                        <div style="cursor:pointer;" onclick="app.changeNutritionDate('${iso}')">
-                            <div style="font-weight:bold; font-size:14px;">${utils.formatDate(n.date)} — ${Math.round(n.cal)} kcal</div>
+                        <div style="cursor:pointer; flex:1; min-width:0;" onclick="app.changeNutritionDate('${iso}')">
+                            <div style="font-weight:bold; font-size:14px;">${utils.formatDate(iso)} — ${Math.round(n.cal)} / ${tForDay.cal} kcal ${n.customTargets ? '<span style="font-size:10px; color:var(--accent-color);">(Custom Goal)</span>' : ''}</div>
                             <div style="font-size:11px; color:var(--text-secondary);">P: ${Math.round(n.pro)}g • C: ${Math.round(n.car)}g • F: ${Math.round(n.fat)}g</div>
                         </div>
-                        <button type="button" class="btn-icon" style="width:30px; height:30px; color:var(--pending);" onclick="store.deleteEntry('nutrition', '${n.date}'); app.navigate('data', true);"><i class="fas fa-trash"></i></button>
+                        <div style="display:flex; gap:6px; flex-shrink:0;">
+                            <button type="button" class="btn-icon" style="width:30px; height:30px;" onclick="app.changeNutritionDate('${iso}')" title="View & Edit Meals for ${iso}"><i class="fas fa-pen"></i></button>
+                            <button type="button" class="btn-icon" style="width:30px; height:30px; color:var(--accent-color);" onclick="app.promptNutritionTargets('${iso}')" title="Edit Macro Targets for ${iso}"><i class="fas fa-sliders"></i></button>
+                            <button type="button" class="btn-icon" style="width:30px; height:30px; color:var(--pending);" onclick="app.deleteNutritionDay('${iso}')"><i class="fas fa-trash"></i></button>
+                        </div>
                     </div>`;
                 }).join('')}
             </div>`;
@@ -3968,6 +4152,11 @@ const views = {
         return html;
     }
 };
+/* ============================================================================
+   IRONTRACK OS — FULL UPDATED CODE (PART 4A)
+   Paste this directly below `views` (First half of `app`: Navigation, Modals,
+   Calendar, .FIT/CSV handlers, Routine Editor, and Analytics Charts)
+   ============================================================================ */
 const app = {
     currentPage: 'home',
     manageSubTab: 'overview',
@@ -4049,7 +4238,6 @@ const app = {
         const stats = utils.getChallengeStats() || { title: c.title || '75 Days Lock In', dayCurrent: 1, dayTotal: 75, successRate: 100, metGoals: 0, possibleGoals: 0 };
         const todayStr = utils.getLocalISODate(new Date());
         const startIso = utils.getLocalISODate(c.startDate || new Date());
-        const endIso = utils.getLocalISODate(c.endDate || new Date(Date.now() + 74 * 86400000));
         const pctDays = Math.min(100, Math.round((stats.dayCurrent / Math.max(1, stats.dayTotal)) * 100));
         let html = `
             <div class="workout-header-sticky">
@@ -4115,10 +4303,12 @@ const app = {
         const daysEl = document.getElementById('chal-cfg-days');
         if (!startEl || !daysEl) return;
         const days = Math.max(1, parseInt(daysEl.value) || 75);
-        const sDate = new Date(startEl.value + 'T00:00:00');
-        if (!isNaN(sDate)) {
+        const sParts = (startEl.value || '').split('-').map(Number);
+        if (sParts.length === 3) {
+            const sDate = new Date(sParts[0], sParts[1] - 1, sParts[2], 12, 0, 0);
             const eDate = new Date(sDate.getTime() + (days - 1) * 86400000);
-            store.state.challenge.endDate = eDate.toISOString();
+            const eIso = `${eDate.getFullYear()}-${String(eDate.getMonth()+1).padStart(2,'0')}-${String(eDate.getDate()).padStart(2,'0')}`;
+            store.state.challenge.endDate = eIso + 'T12:00:00.000Z';
         }
     },
     saveChallengeSettings() {
@@ -4127,12 +4317,14 @@ const app = {
         const daysEl = document.getElementById('chal-cfg-days');
         const days = Math.max(1, parseInt(daysEl ? daysEl.value : 75) || 75);
         const startStr = (startEl && startEl.value) ? startEl.value : utils.getLocalISODate(new Date());
-        const startObj = new Date(startStr + 'T00:00:00');
+        const sParts = startStr.split('-').map(Number);
+        const startObj = new Date(sParts[0], sParts[1] - 1, sParts[2], 12, 0, 0);
         const endObj = new Date(startObj.getTime() + (days - 1) * 86400000);
+        const endStr = `${endObj.getFullYear()}-${String(endObj.getMonth()+1).padStart(2,'0')}-${String(endObj.getDate()).padStart(2,'0')}`;
         store.state.challenge.isActive = true;
         store.state.challenge.title = (titleEl && titleEl.value.trim()) ? titleEl.value.trim() : '75 Days Lock In';
-        store.state.challenge.startDate = startObj.toISOString();
-        store.state.challenge.endDate = endObj.toISOString();
+        store.state.challenge.startDate = startStr + 'T12:00:00.000Z';
+        store.state.challenge.endDate = endStr + 'T12:00:00.000Z';
         store.state.challenge.durationDays = days;
         store.save();
         this.openChallengeModal();
@@ -4145,23 +4337,23 @@ const app = {
         if (!this.selectedCalendarDate) this.selectedCalendarDate = utils.getLocalISODate(new Date());
         const modal = document.getElementById('calendar-modal');
         const activeSplit = utils.getActiveRoutine();
-        const now = new Date();
-        const targetMonthDate = new Date(now.getFullYear(), now.getMonth() + this.calendarMonthOffset, 1);
+        const todayIso = utils.getLocalISODate(new Date());
+        const [tY, tM] = todayIso.split('-').map(Number);
+        const targetMonthDate = new Date(tY, (tM - 1) + this.calendarMonthOffset, 1);
         const year = targetMonthDate.getFullYear();
         const month = targetMonthDate.getMonth();
         const monthTitle = targetMonthDate.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
         const daysInMonth = new Date(year, month + 1, 0).getDate();
         const firstDayJs = new Date(year, month, 1).getDay();
         const startOffset = (firstDayJs + 6) % 7;
-        const todayIso = utils.getLocalISODate(now);
         const dayHeaders = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
         let calCellsHtml = dayHeaders.map(h => `<div class="chal-cal-hdr">${h}</div>`).join('');
         for (let b = 0; b < startOffset; b++) {
             calCellsHtml += `<div style="min-height:62px;"></div>`;
         }
         for (let d = 1; d <= daysInMonth; d++) {
-            const dObj = new Date(year, month, d);
-            const dIso = utils.getLocalISODate(dObj);
+            const dObj = new Date(year, month, d, 12, 0, 0);
+            const dIso = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
             const dow = dObj.getDay();
             const splitDay = activeSplit.days.find(x => x.day === dow) || { day: dow, workouts: [] };
             const scheduledWorkouts = splitDay.workouts || [];
@@ -4183,7 +4375,7 @@ const app = {
             `;
         }
         const selParts = this.selectedCalendarDate.split('-');
-        const selDateObj = new Date(parseInt(selParts[0]), parseInt(selParts[1]) - 1, parseInt(selParts[2]));
+        const selDateObj = new Date(parseInt(selParts[0]), parseInt(selParts[1]) - 1, parseInt(selParts[2]), 12, 0, 0);
         const selDow = selDateObj.getDay();
         const selSplitDay = activeSplit.days.find(x => x.day === selDow) || { day: selDow, workouts: [] };
         const selScheduled = selSplitDay.workouts || [];
@@ -5100,7 +5292,7 @@ const app = {
         const bwCtx = document.getElementById('bwChart');
         if (bwCtx && window.Chart) {
             const bwRaw = store.state.history.bodyweight
-                .map(b => ({ x: new Date(b.date).setHours(0,0,0,0), y: b.weight }))
+                .map(b => ({ x: utils.isoDateToLocalNoonMs(b.date), y: b.weight }))
                 .filter(p => !cutoff || p.x >= cutoff)
                 .sort((a, b) => a.x - b.x);
             const bwSma = utils.calculateSMA(bwRaw, 7);
@@ -5140,7 +5332,7 @@ const app = {
             if (store.state.settings.showCaloriesOnBwChart) {
                 const calData = store.state.history.nutrition
                     .filter(n => n.cal > 0)
-                    .map(n => ({ x: new Date(n.date).setHours(0,0,0,0), y: n.cal }))
+                    .map(n => ({ x: utils.isoDateToLocalNoonMs(n.date), y: n.cal }))
                     .filter(p => !cutoff || p.x >= cutoff)
                     .sort((a, b) => a.x - b.x);
                 datasets.push({
@@ -5175,7 +5367,7 @@ const app = {
         if (hyperCtx && window.Chart) {
             const hyper = utils.getWeeklyHypertrophyStatus();
             const labels = HYPERTROPHY_GROUPS;
-            const dataVals = labels.map(m => hyper.setsByGroup[m] || 0);
+            const dataVals = labels.map(m => (hyper.setsByGroup && hyper.setsByGroup[m]) || (hyper.weekSets && hyper.weekSets[m]) || 0);
             const colors = dataVals.map(v => v >= 10 ? '#34c759' : (v >= 5 ? '#ff9500' : '#ff3b30'));
             this.chartInstances.hyper = new Chart(hyperCtx, {
                 type: 'bar',
@@ -5200,13 +5392,26 @@ const app = {
             });
         }
     },
-
     /* ============================================================================
-       COMPLETE NUTRITION, MEAL LOGGING, RAW INGREDIENT & MEAL BUILDER SYSTEM
+       IRONTRACK OS — FULL UPDATED CODE (PART 4B - FINAL BLOCK)
+       Paste this directly below `initCharts() { ... },` from Part 4A.
+       Contains the fixed Nutrition & Calendar-Day Meal System, Custom Meal Builder,
+       Action Plan Overrides, Timezone-Driven Settings Modal, and closing HTML tags.
        ============================================================================ */
     getOrCreateNutritionDay(dateStr) {
-        const dStr = dateStr || this.selectedNutritionDate || utils.getLocalISODate(new Date());
-        let entry = store.state.history.nutrition.find(n => utils.getLocalISODate(n.date) === dStr);
+        const dStr = utils.getLocalISODate(dateStr || this.selectedNutritionDate || new Date());
+        const matches = store.state.history.nutrition.filter(n => n && utils.getLocalISODate(n.date) === dStr);
+        let entry = matches[0];
+        if (matches.length > 1) {
+            for (let i = 1; i < matches.length; i++) {
+                const dup = matches[i];
+                if (Array.isArray(dup.loggedMeals)) entry.loggedMeals = (entry.loggedMeals || []).concat(dup.loggedMeals);
+                if (Array.isArray(dup.waterLog)) entry.waterLog = (entry.waterLog || []).concat(dup.waterLog);
+                if (dup.customTargets && !entry.customTargets) entry.customTargets = { ...dup.customTargets };
+                const idx = store.state.history.nutrition.indexOf(dup);
+                if (idx > -1) store.state.history.nutrition.splice(idx, 1);
+            }
+        }
         if (!entry) {
             entry = {
                 date: dStr + 'T12:00:00.000Z',
@@ -5218,10 +5423,30 @@ const app = {
                 waterLog: []
             };
             store.state.history.nutrition.push(entry);
+        } else {
+            entry.date = dStr + 'T12:00:00.000Z';
         }
         if (!Array.isArray(entry.loggedMeals)) entry.loggedMeals = [];
         if (!Array.isArray(entry.waterLog)) entry.waterLog = [];
         return entry;
+    },
+    syncNutritionStatusForDate(dStr, nutEntry) {
+        if (!dStr || !nutEntry) return;
+        const totalW = (nutEntry.waterLog || []).reduce((s, e) => s + (parseFloat(e.amount) || 0), 0);
+        const hasAnyNutrition = (nutEntry.cal > 0 || totalW > 0 || (nutEntry.loggedMeals && nutEntry.loggedMeals.length > 0));
+        if (store.state.history.actionOverrides && store.state.history.actionOverrides[dStr]) {
+            delete store.state.history.actionOverrides[dStr]['nutrition'];
+        }
+        if (store.state.challenge && store.state.challenge.isActive && store.state.challenge.goals) {
+            if (!store.state.challenge.logs) store.state.challenge.logs = {};
+            if (!store.state.challenge.logs[dStr]) store.state.challenge.logs[dStr] = {};
+            store.state.challenge.goals.forEach(g => {
+                if (g.type === 'nutrition') {
+                    if (hasAnyNutrition) store.state.challenge.logs[dStr][g.id] = true;
+                    else delete store.state.challenge.logs[dStr][g.id];
+                }
+            });
+        }
     },
     recalcNutritionDayTotals(nutEntry) {
         if (!nutEntry) return;
@@ -5237,21 +5462,37 @@ const app = {
         nutEntry.pro = Math.round(pro * 10) / 10;
         nutEntry.car = Math.round(car * 10) / 10;
         nutEntry.fat = Math.round(fat * 10) / 10;
+        const dStr = utils.getLocalISODate(nutEntry.date);
+        this.syncNutritionStatusForDate(dStr, nutEntry);
         store.save();
         this.checkRankPromotion();
     },
     changeNutritionDate(newDateStr) {
         if (!newDateStr) return;
-        this.selectedNutritionDate = newDateStr;
+        this.selectedNutritionDate = utils.getLocalISODate(newDateStr);
         this.navigate('nutrition', true);
     },
+    deleteNutritionDay(dateStr) {
+        const dStr = utils.getLocalISODate(dateStr);
+        if (!dStr) return;
+        if (!confirm(`Delete all logged nutrition & water entries for ${dStr}?`)) return;
+        store.state.history.nutrition = store.state.history.nutrition.filter(n => utils.getLocalISODate(n.date) !== dStr);
+        if (store.state.challenge && store.state.challenge.logs && store.state.challenge.logs[dStr]) {
+            (store.state.challenge.goals || []).forEach(g => {
+                if (g.type === 'nutrition') delete store.state.challenge.logs[dStr][g.id];
+            });
+        }
+        store.save();
+        this.navigate(this.currentPage, true);
+    },
     openMealSearchModal(dateStr, mealWindowType = 'Breakfast', tab = null) {
-        if (dateStr) this.selectedNutritionDate = dateStr;
+        if (dateStr) this.selectedNutritionDate = utils.getLocalISODate(dateStr);
         if (mealWindowType) this.activeMealWindow = mealWindowType;
         if (tab) this.mealSearchTab = tab;
         if (!this.mealSearchTab) this.mealSearchTab = 'raw';
 
-        const dStr = this.selectedNutritionDate || utils.getLocalISODate(new Date());
+        const dStr = utils.getLocalISODate(this.selectedNutritionDate || new Date());
+        this.selectedNutritionDate = dStr;
         const mType = this.activeMealWindow || 'Breakfast';
         const curTab = this.mealSearchTab;
         const nutEntry = this.getOrCreateNutritionDay(dStr);
@@ -5267,7 +5508,7 @@ const app = {
 
         let html = `
             <div class="workout-header-sticky">
-                <button type="button" class="btn btn-sm" style="width:auto;" onclick="document.getElementById('meal-search-modal').style.display='none'">Done</button>
+                <button type="button" class="btn btn-sm" style="width:auto;" onclick="document.getElementById('meal-search-modal').style.display='none'; app.navigate(app.currentPage, true);">Done</button>
                 <div style="text-align:center; min-width:0; flex:1;">
                     <div style="font-size:10px; color:var(--accent-color); font-weight:900; text-transform:uppercase;">LOGGING TO ${mType.toUpperCase()} (${dStr})</div>
                     <div style="font-weight:900; font-size:16px;">${windowCals} kcal • ${windowPro}g Protein</div>
@@ -5290,7 +5531,7 @@ const app = {
         if (loggedInWindow.length > 0) {
             html += `
                 <div class="card" style="padding:12px; margin-bottom:14px; border:1px solid var(--accent-color); background:var(--accent-dim);">
-                    <div style="font-size:11px; font-weight:900; color:var(--accent-color); text-transform:uppercase; margin-bottom:6px;">Logged in ${mType} (${loggedInWindow.length})</div>
+                    <div style="font-size:11px; font-weight:900; color:var(--accent-color); text-transform:uppercase; margin-bottom:6px;">Logged in ${mType} on ${dStr} (${loggedInWindow.length})</div>
                     ${nutEntry.loggedMeals.map((m, fullIdx) => {
                         if ((m.type || 'Meal').toLowerCase() !== mType.toLowerCase()) return '';
                         return `
@@ -5361,7 +5602,7 @@ const app = {
         } else if (curTab === 'quick') {
             html += `
                 <div class="card" style="padding:16px;">
-                    <h3 style="margin-top:0; color:var(--accent-color);">Quick Custom Entry to ${mType}</h3>
+                    <h3 style="margin-top:0; color:var(--accent-color);">Quick Custom Entry to ${mType} (${dStr})</h3>
                     <label style="font-size:11px; color:var(--text-secondary); font-weight:bold; text-transform:uppercase;">Food / Meal Name</label>
                     <input type="text" id="quick-macro-name" class="edit-input" placeholder="e.g. Post-Workout Shake, Restaurant Steak..." value="${mType} Entry">
                     <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:8px;">
@@ -5405,7 +5646,7 @@ const app = {
     openRawFoodPortionModal(foodId, dateStr, mealWindowType) {
         const food = NZ_ATHLETE_FOODS.find(f => f.id === foodId);
         if (!food) return;
-        const dStr = dateStr || this.selectedNutritionDate || utils.getLocalISODate(new Date());
+        const dStr = utils.getLocalISODate(dateStr || this.selectedNutritionDate || new Date());
         const mType = mealWindowType || this.activeMealWindow || 'Breakfast';
         const defaultGrams = food.defaultGrams || 150;
         const modal = document.getElementById('meal-search-modal');
@@ -5414,7 +5655,7 @@ const app = {
             <div class="workout-header-sticky">
                 <button type="button" class="btn btn-sm" style="width:auto;" onclick="app.openMealSearchModal('${dStr}', '${mType}', 'raw')"><i class="fas fa-arrow-left"></i> Back</button>
                 <div style="text-align:center; min-width:0; flex:1;">
-                    <div style="font-size:10px; color:var(--accent-color); font-weight:900; text-transform:uppercase;">LOG RAW INGREDIENT TO ${mType.toUpperCase()}</div>
+                    <div style="font-size:10px; color:var(--accent-color); font-weight:900; text-transform:uppercase;">LOG RAW INGREDIENT TO ${mType.toUpperCase()} (${dStr})</div>
                     <div class="truncate-text" style="font-weight:900; font-size:16px;">${food.name}</div>
                 </div>
                 <div style="width:60px;"></div>
@@ -5435,7 +5676,7 @@ const app = {
                     <div id="raw-food-macro-preview" style="background:var(--surface-elevated); padding:14px; border-radius:12px; border:1px solid var(--border); margin-bottom:18px;"></div>
 
                     <button type="button" class="btn btn-success" style="font-size:16px; padding:16px;" onclick="app.confirmLogRawFood('${food.id}', '${dStr}', '${mType}')">
-                        <i class="fas fa-check-circle"></i> Log to ${mType}
+                        <i class="fas fa-check-circle"></i> Log to ${mType} (${dStr})
                     </button>
                 </div>
             </div>
@@ -5468,7 +5709,8 @@ const app = {
         const gEl = document.getElementById('raw-food-grams');
         const grams = Math.max(1, parseFloat(gEl ? gEl.value : 100) || 100);
         const mult = grams / 100;
-        const dStr = dateStr || this.selectedNutritionDate || utils.getLocalISODate(new Date());
+        const dStr = utils.getLocalISODate(dateStr || this.selectedNutritionDate || new Date());
+        this.selectedNutritionDate = dStr;
         const mType = mealWindowType || this.activeMealWindow || 'Breakfast';
 
         const nutEntry = this.getOrCreateNutritionDay(dStr);
@@ -5491,7 +5733,8 @@ const app = {
     logSavedMealToDay(savedMealId, dateStr, mealWindowType) {
         const sm = (store.state.savedMeals || []).find(x => x.id === savedMealId);
         if (!sm) return;
-        const dStr = dateStr || this.selectedNutritionDate || utils.getLocalISODate(new Date());
+        const dStr = utils.getLocalISODate(dateStr || this.selectedNutritionDate || new Date());
+        this.selectedNutritionDate = dStr;
         const mType = mealWindowType || this.activeMealWindow || 'Breakfast';
         const nutEntry = this.getOrCreateNutritionDay(dStr);
         nutEntry.loggedMeals.push({
@@ -5528,7 +5771,8 @@ const app = {
             alert("Please enter calories or macros first.");
             return;
         }
-        const dStr = dateStr || this.selectedNutritionDate || utils.getLocalISODate(new Date());
+        const dStr = utils.getLocalISODate(dateStr || this.selectedNutritionDate || new Date());
+        this.selectedNutritionDate = dStr;
         const mType = mealWindowType || this.activeMealWindow || 'Breakfast';
         const nutEntry = this.getOrCreateNutritionDay(dStr);
         nutEntry.loggedMeals.push({
@@ -5546,11 +5790,51 @@ const app = {
         this.navigate('nutrition', true);
     },
     promptQuickMacros(dateStr) {
-        const dStr = dateStr || this.selectedNutritionDate || utils.getLocalISODate(new Date());
+        const dStr = utils.getLocalISODate(dateStr || this.selectedNutritionDate || new Date());
         this.openMealSearchModal(dStr, this.activeMealWindow || 'Snacks', 'quick');
     },
+    editLoggedMealModal(dateStr, mealIdx) {
+        const dStr = utils.getLocalISODate(dateStr || this.selectedNutritionDate || new Date());
+        const nutEntry = this.getOrCreateNutritionDay(dStr);
+        const meal = nutEntry.loggedMeals && nutEntry.loggedMeals[mealIdx];
+        if (!meal) return;
+        if (meal.foodId) {
+            const food = NZ_ATHLETE_FOODS.find(f => f.id === meal.foodId);
+            if (food) {
+                const newGramsRaw = prompt(`Update portion in grams for "${meal.name}" (${meal.type || 'Meal'} on ${dStr}):`, meal.grams || 150);
+                if (newGramsRaw === null) return;
+                const g = Math.max(1, parseFloat(newGramsRaw) || meal.grams || 100);
+                const mult = g / 100;
+                meal.grams = Math.round(g);
+                meal.cal = Math.round(food.cal * mult);
+                meal.pro = Math.round(food.pro * mult * 10) / 10;
+                meal.car = Math.round(food.car * mult * 10) / 10;
+                meal.fat = Math.round(food.fat * mult * 10) / 10;
+                this.recalcNutritionDayTotals(nutEntry);
+                this.navigate('nutrition', true);
+                return;
+            }
+        }
+        const newName = prompt(`Meal Name (${dStr}):`, meal.name || 'Meal');
+        if (newName === null) return;
+        const newCal = prompt(`Calories (kcal) for "${newName}":`, Math.round(meal.cal || 0));
+        if (newCal === null) return;
+        const newPro = prompt(`Protein (g) for "${newName}":`, meal.pro || 0);
+        if (newPro === null) return;
+        const newCar = prompt(`Carbs (g) for "${newName}":`, meal.car || 0);
+        if (newCar === null) return;
+        const newFat = prompt(`Fat (g) for "${newName}":`, meal.fat || 0);
+        if (newFat === null) return;
+        meal.name = newName.trim() || meal.name;
+        meal.cal = Math.max(0, Math.round(parseFloat(newCal) || 0));
+        meal.pro = Math.max(0, Math.round((parseFloat(newPro) || 0) * 10) / 10);
+        meal.car = Math.max(0, Math.round((parseFloat(newCar) || 0) * 10) / 10);
+        meal.fat = Math.max(0, Math.round((parseFloat(newFat) || 0) * 10) / 10);
+        this.recalcNutritionDayTotals(nutEntry);
+        this.navigate('nutrition', true);
+    },
     removeLoggedMeal(dateStr, mealIdx, stayInModal = false) {
-        const dStr = dateStr || this.selectedNutritionDate || utils.getLocalISODate(new Date());
+        const dStr = utils.getLocalISODate(dateStr || this.selectedNutritionDate || new Date());
         const nutEntry = this.getOrCreateNutritionDay(dStr);
         if (nutEntry.loggedMeals && nutEntry.loggedMeals[mealIdx] !== undefined) {
             nutEntry.loggedMeals.splice(mealIdx, 1);
@@ -5562,18 +5846,34 @@ const app = {
         this.navigate('nutrition', true);
     },
     addWater(dateStr, mlAmount) {
-        const dStr = dateStr || this.selectedNutritionDate || utils.getLocalISODate(new Date());
+        const dStr = utils.getLocalISODate(dateStr || this.selectedNutritionDate || new Date());
+        this.selectedNutritionDate = dStr;
         const nutEntry = this.getOrCreateNutritionDay(dStr);
         nutEntry.waterLog.push({ amount: parseInt(mlAmount) || 250, time: new Date().toISOString() });
+        this.syncNutritionStatusForDate(dStr, nutEntry);
+        store.save();
+        this.checkRankPromotion();
+        this.navigate('nutrition', true);
+    },
+    promptEditWater(dateStr) {
+        const dStr = utils.getLocalISODate(dateStr || this.selectedNutritionDate || new Date());
+        this.selectedNutritionDate = dStr;
+        const nutEntry = this.getOrCreateNutritionDay(dStr);
+        const currentWater = (nutEntry.waterLog || []).reduce((s, e) => s + (parseFloat(e.amount) || 0), 0);
+        const val = prompt(`Set total water intake (ml) for ${dStr}:`, currentWater);
+        if (val === null) return;
+        const parsed = Math.max(0, parseInt(val) || 0);
+        nutEntry.waterLog = parsed > 0 ? [{ amount: parsed, time: new Date().toISOString() }] : [];
+        this.syncNutritionStatusForDate(dStr, nutEntry);
         store.save();
         this.checkRankPromotion();
         this.navigate('nutrition', true);
     },
     copyPastNutritionDay(targetDateStr) {
-        const dStr = targetDateStr || this.selectedNutritionDate || utils.getLocalISODate(new Date());
+        const dStr = utils.getLocalISODate(targetDateStr || this.selectedNutritionDate || new Date());
         const pastDays = store.state.history.nutrition
-            .filter(n => utils.getLocalISODate(n.date) !== dStr && (n.cal > 0 || (n.loggedMeals && n.loggedMeals.length > 0)))
-            .sort((a, b) => new Date(b.date) - new Date(a.date));
+            .filter(n => n && utils.getLocalISODate(n.date) !== dStr && (n.cal > 0 || (n.loggedMeals && n.loggedMeals.length > 0)))
+            .sort((a, b) => utils.getLocalISODate(b.date).localeCompare(utils.getLocalISODate(a.date)));
         if (pastDays.length === 0) {
             alert("No previous nutrition days found to copy from yet.");
             return;
@@ -5584,7 +5884,10 @@ const app = {
         const targetEntry = this.getOrCreateNutritionDay(dStr);
         if (latest.loggedMeals && latest.loggedMeals.length > 0) {
             latest.loggedMeals.forEach(m => {
-                targetEntry.loggedMeals.push(JSON.parse(JSON.stringify(m)));
+                const clone = JSON.parse(JSON.stringify(m));
+                clone.id = utils.generateId();
+                clone.timestamp = new Date().toISOString();
+                targetEntry.loggedMeals.push(clone);
             });
             this.recalcNutritionDayTotals(targetEntry);
         } else {
@@ -5592,34 +5895,55 @@ const app = {
             targetEntry.pro = latest.pro;
             targetEntry.car = latest.car;
             targetEntry.fat = latest.fat;
+            this.syncNutritionStatusForDate(dStr, targetEntry);
             store.save();
         }
         this.navigate('nutrition', true);
     },
-    promptNutritionTargets() {
-        const t = store.state.settings.nutritionTargets || { cal: 2200, pro: 160, car: 250, fat: 70, water: 4000 };
-        const cal = prompt("Daily Calorie Target (kcal):", t.cal);
-        if (cal === null) return;
-        const pro = prompt("Daily Protein Target (g):", t.pro);
-        if (pro === null) return;
-        const car = prompt("Daily Carbohydrate Target (g):", t.car);
-        if (car === null) return;
-        const fat = prompt("Daily Fat Target (g):", t.fat);
-        if (fat === null) return;
-        const water = prompt("Daily Water Target (ml):", t.water || 4000);
-        if (water === null) return;
-        store.state.settings.nutritionTargets = {
-            cal: Math.max(500, parseInt(cal) || 2200),
-            pro: Math.max(20, parseInt(pro) || 160),
-            car: Math.max(0, parseInt(car) || 250),
-            fat: Math.max(10, parseInt(fat) || 70),
-            water: Math.max(500, parseInt(water) || 4000)
+    promptNutritionTargets(dateStr = null) {
+        const isDaySpecific = dateStr && dateStr !== 'GLOBAL';
+        const dStr = isDaySpecific ? utils.getLocalISODate(dateStr) : null;
+        const cur = isDaySpecific ? utils.getTargetsForDate(dStr) : (store.state.settings.nutritionTargets || { cal: 2200, pro: 160, car: 250, fat: 70, water: 4000 });
+        const scopeLabel = isDaySpecific ? `for ${dStr}` : 'Global Default';
+        const calInput = prompt(`Daily Calorie Target (${scopeLabel}):`, cur.cal);
+        if (calInput === null) return;
+        const proInput = prompt(`Daily Protein Target (g) (${scopeLabel}):`, cur.pro);
+        if (proInput === null) return;
+        const carInput = prompt(`Daily Carbs Target (g) (${scopeLabel}):`, cur.car);
+        if (carInput === null) return;
+        const fatInput = prompt(`Daily Fat Target (g) (${scopeLabel}):`, cur.fat);
+        if (fatInput === null) return;
+        const waterInput = prompt(`Daily Water Target (ml) (${scopeLabel}):`, cur.water || 4000);
+        if (waterInput === null) return;
+        const newTargets = {
+            cal: Math.max(500, parseInt(calInput) || 2200),
+            pro: Math.max(10, parseInt(proInput) || 160),
+            car: Math.max(0, parseInt(carInput) || 250),
+            fat: Math.max(10, parseInt(fatInput) || 70),
+            water: Math.max(500, parseInt(waterInput) || 4000)
         };
+        if (isDaySpecific) {
+            const log = this.getOrCreateNutritionDay(dStr);
+            log.customTargets = newTargets;
+            const applyGlobal = confirm(`Saved custom targets for ${dStr}.\n\nAlso set these as your Global Default targets for all future days?`);
+            if (applyGlobal) store.state.settings.nutritionTargets = { ...newTargets };
+        } else {
+            store.state.settings.nutritionTargets = newTargets;
+        }
         store.save();
-        this.navigate('nutrition', true);
+        this.navigate(this.currentPage, true);
+    },
+    resetDayNutritionTargets(dateStr) {
+        const dStr = utils.getLocalISODate(dateStr);
+        const log = store.state.history.nutrition.find(n => n && utils.getLocalISODate(n.date) === dStr);
+        if (log && log.customTargets) {
+            delete log.customTargets;
+            store.save();
+            this.navigate(this.currentPage, true);
+        }
     },
     openMealCreateModal(dateStr, mealWindowType = 'Breakfast') {
-        if (dateStr) this.selectedNutritionDate = dateStr;
+        if (dateStr) this.selectedNutritionDate = utils.getLocalISODate(dateStr);
         if (mealWindowType) this.activeMealWindow = mealWindowType;
         if (!this.draftMealBuilder) {
             this.draftMealBuilder = { name: '', ingredients: [] };
@@ -5629,7 +5953,7 @@ const app = {
     renderMealCreateModal() {
         const modal = document.getElementById('meal-create-modal');
         if (!modal) return;
-        const dStr = this.selectedNutritionDate || utils.getLocalISODate(new Date());
+        const dStr = utils.getLocalISODate(this.selectedNutritionDate || new Date());
         const mType = this.activeMealWindow || 'Breakfast';
         const draft = this.draftMealBuilder || { name: '', ingredients: [] };
 
@@ -5645,7 +5969,7 @@ const app = {
             <div class="workout-header-sticky">
                 <button type="button" class="btn btn-sm" style="width:auto;" onclick="document.getElementById('meal-create-modal').style.display='none'">Cancel</button>
                 <div style="text-align:center; min-width:0; flex:1;">
-                    <div style="font-size:10px; color:var(--accent-color); font-weight:900; text-transform:uppercase;">CUSTOM MEAL BUILDER</div>
+                    <div style="font-size:10px; color:var(--accent-color); font-weight:900; text-transform:uppercase;">CUSTOM MEAL BUILDER (${dStr})</div>
                     <div style="font-weight:900; font-size:16px;">${Math.round(totCal)} kcal • P:${Math.round(totPro)}g C:${Math.round(totCar)}g F:${Math.round(totFat)}g</div>
                 </div>
                 <button type="button" class="btn btn-sm btn-success" style="width:auto;" onclick="app.saveAndLogBuiltMeal('${dStr}', '${mType}')">Save & Log</button>
@@ -5779,7 +6103,10 @@ const app = {
     },
     handlePinnedGoalRowClick(dateStr, goalId, goalType) {
         if (goalType === 'workout') this.openStartWorkoutModal();
-        else if (goalType === 'nutrition' || goalType === 'water' || goalType === 'protein') this.navigate('nutrition');
+        else if (goalType === 'nutrition' || goalType === 'water' || goalType === 'protein') {
+            this.selectedNutritionDate = utils.getLocalISODate(dateStr || new Date());
+            this.navigate('nutrition');
+        }
         else if (goalType === 'weight') this.promptQuickBodyweight();
         else this.toggleChallengeGoalManual(dateStr, goalId);
     },
@@ -5798,6 +6125,7 @@ const app = {
         store.state.challenge.goals.push({
             id: 'g_' + utils.generateId(),
             type: 'custom',
+            customLabel: label.trim(),
             customName: label.trim(),
             target: 1,
             showInActionPlan: true
@@ -5876,7 +6204,7 @@ const app = {
             </div>
             <div style="padding:16px; overflow-y:auto; flex:1; padding-bottom:80px;">
                 <div class="card">
-                    <h3 style="margin-top:0;">Appearance & Units</h3>
+                    <h3 style="margin-top:0;">Appearance, Units & Timezone</h3>
                     <label style="font-size:11px; color:var(--text-secondary); font-weight:bold; text-transform:uppercase;">Theme</label>
                     <select class="edit-input" onchange="app.applyTheme(this.value); app.openSettingsModal(); app.navigate(app.currentPage, true);">
                         <option value="olympus" ${s.theme === 'olympus' ? 'selected' : ''}>Olympus Gold (Default)</option>
@@ -5887,6 +6215,18 @@ const app = {
                     <select class="edit-input" onchange="store.state.settings.units = this.value; store.save(); app.navigate(app.currentPage, true);">
                         <option value="kg" ${s.units === 'kg' ? 'selected' : ''}>Kilograms (kg)</option>
                         <option value="lbs" ${s.units === 'lbs' ? 'selected' : ''}>Pounds (lbs)</option>
+                    </select>
+                    <label style="font-size:11px; color:var(--text-secondary); font-weight:bold; text-transform:uppercase;">Timezone</label>
+                    <select class="edit-input" onchange="store.state.settings.timeZone = this.value; store.save(); app.selectedNutritionDate = utils.getLocalISODate(new Date()); app.selectedCalendarDate = app.selectedNutritionDate; app.navigate(app.currentPage, true);">
+                        <option value="Pacific/Auckland" ${(s.timeZone || 'Pacific/Auckland') === 'Pacific/Auckland' ? 'selected' : ''}>New Zealand (Pacific/Auckland)</option>
+                        <option value="auto" ${s.timeZone === 'auto' ? 'selected' : ''}>Device Auto (${Intl.DateTimeFormat().resolvedOptions().timeZone || 'Local'})</option>
+                        <option value="Australia/Sydney" ${s.timeZone === 'Australia/Sydney' ? 'selected' : ''}>Australia East (Sydney/Melbourne)</option>
+                        <option value="Australia/Brisbane" ${s.timeZone === 'Australia/Brisbane' ? 'selected' : ''}>Australia QLD (Brisbane)</option>
+                        <option value="Australia/Perth" ${s.timeZone === 'Australia/Perth' ? 'selected' : ''}>Australia West (Perth)</option>
+                        <option value="Europe/London" ${s.timeZone === 'Europe/London' ? 'selected' : ''}>UK (Europe/London)</option>
+                        <option value="America/New_York" ${s.timeZone === 'America/New_York' ? 'selected' : ''}>USA East (America/New_York)</option>
+                        <option value="America/Chicago" ${s.timeZone === 'America/Chicago' ? 'selected' : ''}>USA Central (America/Chicago)</option>
+                        <option value="America/Los_Angeles" ${s.timeZone === 'America/Los_Angeles' ? 'selected' : ''}>USA West (America/Los_Angeles)</option>
                     </select>
                     <label style="font-size:11px; color:var(--text-secondary); font-weight:bold; text-transform:uppercase;">Default Rest Timer (Seconds)</label>
                     <input type="number" class="edit-input" value="${s.restTimer || 120}" onchange="store.state.settings.restTimer = parseInt(this.value)||90; store.save();">
@@ -5947,8 +6287,10 @@ const app = {
             try {
                 const parsed = JSON.parse(e.target.result);
                 if (parsed && parsed.history) {
-                    store.state = Object.assign(store.state, parsed);
+                    store.state = store.migrate(Object.assign(store.state, parsed));
                     store.save();
+                    this.selectedNutritionDate = utils.getLocalISODate(new Date());
+                    this.selectedCalendarDate = this.selectedNutritionDate;
                     this.applyTheme(store.state.settings.theme || 'olympus');
                     this.navigate('home', false);
                     alert("Backup restored successfully!");
@@ -5962,244 +6304,6 @@ const app = {
         reader.readAsText(file);
     }
 };
-/* ============================================================================
-   SURGICAL FUNCTIONALITY PATCH (100% ORIGINAL UI PRESERVED)
-   Paste right above: window.addEventListener('DOMContentLoaded', () => app.init());
-   ============================================================================ */
-(function applyFunctionalFixes() {
-    // 1. Helper: Map between Home Action Plan keys and Challenge Goal types
-    const goalTypeToActionKey = {
-        workout: 'workout',
-        activity: 'activity',
-        weight: 'weight',
-        nutrition: 'nutrition',
-        protein: 'nutrition'
-    };
-
-    // 2. Fix utils.checkGoalSuccess so manual Action Plan check-offs also count toward Challenge & Pinned Goals
-    const origCheckGoalSuccess = utils.checkGoalSuccess.bind(utils);
-    utils.checkGoalSuccess = function(dateStr, g) {
-        if (!g) return false;
-        const c = store.state.challenge;
-        if (c && c.logs && c.logs[dateStr] && c.logs[dateStr][g.id] !== undefined) {
-            return !!c.logs[dateStr][g.id];
-        }
-        const mappedKey = goalTypeToActionKey[g.type];
-        const ov = store.state.history.actionOverrides && store.state.history.actionOverrides[dateStr];
-        if (mappedKey && ov && ov[mappedKey] !== undefined) {
-            if (g.type === 'protein') {
-                // Only auto-pass protein via nutrition override if explicitly checked true
-                if (ov[mappedKey] === true) return true;
-            } else {
-                return !!ov[mappedKey];
-            }
-        }
-        return origCheckGoalSuccess(dateStr, g);
-    };
-
-    // 3. Fix utils.getActionPlanItemSuccess so Challenge Modal toggles also reflect on Home Action Plan
-    const origGetActionPlanItemSuccess = utils.getActionPlanItemSuccess.bind(utils);
-    utils.getActionPlanItemSuccess = function(dateStr, key, autoDone) {
-        const ov = store.state.history.actionOverrides && store.state.history.actionOverrides[dateStr];
-        if (ov && ov[key] !== undefined) return !!ov[key];
-        const c = store.state.challenge;
-        if (c && c.logs && c.logs[dateStr] && Array.isArray(c.goals)) {
-            const matchingGoal = c.goals.find(g => goalTypeToActionKey[g.type] === key);
-            if (matchingGoal && c.logs[dateStr][matchingGoal.id] !== undefined) {
-                return !!c.logs[dateStr][matchingGoal.id];
-            }
-        }
-        return origGetActionPlanItemSuccess(dateStr, key, autoDone);
-    };
-
-    // 4. Bidirectional Sync when toggling Home Action Plan check circles
-    app.toggleActionPlanOverride = function(dateStr, key, autoDone) {
-        if (!store.state.history.actionOverrides) store.state.history.actionOverrides = {};
-        if (!store.state.history.actionOverrides[dateStr]) store.state.history.actionOverrides[dateStr] = {};
-        const currentVal = utils.getActionPlanItemSuccess(dateStr, key, autoDone);
-        const nextVal = !currentVal;
-        store.state.history.actionOverrides[dateStr][key] = nextVal;
-
-        // Sync with matching 75-Day Lock-In Challenge goals
-        const c = store.state.challenge;
-        if (c && Array.isArray(c.goals)) {
-            if (!c.logs) c.logs = {};
-            if (!c.logs[dateStr]) c.logs[dateStr] = {};
-            c.goals.forEach(g => {
-                if (goalTypeToActionKey[g.type] === key) {
-                    c.logs[dateStr][g.id] = nextVal;
-                }
-            });
-        }
-
-        store.save();
-        this.checkRankPromotion();
-        this.navigate(this.currentPage, true);
-    };
-
-    // 5. Bidirectional Sync when toggling goals inside 75-Day Lock-In Challenge or Pinned Goals
-    app.toggleChallengeGoalManual = function(dateStr, goalId) {
-        const c = store.state.challenge;
-        if (!c) return;
-        if (!c.logs) c.logs = {};
-        if (!c.logs[dateStr]) c.logs[dateStr] = {};
-        const gObj = (c.goals || []).find(x => x.id === goalId);
-        const cur = gObj ? utils.checkGoalSuccess(dateStr, gObj) : !!c.logs[dateStr][goalId];
-        const nextVal = !cur;
-        c.logs[dateStr][goalId] = nextVal;
-
-        // Sync back to Home Action Plan override if this goal maps to a core Action Plan item
-        if (gObj && goalTypeToActionKey[gObj.type]) {
-            const actionKey = goalTypeToActionKey[gObj.type];
-            if (!store.state.history.actionOverrides) store.state.history.actionOverrides = {};
-            if (!store.state.history.actionOverrides[dateStr]) store.state.history.actionOverrides[dateStr] = {};
-            store.state.history.actionOverrides[dateStr][actionKey] = nextVal;
-        }
-
-        store.save();
-        const modal = document.getElementById('challenge-modal');
-        if (modal && modal.style.display === 'flex') {
-            this.openChallengeModal();
-        }
-        this.navigate(this.currentPage, true);
-    };
-
-    // 6. Protect Active Workout typed inputs before toggling set checkmarks
-    const origToggleSet = workoutEngine.toggleSet.bind(workoutEngine);
-    workoutEngine.toggleSet = function(exIdx, setIdx) {
-        if (this.activeWorkout && this.activeWorkout.exercises && this.activeWorkout.exercises[exIdx]) {
-            const setCards = document.querySelectorAll('#workout-exercises-container .exercise-card');
-            const card = setCards[exIdx];
-            if (card) {
-                const rows = card.querySelectorAll('.set-row');
-                const row = rows[setIdx];
-                if (row) {
-                    const inputs = row.querySelectorAll('input[type="number"]');
-                    if (inputs[0] && inputs[0].value !== '') this.updateSet(exIdx, setIdx, 'weight', inputs[0].value);
-                    if (inputs[1] && inputs[1].value !== '') this.updateSet(exIdx, setIdx, 'reps', inputs[1].value);
-                    if (inputs[2] && inputs[2].value !== '') this.updateSet(exIdx, setIdx, 'rpe', inputs[2].value);
-                }
-            }
-        }
-        return origToggleSet(exIdx, setIdx);
-    };
-
-    // 7. Reusable PWA-safe Modal Helper using existing #pin-goals-modal container & original CSS classes
-    app.openQuickInputModal = function(title, subtitle, fields, onConfirm) {
-        const modal = document.getElementById('pin-goals-modal');
-        if (!modal) return;
-        modal.innerHTML = `
-            <div class="workout-header-sticky">
-                <button type="button" class="btn btn-sm" style="width:auto;" onclick="document.getElementById('pin-goals-modal').style.display='none'">Cancel</button>
-                <div style="text-align:center; min-width:0; flex:1;">
-                    <div style="font-size:10px; color:var(--accent-color); font-weight:900; text-transform:uppercase;">${subtitle || 'QUICK LOG'}</div>
-                    <div class="truncate-text" style="font-weight:900; font-size:16px;">${title}</div>
-                </div>
-                <button type="button" class="btn btn-sm btn-success" id="quick-modal-save-btn" style="width:auto;">Save</button>
-            </div>
-            <div style="padding:16px; overflow-y:auto; flex:1;">
-                <div class="card" style="padding:16px;">
-                    ${fields.map(f => `
-                        <div style="margin-bottom:12px;">
-                            <label style="font-size:11px; color:var(--text-secondary); font-weight:800; text-transform:uppercase; display:block; margin-bottom:4px;">${f.label}</label>
-                            <input type="${f.type || 'text'}" id="qm-field-${f.id}" class="edit-input" value="${f.value !== undefined ? f.value : ''}" placeholder="${f.placeholder || ''}" ${f.step ? `step="${f.step}"` : ''}>
-                        </div>
-                    `).join('')}
-                    <button type="button" class="btn btn-primary" id="quick-modal-confirm-btn" style="margin-top:6px;"><i class="fas fa-check"></i> Confirm</button>
-                </div>
-            </div>
-        `;
-        modal.style.display = 'flex';
-        const submit = () => {
-            const values = {};
-            fields.forEach(f => {
-                const el = document.getElementById('qm-field-' + f.id);
-                values[f.id] = el ? el.value : '';
-            });
-            modal.style.display = 'none';
-            onConfirm(values);
-        };
-        document.getElementById('quick-modal-save-btn').onclick = submit;
-        document.getElementById('quick-modal-confirm-btn').onclick = submit;
-        const firstInput = document.getElementById('qm-field-' + fields[0].id);
-        if (firstInput) setTimeout(() => firstInput.focus(), 50);
-    };
-
-    // 8. Replace blocking window.prompt() on Bodyweight & Quick Activity with non-freezing modal
-    app.promptQuickBodyweight = function() {
-        const unit = utils.unitLabel();
-        this.openQuickInputModal(
-            `Log Morning Weight (${unit})`,
-            'BODYWEIGHT TRACKER',
-            [{ id: 'bw', label: `Current Weight (${unit})`, type: 'number', step: '0.1', value: store.state.user.currentWeight || 80 }],
-            (vals) => {
-                const num = parseFloat(vals.bw);
-                if (isNaN(num) || num <= 0) return;
-                const todayStr = utils.getLocalISODate(new Date());
-                const existing = store.state.history.bodyweight.find(b => utils.getLocalISODate(b.date) === todayStr);
-                if (existing) {
-                    existing.weight = num;
-                    store.state.user.currentWeight = num;
-                    store.save();
-                } else {
-                    store.addBodyweight({ date: new Date().toISOString(), weight: num });
-                }
-                this.checkRankPromotion();
-                this.navigate(this.currentPage, true);
-            }
-        );
-    };
-
-    app.logQuickActivity = function(defaultTitle = 'Outdoor Run / Walk') {
-        this.openQuickInputModal(
-            'Log Daily Activity',
-            'CARDIO & STEPS',
-            [
-                { id: 'name', label: 'Activity Type', type: 'text', value: defaultTitle },
-                { id: 'mins', label: 'Duration (Minutes)', type: 'number', value: 30 },
-                { id: 'cals', label: 'Active Calories Burned (kcal)', type: 'number', value: 250 }
-            ],
-            (vals) => {
-                const name = (vals.name || '').trim() || defaultTitle;
-                const mins = Math.max(1, parseInt(vals.mins) || 30);
-                const cals = Math.max(0, parseInt(vals.cals) || 0);
-                store.addCardio({
-                    id: utils.generateId(),
-                    date: new Date().toISOString(),
-                    name,
-                    durationMinutes: mins,
-                    caloriesBurned: cals,
-                    isActivity: true,
-                    exercises: []
-                });
-                this.checkRankPromotion();
-                this.navigate(this.currentPage, true);
-            }
-        );
-    };
-
-    // 9. Ensure JSON backup import runs state migration and applies saved theme
-    app.handleJSONFileImport = function(event) {
-        const file = event.target.files && event.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            try {
-                const parsed = JSON.parse(e.target.result);
-                if (!parsed || typeof parsed !== 'object') throw new Error('Invalid JSON');
-                store.state = store.migrate(Object.assign({}, store.state, parsed));
-                store.save();
-                this.applyTheme(store.state.settings.theme || 'olympus');
-                this.navigate('home', false);
-                alert('Backup restored successfully!');
-            } catch (err) {
-                alert('Failed to restore JSON backup: ' + err.message);
-            }
-            event.target.value = '';
-        };
-        reader.readAsText(file);
-    };
-})();
 window.addEventListener('DOMContentLoaded', () => app.init());
 </script>
 <input type="file" id="progress-photo-input" accept="image/*" style="display:none;" onchange="app.handleProgressPhotoUpload(event)">
